@@ -24,6 +24,7 @@
 			<Item Name="TD Quantity.ctl" Type="VI" URL="../qwtb_lvlib/TD Quantity.ctl"/>
 		</Item>
 		<Item Name="main.vi" Type="VI" URL="../main.vi"/>
+		<Item Name="quantity.vi" Type="VI" URL="../quantity.vi"/>
 		<Item Name="Dependencies" Type="Dependencies"/>
 		<Item Name="Build Specifications" Type="Build"/>
 	</Item>
