@@ -40,6 +40,7 @@ datain.bits.v = 10;
 
 % Calculation settings structure. Uncertainties are not required.
 calcset.unc = '';
+calcset.verbose = 1;
 
 % -----------------------------------------------------------------------
 %% 1. example use of QWTB - get signal phase:

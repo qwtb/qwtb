@@ -1,22 +1,7 @@
-%% Copyright (C) 2015 Q-Wave %<<<1
-%%
-%% Wrapper for PSFE algorithm.
-%% PSFE definition:
-%% function [fa A ph] = PSFE(Record,Ts,init_guess)
-%%
-%% Author: Martin Šíra <msiraATcmi.cz>
-%% Created: 2015
-%% Version: 0.1
-%% Script quality:
-%%   Tested: no
-%%   Contains help: no
-%%   Contains example in help: no
-%%   Checks inputs: no
-%%   Contains tests: no
-%%   Contains demo: no
-%%   Optimized: no
-
-function info = alg_info()
+function info = alg_info() %<<<1
+% Part of QWTB. Info script for algorithm PSFE.
+%
+% See also qwtb
 
 info.shortname = 'PSFE';
 info.longname = 'Phase Sensitive Frequency Estimator';
