@@ -28,6 +28,7 @@ end
 % Format output data:  --------------------------- %<<<1
 dataout.max.v = maxv;
 dataout.max.u = unc;
+dataout.max.d = 0;
 
 end % function
 
