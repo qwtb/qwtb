@@ -63,12 +63,12 @@ else   % three parameter input --------------------------- %<<<1
     % check calculation settings structure:
     checkcalcset(calcset);
     % check input data structure:
-    mustunc = ~isempty(calcset.unc);
+    mustunc = strcmpi(calcset.unc, 'none');
     checkdatain(datain, info, mustunc);
 
     % all ok, call wrapper:
     % decide calculation mode:
-    if isempty(calcset.unc) % no uncertainty, just calculate value: %<<<2
+    if strcmpi(calcset.unc, 'none') % no uncertainty, just calculate value: %<<<2
         if calcset.verbose %<<<3
             disp('no uncertainty calculation')
         end %>>>3
@@ -148,7 +148,7 @@ function checkcalcset(calcset) %<<<1
     if ~( isfield(calcset, 'unc') )
         error('qwtb: field `unc` is missing in calculation settings structure')
     end
-    if ~( strcmpi(calcset.unc, '') || strcmpi(calcset.unc, 'guf') || strcmpi(calcset.unc, 'mcm') )
+    if ~( strcmpi(calcset.unc, 'none') || strcmpi(calcset.unc, 'guf') || strcmpi(calcset.unc, 'mcm') )
         error('qwtb: field `unc` has unknown value')
     end
     if strcmpi(calcset.unc, 'mcm')

@@ -13,12 +13,12 @@ function dataout = alg_wrapper(datain, calcset) %<<<1
 maxv = testG(datain.t.v, datain.y.v);
 
 % Calculate uncertainty --------------------------- %<<<1
-if strcmpi(calcset.unc, '')
-    unc = '';
+if strcmpi(calcset.unc, 'none')
+    unc = 0;
 elseif strcmpi(calcset.unc, 'guf')
     unc = maxv./10;
 elseif strcmpi(calcset.unc, 'mcm')
-    unc = '';
+    unc = 0;
 else
     error('qwtb wrapper: unknown value in calcset.unc')
 end

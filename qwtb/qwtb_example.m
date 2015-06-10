@@ -39,7 +39,7 @@ datain.y.v = codes;
 datain.bits.v = 10;
 
 % Calculation settings structure. Uncertainties are not required.
-calcset.unc = '';
+calcset.unc = 'none';
 calcset.verbose = 1;
 
 % -----------------------------------------------------------------------

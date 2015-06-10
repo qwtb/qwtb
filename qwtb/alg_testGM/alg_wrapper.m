@@ -13,8 +13,8 @@ function dataout = alg_wrapper(datain, calcset) %<<<1
 maxv = testGM(datain.t.v, datain.y.v);
 
 % Calculate uncertainty --------------------------- %<<<1
-if strcmpi(calcset.unc, '')
-    unc = '';
+if strcmpi(calcset.unc, 'none')
+    unc = 0;
 elseif strcmpi(calcset.unc, 'guf')
     unc = maxv./10;
 elseif strcmpi(calcset.unc, 'mcm')

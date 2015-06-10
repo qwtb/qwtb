@@ -42,7 +42,7 @@ for i = 1:length(quants)
     % randomize values of all required quantities:
     datain.(quants{i}) = rand_quant(datain.(quants{i}), M);
 end % for i
-calcset.unc = '';
+calcset.unc = 'none';
 dataout = alg_wrapper(datain, calcset);
 
 end % function

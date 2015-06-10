@@ -40,7 +40,7 @@ M = calcset.mcm.repeats;
 % calculation in wrapper is suppressed)
 % (it also checks valid calculation before starting time consuming MCM)
 wcalcset = calcset;
-wcalcset.unc = '';
+wcalcset.unc = 'none';
 nonrnddataout = alg_wrapper(datain, wcalcset);
 
 % Randomization --------------------------- %<<<1
@@ -65,7 +65,7 @@ if strcmpi(method, 'singlecore') % single core code --------------------------- 
 
     % set calculation settings for wrapper to NO uncertainty:
     wcalcset = calcset;
-    wcalcset.unc = '';
+    wcalcset.unc = 'none';
 
     % list of input quantities:
     quantsin = info.requires;
@@ -131,7 +131,7 @@ else
             % % identical (but parfor) to single core code - how to unite?
             % % set calculation settings for wrapper to NO uncertainty:
             % wcalcset = calcset;
-            % wcalcset.unc = '';
+            % wcalcset.unc = 'none';
 
             % % list of input quantities:
             % quantsin = info.requires;
