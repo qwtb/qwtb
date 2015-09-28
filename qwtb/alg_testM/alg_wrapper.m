@@ -1,34 +1,39 @@
 function dataout = alg_wrapper(datain, calcset) %<<<1
-% Part of QWTB. Wrapper script for algorithm testM.
-% testM is usefull only for testing QWTB toolbox. It calculates maximal value
-% of the record. MCM is calculated by wrapper (fake values are
-% generated).
+% Part of QWTB. Wrapper script for algorithm test(G)(M). Algorithm is usefull
+% only for testing QWTB toolbox. It calculates maximal and minimal value of the
+% record. GUF/MCM are calculated by wrapper.
 %
 % See also qwtb
 
 % Format input data --------------------------- %<<<1
-% testM definition is: function [maxval] = testM(tseries, yseries)
+% test(G)(M) definition is: function [maxval, minval] = test(G)(M)(tseries, yseries)
 
-% Call algorithm ---------------------------  %<<<1
-maxv = testM(datain.t.v, datain.y.v);
+% Call algorithm --------------------------- %<<<1
+[maxval, minval] = testM(datain.t.v, datain.y.v);
 
 % Calculate uncertainty --------------------------- %<<<1
 if strcmpi(calcset.unc, 'none')
-    unc = 0;
-elseif strcmpi(calcset.unc, 'guf')
-    unc = 0;
+    maxunc = 0;
+    minunc = 0;
 elseif strcmpi(calcset.unc, 'mcm')
     M = calcset.mcm.repeats;
-    unc = maxv./15;
-    unc = normrnd(maxv, maxv./15, 1, M, 1);
+    [tmp2, tmp] = find(maxval == datain.y.v);
+    tmp = tmp(1);
+    maxunc = normrnd(maxval, datain.y.u(tmp), 1, M, 1);
+    [tmp2, tmp] = find(minval == datain.y.v);
+    tmp = tmp(1);
+    minunc = normrnd(minval, datain.y.u(tmp), 1, M, 1);
 else
-    error('qwtb wrapper: unknown value in calcset.unc')
+    error(['qwtb wrapper testM: value ' calcset.unc ' of calcset.unc not implemented'])
 end
 
 % Format output data:  --------------------------- %<<<1
-dataout.max.v = maxv;
-dataout.max.u = unc;
-dataout.max.d = 0;
+dataout.max.v = maxval;
+dataout.min.v = minval;
+dataout.max.u = std(maxunc);
+dataout.min.u = std(minunc);
+dataout.max.r = maxunc;
+dataout.min.r = minunc;
 
 end % function
 

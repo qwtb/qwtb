@@ -1,3 +1,11 @@
+2DO
+---
+v calcset zmenit  .mcm.randomize na ran.gen a ran.req
+
+dodelat multicore a multistation
+
+pripravit oficialni test QWTB - ruzne vstupy, mcm, guf, kontrola vysledku atd.
+
 parts
 ---
 * rnd generator
@@ -32,6 +40,7 @@ datain format
 .Q.u
 .Q.d
 .Q.c
+.Q.r   ?
 
 if unc, Q.u, Q.c
 if guf, Q.d
@@ -113,7 +122,7 @@ calcset format
 .mcm.method     = 'singlecore' = 'multicore' = 'multistation'                           
 .mcm.procno     = 1                                                                     
 .mcm.tmpdir     = '.'                                                                   
-.mcm.randomize  = 0             randomize uncertainties if missing (normal pdf)         
+.mcm.randomize  = 1             randomize uncertainties if missing (normal pdf)         
 
 
 

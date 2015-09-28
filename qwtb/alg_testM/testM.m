@@ -1,7 +1,8 @@
-function [maxval] = testM(tseries, yseries)  %<<<1
-% testGM Returns maximum of recored values.
+function [maxval, minval] = testM(tseries, yseries)  %<<<1
+% test(G)(M) Returns maximum and minimum of recored values.
 
 maxval = max(yseries);
+minval = min(yseries);
 
 end % function
 

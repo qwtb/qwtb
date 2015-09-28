@@ -1,34 +1,55 @@
 function dataout = alg_wrapper(datain, calcset) %<<<1
-% Part of QWTB. Wrapper script for algorithm testGM.
-% testGM is usefull only for testing QWTB toolbox. It calculates maximal value
-% of the record. GUF and MCM are calculated by wrapper (fake values are
-% generated).
+% Part of QWTB. Wrapper script for algorithm test(G)(M). Algorithm is usefull
+% only for testing QWTB toolbox. It calculates maximal and minimal value of the
+% record. GUF/MCM are calculated by wrapper.
 %
 % See also qwtb
 
 % Format input data --------------------------- %<<<1
-% testGM definition is: function [maxval] = testGM(tseries, yseries)
+% test(G)(M) definition is: function [maxval, minval] = test(G)(M)(tseries, yseries)
 
-% Call algorithm ---------------------------  %<<<1
-maxv = testGM(datain.t.v, datain.y.v);
+% Call algorithm --------------------------- %<<<1
+[maxval, minval] = testGM(datain.t.v, datain.y.v);
 
 % Calculate uncertainty --------------------------- %<<<1
 if strcmpi(calcset.unc, 'none')
-    unc = 0;
+    maxunc = 0;
+    minunc = 0;
 elseif strcmpi(calcset.unc, 'guf')
-    unc = maxv./10;
+    [tmp2, tmp] = find(maxval == datain.y.v);
+    tmp = tmp(1);
+    maxunc = datain.y.u(tmp);
+    maxdof = datain.y.d(tmp);
+    [tmp2, tmp] = find(minval == datain.y.v);
+    tmp = tmp(1);
+    minunc = datain.y.u(tmp);
+    mindof = datain.y.d(tmp);
 elseif strcmpi(calcset.unc, 'mcm')
     M = calcset.mcm.repeats;
-    unc = maxv./15;
-    unc = normrnd(maxv, maxv./15, 1, M, 1);
+    [tmp2, tmp] = find(maxval == datain.y.v);
+    tmp = tmp(1);
+    maxunc = normrnd(maxval, datain.y.u(tmp), 1, M, 1);
+    [tmp2, tmp] = find(minval == datain.y.v);
+    tmp = tmp(1);
+    minunc = normrnd(minval, datain.y.u(tmp), 1, M, 1);
 else
-    error('qwtb wrapper: unknown value in calcset.unc')
+    error(['qwtb wrapper testM: value ' calcset.unc ' of calcset.unc not implemented'])
 end
 
 % Format output data:  --------------------------- %<<<1
-dataout.max.v = maxv;
-dataout.max.u = unc;
-dataout.max.d = 0;
+dataout.max.v = maxval;
+dataout.min.v = minval;
+if strcmpi(calcset.unc, 'guf')
+    dataout.max.u = maxunc;
+    dataout.min.u = minunc;
+    dataout.max.d = maxdof;
+    dataout.min.d = mindof;
+elseif strcmpi(calcset.unc, 'mcm')
+    dataout.max.u = std(maxunc);
+    dataout.min.u = std(minunc);
+    dataout.max.r = maxunc;
+    dataout.min.r = minunc;
+end
 
 end % function
 

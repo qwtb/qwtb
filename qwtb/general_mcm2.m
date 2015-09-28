@@ -1,20 +1,30 @@
 function dataout = general_mcm2(alginfo, datain, calcset) %<<<1
-% applies monte carlo method to an algorithm
-% it works generally, therefore all nuances of monte carlo method are not
-% assured.
-% all quantities should be already randomized in Q.u
+% Applies monte carlo method to an algorithm. It works generally, therefore all
+% nuances of monte carlo method are not assured. All quantities should be
+% already randomized in Q.u.
 
     method = calcset.mcm.method;
     M = calcset.mcm.repeats;
     isOctave = exist('OCTAVE_VERSION') ~= 0;
 
-    if strcmpi(method, 'singlecore') % single core code --------------------------- %<<<2
-        for MCind = 1:calcset.mcm.repeats
-            % call wrapper --------------------------- %<<<1
+    % single core code --------------------------- %<<<2
+    if strcmpi(method, 'singlecore') 
+        for MCind = 1:M
+            % following if/if section makes 20 s in total on Core i7 for M = 1e6
+            if calcset.mcm.verbose
+                if rem(MCind, 10000) == 0
+                    disp(['QWTB: general mcm: ' num2str(MCind/1000) 'e3 iterations calculated']);
+                end
+            end
+            % call wrapper 
             res(MCind) = call_alg(alginfo, datain, calcset, MCind);
         end
-    elseif strcmpi(method, 'multicore') % multi core code --------------------------- %<<<2
+    % multi core code --------------------------- %<<<2
+    elseif strcmpi(method, 'multicore') 
         % 2 DO
+        % dve moznosti - cellfun @ call_alg, s tim ze repmat(datain), ale to je
+        % pametove narocne, nebo zkonstruovat unc_to_val, do cell a pustit
+        % cellfun na algoritmus, ale zkonstruovani muze trvat - casove narocne.
         % if isOctave
         %     % XXX where is rand and call?
             % how to tell parcellfun which calcluation id it is?
@@ -27,13 +37,14 @@ function dataout = general_mcm2(alginfo, datain, calcset) %<<<1
         %         res(i) = rand_and_call(datain, calcset, i);
         %     end
         % end
-    elseif strcmpi(method, 'multistation') % multi station code --------------------------- %<<<2
+    % multi station code --------------------------- %<<<2
+    elseif strcmpi(method, 'multistation') 
         % 2DO
     else
-        error(['qwtb: unknown settings of calcset.mcm.method: `' method '` '])
+        error(['QWTB: unknown settings of calcset.mcm.method: `' method '` '])
     end
         
-    % concatenate data into output structure:
+    % concatenate data into output structure --------------------------- %<<<2
     % .v is created by mean of outputs
     % .u is all outputs
     for i = 1:size(alginfo.returns, 1)
@@ -44,34 +55,40 @@ function dataout = general_mcm2(alginfo, datain, calcset) %<<<1
         % check all outputs has the same dimensions:
         tst = cellfun('ndims', rescell);
         if ~all(tst == tst(1))
-            error(['qwtb: some outputs `' Qname '.v` of general mcm has different numbers of dimensions'])
+            error(['QWTB: some outputs `' Qname '.v` of general mcm has different numbers of dimensions'])
         end  % if not all tst
         for i = 1:tst(1)
             % for all dimensions
             tst2 = cellfun('size', rescell, i);
             if ~all(tst == tst(1))
-                error(['qwtb: some outputs `' Qname '.v` of general mcm has different sizes'])
+                error(['QWTB: some outputs `' Qname '.v` of general mcm has different sizes'])
             end
         end % for all dimensions
 
         % preparation:
-        if max(size(res(1).(Qname).v)) == 1
+        if isscalarP(res(1).(Qname).v) == 1
             % quantity is scalar
             dataout.(Qname).v = mean([rescell{:}]);
-            dataout.(Qname).u = vertcat(rescell{:});
+            dataout.(Qname).u = std([rescell{:}]);
+            dataout.(Qname).r = vertcat(rescell{:});
             dataout.(Qname).d = nan;
-        elseif ( max(size(res(1).(Qname).v)) > min(size(res(1).(Qname).v)) && min(size(res(1).(Qname).v)) == 1 )
+            dataout.(Qname).c = nan;
+        elseif isvectorP(res(1).(Qname).v)
             % quantity is vector
             dataout.(Qname).v = mean(vertcat(rescell{:}));
-            dataout.(Qname).u = vertcat(rescell{:});
-            dataout.(Qname).d = nan .* ones(1,Vlen2);
-        elseif ( max(size(res(1).(Qname).v)) >= min(size(res(1).(Qname).v)) && min(size(res(1).(Qname).v)) == 1 )
+            dataout.(Qname).u = std([rescell{:}]);
+            dataout.(Qname).r = vertcat(rescell{:});
+            dataout.(Qname).d = nan;
+            dataout.(Qname).c = nan;
+        elseif ismatrixP(res(1).(Qname).v)
             % quantity is matrix
             dataout.(Qname).v = mean(vertcat(rescell{:}), 1);
-            dataout.(Qname).u = vertcat(rescell{:});
-            dataout.(Qname).d = nan .* ones(Vlen1, Vlen2);
+            dataout.(Qname).u = std([rescell{:}]);
+            dataout.(Qname).r = vertcat(rescell{:});
+            dataout.(Qname).d = nan;
+            dataout.(Qname).c = nan;
         else
-            error(['qwtb: output quantity `' Qname '` has too many dimensions']);
+            error(['QWTB: output quantity `' Qname '` has too many dimensions']);
         endif
     end % for concatenate
 end % function
@@ -97,22 +114,25 @@ function Qout = unc_to_val(Qin, MCind, Qname) %<<<1
 % error message.
     if isscalarP(Qin.v)
         % quantity is scalar
-        Qout.v = Qin.u(MCind);
-        Qout.u = nan.*ones(size(Qin.v));
-        Qout.d = nan.*ones(size(Qin.v));
+        Qout.v = Qin.r(MCind);
+        Qout.r = nan.*ones(size(Qin.v));
+        Qout.d = [];
+        Qout.c = [];
     elseif isvectorP(Qin.v)
         % quantity is vector
-        Qout.v = Qin.u(MCind, :);
-        Qout.u = nan.*ones(size(Qin.v));
-        Qout.d = nan.*ones(size(Qin.v));
+        Qout.v = Qin.r(MCind, :);
+        Qout.r = nan.*ones(size(Qin.v));
+        Qout.d = [];
+        Qout.c = [];
     elseif ismatrixP(Qin.v)
         % quantity is matrix
-        Qout.v = Qin.u(MCind, :, :);
-        Qout.u = nan.*ones(size(Qin.v));
-        Qout.d = nan.*ones(size(Qin.v));
+        Qout.v = Qin.r(MCind, :, :);
+        gout.r = nan.*ones(size(Qin.v));
+        Qout.d = [];
+        Qout.c = [];
     else
         % XXX tohle se musi checkovat taky na startu:!!!
-        error(['qwtb: quantity `' Qname '` has too many dimensions']);
+        error(['QWTB: quantity `' Qname '` has too many dimensions']);
     endif
 %    % tohle by jenom melo presunout .u(i) do .v
 %    if length(Qin.v) == 1
