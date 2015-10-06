@@ -1,0 +1,149 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>testG</title><meta name="generator" content="MATLAB 8.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-10-02"><meta name="DC.source" content="alg_example.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>testG</h1><!--introduction--><p>Example for algorithm testG. Algorithm is usefull only for testing QWTB toolbox. It calculates maximal and minimal value of the record. GUF is calculated by wrapper.</p><p>See also <tt>qwtb</tt></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Generate sample data</a></li><li><a href="#6">Call algorithm</a></li><li><a href="#7">Plot results</a></li></ul></div><h2>Generate sample data<a name="1"></a></h2><p>Two quantities are prepared: <tt>t</tt> and <tt>y</tt>.</p><pre class="codeinput">t.v = [1:20];
+y.v = [1:14 13:-1:8];
+</pre><p>All uncertainties are set to 1.</p><pre class="codeinput">t.u = t.v.*0 + 1;
+y.u = y.v.*0 + 1;
+</pre><p>Set degrees of freedom.</p><pre class="codeinput">t.d = t.v.*0 + 60;
+y.d = y.v.*0 + 9;
+</pre><p>Quantities are put into data input structure <tt>DI</tt>.</p><pre class="codeinput">DI.t = t;
+DI.y = y;
+</pre><p>Create calculation settings <tt>CS</tt> and set uncertainty calculation method to GUM uncertainty framework.</p><pre class="codeinput">CS = [];
+CS.unc = <span class="string">'guf'</span>;
+</pre><h2>Call algorithm<a name="6"></a></h2><p>Use QWTB to apply algorithm <tt>testG</tt> to data <tt>DI</tt> with calculation settings <tt>CS</tt>.</p><pre class="codeinput">DO = qwtb(<span class="string">'testG'</span>, DI, CS);
+</pre><pre class="codeoutput">QWTB: default correlation matrix generated for quantity `t`
+QWTB: default correlation matrix generated for quantity `y`
+QWTB: uncertainty calculation by means of wrapper or algorithm
+</pre><h2>Plot results<a name="7"></a></h2><p>Plot input data and calculated maximal and minimal values as a red and green lines with uncertainties represented by dashed lines.</p><pre class="codeinput">figure
+hold <span class="string">on</span>
+errorbar(DI.t.v, DI.y.v, DI.y.u, <span class="string">'xb'</span>)
+plot([DI.t.v(1) DI.t.v(end)], [DO.max.v DO.max.v], <span class="string">'-r'</span>, <span class="string">'linewidth'</span>, 3)
+plot([DI.t.v(1) DI.t.v(end)], [DO.max.v - DO.max.u DO.max.v - DO.max.u], <span class="string">'--r'</span>, <span class="string">'linewidth'</span>, 3)
+plot([DI.t.v(1) DI.t.v(end)], [DO.min.v DO.min.v], <span class="string">'-g'</span>, <span class="string">'linewidth'</span>, 3)
+plot([DI.t.v(1) DI.t.v(end)], [DO.min.v - DO.min.u DO.min.v - DO.min.u], <span class="string">'--g'</span>, <span class="string">'linewidth'</span>, 3)
+plot([DI.t.v(1) DI.t.v(end)], [DO.max.v + DO.max.u DO.max.v + DO.max.u], <span class="string">'--r'</span>, <span class="string">'linewidth'</span>, 3)
+plot([DI.t.v(1) DI.t.v(end)], [DO.min.v + DO.min.u DO.min.v + DO.min.u], <span class="string">'--g'</span>, <span class="string">'linewidth'</span>, 3)
+legend(<span class="string">'original data (DI.t.v, DI.y.v)'</span>, <span class="string">'line at maximum value (DO.max.v)'</span>, <span class="string">'uncertainty'</span>,  <span class="string">'line at minimum value (DO.min.v)'</span>, <span class="string">'uncertainty'</span>, <span class="string">'location'</span>, <span class="string">'southoutside'</span>)
+xlabel(<span class="string">'quantity t'</span>)
+ylabel(<span class="string">'quantity y'</span>)
+title(<span class="string">'input data and results of testG algorithm'</span>)
+hold <span class="string">off</span>
+</pre><img vspace="5" hspace="5" src="alg_example_01.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2013a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% testG
+% Example for algorithm testG. Algorithm is usefull only for testing QWTB toolbox. It calculates
+% maximal and minimal value of the record. GUF is calculated by wrapper.
+%
+% See also |qwtb|
+
+%% Generate sample data
+% Two quantities are prepared: |t| and |y|.
+t.v = [1:20];
+y.v = [1:14 13:-1:8];
+%%
+% All uncertainties are set to 1.
+t.u = t.v.*0 + 1;
+y.u = y.v.*0 + 1;
+%%
+% Set degrees of freedom.
+t.d = t.v.*0 + 60;
+y.d = y.v.*0 + 9;
+%%
+% Quantities are put into data input structure |DI|.
+DI.t = t;
+DI.y = y;
+%%
+% Create calculation settings |CS| and set uncertainty calculation method to GUM uncertainty
+% framework.
+CS = [];
+CS.unc = 'guf';
+
+%% Call algorithm
+% Use QWTB to apply algorithm |testG| to data |DI| with calculation settings |CS|.
+DO = qwtb('testG', DI, CS);
+
+%% Plot results
+% Plot input data and calculated maximal and minimal values as a red and green lines with
+% uncertainties represented by dashed lines.
+figure  
+hold on
+errorbar(DI.t.v, DI.y.v, DI.y.u, 'xb')
+plot([DI.t.v(1) DI.t.v(end)], [DO.max.v DO.max.v], '-r', 'linewidth', 3)
+plot([DI.t.v(1) DI.t.v(end)], [DO.max.v - DO.max.u DO.max.v - DO.max.u], 'REPLACE_WITH_DASH_DASHr', 'linewidth', 3)
+plot([DI.t.v(1) DI.t.v(end)], [DO.min.v DO.min.v], '-g', 'linewidth', 3)
+plot([DI.t.v(1) DI.t.v(end)], [DO.min.v - DO.min.u DO.min.v - DO.min.u], 'REPLACE_WITH_DASH_DASHg', 'linewidth', 3)
+plot([DI.t.v(1) DI.t.v(end)], [DO.max.v + DO.max.u DO.max.v + DO.max.u], 'REPLACE_WITH_DASH_DASHr', 'linewidth', 3)
+plot([DI.t.v(1) DI.t.v(end)], [DO.min.v + DO.min.u DO.min.v + DO.min.u], 'REPLACE_WITH_DASH_DASHg', 'linewidth', 3)
+legend('original data (DI.t.v, DI.y.v)', 'line at maximum value (DO.max.v)', 'uncertainty',  'line at minimum value (DO.min.v)', 'uncertainty', 'location', 'southoutside')
+xlabel('quantity t')
+ylabel('quantity y')
+title('input data and results of testG algorithm')
+hold off
+
+##### SOURCE END #####
+--></body></html>

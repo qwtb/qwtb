@@ -1,0 +1,32 @@
+% hlavicka: %<<<1
+% vim nastavovaci radka: vim: foldmarker=%<<<,%>>>
+
+% packages: %<<<1
+\usepackage{color}
+\usepackage[utf8]{inputenc}             % soubor je v utf8:
+\usepackage{cmap}                       % preklad kodovani aby pdfko bylo kopirovatelne se spravnymi cs znaky, musi byt vhodny font, viz dalsi 2 radky
+\usepackage[T1]{fontenc}                % viz ^
+\usepackage{tgtermes}                   % kvalitni font times, ktery je v pdf kopirovatelny i s cs znaky viz ^^
+\usepackage{textcomp}
+\usepackage{sfmath}
+
+% vetsi font:
+\usepackage{fix-cm}
+\newcommand\HUGE{\fontsize{38}{47}\selectfont}
+
+% vsechno pismo bezpatkove
+%%%%%%%\renewcommand{\familydefault}{\sfdefault}
+
+% definice: %<<<1
+\def\ol#1{\overline{#1}}
+\def\nej#1{u\kern -0.1em \left(#1\right)}
+\def\sd#1{s\kern -0.1em \left(#1\right)}
+\def\sds#1{s\kern -0.1em \left(#1\right)}
+\def\nejc#1{u_{\rm c}\kern -0.1em \left(#1\right)}
+\def\va#1{u^2\kern -0.1em \left(#1\right)}
+\def\vas#1{u^4\kern -0.1em \left(#1\right)}
+\def\vac#1{u^2_{\rm c}\kern -0.1em \left(#1\right)}
+\def\vacs#1{u^4_{\rm c}\kern -0.1em \left(#1\right)}
+\def\sv#1{\nu\kern -0.1em \left(#1\right)}
+\def\sve#1{\nu_{\rm eff}\kern -0.1em \left(#1\right)}
+

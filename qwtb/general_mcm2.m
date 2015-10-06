@@ -50,7 +50,8 @@ function dataout = general_mcm2(alginfo, datain, calcset) %<<<1
     for i = 1:size(alginfo.returns, 1)
         % through all quantities:
         Qname = alginfo.returns{i};
-        rescell = {[res.(Qname)].v};
+        rescell = [res.(Qname)];
+        rescell = {rescell.v};
 
         % check all outputs has the same dimensions:
         tst = cellfun('ndims', rescell);
@@ -89,7 +90,7 @@ function dataout = general_mcm2(alginfo, datain, calcset) %<<<1
             dataout.(Qname).c = nan;
         else
             error(['QWTB: output quantity `' Qname '` has too many dimensions']);
-        endif
+        end
     end % for concatenate
 end % function
 
@@ -133,7 +134,7 @@ function Qout = unc_to_val(Qin, MCind, Qname) %<<<1
     else
         % XXX tohle se musi checkovat taky na startu:!!!
         error(['QWTB: quantity `' Qname '` has too many dimensions']);
-    endif
+    end
 %    % tohle by jenom melo presunout .u(i) do .v
 %    if length(Qin.v) == 1
 %        % randomizovat jen kdyz neni randomizovane, a to by mel

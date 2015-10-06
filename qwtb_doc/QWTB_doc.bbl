@@ -1,0 +1,74 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 2.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \sortlist{entry}{none}
+    \entry{JCGM2008}{book}{}
+      \name{labelname}{1}{}{%
+        {{hash=65e68b639d9a9ec9294e01c64ffbd0c1}{{JCGM}}{J\bibinitperiod}{}{}{}{}{}{}}%
+      }
+      \name{author}{1}{}{%
+        {{hash=65e68b639d9a9ec9294e01c64ffbd0c1}{{JCGM}}{J\bibinitperiod}{}{}{}{}{}{}}%
+      }
+      \name{editor}{1}{}{%
+        {{hash=65e68b639d9a9ec9294e01c64ffbd0c1}{{JCGM}}{J\bibinitperiod}{}{}{}{}{}{}}%
+      }
+      \list{publisher}{1}{%
+        {Bureau International des Poids et Measures}%
+      }
+      \strng{namehash}{65e68b639d9a9ec9294e01c64ffbd0c1}
+      \strng{fullhash}{65e68b639d9a9ec9294e01c64ffbd0c1}
+      \field{sortinit}{0}
+      \field{labeltitle}{Evaluation of measurement data - Supplement 1 to the “Guide to the expression of uncertainty in measurement” - Propagation of distributions using a Monte Carlo method}
+      \field{title}{Evaluation of measurement data - Supplement 1 to the “Guide to the expression of uncertainty in measurement” - Propagation of distributions using a Monte Carlo method}
+      \field{year}{2008}
+      \verb{file}
+      \verb Attachment:/home/martin/text_stud-zotero/storage/CF2T5A6G/JCGM - 2008 - Unknown - Evaluation of measurement data - Supplement 1 to the “Guide to the expression of uncertainty in measurement”.pdf:application/pdf
+      \endverb
+      \keyw{metrology,montecarlo,uncert}
+    \endentry
+    \entry{JCGM1995}{book}{}
+      \name{labelname}{1}{}{%
+        {{hash=65e68b639d9a9ec9294e01c64ffbd0c1}{{JCGM}}{J\bibinitperiod}{}{}{}{}{}{}}%
+      }
+      \name{author}{1}{}{%
+        {{hash=65e68b639d9a9ec9294e01c64ffbd0c1}{{JCGM}}{J\bibinitperiod}{}{}{}{}{}{}}%
+      }
+      \name{editor}{1}{}{%
+        {{hash=65e68b639d9a9ec9294e01c64ffbd0c1}{{JCGM}}{J\bibinitperiod}{}{}{}{}{}{}}%
+      }
+      \list{publisher}{1}{%
+        {Bureau International des Poids et Measures}%
+      }
+      \strng{namehash}{65e68b639d9a9ec9294e01c64ffbd0c1}
+      \strng{fullhash}{65e68b639d9a9ec9294e01c64ffbd0c1}
+      \field{sortinit}{0}
+      \field{labeltitle}{Evaluation of measurement data - Guide to the expression of uncertainty in measurement}
+      \field{isbn}{92-67-10188-9}
+      \field{title}{Evaluation of measurement data - Guide to the expression of uncertainty in measurement}
+      \field{year}{1995}
+      \verb{file}
+      \verb Attachment:/home/martin/text_stud-zotero/storage/7Z434FTE/JCGM - 1995 - Unknown - Evaluation of measurement data - Guide to the expression of uncertainty in measurement.pdf:application/pdf
+      \endverb
+      \keyw{metrology,uncert}
+    \endentry
+  \endsortlist
+\endrefsection
+\endinput
+

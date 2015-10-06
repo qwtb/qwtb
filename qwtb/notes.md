@@ -1,46 +1,14 @@
 2DO
 ---
-v calcset zmenit  .mcm.randomize na ran.gen a ran.req
-
 dodelat multicore a multistation
-
-pripravit oficialni test QWTB - ruzne vstupy, mcm, guf, kontrola vysledku atd.
 
 parts
 ---
 * rnd generator
 * general test every alg for inputs/outputs (provides what it promises etc)
 * particular test for every alg according alg
-
-alg dir properties
----
-
-directory: alg_X
-contains:
-* alg_info.m
-* alg_wrapper.m
-* algorithm scripts...
-
-alg info format
----
-.shortname       = ''
-.longname        = ''
-.desc            = ''
-.citation        = ''
-.remarks         = ''
-.requires        = {'', ''}
-.returns         = {'', ''}
-.providesGUF     = 0
-.providesMCM     = 0
-.fullpath (automatically generated)
-
 datain format
 ---
-.Q.v
-.Q.u
-.Q.d
-.Q.c
-.Q.r   ?
 
 if unc, Q.u, Q.c
 if guf, Q.d
@@ -106,23 +74,6 @@ if guf, Q.d
 .c      ((::))  (rows, cols, ???)       ((::))  (rows, cols, ???)
 
 
-
-calcset format
----
-
-.strict         = 0             if zero, generates rest of fields if needed. this field is generated automatically
-.verbose        = 1
-.unc            = 'none' = 'guf' = 'mcm'
-.cor.req        = 1             correlation matrix is required                          
-.cor.gen        = 1             generates correlation matrix automatically if missing   
-.dof.req        = 1             degrees of freedom matrix is required                   
-.dof.gen        = 1             generates degrees of freedom automatically if missing   
-.mcm.repeats    = 100                                                                   
-.mcm.verbose    = 1                                                                     
-.mcm.method     = 'singlecore' = 'multicore' = 'multistation'                           
-.mcm.procno     = 1                                                                     
-.mcm.tmpdir     = '.'                                                                   
-.mcm.randomize  = 1             randomize uncertainties if missing (normal pdf)         
 
 
 

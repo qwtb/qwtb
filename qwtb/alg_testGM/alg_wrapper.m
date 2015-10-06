@@ -6,10 +6,10 @@ function dataout = alg_wrapper(datain, calcset) %<<<1
 % See also qwtb
 
 % Format input data --------------------------- %<<<1
-% test(G)(M) definition is: function [maxval, minval] = test(G)(M)(tseries, yseries)
+% test(G)(M) definition is: function [maxval, minval] = test(G)(M)(xseries, yseries)
 
 % Call algorithm --------------------------- %<<<1
-[maxval, minval] = testGM(datain.t.v, datain.y.v);
+[maxval, minval] = testGM(datain.x.v, datain.y.v);
 
 % Calculate uncertainty --------------------------- %<<<1
 if strcmpi(calcset.unc, 'none')

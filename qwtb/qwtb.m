@@ -1,16 +1,22 @@
-function varargout = qwtb(varargin) %<<<1
+function varargout = qwtb(varargin) 
+% 2DO rem all qwtb paths, add own, restore paths?
+% 2DO what if path to alg_ already exist!?
 % QWTB: Q-Wave Toolbox
 %   0 input arguments: 
 %     finds all available algorithms and returns information
 %   2 input arguments: 
-%     algname - short name of algorithm to use
+%     algname - id of algorithm to use
 %     datain - data structure
+%     or string - 'test', 'example', 'addpath', 'rempath'
 %   3 input arguments: 
 %     algname - short name of algorithm to use
 %     datain - data structure
 %     calcset - calculation settings structure
 
     % start of qwtb function --------------------------- %<<<1
+    % remove old alg_paths because if previous instance of qwtb ends with error,
+    % it could left some alg directory in the path
+    path_rem_all_algdirs();
     % check inputs:
     if nargin == 0
         % returns all algorithms info
@@ -20,31 +26,46 @@ function varargout = qwtb(varargin) %<<<1
         error('QWTB: incorrect number of input arguments')
 
     else
-        alg = varargin{1};
-        datain = varargin{2};
-        if nargin == 2
-            % calculation settings is missing, generate a standard one:
-            calcset = get_standard_calcset();
+        algid = varargin{1};
+        % check second argument for control string:
+        if ischar(varargin{2});
+            if strcmpi(varargin{2}, 'test')
+                run_alg_test(algid);
+            elseif strcmpi(varargin{2}, 'example')
+                run_alg_example(algid);
+            elseif strcmpi(varargin{2}, 'addpath')
+                path_add_algdir(algid);
+            elseif strcmpi(varargin{2}, 'rempath')
+                path_rem_algdir(algid);
+            else
+                error('QWTB: second argument must be either `test`, `example`, `doc` or structure with input data');
+            end % if strcmpi
         else
-            calcset = varargin{3};
-        endif
+        % second argument is considered as input data:
+            datain = varargin{2};
+            if nargin == 2
+                % calculation settings is missing, generate a standard one:
+                calcset = get_standard_calcset();
+            else
+                calcset = varargin{3};
+            end
 
-        % process data:
-        [dataout, calcset] = qwtb_alg(alg, datain, calcset);
-        varargout{1} = dataout;
-        varargout{2} = datain;
-        varargout{3} = calcset;
+            % process data:
+            [dataout, calcset] = check_and_run_alg(algid, datain, calcset);
+            varargout{1} = dataout;
+            varargout{2} = datain;
+            varargout{3} = calcset;
+        end % if ischar
     end % if - input arguments
 
 end % end qwtb function
 
-function algs = get_all_alg_info() %<<<1
+function alginfo = get_all_alg_info() %<<<1
 % checks for directories with algorithms and returns info on all available
 % algorithms
 
-    algs=[];
     % get full path to this (qwtb.m) script:
-    [qwtbdir, tmp, tmp] = fileparts(mfilename('fullpath'));
+    [qwtbdir, ~, ~] = fileparts(mfilename('fullpath'));
     % get directory listings:
     lis = dir([qwtbdir filesep() 'alg_*']);
     % get only directories:
@@ -55,8 +76,13 @@ function algs = get_all_alg_info() %<<<1
         algdir = [qwtbdir filesep() lis(i).name];
         if is_alg_dir(algdir)
             addpath(algdir);
-            algs(end+1).info = alg_info();
-            algs(end).info.fullpath = algdir;
+            tmp = alg_info();
+            tmp.fullpath = algdir;
+            if check_alginfo(tmp);
+                alginfo(i) = tmp;
+            else
+                warning(['QWTB: algorithm info returned by alg_info.m in `' algdir '` has incorrect format and is excluded from results'])
+            end % if check_alginfo
             rmpath(algdir);
         end
     end
@@ -73,19 +99,63 @@ function res = is_alg_dir(algpath) %<<<1
 
 end % function is_alg_dir
 
-function [dataout, calcset] = qwtb_alg(alg, datain, calcset) %<<<1
-% checks data, settings and calls wrapper
-
-    dataout = [];
+function path_add_algdir(algid) %<<<1
+% checks and adds path of algorithm to load path
     % get full path to this (qwtb.m) script:
-    [qwtbdir, tmp, tmp] = fileparts(mfilename('fullpath'));
-    algdir = [qwtbdir filesep() 'alg_' alg];
-    % check algorithm directory:
+    [qwtbdir, ~, ~] = fileparts(mfilename('fullpath'));
+    algdir = [qwtbdir filesep() 'alg_' algid];
+    % check directory is algorithm directory:
     if ~is_alg_dir(algdir)
-            error(['QWTB: algorithm `' alg '` not found'])
+            error(['QWTB: algorithm `' algid '` not found'])
     end
     % add wrapper to a load path:
     addpath(algdir);
+end % path_add_algdir
+
+function path_rem_algdir(algid) %<<<1
+% removes path of algorithm from load path
+    % get full path to this (qwtb.m) script:
+    [qwtbdir, ~, ~] = fileparts(mfilename('fullpath'));
+    algdir = [qwtbdir filesep() 'alg_' algid];
+    % pathsep is added because algdir could be only part of name of other
+    % algdir, and path returns path without pathsep at the end, thus if algdir
+    % would be last path, it would not be found
+    if ~isempty(strfind([path pathsep], [algdir pathsep]))
+        rmpath(algdir);
+    end
+end % path_rem_algdir
+
+function path_rem_all_algdirs() %<<<1
+% removes all alg directories from paths. if qwtb ends with error, it could left
+% some alg directory in the path
+
+    % get full path to this (qwtb.m) script:
+    [qwtbdir, ~, ~] = fileparts(mfilename('fullpath'));
+    % get directory listings:
+    lis = dir([qwtbdir filesep() 'alg_*']);
+    % get only directories:
+    lis = lis([lis.isdir]);
+    % for all directories
+    for i = 1:size(lis,1)
+        % generate full path of current tested algorithm directory:
+        algdir = [qwtbdir filesep() lis(i).name];
+        if is_alg_dir(algdir)
+            % pathsep is added because algdir could be only part of name of other
+            % algdir, and path returns path without pathsep at the end, thus if algdir
+            % would be last path, it would not be found
+            if ~isempty(strfind([path pathsep], [algdir pathsep]))
+                rmpath(algdir)
+            end
+        end % if is alg dir
+    end % for all dirs
+end % path_rem_all_algdirs
+
+
+function [dataout, calcset] = check_and_run_alg(algid, datain, calcset) %<<<1
+% checks data, settings and calls wrapper
+
+    dataout = [];
+    path_add_algdir(algid);
     % get info structure:
     alginfo = alg_info();
     % check calculation settings structure:
@@ -120,33 +190,97 @@ function [dataout, calcset] = qwtb_alg(alg, datain, calcset) %<<<1
         error(['QWTB: unknown settings of calcset.unc: `' calcset.unc '` or algorithm info structure concerning uncertainty calculation'])
     end % if calcset.unc
     % remove algorithm path from path:
-    rmpath(algdir);
-end % function qwtb_alg
+    path_rem_algdir(algid);
+end % function check_and_run_alg
+
+function run_alg_test(algid) %<<<1
+    path_add_algdir(algid);
+    if ~exist('alg_test.m','file')
+        disp(['QWTB: self test of algorithm `' algid '` is not implemented']);
+    else
+        calcset = get_standard_calcset();
+        calcset.verbose = 0;
+        calcset.mcm.verbose = 0;
+        alg_test(calcset);
+    end % if exist
+    path_rem_algdir(algid);
+end % run_alg_test
+
+function run_alg_example(algid) %<<<1
+    path_add_algdir(algid);
+    if ~exist('alg_example.m','file')
+        disp(['QWTB: example of algorithm `' algid '` is not implemented']);
+    else
+        calcset = get_standard_calcset();
+        % run example script in base workspace so user can operate with datain,
+        % dataout and calcset:
+        disp(['For description of example, please take a look at script `alg_' algid filesep 'alg_example.m`.']);
+        disp('Take a look at variables `datain`, `dataout` and calcset.')
+        evalin('base', 'alg_example');
+    end
+    path_rem_algdir(algid);
+end
+
+function c = check_alginfo(alginfo) %<<<1
+% check if algorithm info structure complies to the qwtb format
+    c = 1;
+    try
+        c = c & (length(fieldnames(alginfo)) == 12);
+        c = c & isfield(alginfo, 'id');
+        c = c & ischar(alginfo.id);
+        c = c & isfield(alginfo, 'name');
+        c = c & ischar(alginfo.id);
+        c = c & isfield(alginfo, 'desc');
+        c = c & ischar(alginfo.id);
+        c = c & isfield(alginfo, 'citation');
+        c = c & ischar(alginfo.id);
+        c = c & isfield(alginfo, 'remarks');
+        c = c & ischar(alginfo.id);
+        c = c & isfield(alginfo, 'requires');
+        c = c & iscellstr(alginfo.requires);
+        c = c & isfield(alginfo, 'reqdesc');
+        c = c & iscellstr(alginfo.reqdesc);
+        c = c & isequal(size(alginfo.requires), size(alginfo.reqdesc));
+        c = c & isfield(alginfo, 'returns');
+        c = c & iscellstr(alginfo.returns);
+        c = c & isfield(alginfo, 'retdesc');
+        c = c & iscellstr(alginfo.retdesc);
+        c = c & isequal(size(alginfo.requires), size(alginfo.retdesc));
+        c = c & isfield(alginfo, 'providesGUF');
+        c = c & isfield(alginfo, 'providesMCM');
+        c = c & isfield(alginfo, 'fullpath');
+        c = c & ischar(alginfo.fullpath);
+    catch it
+        c = 0;
+    end
+end % function check_alginfo
 
 function calcset = get_standard_calcset() %<<<1
 % creates a standard calculation settings
     calcset.strict = 0;
     calcset.verbose = 1;
     calcset.unc = 'none';
-    calcset.corr.req = 1;
-    calcset.corr.gen = 1;
+    calcset.cor.req = 1;
+    calcset.cor.gen = 1;
     calcset.dof.req = 1;
     calcset.dof.gen = 1;
     calcset.mcm.repeats = 100;
     calcset.mcm.verbose = 1;
     calcset.mcm.method = 'singlecore';
-    calcset.mcm.procno = 1;
+    calcset.mcm.procno = 0;
     calcset.mcm.tmpdir = '.';
     calcset.mcm.randomize = 1;
 end % function get_standard_calcset
 
 function calcset = check_gen_calcset(calcset) %<<<1
 % Checks if calculation settings complies to the qwtb format. If .strict is set
-% to 0, missing fields are generated.
+% to 0, missing fields are generated. Boolean values are reformatted to 0/1.
 
+    % strict %<<<2
     if ~( isfield(calcset, 'strict') )
         calcset.strict = 0;
-    endif
+    end
+    % verbose %<<<2
     if ~( isfield(calcset, 'verbose') )
         if calcset.strict
             error('QWTB: field `verbose` is missing in calculation settings structure')
@@ -154,6 +288,12 @@ function calcset = check_gen_calcset(calcset) %<<<1
             calcset.verbose = 1;
         end
     end
+    if calcset.verbose
+        calcset.verbose = 1;
+    else 
+        calcset.verbose = 0;
+    end
+    % unc %<<<2
     if ~( isfield(calcset, 'unc') )
         if calcset.strict
             error('QWTB: field `unc` is missing in calculation settings structure')
@@ -164,6 +304,7 @@ function calcset = check_gen_calcset(calcset) %<<<1
     if ~( strcmpi(calcset.unc, 'none') || strcmpi(calcset.unc, 'guf') || strcmpi(calcset.unc, 'mcm') )
         error('QWTB: field `unc` has unknown value. Only `none`, `guf` and `mcm` are permitted.')
     end
+    % cor %<<<2
     if ~( isfield(calcset, 'cor') )
         if calcset.strict
             error('QWTB: field `cor` is missing in calculation settings structure')
@@ -172,6 +313,7 @@ function calcset = check_gen_calcset(calcset) %<<<1
             calcset.cor.gen = 1;
         end
     end
+    % cor.req %<<<2
     if ~( isfield(calcset.cor, 'req') )
         if calcset.strict
             error('QWTB: field `cor.req` is missing in calculation settings structure')
@@ -179,12 +321,23 @@ function calcset = check_gen_calcset(calcset) %<<<1
             calcset.cor.req = 1;
         end
     end
+    if calcset.cor.req
+        calcset.cor.req = 1;
+    else
+        calcset.cor.req = 0;
+    end
+    % cor.gen %<<<2
     if ~( isfield(calcset.cor, 'gen') )
         if calcset.strict
             error('QWTB: field `cor.gen` is missing in calculation settings structure')
         else
             calcset.cor.gen = 1;
         end
+    end
+    if calcset.cor.gen
+        calcset.cor.gen = 1;
+    else
+        calcset.cor.gen = 0;
     end
     if ~( isfield(calcset, 'dof') )
         if calcset.strict
@@ -194,6 +347,7 @@ function calcset = check_gen_calcset(calcset) %<<<1
             calcset.dof.gen = 1;
         end
     end
+    % dof.req %<<<2
     if ~( isfield(calcset.dof, 'req') )
         if calcset.strict
             error('QWTB: field `dof.req` is missing in calculation settings structure')
@@ -201,6 +355,12 @@ function calcset = check_gen_calcset(calcset) %<<<1
             calcset.dof.req = 1;
         end
     end
+    if calcset.dof.req
+        calcset.dof.req = 1;
+    else
+        calcset.dof.req = 0;
+    end
+    % dof.gen %<<<2
     if ~( isfield(calcset.dof, 'gen') )
         if calcset.strict
             error('QWTB: field `dof.gen` is missing in calculation settings structure')
@@ -208,6 +368,12 @@ function calcset = check_gen_calcset(calcset) %<<<1
             calcset.dof.gen = 1;
         end
     end
+    if calcset.dof.gen
+        calcset.dof.gen = 1;
+    else
+        calcset.dof.gen = 0;
+    end
+    % mcm %<<<2
     if ~( isfield(calcset, 'mcm') )
         if calcset.strict
             error('QWTB: field `mcm` is missing in calculation settings structure')
@@ -220,6 +386,7 @@ function calcset = check_gen_calcset(calcset) %<<<1
             calcset.mcm.randomize = 1;
         end
     end
+    % mcm.repeats %<<<2
     if ~( isfield(calcset.mcm, 'repeats') )
         if calcset.strict
             error('QWTB: field `mcm.repeats` is missing in calculation settings structure')
@@ -227,6 +394,11 @@ function calcset = check_gen_calcset(calcset) %<<<1
             calcset.mcm.repeats = 100;
         end
     end
+    tmp = calcset.mcm.repeats;
+    if ~(isscalarP(tmp) && tmp > 0 && abs(fix(tmp)) == tmp)
+        error('QWTB: field `calcset.mcm.repeats` must be scalar positive non-zero integer!')
+    end
+    % mcm.verbose %<<<2
     if ~( isfield(calcset.mcm, 'verbose') )
         if calcset.strict
             error('QWTB: field `mcm.verbose` is missing in calculation settings structure')
@@ -234,6 +406,12 @@ function calcset = check_gen_calcset(calcset) %<<<1
             calcset.mcm.verbose = 1;
         end
     end
+    if calcset.mcm.verbose
+        calcset.mcm.verbose = 1;
+    else
+        calcset.mcm.verbose = 0;
+    end
+    % mcm.method %<<<2
     if ~( isfield(calcset.mcm, 'method') )
         if calcset.strict
             error('QWTB: field `mcm.method` is missing in calculation settings structure')
@@ -245,6 +423,7 @@ function calcset = check_gen_calcset(calcset) %<<<1
     if ~( strcmpi(tmp, 'singlecore') || strcmpi(tmp, 'multicore') || strcmpi(tmp, 'multistation') )
         error('QWTB: field `mcm.method` in calculation settings has unknown value. Only values `singlecore`, `multicore` or `multistation` are permitted.')
     end
+    % mcm.procno %<<<2
     if ~( isfield(calcset.mcm, 'procno') )
         if calcset.strict
             error('QWTB: field `mcm.procno` is missing in calculation settings structure')
@@ -252,6 +431,11 @@ function calcset = check_gen_calcset(calcset) %<<<1
             calcset.mcm.procno = 1;
         end
     end
+    tmp = calcset.mcm.procno;
+    if ~(isscalarP(tmp) && abs(fix(tmp)) == tmp)
+        error('QWTB: field `calcset.mcm.procno` must be scalar zero or positive integer!')
+    end
+    % mcm.tmpdir %<<<2
     if ~( isfield(calcset.mcm, 'tmpdir') )
         if calcset.strict
             error('QWTB: field `mcm.tmpdir` is missing in calculation settings structure')
@@ -259,6 +443,13 @@ function calcset = check_gen_calcset(calcset) %<<<1
             calcset.mcm.tmpdir = '.';
         end
     end
+    if ~( ischar(calcset.mcm.tmpdir) )
+        error('QWTB: field `mcm.tmpdir` must be a string')
+    end
+    if ~( exist(calcset.mcm.tmpdir, 'dir') )
+        error(['QWTB: directory ' calcset.mcm.tmpdir ' does not exist'])
+    end
+    % mcm.randomize %<<<2
     if ~( isfield(calcset.mcm, 'randomize') )
         if calcset.strict
             error('QWTB: field `mcm.randomize` is missing in calculation settings structure')
@@ -266,8 +457,11 @@ function calcset = check_gen_calcset(calcset) %<<<1
             calcset.mcm.randomize = 1;
         end
     end
-    % 2DO to check:
-    % tmpdir existence,
+    if calcset.mcm.randomize
+        calcset.mcm.randomize = 1;
+    else
+        calcset.mcm.randomize = 0;
+    end
 end % function check_calcset
 
 function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
