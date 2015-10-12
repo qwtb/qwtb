@@ -1,0 +1,351 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of EditDsc</title>
+  <meta name="keywords" content="EditDsc">
+  <meta name="description" content="@fn EditDsc">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; EditDsc.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>EditDsc
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>@fn EditDsc</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [temp_dsc,success] = EditDsc(old_dsc) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> @fn EditDsc
+ @brief Function to edit the current measurement descriptor
+ @param old_dsc The decriptor to edit
+ @return temp_dsc The edited descriptor
+ @return success 1, if editing succeeded, 0 otherwise
+ @author Tam� Virosztek, Budapest University of Technology and Economics,
+         Department of Measurement and Information Systems,
+         Virosztek.Tamas@mit.bme.hu</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="SimulateMeasurement.html" class="code" title="function [datavect,parameters,success] = SimulateMeasurement(NoB)">SimulateMeasurement</a>	@fn SimulateMeesurement</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="adctest.html" class="code" title="function adctest">adctest</a>	@fn adctest</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function EditName_callback(source,eventdata)</a></li><li><a href="#_sub2" class="code">function EditComment_callback(source,eventdata)</a></li><li><a href="#_sub3" class="code">function EditModel_callback(source,eventdata)</a></li><li><a href="#_sub4" class="code">function EditSerial_callback(source,eventdata)</a></li><li><a href="#_sub5" class="code">function EditChannel_callback(source,eventdata)</a></li><li><a href="#_sub6" class="code">function EditNoB_callback(source,eventdata)</a></li><li><a href="#_sub7" class="code">function SelectSource_callback(source,eventdata)</a></li><li><a href="#_sub8" class="code">function ImportMeasurementData_callback(source,eventdata)</a></li><li><a href="#_sub9" class="code">function SimulateMeasurement_callback(source,eventdata)</a></li><li><a href="#_sub10" class="code">function OK_callback(source,eventdata)</a></li><li><a href="#_sub11" class="code">function Cancel_callback(source,eventdata)</a></li><li><a href="#_sub12" class="code">function UpdateDisplay</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [temp_dsc,success] = EditDsc(old_dsc)</a>
+0002 <span class="comment">% @fn EditDsc</span>
+0003 <span class="comment">% @brief Function to edit the current measurement descriptor</span>
+0004 <span class="comment">% @param old_dsc The decriptor to edit</span>
+0005 <span class="comment">% @return temp_dsc The edited descriptor</span>
+0006 <span class="comment">% @return success 1, if editing succeeded, 0 otherwise</span>
+0007 <span class="comment">% @author Tam� Virosztek, Budapest University of Technology and Economics,</span>
+0008 <span class="comment">%         Department of Measurement and Information Systems,</span>
+0009 <span class="comment">%         Virosztek.Tamas@mit.bme.hu</span>
+0010 
+0011 
+0012 
+0013 <span class="comment">%Setting default return values</span>
+0014 temp_dsc = old_dsc;
+0015 success = 0;
+0016 
+0017 screensize = get(0,<span class="string">'ScreenSize'</span>);
+0018 
+0019 edit_dsc_window = figure(<span class="string">'Visible'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+0020                          <span class="string">'Position'</span>, [screensize(3)*0.1 screensize(4)*0.1 screensize(3)*0.8 screensize(4)*0.8]',<span class="keyword">...</span>
+0021                          <span class="string">'Name'</span>,<span class="string">'Edit descriptor'</span>,<span class="keyword">...</span>
+0022                          <span class="string">'NumberTitle'</span>,<span class="string">'off'</span>);
+0023                      
+0024 hFrameGeneralInformation = uicontrol(<span class="string">'Style'</span>,<span class="string">'frame'</span>,<span class="keyword">...</span>
+0025                                     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0026                                     <span class="string">'Position'</span>,[0.01 0.5 0.48 0.44],<span class="keyword">...</span>
+0027                                     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0028 
+0029 hFrameMeasurementData = uicontrol(<span class="string">'Style'</span>,<span class="string">'frame'</span>,<span class="keyword">...</span>
+0030                                     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0031                                     <span class="string">'Position'</span>,[0.51 0.5 0.48 0.44],<span class="keyword">...</span>
+0032                                     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0033                      
+0034 
+0035 hTextGeneralInformation = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0036                              <span class="string">'String'</span>,<span class="string">'General Information'</span>,<span class="keyword">...</span>
+0037                              <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+0038                              <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0039                              <span class="string">'Position'</span>,[0.17 0.9 0.16 0.05],<span class="keyword">...</span>
+0040                              <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0041 
+0042 hTextName = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0043                       <span class="string">'String'</span>,<span class="string">'Name: '</span>,<span class="keyword">...</span>
+0044                       <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0045                       <span class="string">'Position'</span>,[0.05 0.85 0.1 0.04],<span class="keyword">...</span>
+0046                       <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0047                       <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0048 
+0049 hEditName = uicontrol(<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0050                       <span class="string">'String'</span>,temp_dsc.name,<span class="keyword">...</span>
+0051                       <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0052                       <span class="string">'Position'</span>,[0.15 0.85 0.3 0.05],<span class="keyword">...</span>
+0053                       <span class="string">'Callback'</span>,@<a href="#_sub1" class="code" title="subfunction EditName_callback(source,eventdata)">EditName_callback</a>);
+0054 
+0055 hTextComment = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0056                          <span class="string">'String'</span>,<span class="string">'Comment: '</span>,<span class="keyword">...</span>
+0057                          <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0058                          <span class="string">'Position'</span>,[0.05 0.75 0.1 0.08],<span class="keyword">...</span>
+0059                          <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0060                          <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0061                  
+0062 hEditComment = uicontrol(<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0063                          <span class="string">'String'</span>,temp_dsc.comment,<span class="keyword">...</span>
+0064                          <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0065                          <span class="string">'Position'</span>,[0.15 0.75 0.3 0.1],<span class="keyword">...</span>
+0066                          <span class="string">'Min'</span>,1,<span class="keyword">...</span>
+0067                          <span class="string">'Max'</span>,5,<span class="keyword">...</span>
+0068                          <span class="string">'Callback'</span>,@<a href="#_sub2" class="code" title="subfunction EditComment_callback(source,eventdata)">EditComment_callback</a>);
+0069 
+0070 hTextModel = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0071                        <span class="string">'String'</span>,<span class="string">'Model: '</span>,<span class="keyword">...</span>
+0072                        <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0073                        <span class="string">'Position'</span>,[0.05 0.7 0.1 0.04],<span class="keyword">...</span>
+0074                        <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0075                        <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0076 
+0077 hEditModel = uicontrol(<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0078                       <span class="string">'String'</span>,temp_dsc.model,<span class="keyword">...</span>
+0079                       <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0080                       <span class="string">'Position'</span>,[0.15 0.7 0.3 0.05],<span class="keyword">...</span>
+0081                       <span class="string">'Callback'</span>,@<a href="#_sub3" class="code" title="subfunction EditModel_callback(source,eventdata)">EditModel_callback</a>);
+0082 
+0083 hTextSerial = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0084                        <span class="string">'String'</span>,<span class="string">'Serial Number: '</span>,<span class="keyword">...</span>
+0085                        <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0086                        <span class="string">'Position'</span>,[0.05 0.65 0.1 0.04],<span class="keyword">...</span>
+0087                        <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0088                        <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0089 
+0090 hEditSerial = uicontrol(<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0091                         <span class="string">'String'</span>,temp_dsc.serial,<span class="keyword">...</span>
+0092                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0093                         <span class="string">'Position'</span>,[0.15 0.65 0.3 0.05],<span class="keyword">...</span>
+0094                         <span class="string">'Callback'</span>,@<a href="#_sub4" class="code" title="subfunction EditSerial_callback(source,eventdata)">EditSerial_callback</a>);
+0095 
+0096 hTextChannel = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0097                          <span class="string">'String'</span>,<span class="string">'Channel: '</span>,<span class="keyword">...</span>
+0098                          <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0099                          <span class="string">'Position'</span>,[0.05 0.6 0.1 0.04],<span class="keyword">...</span>
+0100                          <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0101                          <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0102 
+0103 hEditChannel = uicontrol(<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0104                         <span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,temp_dsc.channel),<span class="keyword">...</span>
+0105                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0106                         <span class="string">'Position'</span>,[0.15 0.6 0.3 0.05],<span class="keyword">...</span>
+0107                         <span class="string">'Callback'</span>,@<a href="#_sub5" class="code" title="subfunction EditChannel_callback(source,eventdata)">EditChannel_callback</a>);
+0108 
+0109 hTextNoB = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0110                      <span class="string">'String'</span>,<span class="string">'Number of bits: '</span>,<span class="keyword">...</span>
+0111                      <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0112                      <span class="string">'Position'</span>,[0.05 0.55 0.1 0.04],<span class="keyword">...</span>
+0113                      <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0114                      <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0115 
+0116 hEditNoB = uicontrol(<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0117                         <span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,temp_dsc.NoB),<span class="keyword">...</span>
+0118                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0119                         <span class="string">'Position'</span>,[0.15 0.55 0.3 0.05],<span class="keyword">...</span>
+0120                         <span class="string">'Callback'</span>,@<a href="#_sub6" class="code" title="subfunction EditNoB_callback(source,eventdata)">EditNoB_callback</a>);
+0121                     
+0122 hTextMeasurementData = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0123                                  <span class="string">'String'</span>,<span class="string">'Measurement Data'</span>,<span class="keyword">...</span>
+0124                                  <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+0125                                  <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0126                                  <span class="string">'Position'</span>,[0.67 0.9 0.16 0.05],<span class="keyword">...</span>
+0127                                  <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);      
+0128 
+0129 hTextSelectSource = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0130                               <span class="string">'String'</span>,<span class="string">'Source of data vector: '</span>,<span class="keyword">...</span>
+0131                               <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0132                               <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0133                               <span class="string">'Position'</span>,[0.55 0.85 0.15 0.05],<span class="keyword">...</span>
+0134                               <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0135                  
+0136 hPopupMenuSelectSource = uicontrol(<span class="string">'Style'</span>,<span class="string">'popupmenu'</span>,<span class="keyword">...</span>
+0137                                    <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0138                                    <span class="string">'Position'</span>,[0.7 0.87 0.25 0.04],<span class="keyword">...</span>
+0139                                    <span class="string">'String'</span>,{<span class="string">'Real measurement'</span>,<span class="string">'Simulated measurement'</span>},<span class="keyword">...</span>
+0140                                    <span class="string">'Callback'</span>,@<a href="#_sub7" class="code" title="subfunction SelectSource_callback(source,eventdata)">SelectSource_callback</a>);
+0141                                                            
+0142 hPushButtonImportMeasurementData = uicontrol(<span class="string">'Style'</span>,<span class="string">'pushbutton'</span>,<span class="keyword">...</span>
+0143                                   <span class="string">'String'</span>,<span class="string">'Import measurement data'</span>,<span class="keyword">...</span>
+0144                                   <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0145                                   <span class="string">'Position'</span>,[0.7 0.8 0.25 0.05],<span class="keyword">...</span>
+0146                                   <span class="string">'Callback'</span>,@<a href="#_sub8" class="code" title="subfunction ImportMeasurementData_callback(source,eventdata)">ImportMeasurementData_callback</a>);
+0147 
+0148 hPushButtonSimulateMeasurement = uicontrol(<span class="string">'Style'</span>,<span class="string">'pushbutton'</span>,<span class="keyword">...</span>
+0149                                   <span class="string">'String'</span>,<span class="string">'Simulate measurement'</span>,<span class="keyword">...</span>
+0150                                   <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0151                                   <span class="string">'Position'</span>,[0.7 0.73 0.25 0.05],<span class="keyword">...</span>
+0152                                   <span class="string">'Callback'</span>,@<a href="#_sub9" class="code" title="subfunction SimulateMeasurement_callback(source,eventdata)">SimulateMeasurement_callback</a>);
+0153 
+0154 hTextMeasurementData =  uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0155                                   <span class="string">'String'</span>,<span class="string">'Measurement data'</span>,<span class="keyword">...</span>
+0156                                   <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+0157                                   <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0158                                   <span class="string">'Position'</span>,[0.35 0.45 0.3 0.03],<span class="keyword">...</span>
+0159                                   <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0160                                                                             
+0161 hAxesToPlotData = axes (<span class="string">'Position'</span>,[0.05 0.2 0.9 0.25]);
+0162 plot(1:length(temp_dsc.data),temp_dsc.data);
+0163 
+0164                     
+0165 hPushButtonOK = uicontrol(<span class="string">'Style'</span>,<span class="string">'pushbutton'</span>,<span class="keyword">...</span>
+0166                           <span class="string">'String'</span>,<span class="string">'OK'</span>,<span class="keyword">...</span>
+0167                           <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0168                           <span class="string">'Position'</span>,[0.35 0.1 0.1 0.05],<span class="keyword">...</span>
+0169                           <span class="string">'Callback'</span>,@<a href="#_sub10" class="code" title="subfunction OK_callback(source,eventdata)">OK_callback</a>);
+0170 
+0171 hPushButtonCancel = uicontrol(<span class="string">'Style'</span>,<span class="string">'pushbutton'</span>,<span class="keyword">...</span>
+0172                               <span class="string">'String'</span>,<span class="string">'Cancel'</span>,<span class="keyword">...</span>
+0173                               <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0174                               <span class="string">'Position'</span>,[0.55 0.1 0.1 0.05],<span class="keyword">...</span>
+0175                               <span class="string">'Callback'</span>,@<a href="#_sub11" class="code" title="subfunction Cancel_callback(source,eventdata)">Cancel_callback</a>);
+0176                           
+0177 hTextInfo = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0178                       <span class="string">'String'</span>,<span class="string">'Edit new descriptor'</span>,<span class="keyword">...</span>
+0179                       <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0180                       <span class="string">'Position'</span>,[0 0.02 1 0.05],<span class="keyword">...</span>
+0181                       <span class="string">'BackgroundColor'</span>,<span class="string">'Green'</span>);
+0182                   
+0183                           
+0184 <span class="comment">%The name of the workspece wariable containing the</span>
+0185 <span class="comment">%measurement data:</span>
+0186 wsp_variable_name = <span class="string">''</span>;
+0187 <span class="comment">% State variable: source of datavect (real measurement or simulated measurement):</span>
+0188 source_of_datavect = <span class="string">'real_measurement'</span>; 
+0189 <a href="#_sub12" class="code" title="subfunction UpdateDisplay">UpdateDisplay</a>;
+0190 uiwait(edit_dsc_window); <span class="comment">%Blocks execution (and return) until either OK or Cancel pushbutton pressed</span>
+0191 <span class="comment">%(until the window is closed in their callbacks).</span>
+0192 
+0193 
+0194     <a name="_sub1" href="#_subfunctions" class="code">function EditName_callback(source,eventdata)</a>
+0195         temp_dsc.name = get(source,<span class="string">'String'</span>);
+0196     <span class="keyword">end</span>
+0197 
+0198     <a name="_sub2" href="#_subfunctions" class="code">function EditComment_callback(source,eventdata)</a>
+0199         temp_dsc.comment = cellstr(get(source,<span class="string">'String'</span>));
+0200     <span class="keyword">end</span>
+0201 
+0202     <a name="_sub3" href="#_subfunctions" class="code">function EditModel_callback(source,eventdata)</a>
+0203         temp_dsc.model = get(source,<span class="string">'String'</span>);
+0204     <span class="keyword">end</span>
+0205 
+0206     <a name="_sub4" href="#_subfunctions" class="code">function EditSerial_callback(source,eventdata)</a>
+0207         temp_dsc.serial = get(source,<span class="string">'String'</span>);
+0208     <span class="keyword">end</span>
+0209 
+0210     <a name="_sub5" href="#_subfunctions" class="code">function EditChannel_callback(source,eventdata)</a>
+0211         temp_dsc.channel = str2double(get(source,<span class="string">'String'</span>));
+0212     <span class="keyword">end</span>
+0213 
+0214     <a name="_sub6" href="#_subfunctions" class="code">function EditNoB_callback(source,eventdata)</a>
+0215         temp_dsc.NoB = str2double(get(source,<span class="string">'String'</span>));
+0216     <span class="keyword">end</span>
+0217 
+0218     <a name="_sub7" href="#_subfunctions" class="code">function SelectSource_callback(source,eventdata)</a>
+0219         <span class="keyword">if</span> (get(source,<span class="string">'Value'</span>) == 1) <span class="comment">% Real measuerement</span>
+0220             source_of_datavect = <span class="string">'real_measurement'</span>;
+0221             <a href="#_sub12" class="code" title="subfunction UpdateDisplay">UpdateDisplay</a>;
+0222         <span class="keyword">else</span> <span class="comment">%Simulated measurement</span>
+0223             source_of_datavect = <span class="string">'simulated_measurement'</span>;
+0224             <a href="#_sub12" class="code" title="subfunction UpdateDisplay">UpdateDisplay</a>;
+0225         <span class="keyword">end</span>
+0226     <span class="keyword">end</span>
+0227 
+0228     <a name="_sub8" href="#_subfunctions" class="code">function ImportMeasurementData_callback(source,eventdata)</a>
+0229         wsp_variable_name = inputdlg(<span class="string">'Enter workspace variable name'</span>,<span class="string">'Import'</span>,1,{<span class="string">'datavect'</span>});
+0230         <span class="keyword">if</span> (~isempty(wsp_variable_name{1}))
+0231             <span class="keyword">try</span>
+0232                 temp_dsc.data = evalin(<span class="string">'base'</span>,wsp_variable_name{1});
+0233                 axes(hAxesToPlotData);
+0234                 plot(1:length(temp_dsc.data),temp_dsc.data);
+0235                 set(hTextInfo,<span class="string">'String'</span>,<span class="string">'Measurement data has been imported succesfully'</span>);
+0236                 set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Green'</span>);
+0237                 temp_dsc.simulation = 0;
+0238             <span class="keyword">catch</span>
+0239                 set(hTextInfo,<span class="string">'String'</span>,<span class="string">'Given variable is missing'</span>);
+0240                 set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Red'</span>);
+0241             <span class="keyword">end</span>
+0242         <span class="keyword">else</span>
+0243             set(hTextInfo,<span class="string">'String'</span>,<span class="string">'No variable name given'</span>);
+0244             set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Red'</span>);
+0245         <span class="keyword">end</span>
+0246     <span class="keyword">end</span>
+0247 
+0248     <a name="_sub9" href="#_subfunctions" class="code">function SimulateMeasurement_callback(source,eventdata)</a>
+0249         [datavect,parameters,success] = <a href="SimulateMeasurement.html" class="code" title="function [datavect,parameters,success] = SimulateMeasurement(NoB)">SimulateMeasurement</a>(temp_dsc.NoB);
+0250         <span class="keyword">if</span> (success)
+0251             temp_dsc.data = datavect;
+0252             temp_dsc.parameters = parameters;
+0253             temp_dsc.NoB = parameters.NoB;
+0254             axes(hAxesToPlotData);
+0255             plot(1:length(temp_dsc.data),temp_dsc.data);
+0256             <a href="#_sub12" class="code" title="subfunction UpdateDisplay">UpdateDisplay</a>;
+0257             set(hTextInfo,<span class="string">'String'</span>,<span class="string">'Simulated measurement performed successfully'</span>);
+0258             set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Green'</span>);            
+0259             temp_dsc.simulation = 1;
+0260         <span class="keyword">else</span>
+0261             set(hTextInfo,<span class="string">'String'</span>,<span class="string">'Simulation cancelled'</span>);
+0262             set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Yellow'</span>);            
+0263         <span class="keyword">end</span>
+0264     <span class="keyword">end</span>
+0265            
+0266     <a name="_sub10" href="#_subfunctions" class="code">function OK_callback(source,eventdata)</a>
+0267         success = 1;
+0268         close(edit_dsc_window);
+0269         <span class="keyword">return</span>;
+0270     <span class="keyword">end</span>
+0271 
+0272     <a name="_sub11" href="#_subfunctions" class="code">function Cancel_callback(source,eventdata)</a>
+0273         success = 0;
+0274         close(edit_dsc_window);
+0275         <span class="keyword">return</span>;
+0276     <span class="keyword">end</span>
+0277 
+0278     <a name="_sub12" href="#_subfunctions" class="code">function UpdateDisplay</a>
+0279         set(hEditName,<span class="string">'String'</span>,temp_dsc.name);
+0280         set(hEditComment,<span class="string">'String'</span>,temp_dsc.comment);
+0281         set(hEditModel,<span class="string">'String'</span>,temp_dsc.model);        
+0282         set(hEditSerial,<span class="string">'String'</span>,temp_dsc.serial);
+0283         set(hEditChannel,<span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,temp_dsc.channel));
+0284         set(hEditNoB,<span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,temp_dsc.NoB));        
+0285         <span class="keyword">if</span> (strcmpi(source_of_datavect,<span class="string">'real_measurement'</span>))
+0286             set(hPushButtonImportMeasurementData,<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0287             set(hPushButtonSimulateMeasurement,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0288         <span class="keyword">else</span>
+0289             set(hPushButtonImportMeasurementData,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0290             set(hPushButtonSimulateMeasurement,<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0291         <span class="keyword">end</span>
+0292     <span class="keyword">end</span>
+0293 
+0294 
+0295 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

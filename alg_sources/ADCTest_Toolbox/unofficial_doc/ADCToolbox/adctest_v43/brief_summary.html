@@ -1,0 +1,380 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of brief_summary</title>
+  <meta name="keywords" content="brief_summary">
+  <meta name="description" content="BRIEF_SUMMARY M-file for brief_summary.fig">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; brief_summary.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>brief_summary
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>BRIEF_SUMMARY M-file for brief_summary.fig</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function varargout = brief_summary(varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> BRIEF_SUMMARY M-file for brief_summary.fig
+      BRIEF_SUMMARY, by itself, creates a new BRIEF_SUMMARY or raises the existing
+      singleton*.
+
+      H = BRIEF_SUMMARY returns the handle to a new BRIEF_SUMMARY or the handle to
+      the existing singleton*.
+
+      BRIEF_SUMMARY('CALLBACK',hObject,eventData,handles,...) calls the local
+      function named CALLBACK in BRIEF_SUMMARY.M with the given input arguments.
+
+      BRIEF_SUMMARY('Property','Value',...) creates a new BRIEF_SUMMARY or raises the
+      existing singleton*.  Starting from the left, property value pairs are
+      applied to the GUI before brief_summary_OpeningFcn gets called.  An
+      unrecognized property name or invalid value makes property application
+      stop.  All inputs are passed to brief_summary_OpeningFcn via varargin.
+
+      *See GUI Options on GUIDE's Tools menu.  Choose &quot;GUI allows only one
+      instance to run (singleton)&quot;.
+
+ See also: GUIDE, GUIDATA, GUIHANDLES</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function brief_summary_OpeningFcn(hObject, eventdata, handles, varargin)</a></li><li><a href="#_sub2" class="code">function varargout = brief_summary_OutputFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub3" class="code">function popupmenu_initial_fr_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub4" class="code">function popupmenu_initial_fr_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub5" class="code">function edit_initial_fr_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub6" class="code">function edit_initial_fr_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub7" class="code">function popupmenu_iteration_method_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub8" class="code">function popupmenu_iteration_method_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub9" class="code">function edit2_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub10" class="code">function edit2_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub11" class="code">function edit4_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub12" class="code">function edit4_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub13" class="code">function edit5_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub14" class="code">function edit5_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub15" class="code">function edit6_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub16" class="code">function edit6_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub17" class="code">function popupmenu_initial_lambda_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub18" class="code">function popupmenu_initial_lambda_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub19" class="code">function edit_initial_lambda_coeff_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub20" class="code">function edit_initial_lambda_coeff_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub21" class="code">function popupmenu_initial_lambda_uints_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub22" class="code">function popupmenu_initial_lambda_uints_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub23" class="code">function pushbutton1_Callback(hObject, eventdata, handles)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout = brief_summary(varargin)</a>
+0002 <span class="comment">% BRIEF_SUMMARY M-file for brief_summary.fig</span>
+0003 <span class="comment">%      BRIEF_SUMMARY, by itself, creates a new BRIEF_SUMMARY or raises the existing</span>
+0004 <span class="comment">%      singleton*.</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%      H = BRIEF_SUMMARY returns the handle to a new BRIEF_SUMMARY or the handle to</span>
+0007 <span class="comment">%      the existing singleton*.</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">%      BRIEF_SUMMARY('CALLBACK',hObject,eventData,handles,...) calls the local</span>
+0010 <span class="comment">%      function named CALLBACK in BRIEF_SUMMARY.M with the given input arguments.</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">%      BRIEF_SUMMARY('Property','Value',...) creates a new BRIEF_SUMMARY or raises the</span>
+0013 <span class="comment">%      existing singleton*.  Starting from the left, property value pairs are</span>
+0014 <span class="comment">%      applied to the GUI before brief_summary_OpeningFcn gets called.  An</span>
+0015 <span class="comment">%      unrecognized property name or invalid value makes property application</span>
+0016 <span class="comment">%      stop.  All inputs are passed to brief_summary_OpeningFcn via varargin.</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">%      *See GUI Options on GUIDE's Tools menu.  Choose &quot;GUI allows only one</span>
+0019 <span class="comment">%      instance to run (singleton)&quot;.</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">% See also: GUIDE, GUIDATA, GUIHANDLES</span>
+0022 
+0023 <span class="comment">% Edit the above text to modify the response to help brief_summary</span>
+0024 
+0025 <span class="comment">% Last Modified by GUIDE v2.5 19-Aug-2014 17:06:08</span>
+0026 
+0027 <span class="comment">% Begin initialization code - DO NOT EDIT</span>
+0028 gui_Singleton = 1;
+0029 gui_State = struct(<span class="string">'gui_Name'</span>,       mfilename, <span class="keyword">...</span>
+0030                    <span class="string">'gui_Singleton'</span>,  gui_Singleton, <span class="keyword">...</span>
+0031                    <span class="string">'gui_OpeningFcn'</span>, @<a href="#_sub1" class="code" title="subfunction brief_summary_OpeningFcn(hObject, eventdata, handles, varargin)">brief_summary_OpeningFcn</a>, <span class="keyword">...</span>
+0032                    <span class="string">'gui_OutputFcn'</span>,  @<a href="#_sub2" class="code" title="subfunction varargout = brief_summary_OutputFcn(hObject, eventdata, handles)">brief_summary_OutputFcn</a>, <span class="keyword">...</span>
+0033                    <span class="string">'gui_LayoutFcn'</span>,  [] , <span class="keyword">...</span>
+0034                    <span class="string">'gui_Callback'</span>,   []);
+0035 <span class="keyword">if</span> nargin &amp;&amp; ischar(varargin{1})
+0036     gui_State.gui_Callback = str2func(varargin{1});
+0037 <span class="keyword">end</span>
+0038 
+0039 <span class="keyword">if</span> nargout
+0040     [varargout{1:nargout}] = gui_mainfcn(gui_State, varargin{:});
+0041 <span class="keyword">else</span>
+0042     gui_mainfcn(gui_State, varargin{:});
+0043 <span class="keyword">end</span>
+0044 <span class="comment">% End initialization code - DO NOT EDIT</span>
+0045 
+0046 
+0047 <span class="comment">% --- Executes just before brief_summary is made visible.</span>
+0048 <a name="_sub1" href="#_subfunctions" class="code">function brief_summary_OpeningFcn(hObject, eventdata, handles, varargin)</a>
+0049 <span class="comment">% This function has no output args, see OutputFcn.</span>
+0050 <span class="comment">% hObject    handle to figure</span>
+0051 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0052 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0053 <span class="comment">% varargin   command line arguments to brief_summary (see VARARGIN)</span>
+0054 
+0055 <span class="comment">% Choose default command line output for brief_summary</span>
+0056 handles.output = hObject;
+0057 
+0058 <span class="comment">% Update handles structure</span>
+0059 guidata(hObject, handles);
+0060 
+0061 <span class="comment">% UIWAIT makes brief_summary wait for user response (see UIRESUME)</span>
+0062 <span class="comment">% uiwait(handles.figure1);</span>
+0063 
+0064 
+0065 <span class="comment">% --- Outputs from this function are returned to the command line.</span>
+0066 <a name="_sub2" href="#_subfunctions" class="code">function varargout = brief_summary_OutputFcn(hObject, eventdata, handles) </a>
+0067 <span class="comment">% varargout  cell array for returning output args (see VARARGOUT);</span>
+0068 <span class="comment">% hObject    handle to figure</span>
+0069 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0070 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0071 
+0072 <span class="comment">% Get default command line output from handles structure</span>
+0073 varargout{1} = handles.output;
+0074 
+0075 
+0076 <span class="comment">% --- Executes on selection change in popupmenu_initial_fr.</span>
+0077 <a name="_sub3" href="#_subfunctions" class="code">function popupmenu_initial_fr_Callback(hObject, eventdata, handles)</a>
+0078 <span class="comment">% hObject    handle to popupmenu_initial_fr (see GCBO)</span>
+0079 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0080 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0081 
+0082 <span class="comment">% Hints: contents = get(hObject,'String') returns popupmenu_initial_fr contents as cell array</span>
+0083 <span class="comment">%        contents{get(hObject,'Value')} returns selected item from popupmenu_initial_fr</span>
+0084 
+0085 
+0086 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0087 <a name="_sub4" href="#_subfunctions" class="code">function popupmenu_initial_fr_CreateFcn(hObject, eventdata, handles)</a>
+0088 <span class="comment">% hObject    handle to popupmenu_initial_fr (see GCBO)</span>
+0089 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0090 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0091 
+0092 <span class="comment">% Hint: popupmenu controls usually have a white background on Windows.</span>
+0093 <span class="comment">%       See ISPC and COMPUTER.</span>
+0094 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0095     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0096 <span class="keyword">end</span>
+0097 
+0098 
+0099 
+0100 <a name="_sub5" href="#_subfunctions" class="code">function edit_initial_fr_Callback(hObject, eventdata, handles)</a>
+0101 <span class="comment">% hObject    handle to edit_initial_fr (see GCBO)</span>
+0102 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0103 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0104 
+0105 <span class="comment">% Hints: get(hObject,'String') returns contents of edit_initial_fr as text</span>
+0106 <span class="comment">%        str2double(get(hObject,'String')) returns contents of edit_initial_fr as a double</span>
+0107 
+0108 
+0109 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0110 <a name="_sub6" href="#_subfunctions" class="code">function edit_initial_fr_CreateFcn(hObject, eventdata, handles)</a>
+0111 <span class="comment">% hObject    handle to edit_initial_fr (see GCBO)</span>
+0112 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0113 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0114 
+0115 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0116 <span class="comment">%       See ISPC and COMPUTER.</span>
+0117 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0118     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0119 <span class="keyword">end</span>
+0120 
+0121 
+0122 <span class="comment">% --- Executes on selection change in popupmenu_iteration_method.</span>
+0123 <a name="_sub7" href="#_subfunctions" class="code">function popupmenu_iteration_method_Callback(hObject, eventdata, handles)</a>
+0124 <span class="comment">% hObject    handle to popupmenu_iteration_method (see GCBO)</span>
+0125 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0126 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0127 
+0128 <span class="comment">% Hints: contents = get(hObject,'String') returns popupmenu_iteration_method contents as cell array</span>
+0129 <span class="comment">%        contents{get(hObject,'Value')} returns selected item from popupmenu_iteration_method</span>
+0130 
+0131 
+0132 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0133 <a name="_sub8" href="#_subfunctions" class="code">function popupmenu_iteration_method_CreateFcn(hObject, eventdata, handles)</a>
+0134 <span class="comment">% hObject    handle to popupmenu_iteration_method (see GCBO)</span>
+0135 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0136 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0137 
+0138 <span class="comment">% Hint: popupmenu controls usually have a white background on Windows.</span>
+0139 <span class="comment">%       See ISPC and COMPUTER.</span>
+0140 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0141     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0142 <span class="keyword">end</span>
+0143 
+0144 
+0145 
+0146 <a name="_sub9" href="#_subfunctions" class="code">function edit2_Callback(hObject, eventdata, handles)</a>
+0147 <span class="comment">% hObject    handle to edit2 (see GCBO)</span>
+0148 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0149 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0150 
+0151 <span class="comment">% Hints: get(hObject,'String') returns contents of edit2 as text</span>
+0152 <span class="comment">%        str2double(get(hObject,'String')) returns contents of edit2 as a double</span>
+0153 
+0154 
+0155 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0156 <a name="_sub10" href="#_subfunctions" class="code">function edit2_CreateFcn(hObject, eventdata, handles)</a>
+0157 <span class="comment">% hObject    handle to edit2 (see GCBO)</span>
+0158 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0159 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0160 
+0161 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0162 <span class="comment">%       See ISPC and COMPUTER.</span>
+0163 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0164     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0165 <span class="keyword">end</span>
+0166 
+0167 
+0168 
+0169 <a name="_sub11" href="#_subfunctions" class="code">function edit4_Callback(hObject, eventdata, handles)</a>
+0170 <span class="comment">% hObject    handle to edit4 (see GCBO)</span>
+0171 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0172 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0173 
+0174 <span class="comment">% Hints: get(hObject,'String') returns contents of edit4 as text</span>
+0175 <span class="comment">%        str2double(get(hObject,'String')) returns contents of edit4 as a double</span>
+0176 
+0177 
+0178 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0179 <a name="_sub12" href="#_subfunctions" class="code">function edit4_CreateFcn(hObject, eventdata, handles)</a>
+0180 <span class="comment">% hObject    handle to edit4 (see GCBO)</span>
+0181 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0182 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0183 
+0184 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0185 <span class="comment">%       See ISPC and COMPUTER.</span>
+0186 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0187     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0188 <span class="keyword">end</span>
+0189 
+0190 
+0191 
+0192 <a name="_sub13" href="#_subfunctions" class="code">function edit5_Callback(hObject, eventdata, handles)</a>
+0193 <span class="comment">% hObject    handle to edit5 (see GCBO)</span>
+0194 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0195 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0196 
+0197 <span class="comment">% Hints: get(hObject,'String') returns contents of edit5 as text</span>
+0198 <span class="comment">%        str2double(get(hObject,'String')) returns contents of edit5 as a double</span>
+0199 
+0200 
+0201 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0202 <a name="_sub14" href="#_subfunctions" class="code">function edit5_CreateFcn(hObject, eventdata, handles)</a>
+0203 <span class="comment">% hObject    handle to edit5 (see GCBO)</span>
+0204 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0205 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0206 
+0207 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0208 <span class="comment">%       See ISPC and COMPUTER.</span>
+0209 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0210     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0211 <span class="keyword">end</span>
+0212 
+0213 
+0214 
+0215 <a name="_sub15" href="#_subfunctions" class="code">function edit6_Callback(hObject, eventdata, handles)</a>
+0216 <span class="comment">% hObject    handle to edit6 (see GCBO)</span>
+0217 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0218 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0219 
+0220 <span class="comment">% Hints: get(hObject,'String') returns contents of edit6 as text</span>
+0221 <span class="comment">%        str2double(get(hObject,'String')) returns contents of edit6 as a double</span>
+0222 
+0223 
+0224 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0225 <a name="_sub16" href="#_subfunctions" class="code">function edit6_CreateFcn(hObject, eventdata, handles)</a>
+0226 <span class="comment">% hObject    handle to edit6 (see GCBO)</span>
+0227 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0228 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0229 
+0230 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0231 <span class="comment">%       See ISPC and COMPUTER.</span>
+0232 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0233     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0234 <span class="keyword">end</span>
+0235 
+0236 
+0237 <span class="comment">% --- Executes on selection change in popupmenu_initial_lambda.</span>
+0238 <a name="_sub17" href="#_subfunctions" class="code">function popupmenu_initial_lambda_Callback(hObject, eventdata, handles)</a>
+0239 <span class="comment">% hObject    handle to popupmenu_initial_lambda (see GCBO)</span>
+0240 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0241 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0242 
+0243 <span class="comment">% Hints: contents = get(hObject,'String') returns popupmenu_initial_lambda contents as cell array</span>
+0244 <span class="comment">%        contents{get(hObject,'Value')} returns selected item from popupmenu_initial_lambda</span>
+0245 
+0246 
+0247 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0248 <a name="_sub18" href="#_subfunctions" class="code">function popupmenu_initial_lambda_CreateFcn(hObject, eventdata, handles)</a>
+0249 <span class="comment">% hObject    handle to popupmenu_initial_lambda (see GCBO)</span>
+0250 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0251 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0252 
+0253 <span class="comment">% Hint: popupmenu controls usually have a white background on Windows.</span>
+0254 <span class="comment">%       See ISPC and COMPUTER.</span>
+0255 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0256     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0257 <span class="keyword">end</span>
+0258 
+0259 
+0260 
+0261 <a name="_sub19" href="#_subfunctions" class="code">function edit_initial_lambda_coeff_Callback(hObject, eventdata, handles)</a>
+0262 <span class="comment">% hObject    handle to edit_initial_lambda_coeff (see GCBO)</span>
+0263 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0264 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0265 
+0266 <span class="comment">% Hints: get(hObject,'String') returns contents of edit_initial_lambda_coeff as text</span>
+0267 <span class="comment">%        str2double(get(hObject,'String')) returns contents of edit_initial_lambda_coeff as a double</span>
+0268 
+0269 
+0270 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0271 <a name="_sub20" href="#_subfunctions" class="code">function edit_initial_lambda_coeff_CreateFcn(hObject, eventdata, handles)</a>
+0272 <span class="comment">% hObject    handle to edit_initial_lambda_coeff (see GCBO)</span>
+0273 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0274 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0275 
+0276 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0277 <span class="comment">%       See ISPC and COMPUTER.</span>
+0278 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0279     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0280 <span class="keyword">end</span>
+0281 
+0282 
+0283 <span class="comment">% --- Executes on selection change in popupmenu_initial_lambda_uints.</span>
+0284 <a name="_sub21" href="#_subfunctions" class="code">function popupmenu_initial_lambda_uints_Callback(hObject, eventdata, handles)</a>
+0285 <span class="comment">% hObject    handle to popupmenu_initial_lambda_uints (see GCBO)</span>
+0286 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0287 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0288 
+0289 <span class="comment">% Hints: contents = get(hObject,'String') returns popupmenu_initial_lambda_uints contents as cell array</span>
+0290 <span class="comment">%        contents{get(hObject,'Value')} returns selected item from popupmenu_initial_lambda_uints</span>
+0291 
+0292 
+0293 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0294 <a name="_sub22" href="#_subfunctions" class="code">function popupmenu_initial_lambda_uints_CreateFcn(hObject, eventdata, handles)</a>
+0295 <span class="comment">% hObject    handle to popupmenu_initial_lambda_uints (see GCBO)</span>
+0296 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0297 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0298 
+0299 <span class="comment">% Hint: popupmenu controls usually have a white background on Windows.</span>
+0300 <span class="comment">%       See ISPC and COMPUTER.</span>
+0301 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0302     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0303 <span class="keyword">end</span>
+0304 
+0305 
+0306 <span class="comment">% --- Executes on button press in pushbutton1.</span>
+0307 <a name="_sub23" href="#_subfunctions" class="code">function pushbutton1_Callback(hObject, eventdata, handles)</a>
+0308 <span class="comment">% hObject    handle to pushbutton1 (see GCBO)</span>
+0309 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0310 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0311 
+0312</pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

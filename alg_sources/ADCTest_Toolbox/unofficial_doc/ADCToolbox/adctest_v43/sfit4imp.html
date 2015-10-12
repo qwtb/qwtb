@@ -1,0 +1,384 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of sfit4imp</title>
+  <meta name="keywords" content="sfit4imp">
+  <meta name="description" content="SFIT4IMP  Improved four parameter fit of a sine wave to measured data">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; sfit4imp.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>sfit4imp
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>SFIT4IMP  Improved four parameter fit of a sine wave to measured data</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [X, Rn, Q]=sfit4imp(data, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">SFIT4IMP  Improved four parameter fit of a sine wave to measured data
+
+       [X, Rn, Q]=sfit4(data,time,sample_rate,start_fr,use_ipfft,dfmin,maxCyc,verbose)
+
+       Input arguments:
+         data: vector of measured samples
+       
+       Optional parameters (some optional parameters can be either numeric or character string):
+         time: vector of time spacing (numeric)
+         sample_rate: sampling rate   (numeric)
+         start_fr - starting frequency in Hz (numeric or char string) (Default is determined by DFT or IpFFT)
+         use_ipfft - 'Yes' or 'No'. If 'Yes', interpolated FFT is used for
+                 setting the initial value. (character string)
+         dfmin - maximum change in frequency during last iteration step (numeric or character string)
+         maxCyc - the maximum number of iterating cycle (default=30) (numeric or character string)
+         verbose - 'Yes' or 'No'. If 'Yes', iteration details are displayed  (character string)
+
+       Output arguments:
+       X: structure of  DC + A * cos(w*tvect + phi)
+         DC   - DC level
+         A    - amplitude of the fitted cosine
+         f    - frequency of the fitted cosine
+         phi  - phase of the fitted cosine
+         erms - RMS error
+       Rn: the residual vector, the difference between the data and the fitted sine-wave
+       Q: structure array of iteration steps
+
+ See also SFIT3, SFIT4</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="FitLSML.html" class="code" title="function result_struct = FitLSML(datavect,timevect,estimated_INL,NoB)">FitLSML</a>	Default optimization parameters for ML</li><li><a href="ProcessDscLS4pFit.html" class="code" title="function ProcessDscLS4pFit(dsc,reason)">ProcessDscLS4pFit</a>	@fn ProcessDscLS4pFit</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [X, Rn, Q]=sfit4imp(data, varargin)</a>
+0002 <span class="comment">%SFIT4IMP  Improved four parameter fit of a sine wave to measured data</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">%       [X, Rn, Q]=sfit4(data,time,sample_rate,start_fr,use_ipfft,dfmin,maxCyc,verbose)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%       Input arguments:</span>
+0007 <span class="comment">%         data: vector of measured samples</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">%       Optional parameters (some optional parameters can be either numeric or character string):</span>
+0010 <span class="comment">%         time: vector of time spacing (numeric)</span>
+0011 <span class="comment">%         sample_rate: sampling rate   (numeric)</span>
+0012 <span class="comment">%         start_fr - starting frequency in Hz (numeric or char string) (Default is determined by DFT or IpFFT)</span>
+0013 <span class="comment">%         use_ipfft - 'Yes' or 'No'. If 'Yes', interpolated FFT is used for</span>
+0014 <span class="comment">%                 setting the initial value. (character string)</span>
+0015 <span class="comment">%         dfmin - maximum change in frequency during last iteration step (numeric or character string)</span>
+0016 <span class="comment">%         maxCyc - the maximum number of iterating cycle (default=30) (numeric or character string)</span>
+0017 <span class="comment">%         verbose - 'Yes' or 'No'. If 'Yes', iteration details are displayed  (character string)</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">%       Output arguments:</span>
+0020 <span class="comment">%       X: structure of  DC + A * cos(w*tvect + phi)</span>
+0021 <span class="comment">%         DC   - DC level</span>
+0022 <span class="comment">%         A    - amplitude of the fitted cosine</span>
+0023 <span class="comment">%         f    - frequency of the fitted cosine</span>
+0024 <span class="comment">%         phi  - phase of the fitted cosine</span>
+0025 <span class="comment">%         erms - RMS error</span>
+0026 <span class="comment">%       Rn: the residual vector, the difference between the data and the fitted sine-wave</span>
+0027 <span class="comment">%       Q: structure array of iteration steps</span>
+0028 <span class="comment">%</span>
+0029 <span class="comment">% See also SFIT3, SFIT4</span>
+0030 
+0031 
+0032 <span class="comment">% Written by Zolt� Tam� Bilau, modified by Janos Markus</span>
+0033 <span class="comment">% $Id: sfit4imp.m,v 3.0 2004/04/19 11:20:09 markus Exp $</span>
+0034 <span class="comment">% Copyright (c) 2001-2004 by Istvan Kollar and Janos Markus</span>
+0035 <span class="comment">% All rights reserved.</span>
+0036 
+0037 <span class="keyword">if</span> ~isnumeric(data), error(<span class="string">'Sample vector is not numeric'</span>); <span class="keyword">end</span>
+0038 <span class="keyword">if</span> length(size(data))&gt;2, error(<span class="string">'Dimension of the data vector is more than 2'</span>);    <span class="keyword">end</span>
+0039 <span class="keyword">if</span> min(size(data))&gt;1, error(<span class="string">'The data array is not a vector'</span>); <span class="keyword">end</span>
+0040 
+0041 N=length(data);
+0042 <span class="keyword">if</span> ~all(isfinite(data)), error(<span class="string">'Not all samples are finite'</span>); <span class="keyword">end</span>
+0043 <span class="keyword">if</span> any(imag(data))~=0, error(<span class="string">'Not all samples are real'</span>);<span class="keyword">end</span>
+0044 <span class="keyword">if</span> N&lt;4, error(<span class="string">'Less than four samples'</span>); <span class="keyword">end</span>
+0045 mode=<span class="string">''</span>;
+0046 
+0047 <span class="keyword">if</span> nargin&gt;1, time=varargin{1}; <span class="keyword">end</span>
+0048 <span class="keyword">if</span> nargin&gt;2, sample_rate=varargin{2}; <span class="keyword">end</span>
+0049 <span class="keyword">if</span> nargin&gt;3, start_fr=varargin{3}; <span class="keyword">end</span>
+0050 <span class="keyword">if</span> nargin&gt;4, use_ipfft=varargin{4}; <span class="keyword">end</span>
+0051 <span class="keyword">if</span> nargin&gt;5, dfmin=varargin{5}; <span class="keyword">end</span>
+0052 <span class="keyword">if</span> nargin&gt;6, maxCyc=varargin{6}; <span class="keyword">end</span>
+0053 <span class="keyword">if</span> nargin&gt;7, verbose=varargin{7}; <span class="keyword">end</span>
+0054 
+0055 
+0056 <span class="keyword">if</span> exist(<span class="string">'maxCyc'</span>,<span class="string">'var'</span>)
+0057     <span class="comment">%evaluate parameter</span>
+0058     <span class="keyword">if</span> isstr(maxCyc)
+0059         <span class="keyword">if</span> isempty(maxCyc) | all(isspace(maxCyc))
+0060             maxCyc=30;
+0061         <span class="keyword">else</span>
+0062             <span class="keyword">try</span>
+0063                 maxCyc=eval(maxCyc);
+0064             <span class="keyword">catch</span>
+0065                 warning(<span class="string">'Cannot evaluate maxCyc, default (30) is used'</span>)
+0066                 maxCyc=30;
+0067             <span class="keyword">end</span>
+0068         <span class="keyword">end</span>
+0069     <span class="keyword">elseif</span> ~isnumeric(maxCyc) 
+0070         warning(<span class="string">'Cannot interpret maxCyc, default (30) is used'</span>)
+0071         maxCyc=30;
+0072     <span class="keyword">end</span>
+0073 <span class="comment">%</span>
+0074     <span class="keyword">if</span> isnan(maxCyc) | ~isfinite(maxCyc) | maxCyc&lt;1
+0075         warning(<span class="string">'maxCyc is non-positive, default (30) is used'</span>)
+0076         maxCyc=30;
+0077     <span class="keyword">end</span>
+0078     maxCycN=fix(maxCyc);
+0079 <span class="keyword">else</span>
+0080     maxCycN=30; <span class="comment">%maxCycN default</span>
+0081 <span class="keyword">end</span>
+0082 
+0083 
+0084 mode=<span class="string">'dft'</span>;
+0085 <span class="keyword">if</span> exist(<span class="string">'use_ipfft'</span>,<span class="string">'var'</span>)
+0086     <span class="keyword">if</span> isstr(use_ipfft)
+0087         <span class="keyword">if</span> strncmpi(use_ipfft,<span class="string">'Yes'</span>,3)
+0088             mode=<span class="string">'ipfft'</span>;
+0089         <span class="keyword">end</span>
+0090     <span class="keyword">end</span>
+0091 <span class="keyword">end</span>
+0092 
+0093 showiter=0;
+0094 <span class="keyword">if</span> exist(<span class="string">'verbose'</span>,<span class="string">'var'</span>)
+0095     <span class="keyword">if</span> isstr(verbose)
+0096         <span class="keyword">if</span> strncmpi(verbose,<span class="string">'Yes'</span>,3)
+0097             showiter=1;
+0098         <span class="keyword">end</span>
+0099     <span class="keyword">end</span>
+0100 <span class="keyword">end</span>
+0101 
+0102 
+0103 <span class="keyword">if</span> exist(<span class="string">'dfmin'</span>,<span class="string">'var'</span>)
+0104     <span class="comment">%evaluate parameter</span>
+0105     <span class="keyword">if</span> isstr(dfmin)
+0106         <span class="keyword">if</span> isempty(dfmin) | all(isspace(dfmin))
+0107             dfmin=1e-6;
+0108         <span class="keyword">else</span>
+0109             <span class="keyword">try</span>
+0110                 dfmin=eval(dfmin);
+0111             <span class="keyword">catch</span>
+0112                 warning(<span class="string">'Cannot evaluate dfmin, default (1e-6) is used'</span>)
+0113                 dfmin=1e-6;
+0114             <span class="keyword">end</span>
+0115         <span class="keyword">end</span>
+0116     <span class="keyword">elseif</span> ~isnumeric(maxCyc) 
+0117         warning(<span class="string">'Cannot interpret dfmin, default (1e-6) is used'</span>)
+0118         dfmin=1e-6;
+0119     <span class="keyword">end</span>
+0120     
+0121     <span class="keyword">if</span> ~isequal(size(dfmin),[1,1]), 
+0122         warning(<span class="string">'dfmin is not a scalar, default is used'</span>); 
+0123         dfmin=1e-6;
+0124     <span class="keyword">end</span>
+0125     
+0126     <span class="keyword">if</span> isnan(dfmin) | ~isfinite(dfmin) | dfmin&gt;1 | dfmin&lt;=0
+0127         warning(<span class="string">'dfmin&lt;=0 or dfmin&gt;1, default (1e-6) is used'</span>)
+0128         dfmin=1e-6;
+0129     <span class="keyword">end</span>
+0130     ferror=dfmin;
+0131 <span class="keyword">else</span>
+0132     ferror=1e-6; <span class="comment">%dWmin default</span>
+0133 <span class="keyword">end</span>
+0134 
+0135 werror=2*pi*ferror;
+0136 
+0137 
+0138 unisamp=0; <span class="comment">%uniform sampling</span>
+0139 <span class="keyword">if</span> exist(<span class="string">'sample_rate'</span>,<span class="string">'var'</span>) 
+0140     <span class="keyword">if</span> ~isnumeric(sample_rate), 
+0141         warning(<span class="string">'sample_rate is not numeric'</span>); 
+0142     <span class="keyword">end</span>
+0143     <span class="keyword">if</span> ~isequal(size(sample_rate),[1,1]), 
+0144         warning(<span class="string">'sample_rate is not a scalar'</span>); 
+0145     <span class="keyword">end</span>
+0146     <span class="keyword">if</span> sample_rate&lt;=0, 
+0147         warning(<span class="string">'sample_rate is not positive'</span>); 
+0148     <span class="keyword">end</span>
+0149 <span class="keyword">end</span>
+0150 
+0151 
+0152 <span class="keyword">if</span> exist(<span class="string">'time'</span>,<span class="string">'var'</span>)
+0153     <span class="keyword">if</span> isempty(time)
+0154         <span class="keyword">if</span> ~exist(<span class="string">'Ts'</span>), Ts=1; sample_rate=1; <span class="keyword">end</span>
+0155         time=[0:N-1]*Ts; <span class="comment">% Ts default</span>
+0156         unisamp=1;
+0157     <span class="keyword">end</span>
+0158     <span class="keyword">if</span> ~isnumeric(time), error(<span class="string">'time is not numeric'</span>); <span class="keyword">end</span>
+0159     <span class="keyword">if</span> ~isequal(size(data),size(time)), error(<span class="string">'sizes of data and time differ'</span>), <span class="keyword">end</span>
+0160     time=time(:)';
+0161     
+0162     <span class="comment">%Unisamp is 0 even if time is in almost equal distances</span>
+0163     unisamp=all(diff(diff(time))&lt;max(diff(time))*100*eps);
+0164     <span class="keyword">if</span> ~exist(<span class="string">'Ts'</span>,<span class="string">'var'</span>)
+0165         Ts=median(diff(time));
+0166         sample_rate=1/Ts;
+0167     <span class="keyword">end</span>
+0168 <span class="keyword">else</span>
+0169     <span class="keyword">if</span> ~exist(<span class="string">'Ts'</span>), Ts=1; sample_rate=1; <span class="keyword">end</span>
+0170     time=[0:N-1]*Ts; <span class="comment">% Ts default</span>
+0171     unisamp=1;
+0172 <span class="keyword">end</span>
+0173 
+0174 data=data(:); <span class="comment">%Force column vector</span>
+0175 
+0176 <span class="comment">%If startW is given</span>
+0177 w=0;
+0178 <span class="keyword">if</span> exist(<span class="string">'start_fr'</span>,<span class="string">'var'</span>)
+0179     <span class="comment">%evaluate parameter</span>
+0180     <span class="keyword">if</span> isstr(start_fr)
+0181         <span class="keyword">if</span> isempty(start_fr) | all(isspace(start_fr))
+0182             start_fr=0;
+0183         <span class="keyword">else</span>
+0184             <span class="keyword">try</span>
+0185                 start_fr=eval(start_fr);
+0186             <span class="keyword">catch</span>
+0187                 warning(<span class="string">'Cannot evaluate start_fr, initial frequency is determined by DFT'</span>)
+0188                 start_fr=0;
+0189             <span class="keyword">end</span>
+0190         <span class="keyword">end</span>
+0191     <span class="keyword">elseif</span> ~isnumeric(start_fr) 
+0192         warning(<span class="string">'Cannot interpret start_fr, initial frequency is determined by DFT'</span>)
+0193         start_fr=0;        
+0194     <span class="keyword">end</span>
+0195     
+0196     <span class="keyword">if</span> ~isequal(size(start_fr),[1,1]), 
+0197         warning(<span class="string">'start_fr is not a scalar, initial frequency is determined by DFT'</span>); 
+0198         start_fr=0;
+0199     <span class="keyword">end</span>
+0200     
+0201     <span class="keyword">if</span> isnan(start_fr) | ~isfinite(start_fr) | start_fr&lt;0
+0202         warning(<span class="string">'start_fr&lt;0, initial frequency is determined by DFT'</span>)
+0203         start_fr=0;
+0204     <span class="keyword">end</span>
+0205     w=2*pi*start_fr;
+0206 <span class="keyword">end</span>
+0207 
+0208 <span class="keyword">if</span> ~w <span class="comment">%w is 0, no initial frequency is given</span>
+0209     <span class="comment">%Initial radian frequency: look at maximum of PSD</span>
+0210     
+0211     <span class="keyword">if</span> ~unisamp
+0212         Nt=round((max(time)-min(time)+Ts)/Ts);
+0213         tvecti=round(time/Ts);
+0214         
+0215         <span class="comment">%interpolation should be preferred if there are missing data</span>
+0216         tvecti=tvecti-min(tvecti)+1; 
+0217         
+0218         ym=zeros(Nt,1);
+0219         ym(tvecti)=data;
+0220         F=abs(fft(ym));
+0221         [Mfft,w]=max(F(2:round(Nt/2)));
+0222         w=2*pi*w/Nt/Ts;
+0223     <span class="keyword">else</span>
+0224         Fc=fft(data);
+0225         F=abs(Fc);
+0226         [Mfft,w]=max(F(2:round(N/2)));
+0227         
+0228         <span class="keyword">if</span> strcmpi(mode,<span class="string">'ipfft'</span>)
+0229             <span class="keyword">if</span> w&gt;1
+0230                 <span class="comment">%calculating the 2 points, between them the estimated frequency is</span>
+0231                 <span class="keyword">if</span> F(w-1)&gt;F(w+1) w=w-1; <span class="keyword">end</span>
+0232             <span class="keyword">end</span>
+0233             
+0234             n=2*pi/N;
+0235             U=real(Fc(w+1));    V=imag(Fc(w+1));
+0236             U1=real(Fc(w+2));  V1=imag(Fc(w+2));
+0237             Kopt=(sin(n*w)*(V1-V)+cos(n*w)*(U1-U))/(U1-U);
+0238             Z1=V*(Kopt-cos(n*w))/sin(n*w)+U;
+0239             Z2=V1*(Kopt-cos(n*(w+1)))/sin(n*(w+1))+U1;
+0240             
+0241             lambda=acos((Z2*cos(n*(w+1))-Z1*cos(n*w))/(Z2-Z1))/n;
+0242             w=lambda;
+0243         <span class="keyword">end</span>
+0244         w=2*pi*w/N/Ts;
+0245     <span class="keyword">end</span>
+0246 <span class="keyword">end</span>
+0247 
+0248 
+0249 <span class="comment">% three parameters (step 0):</span>
+0250 D0=[cos(w*time);sin(w*time);ones(1,N)]';
+0251 x0=D0\data;
+0252 x0(4)=0;
+0253 
+0254 iQ=0; icyc=0;
+0255 <span class="keyword">while</span> 1
+0256     icyc=icyc+1;
+0257     <span class="keyword">if</span> nargout&gt;2 
+0258         iQ=iQ+1;
+0259         Q(iQ).A=x0(1);
+0260         Q(iQ).B=x0(2);
+0261         Q(iQ).C=x0(3);
+0262         Q(iQ).w=w;
+0263     <span class="keyword">end</span>
+0264     
+0265     D0=[cos(w*time);sin(w*time);ones(1,N);-x0(1)*time.*sin(w*time)+x0(2)*time.*cos(w*time)]';
+0266     
+0267     x0=pinv(D0,0)*data;
+0268     w=w+x0(4); <span class="comment">%adjust w</span>
+0269     
+0270     <span class="keyword">if</span> showiter
+0271         <span class="keyword">if</span> icyc==1
+0272             disp(<span class="string">' '</span>);
+0273             disp(<span class="string">'   Cyc#   frequency in Hz   Change of frequency              A           B'</span>);
+0274             disp(<span class="string">'   ----   ---------------   ----------------------------------------------'</span>);
+0275         <span class="keyword">end</span>
+0276         fprintf(<span class="string">'   %02d     %1.12g  %+1.25g             %+1.10g  %+1.10g\n'</span>,icyc,w/2/pi,Ts*x0(4)/2/pi,x0(1),x0(2));
+0277     <span class="keyword">end</span>
+0278     
+0279     <span class="keyword">if</span> abs(x0(4))&lt;werror/Ts <span class="keyword">break</span>; <span class="keyword">end</span>
+0280     <span class="keyword">if</span> icyc&gt;=maxCycN <span class="keyword">break</span>; <span class="keyword">end</span>
+0281 <span class="keyword">end</span>
+0282 
+0283 <span class="keyword">if</span> nargout&lt;2
+0284     iQ=iQ+1;
+0285     Q(iQ).A=x0(1);
+0286     Q(iQ).B=x0(2);
+0287     Q(iQ).C=x0(3);
+0288     Q(iQ).w=w;
+0289 <span class="keyword">end</span>
+0290 
+0291 Rn=data-[x0(1)*cos(w*time)+x0(2)*sin(w*time)+x0(3)]';
+0292 
+0293 <span class="comment">%Compose output:</span>
+0294 X.DC=x0(3);
+0295 X.A=sqrt(x0(1)^2+x0(2)^2);
+0296 X.f=w/2/pi;
+0297 <span class="keyword">if</span>      x0(1)&gt;0
+0298     X.phi=atan(-x0(2)/x0(1));
+0299 <span class="keyword">elseif</span> x0(1)&lt;0
+0300     X.phi=atan(-x0(2)/x0(1))+pi;
+0301 <span class="keyword">else</span> <span class="comment">%x0(1)==0</span>
+0302     <span class="keyword">if</span> x0(2)&lt;0, X.phi=pi/2;
+0303     <span class="keyword">else</span> X.phi=3*pi/2;
+0304     <span class="keyword">end</span>
+0305 <span class="keyword">end</span>
+0306 X.phi=X.phi*(180/pi);
+0307 X.erms=sqrt(1/N*Rn'*Rn);
+0308 
+0309 <span class="comment">%</span>
+0310 <span class="comment">%End of sfit4</span></pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

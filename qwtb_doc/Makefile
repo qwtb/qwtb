@@ -9,7 +9,6 @@ pdf:
 	biber $(INPUTSOURCE)
 	pdflatex $(INPUTSOURCE).tex
 	pdflatex $(INPUTSOURCE).tex
-	pdftk QWTB_doc.pdf alg_examples/*.pdf cat output QWTB_manual.pdf
 
 
 clean:

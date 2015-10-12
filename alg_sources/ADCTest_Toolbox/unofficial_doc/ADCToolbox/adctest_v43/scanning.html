@@ -1,0 +1,185 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of scanning</title>
+  <meta name="keywords" content="scanning">
+  <meta name="description" content="Script to evaluate ML cost function">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; scanning.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>scanning
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>Script to evaluate ML cost function</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">Script to evaluate ML cost function</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="EvaluateCF.html" class="code" title="function varargout = EvaluateCF(y,p0,NoB,INL)">EvaluateCF</a>	@fn EvaluateCF</li><li><a href="INL2TransLevels.html" class="code" title="function translevels = INL2TransLevels(INL)">INL2TransLevels</a>	@fn INL2TransLevels</li><li><a href="QuantizeSignal.html" class="code" title="function y = QuantizeSignal(x,trans_levels)">QuantizeSignal</a>	@fn QuantizeSignal</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">%Script to evaluate ML cost function</span>
+0002 clc;
+0003 
+0004 building = 0;
+0005 scan = 0;
+0006 plotting = 1;
+0007 
+0008 <span class="keyword">if</span> (building)
+0009     <span class="comment">%Building a simulated measurement descriptor</span>
+0010     NoB = 8;
+0011     INL = 5*sin(2*pi*1/254*(0:254)); 
+0012     INL(1) = 0; INL(255) = 0;
+0013     NoS = 1e4;
+0014     amp = 0.52;
+0015     phase = 78/180*pi;
+0016     A = amp*cos(phase);
+0017     B = -amp*sin(phase);
+0018     C = 0.497;
+0019     freq = 13;
+0020     fs = 1e4;
+0021     theta = 2*pi*freq/fs;
+0022     phi = (1:NoS).'*theta;
+0023     sw = A*cos(phi) + B*sin(phi) + C;
+0024     T = <a href="INL2TransLevels.html" class="code" title="function translevels = INL2TransLevels(INL)">INL2TransLevels</a>(INL);
+0025     y = <a href="QuantizeSignal.html" class="code" title="function y = QuantizeSignal(x,trans_levels)">QuantizeSignal</a>(sw,T);
+0026 
+0027     <span class="comment">%Evaluating Cost Function using the simulated parameters</span>
+0028     q = 1/(2^NoB-2);
+0029     p0 = [A;B;C;2*pi*freq/fs;0];
+0030     [L_0,CF_0] = <a href="EvaluateCF.html" class="code" title="function varargout = EvaluateCF(y,p0,NoB,INL)">EvaluateCF</a>(y,p0,NoB,INL);
+0031 
+0032 <span class="keyword">end</span>
+0033 
+0034 <span class="keyword">if</span> (scan)
+0035     <span class="comment">%Scanning the parameter space</span>
+0036     sigmas = [0;q*1e-3;q*1e-2;q*1e-1;q];
+0037     A_res = 81;
+0038     B_res = 81;
+0039     C_res = 1;
+0040     theta_res = 81;
+0041 
+0042     A_range = [-5e-4;5e-4];
+0043     B_range = [-5e-5;5e-5];
+0044     C_range = [-1e-4;1e-4];
+0045     theta_range = [-1e-6;1e-6];
+0046 
+0047     A_axis = linspace(A*(1+A_range(1)),A*(1+A_range(2)),A_res);
+0048     B_axis = linspace(B*(1+B_range(1)),B*(1+B_range(2)),B_res);
+0049     C_axis = linspace(C*(1+C_range(1)),C*(1+C_range(2)),C_res);
+0050     theta_axis = linspace(theta*(1+theta_range(1)),theta*(1+theta_range(2)),theta_res);
+0051 
+0052     <span class="keyword">if</span> (A_res == 1)
+0053         A_axis = A;
+0054     <span class="keyword">end</span>
+0055     <span class="keyword">if</span> (B_res == 1)
+0056         B_axis = B;
+0057     <span class="keyword">end</span>
+0058     <span class="keyword">if</span> (C_res == 1)
+0059         C_axis = C;
+0060     <span class="keyword">end</span>
+0061     <span class="keyword">if</span> (theta_res == 1)
+0062         theta_axis = theta;
+0063     <span class="keyword">end</span>
+0064 
+0065     L = zeros(A_res, B_res, C_res, theta_res);
+0066     CF = zeros(A_res, B_res, C_res, theta_res);
+0067 
+0068     <span class="keyword">for</span> i1 = 1:A_res;
+0069         <span class="keyword">for</span> i2 = 1:B_res
+0070             <span class="keyword">for</span> i3 = 1:C_res;
+0071                 <span class="keyword">for</span> i4 = 1:theta_res;
+0072                     p = [A_axis(i1); B_axis(i2); C_axis(i3); theta_axis(i4); sigmas(2)];
+0073                     [L(i1,i2,i3,i4),CF(i1,i2,i3,i4)] = <a href="EvaluateCF.html" class="code" title="function varargout = EvaluateCF(y,p0,NoB,INL)">EvaluateCF</a>(y,p,NoB,INL);
+0074                 <span class="keyword">end</span>
+0075             <span class="keyword">end</span>
+0076         <span class="keyword">end</span>
+0077     <span class="keyword">end</span>
+0078 <span class="keyword">end</span>
+0079 
+0080 <span class="keyword">if</span> (plotting)
+0081     L_red = zeros(A_res, B_res, theta_res);
+0082     CF_red = zeros(A_res, B_res, theta_res);
+0083     <span class="keyword">for</span> k1 = 1:A_res
+0084         <span class="keyword">for</span> k2 = 1:B_res
+0085             <span class="keyword">for</span> k4 = 1:theta_res
+0086                 L_red(k1,k2,k4) = L(k1,k2,1,k4);
+0087                 CF_red(k1,k2,k4) = CF(k1,k2,1,k4);
+0088             <span class="keyword">end</span>
+0089         <span class="keyword">end</span>
+0090     <span class="keyword">end</span>
+0091     X1 = 0;
+0092     Y1 = 0;
+0093     Z1 = 0;
+0094     plot_index = ones(4,1);
+0095     L_limit = [1e-13;1e-10;1e-8;1e-6;Inf];
+0096     <span class="keyword">for</span> k1 = 1:A_res
+0097         <span class="keyword">for</span> k2 = 1:B_res
+0098             <span class="keyword">for</span> k4 = 1:theta_res
+0099                 <span class="keyword">for</span> level = 1:4
+0100                     <span class="keyword">if</span> (L_red(k1,k2,k4) &gt;= L_limit(level)) &amp;&amp; (L_red(k1,k2,k4) &lt; L_limit(level+1))
+0101                         X1(plot_index(level),level) = (A_axis(k1) - A)/A;
+0102                         Y1(plot_index(level),level) = (B_axis(k2) - B)/B;
+0103                         Z1(plot_index(level),level) = (theta_axis(k4) - theta)/theta;
+0104                         plot_index(level) = plot_index(level) + 1;
+0105                 <span class="keyword">end</span>
+0106                 <span class="keyword">end</span>
+0107             <span class="keyword">end</span>
+0108         <span class="keyword">end</span>
+0109     <span class="keyword">end</span>
+0110 
+0111     Xlev1 = X1(1:plot_index(1)-1,1);
+0112     Xlev2 = X1(1:plot_index(2)-1,2);
+0113     Xlev3 = X1(1:plot_index(3)-1,3);
+0114     Xlev4 = X1(1:plot_index(4)-1,4);
+0115     
+0116     Ylev1 = Y1(1:plot_index(1)-1,1);
+0117     Ylev2 = Y1(1:plot_index(2)-1,2);
+0118     Ylev3 = Y1(1:plot_index(3)-1,3);
+0119     Ylev4 = Y1(1:plot_index(4)-1,4);
+0120 
+0121     Zlev1 = Z1(1:plot_index(1)-1,1);
+0122     Zlev2 = Z1(1:plot_index(2)-1,2);
+0123     Zlev3 = Z1(1:plot_index(3)-1,3);
+0124     Zlev4 = Z1(1:plot_index(4)-1,4);
+0125     
+0126     
+0127     figure(1);
+0128     plot3(Xlev1,Ylev1,Zlev1,<span class="string">'b.'</span>);
+0129     hold on;
+0130     plot3(Xlev2,Ylev2, Zlev2,<span class="string">'g.'</span>);
+0131     hold on;
+0132     plot3(Xlev3, Ylev3, Zlev3,<span class="string">'y.'</span>);
+0133     hold on
+0134     plot3(Xlev4, Ylev4, Zlev4, <span class="string">'r.'</span>);
+0135     shg;
+0136     
+0137 
+0138 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

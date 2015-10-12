@@ -1,0 +1,415 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ProcessDscLS4pFit</title>
+  <meta name="keywords" content="ProcessDscLS4pFit">
+  <meta name="description" content="@fn ProcessDscLS4pFit">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; ProcessDscLS4pFit.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>ProcessDscLS4pFit
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>@fn ProcessDscLS4pFit</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function ProcessDscLS4pFit(dsc,reason) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> @fn ProcessDscLS4pFit
+ @brief Processes measurement descriptor using 4-parameter fit in least
+        squares sense
+ @param dsc The measurement descriptor to process
+ @param reason The reason of 4 parameter fit:
+                   case 'LS4p_only': to calculate residuals and ENOB
+                   otherwise: to get initial estimator for ML fit
+ @return none
+ @author Tam� Virosztek, Budapest University of Technology and Economics,
+         Department of Measurement and Infromation Systems,
+         Virosztek.Tamas@mit.bme.hu</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="DisplayResultsLS4p.html" class="code" title="function DisplayResultsLS4p(p,residuals,timevect,NoB,dsc)">DisplayResultsLS4p</a>	@fn DisplayResultsLS4p</li><li><a href="EstimateFreqBH3Ipfft.html" class="code" title="function f = EstimateFreqBH3Ipfft(x,varargin)">EstimateFreqBH3Ipfft</a>	@fn EstimateFreqBH3Ipfft</li><li><a href="ProcessDscML5pFit.html" class="code" title="function ProcessDscML5pFit(dsc,reduced_data,timevect,pLS)">ProcessDscML5pFit</a>	@fn ProcessDscML5pFit</li><li><a href="SineWaveFit4pLsqNonlin.html" class="code" title="function p = SineWaveFit4pLsqNonlin(datavect,timevect,initial_freq,options)">SineWaveFit4pLsqNonlin</a>	@fn SineWaveFit4pLsqNonlin</li><li><a href="sfit4imp.html" class="code" title="function [X, Rn, Q]=sfit4imp(data, varargin)">sfit4imp</a>	SFIT4IMP  Improved four parameter fit of a sine wave to measured data</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="adctest.html" class="code" title="function adctest">adctest</a>	@fn adctest</li><li><a href="step_1.html" class="code" title="function varargout = step_1(varargin)">step_1</a>	STEP_1 M-file for step_1.fig</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function EditFirstSample_callback(source,eventdata)</a></li><li><a href="#_sub2" class="code">function EditLastSample_callback(source,eventdata)</a></li><li><a href="#_sub3" class="code">function EditAmpLimMax_callback(source,eventdata)</a></li><li><a href="#_sub4" class="code">function EditAmpLimMin_callback(source,eventdata)</a></li><li><a href="#_sub5" class="code">function SelectMethod_callback(source,eventdata)</a></li><li><a href="#_sub6" class="code">function EditMaxIter_callback(source,eventdata)</a></li><li><a href="#_sub7" class="code">function EditMaxFunEvals_callback(source,eventdata)</a></li><li><a href="#_sub8" class="code">function EditTolFun_callback(source,eventdata)</a></li><li><a href="#_sub9" class="code">function SourceOfInitFr_callback(source,eventdata)</a></li><li><a href="#_sub10" class="code">function InitialFrValue_callback(source,eventdata)</a></li><li><a href="#_sub11" class="code">function ProcessAndShowResults_callback(source,eventdata)</a></li><li><a href="#_sub12" class="code">function ProcessAndPerformML_callback(source,eventdata)</a></li><li><a href="#_sub13" class="code">function [datavect,timevect,initial_freq,reduced_data,M] = PreProcessData(first_sample,last_sample,amplim_min,amplim_max,dsc,source_of_initial_fr)</a></li><li><a href="#_sub14" class="code">function UpdateDisplay</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function ProcessDscLS4pFit(dsc,reason)</a>
+0002 <span class="comment">% @fn ProcessDscLS4pFit</span>
+0003 <span class="comment">% @brief Processes measurement descriptor using 4-parameter fit in least</span>
+0004 <span class="comment">%        squares sense</span>
+0005 <span class="comment">% @param dsc The measurement descriptor to process</span>
+0006 <span class="comment">% @param reason The reason of 4 parameter fit:</span>
+0007 <span class="comment">%                   case 'LS4p_only': to calculate residuals and ENOB</span>
+0008 <span class="comment">%                   otherwise: to get initial estimator for ML fit</span>
+0009 <span class="comment">% @return none</span>
+0010 <span class="comment">% @author Tam� Virosztek, Budapest University of Technology and Economics,</span>
+0011 <span class="comment">%         Department of Measurement and Infromation Systems,</span>
+0012 <span class="comment">%         Virosztek.Tamas@mit.bme.hu</span>
+0013 
+0014 screensize = get(0,<span class="string">'ScreenSize'</span>);
+0015 
+0016 <span class="keyword">if</span> strcmpi(reason,<span class="string">'LS4p_only'</span>)
+0017     window_title = <span class="string">'Four parameter LS sine wave fit'</span>;
+0018 <span class="keyword">else</span>
+0019     window_title = <span class="string">'ML parameter estimation: getting initial estimators'</span>;
+0020 <span class="keyword">end</span>
+0021 
+0022 <span class="comment">%initializing state variables:</span>
+0023 <span class="comment">%Method of optimization</span>
+0024 method = <span class="string">'AnnexB'</span>; <span class="comment">%IEEE-1241-2010 Annex B</span>
+0025 source_of_initial_fr = <span class="string">'FFT'</span>;
+0026 initial_fr_value = 1e-2;
+0027 
+0028 
+0029 <span class="comment">%Parameters of optimization:</span>
+0030 first_sample = 1; <span class="comment">%First/last sample options are bypassed here</span>
+0031 last_sample = length(dsc.data);
+0032 amplim_min = 1; <span class="comment">%Amplim is bypassed here</span>
+0033 amplim_max = 2^dsc.NoB - 2;
+0034 options = optimset();
+0035 
+0036 ls_fit_window = figure (<span class="string">'Name'</span>,window_title,<span class="keyword">...</span>
+0037                         <span class="string">'Position'</span>,[screensize(3)*0.25 screensize(4)*0.25 screensize(3)*0.5 screensize(4)*0.5],<span class="keyword">...</span>
+0038                         <span class="string">'NumberTitle'</span>,<span class="string">'off'</span>);
+0039 
+0040 hTextFirstSample = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0041                              <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0042                              <span class="string">'Position'</span>,[0.2 0.38 0.2 0.04],<span class="keyword">...</span>
+0043                              <span class="string">'String'</span>,<span class="string">'First used sample of record: '</span>,<span class="keyword">...</span>
+0044                              <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0045                              <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0046                       
+0047 hEditFirstSample = uicontrol(<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0048                               <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0049                               <span class="string">'Position'</span>,[0.42 0.38 0.06 0.05],<span class="keyword">...</span>
+0050                               <span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,first_sample),<span class="keyword">...</span>
+0051                               <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0052                               <span class="string">'Callback'</span>,@<a href="#_sub1" class="code" title="subfunction EditFirstSample_callback(source,eventdata)">EditFirstSample_callback</a>);
+0053                           
+0054 hTextLastSample = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0055                              <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0056                              <span class="string">'Position'</span>,[0.5 0.38 0.2 0.04],<span class="keyword">...</span>
+0057                              <span class="string">'String'</span>,<span class="string">'Last used sample of record: '</span>,<span class="keyword">...</span>
+0058                              <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0059                              <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0060                           
+0061 hEditLastSample = uicontrol (<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0062                              <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0063                              <span class="string">'Position'</span>,[0.72 0.38 0.06 0.05],<span class="keyword">...</span>
+0064                              <span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,last_sample),<span class="keyword">...</span>
+0065                              <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span><span class="comment">                             </span>
+0066                              <span class="string">'Callback'</span>,@<a href="#_sub2" class="code" title="subfunction EditLastSample_callback(source,eventdata)">EditLastSample_callback</a>);
+0067                          
+0068 hTextAmpLimMax = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0069                              <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0070                              <span class="string">'Position'</span>,[0.2 0.3 0.2 0.04],<span class="keyword">...</span>
+0071                              <span class="string">'String'</span>,<span class="string">'Upper limit (ADC code): '</span>,<span class="keyword">...</span>
+0072                              <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0073                              <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0074                          
+0075 hEditAmpLimMax = uicontrol   (<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0076                               <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0077                               <span class="string">'Position'</span>,[0.42 0.3 0.06 0.05],<span class="keyword">...</span>
+0078                               <span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,amplim_max),<span class="keyword">...</span>
+0079                               <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span><span class="comment">                              </span>
+0080                               <span class="string">'Callback'</span>,@<a href="#_sub3" class="code" title="subfunction EditAmpLimMax_callback(source,eventdata)">EditAmpLimMax_callback</a>);
+0081                          
+0082 hTextAmpLimMin = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0083                              <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0084                              <span class="string">'Position'</span>,[0.5 0.3 0.2 0.04],<span class="keyword">...</span>
+0085                              <span class="string">'String'</span>,<span class="string">'Lower limit (ADC code): '</span>,<span class="keyword">...</span>
+0086                              <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0087                              <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0088 
+0089 hEditAmpLimMin = uicontrol   (<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0090                               <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0091                               <span class="string">'Position'</span>,[0.72 0.3 0.06 0.05],<span class="keyword">...</span>
+0092                               <span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,amplim_min),<span class="keyword">...</span>
+0093                               <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span><span class="comment">                              </span>
+0094                               <span class="string">'Callback'</span>,@<a href="#_sub4" class="code" title="subfunction EditAmpLimMin_callback(source,eventdata)">EditAmpLimMin_callback</a>);
+0095 
+0096                         
+0097 hTextAdvancedSettings = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0098                                  <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0099                                  <span class="string">'Position'</span>,[0.35 0.93 0.3 0.05],<span class="keyword">...</span>
+0100                                  <span class="string">'String'</span>,<span class="string">'Advanced settings of LS fit'</span>,<span class="keyword">...</span>
+0101                                  <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0102                                  <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>);                                 
+0103                              
+0104 hTextSelectMethod = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0105                               <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0106                               <span class="string">'Position'</span>,[0.2 0.85 0.2 0.04],<span class="keyword">...</span>
+0107                               <span class="string">'String'</span>,<span class="string">'Method: '</span>,<span class="keyword">...</span>
+0108                               <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span><span class="comment">                                                           </span>
+0109                               <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0110                              
+0111 hPopupSelectMethod = uicontrol(<span class="string">'Style'</span>,<span class="string">'popup'</span>,<span class="keyword">...</span>
+0112                                <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0113                                <span class="string">'Position'</span>,[0.4 0.85 0.4 0.05],<span class="keyword">...</span>
+0114                                <span class="string">'String'</span>,{<span class="string">'IEEE-1241-2010 Annex B'</span>,<span class="string">'LsqNonlin'</span>},<span class="keyword">...</span>
+0115                                <span class="string">'Callback'</span>,@<a href="#_sub5" class="code" title="subfunction SelectMethod_callback(source,eventdata)">SelectMethod_callback</a>);
+0116 
+0117 hTextMaxIter = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0118                          <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0119                          <span class="string">'Position'</span>,[0.2 0.77 0.4 0.04],<span class="keyword">...</span>
+0120                          <span class="string">'String'</span>,<span class="string">'Max. number of iterations: '</span>,<span class="keyword">...</span>
+0121                          <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0122                          <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0123                           
+0124 hEditMaxIter = uicontrol(<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0125                          <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0126                          <span class="string">'Position'</span>, [0.6 0.77 0.2 0.05],<span class="keyword">...</span>
+0127                          <span class="string">'String'</span>,<span class="string">'Default'</span>,<span class="keyword">...</span>
+0128                          <span class="string">'Enable'</span>,<span class="string">'off'</span>,<span class="keyword">...</span>
+0129                          <span class="string">'Callback'</span>,@<a href="#_sub6" class="code" title="subfunction EditMaxIter_callback(source,eventdata)">EditMaxIter_callback</a>);
+0130                            
+0131 hTextMaxFunEvals = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0132                              <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0133                              <span class="string">'Position'</span>,[0.2 0.69 0.4 0.04],<span class="keyword">...</span>
+0134                              <span class="string">'String'</span>,<span class="string">'Max. number of function evaluations: '</span>,<span class="keyword">...</span>
+0135                              <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span><span class="comment">                             </span>
+0136                              <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0137 
+0138 hEditMaxFunEvals = uicontrol(<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0139                              <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0140                              <span class="string">'Position'</span>, [0.6 0.69 0.2 0.05],<span class="keyword">...</span>
+0141                              <span class="string">'String'</span>,<span class="string">'Default'</span>,<span class="keyword">...</span>
+0142                              <span class="string">'Enable'</span>,<span class="string">'off'</span>,<span class="keyword">...</span>
+0143                              <span class="string">'Callback'</span>,@<a href="#_sub7" class="code" title="subfunction EditMaxFunEvals_callback(source,eventdata)">EditMaxFunEvals_callback</a>);
+0144 
+0145 hTextTolFun = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0146                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0147                         <span class="string">'Position'</span>,[0.2 0.62 0.4 0.04],<span class="keyword">...</span>
+0148                         <span class="string">'String'</span>,<span class="string">'Termination tolerance on cost function'</span>,<span class="keyword">...</span>
+0149                         <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span><span class="comment">                             </span>
+0150                         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0151                         
+0152 hEditTolFun = uicontrol(<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0153                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0154                         <span class="string">'Position'</span>, [0.6 0.62 0.2 0.05],<span class="keyword">...</span>
+0155                         <span class="string">'String'</span>,<span class="string">'Default'</span>,<span class="keyword">...</span>
+0156                         <span class="string">'Enable'</span>,<span class="string">'off'</span>,<span class="keyword">...</span>
+0157                         <span class="string">'Callback'</span>,@<a href="#_sub8" class="code" title="subfunction EditTolFun_callback(source,eventdata)">EditTolFun_callback</a>);
+0158                     
+0159 hTextSourceOfInitFr =  uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0160                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0161                         <span class="string">'Position'</span>,[0.2 0.54 0.3 0.04],<span class="keyword">...</span>
+0162                         <span class="string">'String'</span>,<span class="string">'Source of initial frequency estimator: '</span>,<span class="keyword">...</span>
+0163                         <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span><span class="comment">                             </span>
+0164                         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0165                     
+0166 hPopupSourceOfInitFr = uicontrol(<span class="string">'Style'</span>,<span class="string">'popup'</span>,<span class="keyword">...</span>
+0167                                <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0168                                <span class="string">'Position'</span>,[0.5 0.54 0.3 0.05],<span class="keyword">...</span>
+0169                                <span class="string">'String'</span>,{<span class="string">'FFT'</span>,<span class="string">'ipFFT (without windowing)'</span>,<span class="string">'ipFFT (Hann window)'</span>,<span class="string">'ipFFT (Blackman window)'</span>,<span class="string">'User-specified'</span>},<span class="keyword">...</span>
+0170                                <span class="string">'Callback'</span>,@<a href="#_sub9" class="code" title="subfunction SourceOfInitFr_callback(source,eventdata)">SourceOfInitFr_callback</a>);
+0171                            
+0172 hTextInitialFrValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0173                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0174                         <span class="string">'Position'</span>,[0.2 0.46 0.4 0.04],<span class="keyword">...</span>
+0175                         <span class="string">'String'</span>,<span class="string">'Value of initial frequency estimator (f/fs): '</span>,<span class="keyword">...</span>
+0176                         <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span><span class="comment">                             </span>
+0177                         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);                          
+0178 
+0179 hEditInitialFrValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0180                                 <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0181                                 <span class="string">'Position'</span>,[0.6 0.46 0.2 0.04],<span class="keyword">...</span>
+0182                                 <span class="string">'String'</span>,<span class="string">'1e-2'</span>,<span class="keyword">...</span>
+0183                                 <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0184                                 <span class="string">'Enable'</span>,<span class="string">'off'</span>,<span class="keyword">...</span>
+0185                                 <span class="string">'Callback'</span>,@<a href="#_sub10" class="code" title="subfunction InitialFrValue_callback(source,eventdata)">InitialFrValue_callback</a>);
+0186                     
+0187 <span class="keyword">if</span> strcmpi(reason,<span class="string">'LS4p_only'</span>)
+0188     hPushButtonProcess = uicontrol (<span class="string">'Style'</span>,<span class="string">'pushbutton'</span>,<span class="keyword">...</span>
+0189                                  <span class="string">'String'</span>,<span class="string">'Perform LS fit and show results'</span>,<span class="keyword">...</span>
+0190                                  <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0191                                  <span class="string">'Position'</span>,[0.3 0.1 0.4 0.1],<span class="keyword">...</span>
+0192                                  <span class="string">'Callback'</span>,@<a href="#_sub11" class="code" title="subfunction ProcessAndShowResults_callback(source,eventdata)">ProcessAndShowResults_callback</a>);
+0193 <span class="keyword">else</span>
+0194     hPushButtonProcess =  uicontrol (<span class="string">'Style'</span>,<span class="string">'pushbutton'</span>,<span class="keyword">...</span>
+0195                                  <span class="string">'String'</span>,<span class="string">'Get initial estimators and perform ML fit'</span>,<span class="keyword">...</span>
+0196                                  <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0197                                  <span class="string">'Position'</span>,[0.3 0.1 0.4 0.1],<span class="keyword">...</span>
+0198                                  <span class="string">'Callback'</span>,@<a href="#_sub12" class="code" title="subfunction ProcessAndPerformML_callback(source,eventdata)">ProcessAndPerformML_callback</a>);
+0199 <span class="keyword">end</span>
+0200                                                                   
+0201 
+0202     <a name="_sub1" href="#_subfunctions" class="code">function EditFirstSample_callback(source,eventdata)</a>
+0203         first_sample = str2double(get(source,<span class="string">'String'</span>));
+0204     <span class="keyword">end</span>
+0205     
+0206     <a name="_sub2" href="#_subfunctions" class="code">function EditLastSample_callback(source,eventdata)</a>
+0207         last_sample = str2double(get(source,<span class="string">'String'</span>));
+0208     <span class="keyword">end</span>
+0209 
+0210     <a name="_sub3" href="#_subfunctions" class="code">function EditAmpLimMax_callback(source,eventdata)</a>
+0211         amplim_max = str2double(get(source,<span class="string">'String'</span>));
+0212     <span class="keyword">end</span>
+0213 
+0214     <a name="_sub4" href="#_subfunctions" class="code">function EditAmpLimMin_callback(source,eventdata)</a>
+0215         amplim_min = str2double(get(source,<span class="string">'String'</span>));
+0216     <span class="keyword">end</span>
+0217 
+0218     <a name="_sub5" href="#_subfunctions" class="code">function SelectMethod_callback(source,eventdata)</a>
+0219         <span class="keyword">if</span> (get(source,<span class="string">'Value'</span>) == 1) <span class="comment">%IEEE-1241-2010 Annex B</span>
+0220             method = <span class="string">'AnnexB'</span>;
+0221             <a href="#_sub14" class="code" title="subfunction UpdateDisplay">UpdateDisplay</a>;
+0222         <span class="keyword">elseif</span> (get(source,<span class="string">'Value'</span>) == 2) <span class="comment">%Lsqnonlin with Levenberg-Marquardt step</span>
+0223             method = <span class="string">'LsqNonlin'</span>;
+0224             options.LevenbergMaquardt = <span class="string">'on'</span>;
+0225             <a href="#_sub14" class="code" title="subfunction UpdateDisplay">UpdateDisplay</a>;
+0226         <span class="keyword">else</span>
+0227         <span class="keyword">end</span>
+0228     <span class="keyword">end</span>
+0229 
+0230     <a name="_sub6" href="#_subfunctions" class="code">function EditMaxIter_callback(source,eventdata)</a>
+0231         <span class="keyword">if</span> strcmpi(get(source,<span class="string">'String'</span>),<span class="string">'Default'</span>)
+0232             options.MaxIter = [];
+0233         <span class="keyword">else</span>
+0234             options.MaxIter = str2double(get(source,<span class="string">'String'</span>));
+0235         <span class="keyword">end</span>
+0236     <span class="keyword">end</span>
+0237 
+0238     <a name="_sub7" href="#_subfunctions" class="code">function EditMaxFunEvals_callback(source,eventdata)</a>
+0239         <span class="keyword">if</span> strcmpi(get(source,<span class="string">'String'</span>),<span class="string">'Default'</span>)
+0240             options.MaxFunEvals = [];
+0241         <span class="keyword">else</span>
+0242             options.MaxFunEvals = str2double(get(source,<span class="string">'String'</span>));
+0243         <span class="keyword">end</span>
+0244     <span class="keyword">end</span>
+0245 
+0246     <a name="_sub8" href="#_subfunctions" class="code">function EditTolFun_callback(source,eventdata)</a>
+0247         <span class="keyword">if</span> strcmpi(get(source,<span class="string">'String'</span>),<span class="string">'Default'</span>)
+0248             options.TolFun = [];
+0249         <span class="keyword">else</span>
+0250             options.TolFun = str2double(get(source,<span class="string">'String'</span>));
+0251         <span class="keyword">end</span>        
+0252     <span class="keyword">end</span>
+0253 
+0254     <a name="_sub9" href="#_subfunctions" class="code">function SourceOfInitFr_callback(source,eventdata)</a>
+0255         popup_strings = get(source,<span class="string">'String'</span>);
+0256         source_of_initial_fr = popup_strings{get(source,<span class="string">'Value'</span>)};
+0257         <a href="#_sub14" class="code" title="subfunction UpdateDisplay">UpdateDisplay</a>;
+0258     <span class="keyword">end</span>
+0259 
+0260     <a name="_sub10" href="#_subfunctions" class="code">function InitialFrValue_callback(source,eventdata)</a>
+0261         initial_fr_value = str2double(get(source,<span class="string">'String'</span>));
+0262     <span class="keyword">end</span>
+0263 
+0264 
+0265     <a name="_sub11" href="#_subfunctions" class="code">function ProcessAndShowResults_callback(source,eventdata)</a>
+0266         <span class="comment">%Pre-processing data</span>
+0267         [datavect,timevect,initial_freq,reduced_data,M] = <a href="#_sub13" class="code" title="subfunction [datavect,timevect,initial_freq,reduced_data,M] = PreProcessData(first_sample,last_sample,amplim_min,amplim_max,dsc,source_of_initial_fr)">PreProcessData</a>(first_sample,last_sample,amplim_min,amplim_max,dsc,source_of_initial_fr);  
+0268         <span class="comment">%In case of user-specified initial frequency estimator</span>
+0269         <span class="keyword">if</span> strcmpi(source_of_initial_fr,<span class="string">'User-specified'</span>) 
+0270             initial_freq = initial_fr_value;
+0271         <span class="keyword">end</span>
+0272                 
+0273         <span class="comment">%Fitting sine wave 4p LS sense</span>
+0274         <span class="keyword">if</span> strcmpi(method,<span class="string">'AnnexB'</span>)
+0275             [X] = <a href="sfit4imp.html" class="code" title="function [X, Rn, Q]=sfit4imp(data, varargin)">sfit4imp</a>(datavect,timevect,1,initial_freq,<span class="string">'No'</span>); <span class="comment">%Initial frequency is given relative to the sample rate</span>
+0276             p = zeros(4,1);
+0277             p(1) = X.A*cos(X.phi/180*pi) ;
+0278             p(2) = (-1)*X.A*sin(X.phi/180*pi);
+0279             p(3) = X.DC;
+0280             p(4) = 2*pi*X.f;
+0281             fitted_sinewave = (p(1)*cos((1:M).'*p(4)) + p(2)*sin((1:M).'*p(4)) + p(3));
+0282             residuals = fitted_sinewave(timevect) - datavect;            
+0283         <span class="keyword">else</span>
+0284             p = <a href="SineWaveFit4pLsqNonlin.html" class="code" title="function p = SineWaveFit4pLsqNonlin(datavect,timevect,initial_freq,options)">SineWaveFit4pLsqNonlin</a>(datavect,timevect,initial_freq,options);
+0285             fitted_sinewave = (p(1)*cos((1:M).'*p(4)) + p(2)*sin((1:M).'*p(4)) + p(3));
+0286             residuals = fitted_sinewave(timevect) - datavect;
+0287         <span class="keyword">end</span>
+0288 
+0289         <span class="comment">%Displaying results</span>
+0290         <a href="DisplayResultsLS4p.html" class="code" title="function DisplayResultsLS4p(p,residuals,timevect,NoB,dsc)">DisplayResultsLS4p</a>(p,residuals,timevect,dsc.NoB,dsc);
+0291     <span class="keyword">end</span>
+0292 
+0293     <a name="_sub12" href="#_subfunctions" class="code">function ProcessAndPerformML_callback(source,eventdata)</a>
+0294         <span class="comment">%Pre-processing data</span>
+0295         [datavect,timevect,initial_freq,reduced_data,M] = <a href="#_sub13" class="code" title="subfunction [datavect,timevect,initial_freq,reduced_data,M] = PreProcessData(first_sample,last_sample,amplim_min,amplim_max,dsc,source_of_initial_fr)">PreProcessData</a>(first_sample,last_sample,amplim_min,amplim_max,dsc,source_of_initial_fr);  
+0296         <span class="comment">%In case of user-specified initial frequency estimator</span>
+0297         <span class="keyword">if</span> strcmpi(source_of_initial_fr,<span class="string">'User-specified'</span>) 
+0298             initial_freq = initial_fr_value;
+0299         <span class="keyword">end</span>
+0300        
+0301         <span class="comment">%Fitting sine wave 4p LS sense</span>
+0302         <span class="keyword">if</span> strcmpi(method,<span class="string">'AnnexB'</span>)
+0303             [X] = <a href="sfit4imp.html" class="code" title="function [X, Rn, Q]=sfit4imp(data, varargin)">sfit4imp</a>(datavect,timevect,1,initial_freq,<span class="string">'No'</span>); <span class="comment">%Initial frequency is given relative to the sample rate</span>
+0304             p = zeros(4,1);
+0305             p(1) = X.A*cos(X.phi/180*pi);
+0306             p(2) = (-1)*X.A*sin(X.phi/180*pi);
+0307             p(3) = X.DC;
+0308             p(4) = 2*pi*X.f;
+0309         <span class="keyword">else</span>            
+0310             p = <a href="SineWaveFit4pLsqNonlin.html" class="code" title="function p = SineWaveFit4pLsqNonlin(datavect,timevect,initial_freq,options)">SineWaveFit4pLsqNonlin</a>(datavect,timevect,initial_freq,options);
+0311         <span class="keyword">end</span>
+0312         <a href="ProcessDscML5pFit.html" class="code" title="function ProcessDscML5pFit(dsc,reduced_data,timevect,pLS)">ProcessDscML5pFit</a>(dsc,reduced_data,timevect,p);        
+0313     <span class="keyword">end</span>
+0314 
+0315         <a name="_sub13" href="#_subfunctions" class="code">function [datavect,timevect,initial_freq,reduced_data,M] = PreProcessData(first_sample,last_sample,amplim_min,amplim_max,dsc,source_of_initial_fr)            </a>
+0316             <span class="comment">%Getting initial frequency estimator:</span>
+0317             NFFT = 1e6;
+0318             reduced_data = dsc.data(first_sample:last_sample);            
+0319             initial_freq = <a href="EstimateFreqBH3Ipfft.html" class="code" title="function f = EstimateFreqBH3Ipfft(x,varargin)">EstimateFreqBH3Ipfft</a>(reduced_data,NFFT,source_of_initial_fr);
+0320 
+0321             <span class="comment">%Discarding samples according to amplitude limits:</span>
+0322             M = length(reduced_data);            
+0323             timevect = zeros(M,1);
+0324             l = 1;
+0325             <span class="keyword">for</span> k = 1:M
+0326                 <span class="keyword">if</span> (reduced_data(k) &lt;= amplim_max) &amp;&amp; (reduced_data(k) &gt;= amplim_min)
+0327                     timevect(l) = k;
+0328                     l = l + 1;
+0329                 <span class="keyword">end</span>
+0330             <span class="keyword">end</span>                    
+0331             timevect = timevect(1:l-1);
+0332             datavect = reduced_data(timevect);
+0333             <span class="comment">%Forcing column vectors</span>
+0334             timevect = timevect(:);
+0335             datavect = datavect(:);
+0336         <span class="keyword">end</span>
+0337 
+0338     <a name="_sub14" href="#_subfunctions" class="code">function UpdateDisplay</a>
+0339         <span class="keyword">if</span> strcmpi (method,<span class="string">'AnnexB'</span>)
+0340             set(hEditMaxIter,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0341             set(hEditMaxFunEvals,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0342             set(hEditTolFun,<span class="string">'Enable'</span>,<span class="string">'off'</span>);            
+0343         <span class="keyword">else</span>
+0344             set(hEditMaxIter,<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0345             set(hEditMaxFunEvals,<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0346             set(hEditTolFun,<span class="string">'Enable'</span>,<span class="string">'on'</span>);            
+0347         <span class="keyword">end</span>
+0348             popup_strings = get(hPopupSourceOfInitFr,<span class="string">'String'</span>); <span class="comment">%Souce of initial frequency estimator</span>
+0349             <span class="keyword">if</span> strcmpi(popup_strings{get(hPopupSourceOfInitFr,<span class="string">'Value'</span>)},<span class="string">'User-specified'</span>)
+0350                 set(hEditInitialFrValue,<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0351             <span class="keyword">else</span>
+0352                 set(hEditInitialFrValue,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0353             <span class="keyword">end</span>
+0354         
+0355     <span class="keyword">end</span>
+0356 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

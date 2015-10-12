@@ -1,0 +1,486 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of SimulateMeasurement</title>
+  <meta name="keywords" content="SimulateMeasurement">
+  <meta name="description" content="@fn SimulateMeesurement">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; SimulateMeasurement.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>SimulateMeasurement
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>@fn SimulateMeesurement</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [datavect,parameters,success] = SimulateMeasurement(NoB) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> @fn SimulateMeesurement
+ @brief Implements a graphical tool to perform simulated measurements
+ @param NoB The number of bits of the ADC
+ @return datavect The ADC codes &quot;recorded&quot; at the output of the simulated
+                  ADC
+ @return parameters The parameters of the excitation signal and the ADC in
+                    the simulation
+ @return succes is 1 if simulation succeeded, 0 otherwise
+ @author Tam� Virosztek, Budapest University of Technology and Economics,
+         Department of Measurement and Information Systems,
+         Virosztek.Tamas@mit.bme.hu</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="INL2TransLevels.html" class="code" title="function translevels = INL2TransLevels(INL)">INL2TransLevels</a>	@fn INL2TransLevels</li><li><a href="QuantizeSignal.html" class="code" title="function y = QuantizeSignal(x,trans_levels)">QuantizeSignal</a>	@fn QuantizeSignal</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="CreateNewDsc.html" class="code" title="function [new_dsc,success] = CreateNewDsc">CreateNewDsc</a>	@fn CreateNewDsc</li><li><a href="EditDsc.html" class="code" title="function [temp_dsc,success] = EditDsc(old_dsc)">EditDsc</a>	@fn EditDsc</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function HelpHowToSimulate_callback(source,eventdata)</a></li><li><a href="#_sub2" class="code">function EditNumberOfBits_callback(source,eventdata)</a></li><li><a href="#_sub3" class="code">function EditNumberOfSamples_callback(source,eventdata)</a></li><li><a href="#_sub4" class="code">function EditNumberOfPeriods_callback(source,eventdata)</a></li><li><a href="#_sub5" class="code">function AmpPhaseVsCosineSineSelector_callback(source,eventdata)</a></li><li><a href="#_sub6" class="code">function EditCosineCoefficient_callback(source,eventdata)</a></li><li><a href="#_sub7" class="code">function EditSineCoefficient_callback(source,eventdata)</a></li><li><a href="#_sub8" class="code">function EditDCComponent_callback(source,eventdata)</a></li><li><a href="#_sub9" class="code">function EditStdOfNoise_callback(source,eventdata)</a></li><li><a href="#_sub10" class="code">function INLShapeSelector_callback(source,eventdata)</a></li><li><a href="#_sub11" class="code">function EditINLShapeCoefficient_callback(source,eventdata)</a></li><li><a href="#_sub12" class="code">function NoiseOnINLSelector_callback(source,eventdata)</a></li><li><a href="#_sub13" class="code">function EditNoiseOnINLCoefficient_callback(source,eventdata)</a></li><li><a href="#_sub14" class="code">function INLSelectionMethod_callback(source,eventdata)</a></li><li><a href="#_sub15" class="code">function EditINLFromWorkspace_callback(source,eventdata)</a></li><li><a href="#_sub16" class="code">function SimulateMeasurement_callback(source,eventdata)</a></li><li><a href="#_sub17" class="code">function Cancel_callback(source,eventdata)</a></li><li><a href="#_sub18" class="code">function UpdateDisplay</a></li><li><a href="#_sub19" class="code">function SynchronizeAB</a></li><li><a href="#_sub20" class="code">function SynchronizeAmpPhase</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [datavect,parameters,success] = SimulateMeasurement(NoB)</a>
+0002 <span class="comment">% @fn SimulateMeesurement</span>
+0003 <span class="comment">% @brief Implements a graphical tool to perform simulated measurements</span>
+0004 <span class="comment">% @param NoB The number of bits of the ADC</span>
+0005 <span class="comment">% @return datavect The ADC codes &quot;recorded&quot; at the output of the simulated</span>
+0006 <span class="comment">%                  ADC</span>
+0007 <span class="comment">% @return parameters The parameters of the excitation signal and the ADC in</span>
+0008 <span class="comment">%                    the simulation</span>
+0009 <span class="comment">% @return succes is 1 if simulation succeeded, 0 otherwise</span>
+0010 <span class="comment">% @author Tam� Virosztek, Budapest University of Technology and Economics,</span>
+0011 <span class="comment">%         Department of Measurement and Information Systems,</span>
+0012 <span class="comment">%         Virosztek.Tamas@mit.bme.hu</span>
+0013 
+0014     screen_size = get(0,<span class="string">'ScreenSize'</span>);
+0015     simulate_measurement_window = figure(<span class="string">'Name'</span>,<span class="string">'Performing simulated measurement'</span>,<span class="keyword">...</span>
+0016                                          <span class="string">'Position'</span>,[screen_size(3)*0.2, screen_size(4)*0.2, screen_size(3)*0.6, screen_size(4)*0.6],<span class="keyword">...</span>
+0017                                          <span class="string">'NumberTitle'</span>,<span class="string">'off'</span>);
+0018 
+0019     hTextNumberOfBits = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0020                                      <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0021                                      <span class="string">'Position'</span>,[0.1 0.9 0.15 0.04],<span class="keyword">...</span>
+0022                                      <span class="string">'String'</span>,<span class="string">'Number of bits: '</span>,<span class="keyword">...</span>
+0023                                      <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0024                                      <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);                                     
+0025     hEditNumberOfBits = uicontrol(<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0026                                      <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0027                                      <span class="string">'Position'</span>,[0.25 0.9 0.15 0.04],<span class="keyword">...</span>
+0028                                      <span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,NoB),<span class="keyword">...</span>
+0029                                      <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0030                                      <span class="string">'Callback'</span>,@<a href="#_sub2" class="code" title="subfunction EditNumberOfBits_callback(source,eventdata)">EditNumberOfBits_callback</a>);
+0031                                      
+0032     hTextNumberOfSamples = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0033                                      <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0034                                      <span class="string">'Position'</span>,[0.1 0.8 0.15 0.04],<span class="keyword">...</span>
+0035                                      <span class="string">'String'</span>,<span class="string">'Number of samples: '</span>,<span class="keyword">...</span>
+0036                                      <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0037                                      <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);                                     
+0038     hEditNumberOfSamples = uicontrol(<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0039                                      <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0040                                      <span class="string">'Position'</span>,[0.25 0.8 0.15 0.04],<span class="keyword">...</span>
+0041                                      <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0042                                      <span class="string">'Callback'</span>,@<a href="#_sub3" class="code" title="subfunction EditNumberOfSamples_callback(source,eventdata)">EditNumberOfSamples_callback</a>);
+0043                                  
+0044 
+0045     hTextNumberOfPeriods = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0046                                      <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0047                                      <span class="string">'Position'</span>,[0.1 0.7 0.15 0.04],<span class="keyword">...</span>
+0048                                      <span class="string">'String'</span>,<span class="string">'Number of periods: '</span>,<span class="keyword">...</span>
+0049                                      <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0050                                      <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);                                     
+0051     hEditNumberOfPeriods = uicontrol(<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0052                                      <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0053                                      <span class="string">'Position'</span>,[0.25 0.7 0.15 0.04],<span class="keyword">...</span>
+0054                                      <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0055                                      <span class="string">'Callback'</span>,@<a href="#_sub4" class="code" title="subfunction EditNumberOfPeriods_callback(source,eventdata)">EditNumberOfPeriods_callback</a>);
+0056 
+0057     hTextAmpPhaseVsCosineSineSelector = uicontrol (<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0058                                                    <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0059                                                    <span class="string">'Position'</span>,[0.1 0.6 0.15 0.04],<span class="keyword">...</span>
+0060                                                    <span class="string">'String'</span>,<span class="string">'Description method: '</span>,<span class="keyword">...</span>
+0061                                                    <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0062                                                    <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);                                     
+0063                                                                                                                                        
+0064     hPopupMenuAmpPhaseVsCosineSineSelector = uicontrol (<span class="string">'Style'</span>,<span class="string">'popupmenu'</span>,<span class="keyword">...</span>
+0065                                                 <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0066                                                 <span class="string">'Position'</span>,[0.25 0.6 0.15 0.04],<span class="keyword">...</span>
+0067                                                 <span class="string">'String'</span>,{<span class="string">'Cosine &amp; Sine'</span>,<span class="string">'Amplitude &amp; Phase'</span>},<span class="keyword">...</span>
+0068                                                 <span class="string">'Callback'</span>,@<a href="#_sub5" class="code" title="subfunction AmpPhaseVsCosineSineSelector_callback(source,eventdata)">AmpPhaseVsCosineSineSelector_callback</a>);
+0069                                             
+0070     hTextCosineCoefficient = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0071                                      <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0072                                      <span class="string">'Position'</span>,[0.1 0.5 0.15 0.04],<span class="keyword">...</span>
+0073                                      <span class="string">'String'</span>,<span class="string">'Cosine coefficient (A): '</span>,<span class="keyword">...</span>
+0074                                      <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0075                                      <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);    
+0076     hEditCosineCoefficient = uicontrol(<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0077                                      <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0078                                      <span class="string">'Position'</span>,[0.25 0.5 0.15 0.04],<span class="keyword">...</span>
+0079                                      <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0080                                      <span class="string">'Callback'</span>,@<a href="#_sub6" class="code" title="subfunction EditCosineCoefficient_callback(source,eventdata)">EditCosineCoefficient_callback</a>);
+0081                                  
+0082     hTextSineCoefficient = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0083                                      <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0084                                      <span class="string">'Position'</span>,[0.1 0.4 0.15 0.04],<span class="keyword">...</span>
+0085                                      <span class="string">'String'</span>,<span class="string">'Sine coefficient (B): '</span>,<span class="keyword">...</span>
+0086                                      <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0087                                      <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);    
+0088     hEditSineCoefficient = uicontrol(<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0089                                      <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0090                                      <span class="string">'Position'</span>,[0.25 0.4 0.15 0.04],<span class="keyword">...</span>
+0091                                      <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0092                                      <span class="string">'Callback'</span>,@<a href="#_sub7" class="code" title="subfunction EditSineCoefficient_callback(source,eventdata)">EditSineCoefficient_callback</a>);
+0093 
+0094     hTextDCComponent = uicontrol (<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0095                                      <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0096                                      <span class="string">'Position'</span>,[0.1 0.3 0.15 0.04],<span class="keyword">...</span>
+0097                                      <span class="string">'String'</span>,<span class="string">'DC component: '</span>,<span class="keyword">...</span>
+0098                                      <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0099                                      <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);    
+0100     hEditDCComponent = uicontrol(<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0101                                      <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0102                                      <span class="string">'Position'</span>,[0.25 0.3 0.15 0.04],<span class="keyword">...</span>
+0103                                      <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0104                                      <span class="string">'Callback'</span>,@<a href="#_sub8" class="code" title="subfunction EditDCComponent_callback(source,eventdata)">EditDCComponent_callback</a>);
+0105                                                                   
+0106     hTextStdOfNoise = uicontrol (<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0107                                      <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0108                                      <span class="string">'Position'</span>,[0.1 0.2 0.15 0.04],<span class="keyword">...</span>
+0109                                      <span class="string">'String'</span>,<span class="string">'Std of noise: '</span>,<span class="keyword">...</span>
+0110                                      <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0111                                      <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);    
+0112     hEditStdOfNoise = uicontrol(<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0113                                      <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0114                                      <span class="string">'Position'</span>,[0.25 0.2 0.15 0.04],<span class="keyword">...</span>
+0115                                      <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0116                                      <span class="string">'Callback'</span>,@<a href="#_sub9" class="code" title="subfunction EditStdOfNoise_callback(source,eventdata)">EditStdOfNoise_callback</a>);
+0117 
+0118     hTextINLSelectionMethod = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0119                                      <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0120                                      <span class="string">'Position'</span>,[0.6 0.9 0.15 0.04],<span class="keyword">...</span>
+0121                                      <span class="string">'String'</span>,<span class="string">'Determination of INL: '</span>,<span class="keyword">...</span>
+0122                                      <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0123                                      <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0124     hPopupMenuINLSelectionMethod = uicontrol(<span class="string">'Style'</span>,<span class="string">'popupmenu'</span>,<span class="keyword">...</span>
+0125                                          <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0126                                          <span class="string">'Position'</span>,[0.75 0.9 0.15 0.04],<span class="keyword">...</span>
+0127                                          <span class="string">'String'</span>,{<span class="string">'Edit here'</span>,<span class="string">'Import from WS'</span>},<span class="keyword">...</span>
+0128                                          <span class="string">'Callback'</span>,@<a href="#_sub14" class="code" title="subfunction INLSelectionMethod_callback(source,eventdata)">INLSelectionMethod_callback</a>);
+0129                                      
+0130     hTextINLFromWorkspace = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0131                                      <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0132                                      <span class="string">'Position'</span>,[0.6 0.8 0.15 0.04],<span class="keyword">...</span>
+0133                                      <span class="string">'String'</span>,<span class="string">'INL from workspace: '</span>,<span class="keyword">...</span>
+0134                                      <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0135                                      <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);                                 
+0136     hEditINLFromWorkspace = uicontrol (<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0137                                        <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0138                                        <span class="string">'Position'</span>,[0.75 0.8 0.15 0.04],<span class="keyword">...</span>
+0139                                        <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0140                                        <span class="string">'Enable'</span>,<span class="string">'off'</span>,<span class="keyword">...</span>
+0141                                        <span class="string">'Callback'</span>,@<a href="#_sub15" class="code" title="subfunction EditINLFromWorkspace_callback(source,eventdata)">EditINLFromWorkspace_callback</a>);
+0142                                                                   
+0143     hTextINLShapeSelector = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0144                                      <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0145                                      <span class="string">'Position'</span>,[0.6 0.7 0.15 0.04],<span class="keyword">...</span>
+0146                                      <span class="string">'String'</span>,<span class="string">'Shape of INL: '</span>,<span class="keyword">...</span>
+0147                                      <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0148                                      <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);    
+0149     hPopupMenuINLShapeSelector = uicontrol(<span class="string">'Style'</span>,<span class="string">'popup'</span>,<span class="keyword">...</span>
+0150                                           <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0151                                           <span class="string">'Position'</span>,[0.75 0.7 0.15 0.04],<span class="keyword">...</span>
+0152                                           <span class="string">'String'</span>,{<span class="string">'None'</span>,<span class="string">'Hann window'</span>,<span class="string">'Sine wave'</span>},<span class="keyword">...</span>
+0153                                           <span class="string">'Callback'</span>,@<a href="#_sub10" class="code" title="subfunction INLShapeSelector_callback(source,eventdata)">INLShapeSelector_callback</a>);
+0154                                       
+0155     hTextINLShapeCoefficient = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0156                                      <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0157                                      <span class="string">'Position'</span>,[0.6 0.6 0.2 0.04],<span class="keyword">...</span>
+0158                                      <span class="string">'String'</span>,<span class="string">'Magnitude of INL shape (in LSB): '</span>,<span class="keyword">...</span>
+0159                                      <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0160                                      <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);    
+0161     hEditINLShapeCoefficient = uicontrol (<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0162                                      <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0163                                      <span class="string">'Position'</span>,[0.8 0.6 0.1 0.04],<span class="keyword">...</span>
+0164                                      <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0165                                      <span class="string">'Callback'</span>,@<a href="#_sub11" class="code" title="subfunction EditINLShapeCoefficient_callback(source,eventdata)">EditINLShapeCoefficient_callback</a>);
+0166                                         
+0167     hTextNoiseOnINLSelector = uicontrol (<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0168                                          <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0169                                          <span class="string">'Position'</span>,[0.6 0.5 0.15 0.04],<span class="keyword">...</span>
+0170                                          <span class="string">'String'</span>,<span class="string">'Type of noise on INL shape: '</span>,<span class="keyword">...</span>
+0171                                          <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0172                                          <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);    
+0173     hPopupMenuNoiseOnINLSelector = uicontrol(<span class="string">'Style'</span>,<span class="string">'popup'</span>,<span class="keyword">...</span>
+0174                                           <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0175                                           <span class="string">'Position'</span>,[0.75 0.5 0.15 0.04],<span class="keyword">...</span>
+0176                                           <span class="string">'String'</span>,{<span class="string">'None'</span>,<span class="string">'Normal distribution'</span>,<span class="string">'Uniform distribution'</span>},<span class="keyword">...</span>
+0177                                           <span class="string">'Callback'</span>,@<a href="#_sub12" class="code" title="subfunction NoiseOnINLSelector_callback(source,eventdata)">NoiseOnINLSelector_callback</a>);
+0178                                  
+0179     hTextNoiseOnINLCoefficient = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0180                                      <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0181                                      <span class="string">'Position'</span>,[0.6 0.4 0.2 0.04],<span class="keyword">...</span>
+0182                                      <span class="string">'String'</span>,<span class="string">'Deviation of noise on INL (in LSB): '</span>,<span class="keyword">...</span>
+0183                                      <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0184                                      <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0185                                  
+0186     hEditNoiseOnINLCoefficient = uicontrol (<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0187                                      <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0188                                      <span class="string">'Position'</span>,[0.8 0.4 0.1 0.04],<span class="keyword">...</span>
+0189                                      <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0190                                      <span class="string">'Callback'</span>,@<a href="#_sub13" class="code" title="subfunction EditNoiseOnINLCoefficient_callback(source,eventdata)">EditNoiseOnINLCoefficient_callback</a>);                                 
+0191 
+0192     hPushButtonSimulateMeasurement = uicontrol (<span class="string">'Style'</span>,<span class="string">'pushbutton'</span>,<span class="keyword">...</span>
+0193                                      <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0194                                      <span class="string">'Position'</span>,[0.25 0.05 0.2 0.1],<span class="keyword">...</span>
+0195                                      <span class="string">'String'</span>,<span class="string">'Simulate measurement'</span>,<span class="keyword">...</span>
+0196                                      <span class="string">'Callback'</span>,@<a href="#_sub16" class="code" title="subfunction SimulateMeasurement_callback(source,eventdata)">SimulateMeasurement_callback</a>);
+0197 
+0198     hPushButtonCancel = uicontrol (<span class="string">'Style'</span>,<span class="string">'pushbutton'</span>,<span class="keyword">...</span>
+0199                                      <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0200                                      <span class="string">'Position'</span>,[0.55 0.05 0.2 0.1],<span class="keyword">...</span>
+0201                                      <span class="string">'String'</span>,<span class="string">'Cancel'</span>,<span class="keyword">...</span>
+0202                                      <span class="string">'Callback'</span>,@<a href="#_sub17" class="code" title="subfunction Cancel_callback(source,eventdata)">Cancel_callback</a>);
+0203                                  
+0204 <span class="comment">%Defining HELP menu</span>
+0205 hMenuSimulationHelp = uimenu(simulate_measurement_window,<span class="string">'Label'</span>,<span class="string">'Simulation Help'</span>);
+0206 uimenu(hMenuSimulationHelp,<span class="string">'Label'</span>,<span class="string">'How to simulate measurement'</span>,<span class="string">'Callback'</span>,@<a href="#_sub1" class="code" title="subfunction HelpHowToSimulate_callback(source,eventdata)">HelpHowToSimulate_callback</a>);
+0207 
+0208     <a name="_sub1" href="#_subfunctions" class="code">function HelpHowToSimulate_callback(source,eventdata)</a>
+0209         helpdlg({<span class="string">'To perform simulations please note the followings:'</span>;<span class="keyword">...</span>
+0210                  <span class="string">'Number of samples specifies the length of measurement record.'</span>;<span class="keyword">...</span>
+0211                  <span class="string">'Number of periods specifies the frequency of the excitation signal.'</span>;<span class="keyword">...</span>
+0212                  <span class="string">'(Naturally number of periods can be a fractional number.)'</span>;<span class="keyword">...</span>
+0213                  <span class="string">'The amplitude and phase can be described using the cosine and sine components of the sine wave,'</span>;<span class="keyword">...</span>
+0214                  <span class="string">'and also can be described with te initial phase (in degrees), and the amplitude of the sine wave.'</span>;<span class="keyword">...</span>
+0215                  <span class="string">'Note that the Full Scale of the converter is normalized to 1, and amplitude is half of the'</span>;<span class="keyword">...</span>
+0216                  <span class="string">'of the peak-to-peak amplitude of the sine wave'</span>;<span class="keyword">...</span>
+0217                  <span class="string">'DC component can be between 0 and 1, where 0 is the lowest and 1 is the highest transition level of the ADC.'</span>
+0218                  <span class="string">'For example a sine wave with DC component 0.5 and amplitude 0.5 fully drives the ADC under test.'</span>;<span class="keyword">...</span>
+0219                  <span class="string">'Std of noise is the standerter aard deviation of noise oin the excitation signal'</span>;<span class="keyword">...</span>
+0220                  <span class="string">'This can be given relative to the full scale, e.g. 0.6/4096,'</span>;<span class="keyword">...</span>
+0221                  <span class="string">'in case of a 12-bit converter and 0.6 LSB noise'</span>},<span class="keyword">...</span>
+0222                  <span class="string">'How to simulate measurement'</span>);
+0223     <span class="keyword">end</span>
+0224 
+0225 
+0226                                  
+0227 <span class="comment">%Local variables, state variables</span>
+0228 cosine_sine = true;
+0229 amplitude = NaN;
+0230 phase_deg = NaN;
+0231 shape_type = 1;
+0232 shape_coeff = 0;
+0233 noise_type = 1;
+0234 noise_std = 0;
+0235 INL_from_workspace = false;
+0236 INL_variable_name = <span class="string">''</span>;
+0237 
+0238 <span class="comment">%return variables</span>
+0239 success = false;
+0240 datavect = NaN;
+0241 parameters.A = NaN;
+0242 parameters.B = NaN;
+0243 parameters.C = NaN;
+0244 parameters.theta = NaN;
+0245 parameters.sigma = NaN;
+0246 parameters.NoB = NoB; <span class="comment">%Number of bits</span>
+0247 parameters.NoS = NaN; <span class="comment">%Number of samples</span>
+0248 parameters.NoP = NaN; <span class="comment">%Number of periods</span>
+0249 parameters.INL = NaN;
+0250     
+0251 uiwait(simulate_measurement_window); <span class="comment">%Blocks return until either Cancel or 'Simulate measurement' pushbuttons are pressed.</span>
+0252         
+0253     <a name="_sub2" href="#_subfunctions" class="code">function EditNumberOfBits_callback(source,eventdata)</a>
+0254         <span class="keyword">if</span> ~isempty((get(source,<span class="string">'String'</span>)))
+0255             parameters.NoB = evalin(<span class="string">'base'</span>,get(source,<span class="string">'String'</span>));
+0256         <span class="keyword">end</span>
+0257     <span class="keyword">end</span>
+0258     
+0259     <a name="_sub3" href="#_subfunctions" class="code">function EditNumberOfSamples_callback(source,eventdata)</a>
+0260         <span class="keyword">if</span> ~isempty((get(source,<span class="string">'String'</span>)))
+0261             parameters.NoS = evalin(<span class="string">'base'</span>,get(source,<span class="string">'String'</span>));
+0262         <span class="keyword">end</span>
+0263     <span class="keyword">end</span>
+0264 
+0265     <a name="_sub4" href="#_subfunctions" class="code">function EditNumberOfPeriods_callback(source,eventdata)</a>
+0266         <span class="keyword">if</span> ~isempty((get(source,<span class="string">'String'</span>)))
+0267             parameters.NoP = evalin(<span class="string">'base'</span>,get(source,<span class="string">'String'</span>));
+0268         <span class="keyword">end</span>
+0269     <span class="keyword">end</span>
+0270 
+0271     <a name="_sub5" href="#_subfunctions" class="code">function AmpPhaseVsCosineSineSelector_callback(source,eventdata)</a>
+0272         <span class="keyword">if</span> (get(source,<span class="string">'Value'</span>) ~= 1)
+0273             cosine_sine = false;
+0274             <a href="#_sub18" class="code" title="subfunction UpdateDisplay">UpdateDisplay</a>;
+0275         <span class="keyword">else</span>
+0276             cosine_sine = true;
+0277             <a href="#_sub18" class="code" title="subfunction UpdateDisplay">UpdateDisplay</a>;
+0278         <span class="keyword">end</span>
+0279     <span class="keyword">end</span>
+0280 
+0281     <a name="_sub6" href="#_subfunctions" class="code">function EditCosineCoefficient_callback(source,eventdata)</a>
+0282         <span class="keyword">if</span> (cosine_sine)
+0283             <span class="keyword">if</span> ~isempty((get(source,<span class="string">'String'</span>)))
+0284                 parameters.A = evalin(<span class="string">'base'</span>,get(source,<span class="string">'String'</span>));
+0285             <span class="keyword">end</span>
+0286             <a href="#_sub20" class="code" title="subfunction SynchronizeAmpPhase">SynchronizeAmpPhase</a>;
+0287         <span class="keyword">else</span>
+0288             <span class="keyword">if</span> ~isempty((get(source,<span class="string">'String'</span>)))                
+0289                 amplitude = evalin(<span class="string">'base'</span>,get(source,<span class="string">'String'</span>));
+0290             <span class="keyword">end</span>
+0291             <a href="#_sub19" class="code" title="subfunction SynchronizeAB">SynchronizeAB</a>;
+0292         <span class="keyword">end</span>            
+0293     <span class="keyword">end</span>
+0294 
+0295     <a name="_sub7" href="#_subfunctions" class="code">function EditSineCoefficient_callback(source,eventdata)</a>
+0296         <span class="keyword">if</span> (cosine_sine)
+0297             <span class="keyword">if</span> ~isempty((get(source,<span class="string">'String'</span>)))
+0298                 parameters.B = evalin(<span class="string">'base'</span>,get(source,<span class="string">'String'</span>));
+0299             <span class="keyword">end</span>
+0300             <a href="#_sub20" class="code" title="subfunction SynchronizeAmpPhase">SynchronizeAmpPhase</a>;
+0301         <span class="keyword">else</span>
+0302             <span class="keyword">if</span> ~isempty((get(source,<span class="string">'String'</span>)))
+0303                 phase_deg = evalin(<span class="string">'base'</span>,get(source,<span class="string">'String'</span>));
+0304             <span class="keyword">end</span>
+0305             <a href="#_sub19" class="code" title="subfunction SynchronizeAB">SynchronizeAB</a>;
+0306         <span class="keyword">end</span>            
+0307     <span class="keyword">end</span>
+0308 
+0309     <a name="_sub8" href="#_subfunctions" class="code">function EditDCComponent_callback(source,eventdata)</a>
+0310         <span class="keyword">if</span> ~isempty((get(source,<span class="string">'String'</span>)))
+0311             parameters.C = evalin(<span class="string">'base'</span>,get(source,<span class="string">'String'</span>));
+0312         <span class="keyword">end</span>
+0313     <span class="keyword">end</span>
+0314 
+0315     <a name="_sub9" href="#_subfunctions" class="code">function EditStdOfNoise_callback(source,eventdata)</a>
+0316         <span class="keyword">if</span> ~isempty((get(source,<span class="string">'String'</span>)))
+0317             parameters.sigma = evalin(<span class="string">'base'</span>,get(source,<span class="string">'String'</span>));
+0318         <span class="keyword">end</span>
+0319     <span class="keyword">end</span>
+0320 
+0321     <a name="_sub10" href="#_subfunctions" class="code">function INLShapeSelector_callback(source,eventdata)</a>
+0322        shape_type = get(source,<span class="string">'Value'</span>); <span class="comment">%1-None; 2-Hann; 3-Sine;</span>
+0323     <span class="keyword">end</span>
+0324 
+0325     <a name="_sub11" href="#_subfunctions" class="code">function EditINLShapeCoefficient_callback(source,eventdata)</a>
+0326         <span class="keyword">if</span> ~isempty((get(source,<span class="string">'String'</span>)))
+0327             shape_coeff = evalin(<span class="string">'base'</span>,get(source,<span class="string">'String'</span>));
+0328         <span class="keyword">end</span>
+0329     <span class="keyword">end</span>
+0330 
+0331     <a name="_sub12" href="#_subfunctions" class="code">function NoiseOnINLSelector_callback(source,eventdata)</a>
+0332             noise_type = get(source,<span class="string">'Value'</span>); <span class="comment">% 1-None; 2-Normal; 3-Uniform;</span>
+0333     <span class="keyword">end</span>
+0334 
+0335     <a name="_sub13" href="#_subfunctions" class="code">function EditNoiseOnINLCoefficient_callback(source,eventdata)</a>
+0336         <span class="keyword">if</span> ~isempty((get(source,<span class="string">'String'</span>)))
+0337             noise_std =  evalin(<span class="string">'base'</span>,get(source,<span class="string">'String'</span>));
+0338         <span class="keyword">end</span>
+0339     <span class="keyword">end</span>
+0340 
+0341     <a name="_sub14" href="#_subfunctions" class="code">function INLSelectionMethod_callback(source,eventdata)</a>
+0342         <span class="keyword">if</span> (get(source,<span class="string">'Value'</span>) == 1) <span class="comment">%Edit here</span>
+0343             INL_from_workspace = false;            
+0344             <a href="#_sub18" class="code" title="subfunction UpdateDisplay">UpdateDisplay</a>;
+0345         <span class="keyword">else</span> 
+0346             INL_from_workspace = true;
+0347             <a href="#_sub18" class="code" title="subfunction UpdateDisplay">UpdateDisplay</a>;
+0348         <span class="keyword">end</span>
+0349     <span class="keyword">end</span>
+0350 
+0351     <a name="_sub15" href="#_subfunctions" class="code">function EditINLFromWorkspace_callback(source,eventdata)</a>
+0352         INL_variable_name = get(source,<span class="string">'String'</span>);
+0353     <span class="keyword">end</span>
+0354 
+0355     <a name="_sub16" href="#_subfunctions" class="code">function SimulateMeasurement_callback(source,eventdata)</a>
+0356         <span class="comment">%Setting angular frequency of simulation</span>
+0357         parameters.theta = 2*pi*parameters.NoP/parameters.NoS;
+0358         <span class="comment">%Assembling INL</span>
+0359         <span class="keyword">if</span> (INL_from_workspace) 
+0360             parameters.INL = evalin(<span class="string">'base'</span>,INL_variable_name);
+0361         <span class="keyword">else</span>
+0362             <span class="keyword">if</span> (shape_type == 1) <span class="comment">%None</span>
+0363                 parameters.INL = zeros(1,2^parameters.NoB - 1);
+0364             <span class="keyword">elseif</span> (shape_type == 2) <span class="comment">%Hann window</span>
+0365                 parameters.INL = shape_coeff*hann(2^parameters.NoB - 1).';
+0366             <span class="keyword">elseif</span> (shape_type == 3) <span class="comment">%Sine wave</span>
+0367                 parameters.INL = shape_coeff*sin(linspace(0,2*pi,2^parameters.NoB - 1));
+0368             <span class="keyword">end</span>
+0369 
+0370             <span class="keyword">if</span> (noise_type == 1) <span class="comment">%None</span>
+0371             <span class="keyword">elseif</span> (noise_type == 2) <span class="comment">%Normal distribution</span>
+0372                 parameters.INL(2:end-1) = parameters.INL(2:end-1) + noise_std*randn(1,2^parameters.NoB - 3);
+0373             <span class="keyword">elseif</span> (noise_type == 3) <span class="comment">%Uniform distribution</span>
+0374                 parameters.INL(2:end-1) = parameters.INL(2:end-1) + noise_std*sqrt(12)*rand(1,2^parameters.NoB - 3) - noise_std*sqrt(12)/2;
+0375             <span class="keyword">end</span>
+0376         <span class="keyword">end</span>
+0377         <span class="comment">%Calculating the quantized sine wave</span>
+0378         transition_levels = <a href="INL2TransLevels.html" class="code" title="function translevels = INL2TransLevels(INL)">INL2TransLevels</a>(parameters.INL);
+0379         pure_sine_wave = parameters.A*cos((1:parameters.NoS).'*2*pi*parameters.NoP/parameters.NoS) + parameters.B*sin((1:parameters.NoS).'*2*pi*parameters.NoP/parameters.NoS) + parameters.C;
+0380         noisy_sine_wave = pure_sine_wave + parameters.sigma*randn(parameters.NoS,1);
+0381         datavect = <a href="QuantizeSignal.html" class="code" title="function y = QuantizeSignal(x,trans_levels)">QuantizeSignal</a>(noisy_sine_wave,transition_levels); <span class="comment">%Code offset: 0 -&gt; 0..2^NoB - 1</span>
+0382         success = true;
+0383         close(simulate_measurement_window);
+0384     <span class="keyword">end</span>
+0385 
+0386     <a name="_sub17" href="#_subfunctions" class="code">function Cancel_callback(source,eventdata)</a>
+0387         success = false;
+0388         close(simulate_measurement_window);
+0389     <span class="keyword">end</span>
+0390 
+0391     <a name="_sub18" href="#_subfunctions" class="code">function UpdateDisplay</a>
+0392         <span class="keyword">if</span> (cosine_sine)
+0393             set(hTextCosineCoefficient,<span class="string">'String'</span>,<span class="string">'Cosine coefficient (A): '</span>);
+0394             set(hEditCosineCoefficient,<span class="string">'String'</span>,sprintf(<span class="string">'%1.4f'</span>,parameters.A));
+0395             set(hTextSineCoefficient,<span class="string">'String'</span>,<span class="string">'Sine coefficient (B): '</span>);
+0396             set(hEditSineCoefficient,<span class="string">'String'</span>,sprintf(<span class="string">'%1.4f'</span>,parameters.B));            
+0397         <span class="keyword">else</span>
+0398             set(hTextCosineCoefficient,<span class="string">'String'</span>,<span class="string">'Amplitude: '</span>);
+0399             set(hEditCosineCoefficient,<span class="string">'String'</span>,sprintf(<span class="string">'%1.4f'</span>,amplitude));
+0400             set(hTextSineCoefficient,<span class="string">'String'</span>,<span class="string">'Phase [DEG]: '</span>);
+0401             set(hEditSineCoefficient,<span class="string">'String'</span>,sprintf(<span class="string">'%3.2f'</span>,phase_deg));
+0402         <span class="keyword">end</span>
+0403         <span class="keyword">if</span> (INL_from_workspace)
+0404             set(hPopupMenuINLShapeSelector,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0405             set(hEditINLShapeCoefficient,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0406             set(hPopupMenuNoiseOnINLSelector,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0407             set(hEditNoiseOnINLCoefficient,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0408             set(hEditINLFromWorkspace,<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0409         <span class="keyword">else</span>
+0410             set(hPopupMenuINLShapeSelector,<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0411             set(hEditINLShapeCoefficient,<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0412             set(hPopupMenuNoiseOnINLSelector,<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0413             set(hEditNoiseOnINLCoefficient,<span class="string">'Enable'</span>,<span class="string">'on'</span>);                        
+0414             set(hEditINLFromWorkspace,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0415         <span class="keyword">end</span>
+0416     <span class="keyword">end</span>
+0417 
+0418     <a name="_sub19" href="#_subfunctions" class="code">function SynchronizeAB</a>
+0419         parameters.A = amplitude*cos(phase_deg/180*pi);
+0420         parameters.B = (-1)*amplitude*sin(phase_deg/180*pi);        
+0421     <span class="keyword">end</span>
+0422 
+0423     <a name="_sub20" href="#_subfunctions" class="code">function SynchronizeAmpPhase</a>
+0424         amplitude = sqrt(parameters.A^2 + parameters.B^2);
+0425         phase_deg = (-1)*atan2(parameters.B,parameters.A)*180/pi;
+0426     <span class="keyword">end</span>
+0427     <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

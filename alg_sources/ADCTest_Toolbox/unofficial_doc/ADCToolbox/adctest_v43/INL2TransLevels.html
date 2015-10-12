@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of INL2TransLevels</title>
+  <meta name="keywords" content="INL2TransLevels">
+  <meta name="description" content="@fn INL2TransLevels">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; INL2TransLevels.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>INL2TransLevels
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>@fn INL2TransLevels</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function translevels = INL2TransLevels(INL) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> @fn INL2TransLevels
+ @brief Calculates transition levels using INL values. Transition levels are
+        normalized: T(1) = 0, T(2^B-1) = 1
+ @param INL The INL vector
+ @return translevels The transition levels in a vector
+ @author Tam� Virosztek, Budapest University of Technology and Economics,
+         Department of Measurement and Infromation Systems,
+         Virosztek.Tamas@mit.bme.hu</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="Consistence.html" class="code" title="">Consistence</a>	</li><li><a href="EvaluateCF.html" class="code" title="function varargout = EvaluateCF(y,p0,NoB,INL)">EvaluateCF</a>	@fn EvaluateCF</li><li><a href="EvaluateCF_old.html" class="code" title="function varargout = EvaluateCF(y,p0,NoB,INL)">EvaluateCF_old</a>	@fn EvaluateCF</li><li><a href="FitLSML.html" class="code" title="function result_struct = FitLSML(datavect,timevect,estimated_INL,NoB)">FitLSML</a>	Default optimization parameters for ML</li><li><a href="ProcessDscML5pFit.html" class="code" title="function ProcessDscML5pFit(dsc,reduced_data,timevect,pLS)">ProcessDscML5pFit</a>	@fn ProcessDscML5pFit</li><li><a href="SimulateMeasurement.html" class="code" title="function [datavect,parameters,success] = SimulateMeasurement(NoB)">SimulateMeasurement</a>	@fn SimulateMeesurement</li><li><a href="scanning.html" class="code" title="">scanning</a>	Script to evaluate ML cost function</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function translevels = INL2TransLevels(INL)</a>
+0002 <span class="comment">% @fn INL2TransLevels</span>
+0003 <span class="comment">% @brief Calculates transition levels using INL values. Transition levels are</span>
+0004 <span class="comment">%        normalized: T(1) = 0, T(2^B-1) = 1</span>
+0005 <span class="comment">% @param INL The INL vector</span>
+0006 <span class="comment">% @return translevels The transition levels in a vector</span>
+0007 <span class="comment">% @author Tam� Virosztek, Budapest University of Technology and Economics,</span>
+0008 <span class="comment">%         Department of Measurement and Infromation Systems,</span>
+0009 <span class="comment">%         Virosztek.Tamas@mit.bme.hu</span>
+0010 
+0011 translevels = zeros(length(INL),1);
+0012 translevels(1) = 0;
+0013 translevels(end) = 1;
+0014 Q = (translevels(end)-translevels(1))/(length(translevels)-1); <span class="comment">%V/(2^B-2)</span>
+0015 <span class="keyword">for</span> k = 2:length(translevels)-1
+0016     translevels(k) = translevels(1) + (k-1)*Q + INL(k)*Q;
+0017 <span class="keyword">end</span>
+0018 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

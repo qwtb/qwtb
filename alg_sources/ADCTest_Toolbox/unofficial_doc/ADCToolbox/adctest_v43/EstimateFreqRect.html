@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of EstimateFreqRect</title>
+  <meta name="keywords" content="EstimateFreqRect">
+  <meta name="description" content="@fn EstimateFreqRect">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; EstimateFreqRect.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>EstimateFreqRect
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>@fn EstimateFreqRect</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function f = EstimateFreqRect(x) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> @fn EstimateFreqRect
+ @brief Returns a frequency estimator of the input signal using  sinc fit
+        in the frequency domain
+ @param x The vector of the sampled (and quantized) signal
+ @return f The estimated frequency normalized to the sampling frequency (f/fs)
+ @author Tam� Virosztek, Budapest University of Technology and Economics,
+         Department of Measurement and Information Systems,
+         Virosztek.Tamas@mit.bme.hu</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function f = EstimateFreqRect(x)</a>
+0002 <span class="comment">% @fn EstimateFreqRect</span>
+0003 <span class="comment">% @brief Returns a frequency estimator of the input signal using  sinc fit</span>
+0004 <span class="comment">%        in the frequency domain</span>
+0005 <span class="comment">% @param x The vector of the sampled (and quantized) signal</span>
+0006 <span class="comment">% @return f The estimated frequency normalized to the sampling frequency (f/fs)</span>
+0007 <span class="comment">% @author Tam� Virosztek, Budapest University of Technology and Economics,</span>
+0008 <span class="comment">%         Department of Measurement and Information Systems,</span>
+0009 <span class="comment">%         Virosztek.Tamas@mit.bme.hu</span>
+0010 
+0011 X = fft(x);
+0012 Xa = abs(X);
+0013 N = length(X);
+0014 [val, ind] = max(Xa(2:floor(N/2)+1));
+0015 <span class="keyword">if</span> (ind == 1)
+0016     ii = ind;
+0017     jj = ii + 1;
+0018 <span class="keyword">else</span>
+0019     ii = ind;
+0020     <span class="keyword">if</span> (Xa(ind-1) &lt; Xa(ind+1))
+0021         jj = ii + 1;
+0022     <span class="keyword">else</span>
+0023         jj = ii - 1;
+0024     <span class="keyword">end</span>
+0025 <span class="keyword">end</span>
+0026 Ui = real(X(ii+1));
+0027 Vi = imag(X(ii+1));
+0028 Uj = real(X(jj+1));
+0029 Vj = imag(X(jj+1));
+0030 n = 2*pi/N;
+0031 Kopt = (sin(n*ii*(Vj-Vi)) + cos(n*ii*(Uj-Ui))) / (Uj-Ui);
+0032 Z2 = Vj*((Kopt - cos(n*jj))/sin(n*jj)) + Uj;
+0033 Z1 = Vi*((Kopt - cos(n*ii))/sin(n*ii)) + Ui;
+0034 periods = 1/n*acos((Z2*cos(n*(ii+1)) - Z1*cos(n*ii)) / (Z2-Z1));
+0035 <span class="keyword">if</span> (periods &gt; N/2)
+0036     periods = N - periods;
+0037 <span class="keyword">end</span>
+0038 f = periods / N;
+0039 <span class="keyword">end</span>
+0040</pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

@@ -1,0 +1,527 @@
+function varargout = step_1(varargin)
+% STEP_1 M-file for step_1.fig
+%      STEP_1, by itself, creates a new STEP_1 or raises the existing
+%      singleton*.
+%
+%      H = STEP_1 returns the handle to a new STEP_1 or the handle to
+%      the existing singleton*.
+%
+%      STEP_1('CALLBACK',hObject,eventData,handles,...) calls the local
+%      function named CALLBACK in STEP_1.M with the given input arguments.
+%
+%      STEP_1('Property','Value',...) creates a new STEP_1 or raises the
+%      existing singleton*.  Starting from the left, property value pairs are
+%      applied to the GUI before step_1_OpeningFcn gets called.  An
+%      unrecognized property name or invalid value makes property application
+%      stop.  All inputs are passed to step_1_OpeningFcn via varargin.
+%
+%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
+%      instance to run (singleton)".
+%
+% See also: GUIDE, GUIDATA, GUIHANDLES
+
+% Edit the above text to modify the response to help step_1
+
+% Last Modified by GUIDE v2.5 19-Nov-2014 13:29:25
+
+% Begin initialization code - DO NOT EDIT
+gui_Singleton = 1;
+gui_State = struct('gui_Name',       mfilename, ...
+                   'gui_Singleton',  gui_Singleton, ...
+                   'gui_OpeningFcn', @step_1_OpeningFcn, ...
+                   'gui_OutputFcn',  @step_1_OutputFcn, ...
+                   'gui_LayoutFcn',  [] , ...
+                   'gui_Callback',   []);
+if nargin && ischar(varargin{1})
+    gui_State.gui_Callback = str2func(varargin{1});
+end
+
+if nargout
+    [varargout{1:nargout}] = gui_mainfcn(gui_State, varargin{:});
+else
+    gui_mainfcn(gui_State, varargin{:});
+end
+% End initialization code - DO NOT EDIT
+
+
+% --- Executes just before step_1 is made visible.
+function step_1_OpeningFcn(hObject, eventdata, handles, varargin)
+% This function has no output args, see OutputFcn.
+% hObject    handle to figure
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+% varargin   command line arguments to step_1 (see VARARGIN)
+
+%Passing varargin{1} (dsc) to the figure
+setappdata(get(0,'CurrentFigure'),'dsc',varargin{1});
+
+if (isstruct(varargin{1}) && (isfield(varargin{1},'data'))) %first commmand line argument of step_1 is a descriptor
+%Displaying measurement record is obsolete. Coherence analyisi appears instead    
+%    %Display the measurement record
+%    plot(varargin{1}.data);
+    
+    %Classify the measurement record
+    classresults = ClassifyMeasurementRecord(varargin{1});
+    
+    %Setting appdata for current figure to enable passing variables between
+    %callbacks
+    setappdata (get(0,'CurrentFigure'),'classresults',classresults);
+    
+    %Define colors
+    color_green = [0 0.5 0];
+    color_orange = [1 0.4 0];
+    color_red = [1 0 0];
+
+    %Setting enable/disable for pushbuttons
+    if strcmpi(classresults.LS_app,'OK')
+        set(handles.pushbutton_showwarns_1,'Enable','off');
+        set(handles.pushbutton_showerrors_1,'Enable','off');
+        set(handles.text_LS_app,'String','Appopriate');
+        set(handles.text_LS_app,'ForegroundColor',color_green);
+        set(handles.pushbutton_process_ls,'Enable','on');
+        
+    elseif strcmpi(classresults.LS_app,'Warning')
+        set(handles.pushbutton_showwarns_1,'Enable','on');
+        set(handles.pushbutton_showerrors_1,'Enable','off');
+        set(handles.text_LS_app,'String','With restrictions');
+        set(handles.text_LS_app,'ForegroundColor',color_orange);        
+        set(handles.pushbutton_process_ls,'Enable','on');
+        
+    elseif strcmpi(classresults.LS_app,'Error')
+        set(handles.pushbutton_showwarns_1,'Enable','off');
+        set(handles.pushbutton_showerrors_1,'Enable','on');
+        set(handles.text_LS_app,'String','Inappropriate');
+        set(handles.text_LS_app,'ForegroundColor',color_red);        
+        set(handles.pushbutton_process_ls,'Enable','off');
+        
+    else
+        set(handles.pushbutton_showwarns_1,'Enable','off');
+        set(handles.pushbutton_showerrors_1,'Enable','off');
+        set(handles.text_LS_app,'String','Undefined');
+        set(handles.text_LS_app,'ForegroundColor',[0.5 0.5 0.5]);        
+        set(handles.pushbutton_process_ls,'Enable','off');        
+    end
+
+    if strcmpi(classresults.FFT_app,'OK')
+        set(handles.pushbutton_showwarns_2,'Enable','off');
+        set(handles.pushbutton_showerrors_2,'Enable','off');
+        set(handles.text_FFT_app,'String','Appopriate');
+        set(handles.text_FFT_app,'ForegroundColor',color_green);        
+        set(handles.pushbutton_process_fft,'Enable','on');
+        
+    elseif strcmpi(classresults.FFT_app,'Warning')
+        set(handles.pushbutton_showwarns_2,'Enable','on');
+        set(handles.pushbutton_showerrors_2,'Enable','off');
+        set(handles.text_FFT_app,'String','With restrictions');
+        set(handles.text_FFT_app,'ForegroundColor',color_orange);        
+        set(handles.pushbutton_process_fft,'Enable','on');        
+        
+    elseif strcmpi(classresults.FFT_app,'Error')
+        set(handles.pushbutton_showwarns_2,'Enable','off');
+        set(handles.pushbutton_showerrors_2,'Enable','on');
+        set(handles.text_FFT_app,'String','Inappropriate');
+        set(handles.text_FFT_app,'ForegroundColor',color_red);        
+        set(handles.pushbutton_process_fft,'Enable','off');        
+    else
+        set(handles.pushbutton_showwarns_2,'Enable','off');
+        set(handles.pushbutton_showerrors_2,'Enable','off');
+        set(handles.text_FFT_app,'String','Undefined');
+        set(handles.text_FFT_app,'ForegroundColor',[0.5 0.5 0.5]);
+        set(handles.pushbutton_process_fft,'Enable','off');        
+    end
+    
+    if strcmpi(classresults.Hist_app,'OK')
+        set(handles.pushbutton_showwarns_3,'Enable','off');
+        set(handles.pushbutton_showerrors_3,'Enable','off');
+        set(handles.text_Hist_app,'String','Appopriate');
+        set(handles.text_Hist_app,'ForegroundColor',color_green);        
+        set(handles.pushbutton_process_hist,'Enable','on');
+        
+    elseif strcmpi(classresults.Hist_app,'Warning')
+        set(handles.pushbutton_showwarns_3,'Enable','on');
+        set(handles.pushbutton_showerrors_3,'Enable','off');
+        set(handles.text_Hist_app,'String','With restrictions');
+        set(handles.text_Hist_app,'ForegroundColor',color_orange);        
+        set(handles.pushbutton_process_hist,'Enable','on');        
+        
+    elseif strcmpi(classresults.Hist_app,'Error')
+        set(handles.pushbutton_showwarns_3,'Enable','off');
+        set(handles.pushbutton_showerrors_3,'Enable','on');
+        set(handles.text_LS_app,'String','Inappropriate');
+        set(handles.text_LS_app,'ForegroundColor',color_red);                
+        set(handles.pushbutton_process_hist,'Enable','off');
+        
+    else
+        set(handles.pushbutton_showwarns_3,'Enable','off');
+        set(handles.pushbutton_showerrors_3,'Enable','off');
+        set(handles.text_Hist_app,'String','Undefined');
+        set(handles.text_Hist_app,'ForegroundColor',[0.5 0.5 0.5]);
+        set(handles.pushbutton_process_hist,'Enable','off');        
+    end
+
+    if strcmpi(classresults.ML_app,'OK')
+        set(handles.pushbutton_showwarns_4,'Enable','off');
+        set(handles.pushbutton_showerrors_4,'Enable','off');
+        set(handles.text_Hist_app,'String','Appopriate');
+        set(handles.text_Hist_app,'ForegroundColor',color_green);        
+        set(handles.pushbutton_process_ml,'Enable','on');   
+        
+    elseif strcmpi(classresults.ML_app,'Warning')
+        set(handles.pushbutton_showwarns_4,'Enable','on');
+        set(handles.pushbutton_showerrors_4,'Enable','off');
+        set(handles.text_ML_app,'String','With restrictions');
+        set(handles.text_ML_app,'ForegroundColor',color_orange);                
+        set(handles.pushbutton_process_ml,'Enable','on');        
+        
+    elseif strcmpi(classresults.ML_app,'Error')
+        set(handles.pushbutton_showwarns_4,'Enable','off');
+        set(handles.pushbutton_showerrors_4,'Enable','on');
+        set(handles.text_ML_app,'String','Inappropriate');
+        set(handles.text_ML_app,'ForegroundColor',color_red);                
+        set(handles.pushbutton_process_ml,'Enable','off');        
+        
+    else
+        set(handles.pushbutton_showwarns_4,'Enable','off');
+        set(handles.pushbutton_showerrors_4,'Enable','off');
+        set(handles.text_ML_app,'String','Undefined');
+        set(handles.text_ML_app,'ForegroundColor',[0.5 0.5 0.5]);
+        set(handles.pushbutton_process_ml,'Enable','off');        
+    end
+    
+    %Examining Coherence
+    %4-parameter sine wave fit in the frequency domain
+    [est_A,est_B,est_C,est_f,est_COV] = fdsfit4_bh3(varargin{1}.data);
+    J0 = est_f; %fdsfit4 returns the number of periods as "frequency"
+    sigma_f = sqrt(est_COV(4,4)); %standard deviation of the frequency is the square root of the variance of the frequency estimator: COV(4,4)
+    N0 = length(varargin{1}.data);
+    [N_t, G_t, P_t]=ell4(J0,N0,sigma_f);
+    
+    set(handles.sel_1_N,'String',sprintf('%d',N_t(1)));
+    set(handles.sel_2_N,'String',sprintf('%d',N_t(2)));
+    set(handles.sel_3_N,'String',sprintf('%d',N_t(3)));
+    
+    set(handles.sel_1_GCD,'String',sprintf('%d',G_t(1)));
+    set(handles.sel_2_GCD,'String',sprintf('%d',G_t(2)));
+    set(handles.sel_3_GCD,'String',sprintf('%d',G_t(3)));
+
+    set(handles.sel_1_P,'String',sprintf('%3.2f',P_t(1)*100));
+    set(handles.sel_2_P,'String',sprintf('%3.2f',P_t(2)*100));
+    set(handles.sel_3_P,'String',sprintf('%3.2f',P_t(3)*100));
+    
+    %N_t values are required by the selection callback function
+    setappdata(get(0,'CurrentFigure'),'N_t',N_t);
+    setappdata(get(0,'CurrentFigure'),'sigma_f',sigma_f);
+    
+    %selection shall also be set for histogram test. Default selection is
+    %the entire record
+    selection = varargin{1}.data(1:end);
+    setappdata(get(0,'CurrentFigure'),'selection',selection);
+end
+    
+
+% Choose default command line output for step_1
+handles.output = hObject;
+
+% Update handles structure
+guidata(hObject, handles);
+
+% UIWAIT makes step_1 wait for user response (see UIRESUME)
+% uiwait(handles.figure1);
+
+
+% --- Outputs from this function are returned to the command line.
+function varargout = step_1_OutputFcn(hObject, eventdata, handles) 
+% varargout  cell array for returning output args (see VARARGOUT);
+% hObject    handle to figure
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Get default command line output from handles structure
+varargout{1} = handles.output;
+
+% --------------------------------------------------------------------
+function Help_menu_Callback(hObject, eventdata, handles)
+% hObject    handle to Help_menu (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function About_adctest_Callback(hObject, eventdata, handles)
+% hObject    handle to About_adctest (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function Getting_started_Callback(hObject, eventdata, handles)
+% hObject    handle to Getting_started (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in pushbutton_next.
+function pushbutton_next_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_next (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Commands caller to go to next step
+
+% Closes current window
+close(get(0,'CurrentFigure'));
+
+
+% --- Executes on button press in pushbutton_previous.
+function pushbutton_previous_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_previous (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in pushbutton_showwarns_1.
+function pushbutton_showwarns_1_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_showwarns_1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+classresults = getappdata(get(0,'CurrentFigure'),'classresults');
+warndlg(classresults.LS_warn,'Warnings for LS fit');
+
+
+% --- Executes on button press in pushbutton_showwarns_2.
+function pushbutton_showwarns_2_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_showwarns_2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+classresults = getappdata(get(0,'CurrentFigure'),'classresults');
+warndlg(classresults.FFT_warn,'Warnings for FFT test');
+
+
+% --- Executes on button press in pushbutton_showwarns_3.
+function pushbutton_showwarns_3_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_showwarns_3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+classresults = getappdata(get(0,'CurrentFigure'),'classresults');
+warndlg(classresults.Hist_warn,'Warnings for Histogram test');
+
+% --- Executes on button press in pushbutton_showwarns_4.
+function pushbutton_showwarns_4_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_showwarns_4 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+classresults = getappdata(get(0,'CurrentFigure'),'classresults');
+warndlg(classresults.ML_warn,'Warnings for ML fit');
+
+% --- Executes on button press in pushbutton_showerrors_1.
+function pushbutton_showerrors_1_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_showerrors_1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+classresults = getappdata(get(0,'CurrentFigure'),'classresults');
+errordlg(classresults.LS_error,'Errors for LS fit');
+
+% --- Executes on button press in pushbutton_showerrors_2.
+function pushbutton_showerrors_2_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_showerrors_2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+classresults = getappdata(get(0,'CurrentFigure'),'classresults');
+errordlg(classresults.FFT_error,'Errors for FFT test');
+
+
+
+% --- Executes on button press in pushbutton_showerrors_3.
+function pushbutton_showerrors_3_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_showerrors_3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+classresults = getappdata(get(0,'CurrentFigure'),'classresults');
+errordlg(classresults.Hist_error,'Errors for histogram test');
+
+
+% --- Executes on button press in pushbutton_showerrors_4.
+function pushbutton_showerrors_4_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_showerrors_4 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+classresults = getappdata(get(0,'CurrentFigure'),'classresults');
+errordlg(classresults.ML_error,'Errors for ML fit');
+
+
+% --- Executes on button press in pushbutton_process_ls.
+function pushbutton_process_ls_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_process_ls (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+dsc = getappdata(get(0,'CurrentFigure'),'dsc');
+ProcessDscLS4pFit(dsc,'LS4p_only'); %To perform only LS fit without ML
+
+
+% --- Executes on button press in pushbutton_process_fft.
+function pushbutton_process_fft_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_process_fft (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+dsc = getappdata(get(0,'CurrentFigure'),'dsc');
+ProcessFFTTest(dsc);
+
+
+% --- Executes on button press in pushbutton_process_hist.
+function pushbutton_process_hist_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_process_hist (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+dsc = getappdata(get(0,'CurrentFigure'),'dsc');
+display_settings.warning_dialog = 1;
+display_settings.summary_win = 1;
+display_settings.results_win = 1;
+estimate_ratio = 0.08;
+edge_cut = 0.08;
+%Changing dsc.data to selection:
+selection = getappdata(get(0,'CurrentFigure'),'selection');
+selected_dsc = dsc;
+selected_dsc.data = selection;
+ProcessHistogramTest(selected_dsc,display_settings,estimate_ratio,edge_cut);
+
+
+% --- Executes on button press in pushbutton_process_ml.
+function pushbutton_process_ml_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_process_ml (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+dsc = getappdata(get(0,'CurrentFigure'),'dsc');
+ProcessDscLS4pFit(dsc,'ML_fit'); %To ML fit with LS initials
+
+
+% --- Executes on button press in pushbutton_export_to_HTML.
+function pushbutton_export_to_HTML_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_export_to_HTML (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+dsc = getappdata(get(0,'CurrentFigure'),'dsc');
+try
+    testresults = evalin('base','adctest_process_results');
+    res_len = size(testresults,1);
+    %Search for existing results block
+    existings_index = 0;
+    for k = 1:res_len        
+        if strcmpi(dsc.model,testresults{k,1}.DUT.model) ...
+                && strcmpi(dsc.serial,testresults{k,1}.DUT.serial)...
+                && (dsc.channel == testresults{k,1}.DUT.channel)...
+                && (dsc.NoB == testresults{k,1}.DUT.NoB)
+            existings_index = k;                    
+        end
+    end
+    if (existings_index ~= 0)
+        [filename,path] = uiputfile('*.html','Export evaluation results to HTML');
+                if (ischar(filename) && ischar(path))
+                    ExportResultsToHTML(testresults{existings_index,1},fullfile(path,filename));
+                end                
+    else
+        errordlg({'No matching evaluation';'results found.'},'No results found');
+    end    
+catch
+    errordlg({'No matching evaluation';'results found.'},'No results found');
+end
+
+
+% --- Executes on selection change in popup_option_selector.
+function popup_option_selector_Callback(hObject, eventdata, handles)
+% hObject    handle to popup_option_selector (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = get(hObject,'String') returns popup_option_selector contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from popup_option_selector
+
+%N_t values and the descriptor are get from the figures
+N_t = getappdata(get(0,'CurrentFigure'),'N_t');
+dsc = getappdata(get(0,'CurrentFigure'),'dsc');
+
+if (get(hObject,'Value') == 1) %Default: all measurement record is selected
+    selection = dsc.data(1:end);
+elseif (get(hObject,'Value') == 2) %Selection 1
+    selection = dsc.data(1:N_t(1));
+elseif (get(hObject,'Value') == 3) %Selection 2
+    selection = dsc.data(1:N_t(2));
+elseif (get(hObject,'Value') == 4) %Selection 3
+    selection = dsc.data(1:N_t(3));
+end
+
+%Setting selection to the figure
+setappdata(get(0,'CurrentFigure'),'selection',selection);
+
+
+% --- Executes during object creation, after setting all properties.
+function popup_option_selector_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to popup_option_selector (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+
+
+
+% --- Executes on button press in pushbutton_help.
+function pushbutton_help_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_help (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+helpdlg ({'';...
+          'Number of independent samples: the number of samples which excite the ADC at a unique voltage level. The variance of the histogram test is inversely porpotional to this value.';...
+          '';...
+          'Greatest Common Divisor of J and N: the greatest common divisor of the number of samples (N) and the number of periods (J) in the coherent part. The ideal value is 1, which means that J and N are coprimes, thus the samples are independent in the given record part.';...
+          '';...
+          'Probability of coherence: the probability of the satisfaction of the Carbone-Chiorboli coherence condition. The closer to 100%, the more reliable histogram test results.'},...
+          'Help for coherence analysis');
+
+
+% --- Executes on button press in pushbutton_show_selections.
+function pushbutton_show_selections_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_show_selections (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+N_t = getappdata(get(0,'CurrentFigure'),'N_t');
+dsc = getappdata(get(0,'CurrentFigure'),'dsc');
+sigma_f = getappdata(get(0,'CurrentFigure'),'sigma_f');
+
+[N_t_sorted,N_t_indeces] = sort(N_t(1:3));
+
+oldfig = get(0,'CurrentFigure');
+new_fig = figure('Name','Selections','NumberTitle','off');
+set(0,'CurrentFigure',new_fig);
+plot(1:length(dsc.data),dsc.data,'b',1:N_t_sorted(3),dsc.data(1:N_t_sorted(3)),'r',1:N_t_sorted(2),dsc.data(1:N_t_sorted(2)),'g',1:N_t_sorted(1),dsc.data(1:N_t_sorted(1)),'y');
+legend({'Entire record'; sprintf('Selection %d',N_t_indeces(3)); sprintf('Selection %d',N_t_indeces(2)); sprintf('Selection %d',N_t_indeces(1))});
+%Confidence intervals:
+
+hold on;
+
+x_values = [N_t_sorted(1)*(1 - sigma_f); N_t_sorted(1)*(1 + sigma_f); N_t_sorted(1)*(1 + sigma_f); N_t_sorted(1)*(1 - sigma_f)];
+y_values = [min(dsc.data) - 10; min(dsc.data) - 10; max(dsc.data) + 10; max(dsc.data) + 10];
+color_fill = 'yellow';
+fill(x_values,y_values,color_fill);
+
+x_values = [N_t_sorted(2)*(1 - sigma_f); N_t_sorted(2)*(1 + sigma_f); N_t_sorted(2)*(1 + sigma_f); N_t_sorted(2)*(1 - sigma_f)];
+y_values = [min(dsc.data) - 10; min(dsc.data) - 10; max(dsc.data) + 10; max(dsc.data) + 10];
+color_fill = 'green';
+fill(x_values,y_values,color_fill);
+
+x_values = [N_t_sorted(3)*(1 - sigma_f); N_t_sorted(3)*(1 + sigma_f); N_t_sorted(3)*(1 + sigma_f); N_t_sorted(3)*(1 - sigma_f)];
+y_values = [min(dsc.data) - 10; min(dsc.data) - 10; max(dsc.data) + 10; max(dsc.data) + 10];
+color_fill = 'red';
+fill(x_values,y_values,color_fill);
+
+x_values = []
+
+hold off;
+
+set(0,'CurrentFigure',oldfig);
+

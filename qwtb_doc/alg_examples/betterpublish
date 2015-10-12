@@ -1,0 +1,85 @@
+#!/bin/bash
+# file reformats MATLAB latex output to a better file which is possible to include into the main
+# latex file. stupid formatting is replaced by lstlisting package.
+# also renames output and output images  so run on next algorithm do not reqwrites this algorithm
+# files
+# output images are converted to pdf files
+
+# original latex file:
+origf=$1
+# algorithm name:
+algname=$2
+# results directory
+resdir=../alg_examples_published/
+# Control will enter here if $resdir exists:
+if [ ! -d "$resdir" ]; then
+        mkdir $resdir
+fi
+
+############ format original latex file:
+
+# comment headings
+sed -i 's/\(\\documentclass{article}\)$/%%% \1/' "$origf"
+# comment usepackages
+sed -i 's/\(\\usepackage.*\)$/%%% \1/' "$origf"
+# comment defined light gray (it is too dark)
+sed -i 's/\(\\definecolor.*\)$/%%% \1/' "$origf"
+# comment sloppy
+sed -i 's/\(\\sloppy.*\)$/%%% \1/' "$origf"
+# comment begin document
+sed -i 's/\(\\begin{document}\)$/%%% \1/' "$origf"
+# comment end document
+sed -i 's/\(\\end{document}\)$/%%% \1/' "$origf"
+
+# change subsections* to subsubsections
+sed -i 's/\\subsection\(.*\)$/\\subsubsection\1/' "$origf"
+# change sections* to subsections
+sed -i 's/\\section\(.*\)$/\\subsection\1/' "$origf"
+
+# change texttt{http...} to hyperref package link:
+sed -i 's/\\begin{verbatim}http:\(.*\)\\end{verbatim}/\\url{http:\1}/' "$origf"
+
+# change \end{verbatim} to \end{lstlisting}
+sed -i 's/\\end{verbatim}/\\end{lstlisting}/' "$origf"
+# change lightgray-verbatim to lstlisting style output
+sed -i 's/\\color{lightgray} \\begin{verbatim}/\\begin{lstlisting}[style=output]\n/' "$origf"
+# change \begin{verbatim} to \begin{lstlisting}[style=mcode]
+sed -i 's/\\begin{verbatim}/\\begin{lstlisting}[style=mcode]/' "$origf"
+# change \texttt to \lstinline
+sed -i 's/\\texttt/\\lstinline/g' "$origf"
+
+# change path to images
+# this works in one step, but is not very clear:
+#sed -i "s/\\includegraphics.*alg_examples\/alg_example\(.*\)$/\\begin{center}\n\\includegraphics[width=0.7\\\textwidth]{alg_examples\/"$algname"_alg_example\1\n\\end{center}/" "$origf"
+# done in two steps for clarity:
+# first add marker AlGnAmErEpLaCe
+sed -i 's/\\includegraphics.*alg_examples\/alg_example\(.*\).eps}$/\\begin{center}\n\\includegraphics[width=0.7\\textwidth]{alg_examples_published\/AlGnAmErEpLaCe_alg_example\1.pdf}\n\\end{center}/' "$origf"
+# replace marker by algorithm name:
+sed -i "s/AlGnAmErEpLaCe/"$algname"/" "$origf"
+
+############## convert eps files to pdf and rename X to ALG_X:
+
+delim=_
+
+echo "Converts all eps files in directory to pdf by means of epstopdf"
+LIST=`ls *.eps` 
+for iii in $LIST 
+do
+        tmp=`basename $iii .eps`.pdf
+        echo "$iii to $algname$delim$tmp"
+        #convert $iii pdf:$tmp
+        epstopdf $iii
+        sleep 1
+        mv $tmp $resdir$algname$delim$tmp
+done
+
+############## rename latex file X to ALG_X:
+
+prefix=doc_
+suffix=.tex
+mv "$origf" "$resdir$prefix$algname$suffix"
+
+# ############## add line to list of algorithms:
+# 
+# latexline="\clearpage\input{alg_examples/doc_$algname.tex}"
+# echo "$latexline" >> allalgslist.tex

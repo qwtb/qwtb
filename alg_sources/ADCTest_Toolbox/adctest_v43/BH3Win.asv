@@ -1,0 +1,11 @@
+function win = BH3Win(L)
+%Coefficients 3-term Blackman-Harris window:
+a0 = +4.243800934609435e-001;
+a1 = -4.973406350967378e-001;
+a2 = +7.827927144231873e-002;
+
+timevect = (0:(L-1)).';
+bhwin = a0 + a1*cos(2*pi*timevect/L) + a2*cos(2*2*pi*timevect/L);
+bhwin = bhwin/sum(bhwin); %DC gain is set to 1 (0dB)
+
+end

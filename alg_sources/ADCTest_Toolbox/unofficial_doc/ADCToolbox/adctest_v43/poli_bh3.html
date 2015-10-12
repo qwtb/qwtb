@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of poli_bh3</title>
+  <meta name="keywords" content="poli_bh3">
+  <meta name="description" content="Polinomegy�that�at adja meg melyek seg�s��el kisz��juk az X_sin">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; poli_bh3.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>poli_bh3
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>Polinomegy�that�at adja meg melyek seg�s��el kisz��juk az X_sin</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [limit,sf,p] = poli_bh3(N) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Polinomegy�that�at adja meg melyek seg�s��el kisz��juk az X_sin
+ f�gv�yban tal�hat�sin(Nx)/sin(x) h�yadost ha x z�ushoz tart.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="ng_bh3.html" class="code" title="function [A,B,C,f,D]=ng_bh3(X,J_init)">ng_bh3</a>	N�yparam�eres frekvenciatartom�ybeli LS szinuszbecsl�</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [limit,sf,p] = poli_bh3(N)</a>
+0002 <span class="comment">% Polinomegy�that�at adja meg melyek seg�s��el kisz��juk az X_sin</span>
+0003 <span class="comment">% f�gv�yban tal�hat�sin(Nx)/sin(x) h�yadost ha x z�ushoz tart.</span>
+0004 
+0005 <span class="comment">% Polinom</span>
+0006 start=-2^-23;
+0007 step=2^-30;
+0008 stop=2^-23;
+0009 limit=sin(stop);
+0010 x=start:step:stop;
+0011 M=length(x); <span class="comment">% Legyen p�atlan, azaz start=-1*stop, � step oszt�a mindkett�ek</span>
+0012 center=(M+1)/2;
+0013 <span class="comment">% for ii=1:center-1</span>
+0014 <span class="comment">%     y(ii)=sin(N*x(ii))/sin(x(ii));</span>
+0015 <span class="comment">% end;</span>
+0016 <span class="comment">% y(center)=N;</span>
+0017 <span class="comment">% for ii=center+1:M</span>
+0018 <span class="comment">%     y(ii)=sin(N*x(ii))/sin(x(ii));</span>
+0019 <span class="comment">% end;</span>
+0020 y=sin(N*x)./sin(x);
+0021 y(center)=N;
+0022 <span class="comment">% 1. m�szer</span>
+0023 sf=(M/norm(x,12)^12)^(1/12);
+0024 x2=sf*x;
+0025 s2=sum(x2.^2); s4=sum(x2.^4); s6=sum(x2.^6); s8=sum(x2.^8); s10=sum(x2.^10); s12=sum(x2.^12);
+0026 U=[
+0027     M 0 s2 0 s4 0 s6; 
+0028     0 s2 0 s4 0 s6 0; 
+0029     s2 0 s4 0 s6 0 s8; 
+0030     0 s4 0 s6 0 s8 0; 
+0031     s4 0 s6 0 s8 0 s10;
+0032     0 s6 0 s8 0 s10 0; 
+0033     s6 0 s8 0 s10 0 s12;
+0034     ];
+0035 z=[sum(y); 0; sum((x2.^2)*y.'); 0; sum((x2.^4)*y.'); 0; sum((x2.^6)*y.');];
+0036 p=U\z;
+0037 p=p(end:-1:1); <span class="comment">% mert a polyval ford�va veszi az egy�that�at.</span>
+0038 <span class="keyword">return</span>;
+0039</pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

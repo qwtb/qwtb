@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of EstimateFreqBH3Ipfft</title>
+  <meta name="keywords" content="EstimateFreqBH3Ipfft">
+  <meta name="description" content="@fn EstimateFreqBH3Ipfft">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; EstimateFreqBH3Ipfft.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>EstimateFreqBH3Ipfft
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>@fn EstimateFreqBH3Ipfft</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function f = EstimateFreqBH3Ipfft(x,varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> @fn EstimateFreqBH3Ipfft
+ @brief Estimates the frequency of the input signal using different windowa in time domnain, and paraboloc interpolation in
+       frequency domain
+ @param x The vector of the sampled (and quantized) signal
+ @param varargin 
+        NFFT: length of DFT can be specified optionally
+              deafult value is 1E6
+        source_of_initial_fr: specifies the window to be used
+            possible values:
+               'FFT'
+               'ipFFT (without windowing)'
+               'ipFFT (Hann window)'
+               'ipFFT (Blackman window)'
+ @return f The estimated frequency normalized to the sampling frequency (f/fs)
+ @author Tam� Virosztek, Budapest University of Technology and Economics,
+         Department of Measurement and Information Systems,
+         Virosztek.Tamas@mit.bme.hu</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="ClassifyMeasurementRecord.html" class="code" title="function classresults = ClassifyMeasurementRecord(dsc)">ClassifyMeasurementRecord</a>	</li><li><a href="ProcessDscLS4pFit.html" class="code" title="function ProcessDscLS4pFit(dsc,reason)">ProcessDscLS4pFit</a>	@fn ProcessDscLS4pFit</li><li><a href="ProcessHistogramTest.html" class="code" title="function INL = ProcessHistogramTest(dsc,display_settings,varargin)">ProcessHistogramTest</a>	@fn ProcessHistogramtest</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function f = EstimateFreqBH3Ipfft(x,varargin)</a>
+0002 <span class="comment">% @fn EstimateFreqBH3Ipfft</span>
+0003 <span class="comment">% @brief Estimates the frequency of the input signal using different windowa in time domnain, and paraboloc interpolation in</span>
+0004 <span class="comment">%       frequency domain</span>
+0005 <span class="comment">% @param x The vector of the sampled (and quantized) signal</span>
+0006 <span class="comment">% @param varargin</span>
+0007 <span class="comment">%        NFFT: length of DFT can be specified optionally</span>
+0008 <span class="comment">%              deafult value is 1E6</span>
+0009 <span class="comment">%        source_of_initial_fr: specifies the window to be used</span>
+0010 <span class="comment">%            possible values:</span>
+0011 <span class="comment">%               'FFT'</span>
+0012 <span class="comment">%               'ipFFT (without windowing)'</span>
+0013 <span class="comment">%               'ipFFT (Hann window)'</span>
+0014 <span class="comment">%               'ipFFT (Blackman window)'</span>
+0015 <span class="comment">% @return f The estimated frequency normalized to the sampling frequency (f/fs)</span>
+0016 <span class="comment">% @author Tam� Virosztek, Budapest University of Technology and Economics,</span>
+0017 <span class="comment">%         Department of Measurement and Information Systems,</span>
+0018 <span class="comment">%         Virosztek.Tamas@mit.bme.hu</span>
+0019 
+0020 <span class="comment">% f = EstimateFreqBH3Ipfft(x,NFFT,source_of_initial_fr)</span>
+0021 
+0022 <span class="keyword">if</span> (nargin &gt;= 2)
+0023     NFFT = varargin{1};
+0024 <span class="keyword">else</span>
+0025     NFFT = 1e6;
+0026 <span class="keyword">end</span>
+0027 
+0028 <span class="keyword">if</span> (nargin &gt;= 3)
+0029     source_of_initial_fr = varargin{2};
+0030 <span class="keyword">else</span>
+0031     source_of_initial_fr = <span class="string">'ipFFT (Blackman window)'</span>; <span class="comment">%If no method specified, ipFFT with Blackman window is used</span>
+0032 <span class="keyword">end</span>
+0033 
+0034 x = x(:);
+0035 <span class="comment">%Discarding DC component:</span>
+0036 x = x - mean(x);
+0037 
+0038 <span class="keyword">if</span> (strcmpi(source_of_initial_fr,<span class="string">'FFT'</span>) || strcmpi(source_of_initial_fr,<span class="string">'ipFFT (without windowing)'</span>))
+0039     windowed_data = x;
+0040 <span class="keyword">elseif</span> (strcmpi(source_of_initial_fr,<span class="string">'ipFFT (Hann window)'</span>))
+0041     windowed_data = x.*hann(length(x));
+0042 <span class="keyword">elseif</span> (strcmpi(source_of_initial_fr,<span class="string">'ipFFT (Blackman window)'</span>))
+0043     windowed_data = x.*blackman(length(x));
+0044 <span class="keyword">else</span>
+0045     windowed_data = x;
+0046 <span class="keyword">end</span>
+0047     
+0048 W = fft(windowed_data,NFFT);
+0049 Wa = abs(W);
+0050 
+0051 [val,ind] = max(Wa(1:floor(NFFT/2)+1));
+0052 
+0053 <span class="comment">%Fitting parabola to the two neighbours of the peak:</span>
+0054 D = [(ind-1)^2,     ind-1,  1;<span class="keyword">...</span>
+0055      (ind)^2,       ind,    1;<span class="keyword">...</span>
+0056      (ind+1)^2,     ind+1,  1];
+0057 <span class="keyword">if</span> (rcond(D) &lt; 1e-6)
+0058     <span class="comment">%If the matrix D is close to singular, parabola fitting is cancelled.</span>
+0059     <span class="comment">%Frequency is estimated simply using the peak of the FFT</span>
+0060     f = (ind-1)/NFFT;
+0061 <span class="keyword">else</span>
+0062     y = [Wa(ind-1); Wa(ind); Wa(ind+1)];
+0063     p = inv(D)*y;
+0064     peak = -p(2)/(2*p(1));
+0065     f = (peak - 1)/NFFT;
+0066 <span class="keyword">end</span>
+0067 
+0068 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

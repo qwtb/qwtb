@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ClassifyMeasurementRecord</title>
+  <meta name="keywords" content="ClassifyMeasurementRecord">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; ClassifyMeasurementRecord.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>ClassifyMeasurementRecord
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function classresults = ClassifyMeasurementRecord(dsc) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="EstimateFreqBH3Ipfft.html" class="code" title="function f = EstimateFreqBH3Ipfft(x,varargin)">EstimateFreqBH3Ipfft</a>	@fn EstimateFreqBH3Ipfft</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="step_1.html" class="code" title="function varargout = step_1(varargin)">step_1</a>	STEP_1 M-file for step_1.fig</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function classresults = ClassifyMeasurementRecord(dsc)</a>
+0002 <span class="keyword">if</span> isfield(dsc,<span class="string">'data'</span>) &amp;&amp; isfield (dsc,<span class="string">'NoB'</span>) <span class="comment">%Valid descriptor</span>
+0003 
+0004     <span class="comment">%Setting default values for outputs</span>
+0005     classresults.LS_app = <span class="string">'OK'</span>;
+0006     classresults.LS_warn = {<span class="string">'Warning message'</span>;<span class="string">'for LS fit'</span>};
+0007     classresults.LS_error = {<span class="string">'Error message'</span>;<span class="string">'for LS fit'</span>};
+0008     
+0009     classresults.FFT_app = <span class="string">'OK'</span>;
+0010     classresults.FFT_warn = {<span class="string">'Warning message'</span>;<span class="string">'for FFT test'</span>};
+0011     classresults.FFT_error = {<span class="string">'Error message'</span>;<span class="string">'for FFT test'</span>};
+0012     
+0013     classresults.Hist_app = <span class="string">'OK'</span>;
+0014     classresults.Hist_warn = {<span class="string">'Warning message'</span>;<span class="string">'for Histogram test'</span>};
+0015     classresults.Hist_error = {<span class="string">'Error message'</span>;<span class="string">'for Histogram test'</span>};
+0016 
+0017     classresults.ML_app = <span class="string">'OK'</span>;
+0018     classresults.ML_warn = {<span class="string">'Warning message'</span>;<span class="string">'for ML fit'</span>};
+0019     classresults.ML_error = {<span class="string">'Error message'</span>;<span class="string">'for ML fit'</span>};
+0020     
+0021     <span class="comment">%Looking for trivial errors</span>
+0022     <span class="keyword">if</span> (max(dsc.data) &gt; 2^dsc.NoB - 1)<span class="keyword">...</span><span class="comment"> </span>
+0023             || (min(dsc.data) &lt; 0) <span class="comment">% Out of scale</span>
+0024         classresults.LS_app = <span class="string">'Error'</span>;
+0025         classresults.FFT_app = <span class="string">'Error'</span>;
+0026         classresults.Hist_app = <span class="string">'Error'</span>;
+0027         classresults.ML_app = <span class="string">'Error'</span>;
+0028         classresults.LS_error = {<span class="string">'Invalid measurement record'</span>;<span class="string">'mismatch between codes and numer of bits'</span>;<span class="string">'Use unsigned code notation: the codes shall be between 0 and 2^b-1'</span>};
+0029         classresults.FFT_error = {<span class="string">'Invalid measurement record'</span>;<span class="string">'mismatch between codes and numer of bits'</span>;<span class="string">'Use unsigned code notation: the codes shall be between 0 and 2^b-1'</span>};
+0030         classresults.Hist_error = {<span class="string">'Invalid measurement record'</span>;<span class="string">'mismatch between codes and numer of bits'</span>;<span class="string">'Use unsigned code notation: the codes shall be between 0 and 2^b-1'</span>};
+0031         classresults.ML_error = {<span class="string">'Invalid measurement record'</span>;<span class="string">'mismatch between codes and numer of bits'</span>;<span class="string">'Use unsigned code notation: the codes shall be between 0 and 2^b-1'</span>};
+0032     <span class="keyword">elseif</span> ~isempty(find((round(dsc.data) ~= dsc.data),1)) <span class="comment">%Not integer code value found</span>
+0033         classresults.LS_app = <span class="string">'Error'</span>;
+0034         classresults.FFT_app = <span class="string">'Error'</span>;
+0035         classresults.Hist_app = <span class="string">'Error'</span>;
+0036         classresults.ML_app = <span class="string">'Error'</span>;
+0037         classresults.LS_error = {<span class="string">'Invalid measurement record'</span>;<span class="string">'ADC codes shall be integer values'</span>};
+0038         classresults.FFT_error = {<span class="string">'Invalid measurement record'</span>;<span class="string">'ADC codes shall be integer values'</span>};
+0039         classresults.Hist_error = {<span class="string">'Invalid measurement record'</span>;<span class="string">'ADC codes shall be integer values'</span>};
+0040         classresults.ML_error = {<span class="string">'Invalid measurement record'</span>;<span class="string">'ADC codes shall be integer values'</span>};
+0041     <span class="keyword">end</span>
+0042 
+0043     <span class="comment">%Setting warnings:</span>
+0044     
+0045     <span class="comment">%Estimating frequency for warnings</span>
+0046     NFFT = 1e6;
+0047     source_of_initial_fr = <span class="string">'ipFFT (Blackman window)'</span>;
+0048     f_rel = <a href="EstimateFreqBH3Ipfft.html" class="code" title="function f = EstimateFreqBH3Ipfft(x,varargin)">EstimateFreqBH3Ipfft</a>(dsc.data,NFFT,source_of_initial_fr);
+0049     <span class="comment">%calculating numer of periods</span>
+0050     J = length(dsc.data)*f_rel; <span class="comment">%Num of periods = num of samples*(periods/samples)</span>
+0051     <span class="keyword">if</span> (J&lt;5)
+0052         classresults.LS_app = <span class="string">'Warning'</span>;
+0053         classresults.LS_warn = {<span class="string">'Less than 5 full cycles of sine wave'</span>;<span class="string">'LS fit can be mislead'</span>};
+0054         classresults.ML_app = <span class="string">'Warning'</span>;
+0055         classresults.ML_warn = {<span class="string">'Less than 5 full cycles of sine wave'</span>;<span class="string">'LS fit can be mislead'</span>};
+0056     <span class="keyword">end</span>
+0057     
+0058     <span class="comment">%Examining overdirve:</span>
+0059     D = [cos(2*pi*f_rel*(1:length(dsc.data)).'), sin(2*pi*f_rel*(1:length(dsc.data)).') , ones(length(dsc.data),1)];
+0060     p = inv(D.'*D)*D.'*dsc.data;
+0061     est_amplitude = sqrt((p(1))^2 + p(2)^2);
+0062     <span class="keyword">if</span> (est_amplitude &gt; (2^dsc.NoB)/2) <span class="comment">% amp &gt; FullScale/2 seemingly overdives</span>
+0063         classresults.LS_app = <span class="string">'Warning'</span>;
+0064         classresults.LS_warn = {<span class="string">'The excitation signal seemingly overdrives the ADC under test'</span>;<span class="string">'Use amplitude limits to discard overdriven part in LS fit'</span>};
+0065         classresults.FFT_app = <span class="string">'Warning'</span>;
+0066         classresults.FFT_warn = {<span class="string">'The excitation signal seemingly overdrives the ADC under test'</span>;<span class="string">'Harmonic distortion can be result of saturation instead of nonlinearity'</span>};
+0067         classresults.ML_app = <span class="string">'Warning'</span>;
+0068         classresults.ML_warn = {<span class="string">'The excitation signal seemingly overdrives the ADC under test'</span>;<span class="string">'Use amplitude limits to discard overdriven part in LS fit'</span>};        
+0069     <span class="keyword">else</span> <span class="comment">%Not orverdiven</span>
+0070         classresults.Hist_app = <span class="string">'Warning'</span>;
+0071         classresults.Hist_warning = {<span class="string">'ADC under test is not overiven'</span>;<span class="string">'Transition levels outside the excitation range cannot be estimated'</span>};
+0072         classresults.ML_app = <span class="string">'Warning'</span>;
+0073         classresults.ML_warning = {<span class="string">'ADC under test is not overiven'</span>;<span class="string">'Transition levels outside the excitation range cannot be estimated'</span>};        
+0074     <span class="keyword">end</span>    
+0075     
+0076     <span class="comment">%Number of samples per code bin:</span>
+0077     <span class="keyword">if</span> length(dsc.data)/(2^dsc.NoB) &lt; 10 <span class="comment">%average number of codes per bins is too low</span>
+0078         classresults.Hist_app = <span class="string">'Warning'</span>;
+0079         classresults.Hist_warn = {<span class="string">'Average number of codes per code bins is low (&lt;10)'</span>;<span class="string">'Please consider it when evaluating histogram test'</span>};
+0080     <span class="keyword">end</span>
+0081     
+0082     <span class="comment">%Examining coherence:</span>
+0083     fractional_part = abs(J - round(J));
+0084     rel_fractional_part = fractional_part/J;
+0085     <span class="keyword">if</span> (rel_fractional_part) &gt; 1e-2
+0086         classresults.Hist_app = <span class="string">'Warning'</span>;
+0087         classresults.Hist_warn = {<span class="string">'Ratio of fractional periods in record is higher than 1%'</span>;<span class="string">'Incoherence may mislead histogram test'</span>};
+0088         classresults.ML_app = <span class="string">'Warning'</span>;
+0089         classresults.ML_warn = {<span class="string">'Ratio of fractional periods in record is higher than 1%'</span>;<span class="string">'Incoherence may mislead histogram test'</span>};
+0090     <span class="keyword">end</span>
+0091 
+0092 <span class="keyword">else</span> <span class="comment">%Descriptor is invalid</span>
+0093     classresults.LS_app = <span class="string">'Error'</span>;
+0094     classresults.FFT_app = <span class="string">'Error'</span>;
+0095     classresults.Hist_app = <span class="string">'Error'</span>;
+0096     classresults.ML_app = <span class="string">'Error'</span>;
+0097     classresults.LS_error = {<span class="string">'Invalid measurement descriptor'</span>};
+0098     classresults.FFT_error = {<span class="string">'Invalid measurement descriptor'</span>};    
+0099     classresults.Hist_error = {<span class="string">'Invalid measurement descriptor'</span>};        
+0100     classresults.ML_error = {<span class="string">'Invalid measurement descriptor'</span>};    
+0101 <span class="keyword">end</span>
+0102 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

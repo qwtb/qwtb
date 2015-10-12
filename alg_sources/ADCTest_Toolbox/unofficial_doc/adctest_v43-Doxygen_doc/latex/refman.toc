@@ -1,0 +1,329 @@
+\contentsline {chapter}{\numberline {1}File Index}{1}{chapter.1}
+\contentsline {section}{\numberline {1.1}File List}{1}{section.1.1}
+\contentsline {chapter}{\numberline {2}File Documentation}{3}{chapter.2}
+\contentsline {section}{\numberline {2.1}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/adctest.m File Reference}{3}{section.2.1}
+\contentsline {subsection}{\numberline {2.1.1}Function Documentation}{3}{subsection.2.1.1}
+\contentsline {subsubsection}{\numberline {2.1.1.1}adctest}{3}{subsubsection.2.1.1.1}
+\contentsline {subsubsection}{\numberline {2.1.1.2}Classify\discretionary {-}{}{}And\discretionary {-}{}{}Process\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{3}{subsubsection.2.1.1.2}
+\contentsline {subsubsection}{\numberline {2.1.1.3}Delete\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{3}{subsubsection.2.1.1.3}
+\contentsline {subsubsection}{\numberline {2.1.1.4}Descriptor\discretionary {-}{}{}Selector\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{3}{subsubsection.2.1.1.4}
+\contentsline {subsubsection}{\numberline {2.1.1.5}Edit\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{3}{subsubsection.2.1.1.5}
+\contentsline {subsubsection}{\numberline {2.1.1.6}Export\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{3}{subsubsection.2.1.1.6}
+\contentsline {subsubsection}{\numberline {2.1.1.7}Help\discretionary {-}{}{}About\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{4}{subsubsection.2.1.1.7}
+\contentsline {subsubsection}{\numberline {2.1.1.8}Help\discretionary {-}{}{}Getting\discretionary {-}{}{}Started\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{4}{subsubsection.2.1.1.8}
+\contentsline {subsubsection}{\numberline {2.1.1.9}Help\discretionary {-}{}{}Users\discretionary {-}{}{}Manual\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{4}{subsubsection.2.1.1.9}
+\contentsline {subsubsection}{\numberline {2.1.1.10}Import\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{4}{subsubsection.2.1.1.10}
+\contentsline {subsubsection}{\numberline {2.1.1.11}Load\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{4}{subsubsection.2.1.1.11}
+\contentsline {subsubsection}{\numberline {2.1.1.12}New\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{4}{subsubsection.2.1.1.12}
+\contentsline {subsubsection}{\numberline {2.1.1.13}Process\discretionary {-}{}{}F\discretionary {-}{}{}F\discretionary {-}{}{}T\discretionary {-}{}{}Test\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{4}{subsubsection.2.1.1.13}
+\contentsline {subsubsection}{\numberline {2.1.1.14}Process\discretionary {-}{}{}Histogram\discretionary {-}{}{}Test\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{4}{subsubsection.2.1.1.14}
+\contentsline {subsubsection}{\numberline {2.1.1.15}Process\discretionary {-}{}{}L\discretionary {-}{}{}S4p\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{4}{subsubsection.2.1.1.15}
+\contentsline {subsubsection}{\numberline {2.1.1.16}Process\discretionary {-}{}{}M\discretionary {-}{}{}L\discretionary {-}{}{}Fit\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{4}{subsubsection.2.1.1.16}
+\contentsline {subsubsection}{\numberline {2.1.1.17}Quit\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{4}{subsubsection.2.1.1.17}
+\contentsline {subsubsection}{\numberline {2.1.1.18}Save\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{4}{subsubsection.2.1.1.18}
+\contentsline {subsubsection}{\numberline {2.1.1.19}Update\discretionary {-}{}{}Display}{4}{subsubsection.2.1.1.19}
+\contentsline {section}{\numberline {2.2}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}B\discretionary {-}{}{}H3\discretionary {-}{}{}Win.m File Reference}{4}{section.2.2}
+\contentsline {subsection}{\numberline {2.2.1}Function Documentation}{4}{subsection.2.2.1}
+\contentsline {subsubsection}{\numberline {2.2.1.1}B\discretionary {-}{}{}H3\discretionary {-}{}{}Win}{4}{subsubsection.2.2.1.1}
+\contentsline {section}{\numberline {2.3}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary.m File Reference}{4}{section.2.3}
+\contentsline {subsection}{\numberline {2.3.1}Function Documentation}{5}{subsection.2.3.1}
+\contentsline {subsubsection}{\numberline {2.3.1.1}brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary}{5}{subsubsection.2.3.1.1}
+\contentsline {subsubsection}{\numberline {2.3.1.2}brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Opening\discretionary {-}{}{}Fcn}{5}{subsubsection.2.3.1.2}
+\contentsline {subsubsection}{\numberline {2.3.1.3}brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Output\discretionary {-}{}{}Fcn}{5}{subsubsection.2.3.1.3}
+\contentsline {subsubsection}{\numberline {2.3.1.4}edit2\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{5}{subsubsection.2.3.1.4}
+\contentsline {subsubsection}{\numberline {2.3.1.5}edit2\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}{5}{subsubsection.2.3.1.5}
+\contentsline {subsubsection}{\numberline {2.3.1.6}edit4\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{5}{subsubsection.2.3.1.6}
+\contentsline {subsubsection}{\numberline {2.3.1.7}edit4\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}{5}{subsubsection.2.3.1.7}
+\contentsline {subsubsection}{\numberline {2.3.1.8}edit5\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{5}{subsubsection.2.3.1.8}
+\contentsline {subsubsection}{\numberline {2.3.1.9}edit5\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}{5}{subsubsection.2.3.1.9}
+\contentsline {subsubsection}{\numberline {2.3.1.10}edit6\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{5}{subsubsection.2.3.1.10}
+\contentsline {subsubsection}{\numberline {2.3.1.11}edit6\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}{5}{subsubsection.2.3.1.11}
+\contentsline {subsubsection}{\numberline {2.3.1.12}edit\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}fr\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{5}{subsubsection.2.3.1.12}
+\contentsline {subsubsection}{\numberline {2.3.1.13}edit\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}fr\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}{5}{subsubsection.2.3.1.13}
+\contentsline {subsubsection}{\numberline {2.3.1.14}edit\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}lambda\discretionary {-}{}{}\_\discretionary {-}{}{}coeff\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{5}{subsubsection.2.3.1.14}
+\contentsline {subsubsection}{\numberline {2.3.1.15}edit\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}lambda\discretionary {-}{}{}\_\discretionary {-}{}{}coeff\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}{5}{subsubsection.2.3.1.15}
+\contentsline {subsubsection}{\numberline {2.3.1.16}popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}fr\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{5}{subsubsection.2.3.1.16}
+\contentsline {subsubsection}{\numberline {2.3.1.17}popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}fr\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}{5}{subsubsection.2.3.1.17}
+\contentsline {subsubsection}{\numberline {2.3.1.18}popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}lambda\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{5}{subsubsection.2.3.1.18}
+\contentsline {subsubsection}{\numberline {2.3.1.19}popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}lambda\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}{5}{subsubsection.2.3.1.19}
+\contentsline {subsubsection}{\numberline {2.3.1.20}popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}lambda\discretionary {-}{}{}\_\discretionary {-}{}{}uints\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{5}{subsubsection.2.3.1.20}
+\contentsline {subsubsection}{\numberline {2.3.1.21}popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}lambda\discretionary {-}{}{}\_\discretionary {-}{}{}uints\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}{5}{subsubsection.2.3.1.21}
+\contentsline {subsubsection}{\numberline {2.3.1.22}popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}iteration\discretionary {-}{}{}\_\discretionary {-}{}{}method\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{6}{subsubsection.2.3.1.22}
+\contentsline {subsubsection}{\numberline {2.3.1.23}popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}iteration\discretionary {-}{}{}\_\discretionary {-}{}{}method\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}{6}{subsubsection.2.3.1.23}
+\contentsline {subsubsection}{\numberline {2.3.1.24}pushbutton1\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{6}{subsubsection.2.3.1.24}
+\contentsline {section}{\numberline {2.4}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Calculate\discretionary {-}{}{}Residuals\discretionary {-}{}{}For\discretionary {-}{}{}L\discretionary {-}{}{}S4p\discretionary {-}{}{}Fit.m File Reference}{6}{section.2.4}
+\contentsline {subsection}{\numberline {2.4.1}Function Documentation}{6}{subsection.2.4.1}
+\contentsline {subsubsection}{\numberline {2.4.1.1}Calculate\discretionary {-}{}{}Residuals\discretionary {-}{}{}For\discretionary {-}{}{}L\discretionary {-}{}{}S4p\discretionary {-}{}{}Fit}{6}{subsubsection.2.4.1.1}
+\contentsline {section}{\numberline {2.5}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Classify\discretionary {-}{}{}Measurement\discretionary {-}{}{}Record.m File Reference}{6}{section.2.5}
+\contentsline {subsection}{\numberline {2.5.1}Function Documentation}{6}{subsection.2.5.1}
+\contentsline {subsubsection}{\numberline {2.5.1.1}Classify\discretionary {-}{}{}Measurement\discretionary {-}{}{}Record}{6}{subsubsection.2.5.1.1}
+\contentsline {section}{\numberline {2.6}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Compare\discretionary {-}{}{}L\discretionary {-}{}{}Svs\discretionary {-}{}{}M\discretionary {-}{}{}L.m File Reference}{6}{section.2.6}
+\contentsline {subsection}{\numberline {2.6.1}Function Documentation}{6}{subsection.2.6.1}
+\contentsline {subsubsection}{\numberline {2.6.1.1}Compare\discretionary {-}{}{}L\discretionary {-}{}{}Svs\discretionary {-}{}{}M\discretionary {-}{}{}L}{6}{subsubsection.2.6.1.1}
+\contentsline {subsubsection}{\numberline {2.6.1.2}Plot1\discretionary {-}{}{}Selector\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{6}{subsubsection.2.6.1.2}
+\contentsline {subsubsection}{\numberline {2.6.1.3}Plot2\discretionary {-}{}{}Selector\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{6}{subsubsection.2.6.1.3}
+\contentsline {subsubsection}{\numberline {2.6.1.4}Update\discretionary {-}{}{}Display}{6}{subsubsection.2.6.1.4}
+\contentsline {section}{\numberline {2.7}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Consistence.m File Reference}{6}{section.2.7}
+\contentsline {section}{\numberline {2.8}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/cov\discretionary {-}{}{}\_\discretionary {-}{}{}bh3.m File Reference}{6}{section.2.8}
+\contentsline {subsection}{\numberline {2.8.1}Function Documentation}{7}{subsection.2.8.1}
+\contentsline {subsubsection}{\numberline {2.8.1.1}cov\discretionary {-}{}{}\_\discretionary {-}{}{}bh3}{7}{subsubsection.2.8.1.1}
+\contentsline {section}{\numberline {2.9}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Create\discretionary {-}{}{}New\discretionary {-}{}{}Dsc.m File Reference}{7}{section.2.9}
+\contentsline {subsection}{\numberline {2.9.1}Function Documentation}{7}{subsection.2.9.1}
+\contentsline {subsubsection}{\numberline {2.9.1.1}Cancel\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{7}{subsubsection.2.9.1.1}
+\contentsline {subsubsection}{\numberline {2.9.1.2}Create\discretionary {-}{}{}New\discretionary {-}{}{}Dsc}{7}{subsubsection.2.9.1.2}
+\contentsline {subsubsection}{\numberline {2.9.1.3}Edit\discretionary {-}{}{}Channel\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{7}{subsubsection.2.9.1.3}
+\contentsline {subsubsection}{\numberline {2.9.1.4}Edit\discretionary {-}{}{}Comment\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{7}{subsubsection.2.9.1.4}
+\contentsline {subsubsection}{\numberline {2.9.1.5}Edit\discretionary {-}{}{}Model\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{7}{subsubsection.2.9.1.5}
+\contentsline {subsubsection}{\numberline {2.9.1.6}Edit\discretionary {-}{}{}Name\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{7}{subsubsection.2.9.1.6}
+\contentsline {subsubsection}{\numberline {2.9.1.7}Edit\discretionary {-}{}{}No\discretionary {-}{}{}B\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{7}{subsubsection.2.9.1.7}
+\contentsline {subsubsection}{\numberline {2.9.1.8}Edit\discretionary {-}{}{}Serial\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{7}{subsubsection.2.9.1.8}
+\contentsline {subsubsection}{\numberline {2.9.1.9}Import\discretionary {-}{}{}Measurement\discretionary {-}{}{}Data\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{7}{subsubsection.2.9.1.9}
+\contentsline {subsubsection}{\numberline {2.9.1.10}O\discretionary {-}{}{}K\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{7}{subsubsection.2.9.1.10}
+\contentsline {subsubsection}{\numberline {2.9.1.11}Select\discretionary {-}{}{}Source\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{7}{subsubsection.2.9.1.11}
+\contentsline {subsubsection}{\numberline {2.9.1.12}Simulate\discretionary {-}{}{}Measurement\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{7}{subsubsection.2.9.1.12}
+\contentsline {subsubsection}{\numberline {2.9.1.13}Update\discretionary {-}{}{}Display}{7}{subsubsection.2.9.1.13}
+\contentsline {section}{\numberline {2.10}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Display\discretionary {-}{}{}Results\discretionary {-}{}{}L\discretionary {-}{}{}S4p.m File Reference}{8}{section.2.10}
+\contentsline {subsection}{\numberline {2.10.1}Function Documentation}{8}{subsection.2.10.1}
+\contentsline {subsubsection}{\numberline {2.10.1.1}Display\discretionary {-}{}{}Results\discretionary {-}{}{}L\discretionary {-}{}{}S4p}{8}{subsubsection.2.10.1.1}
+\contentsline {section}{\numberline {2.11}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Display\discretionary {-}{}{}Warnings.m File Reference}{8}{section.2.11}
+\contentsline {subsection}{\numberline {2.11.1}Function Documentation}{8}{subsection.2.11.1}
+\contentsline {subsubsection}{\numberline {2.11.1.1}Display\discretionary {-}{}{}Warnings}{8}{subsubsection.2.11.1.1}
+\contentsline {subsubsection}{\numberline {2.11.1.2}O\discretionary {-}{}{}K\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{8}{subsubsection.2.11.1.2}
+\contentsline {section}{\numberline {2.12}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Edit\discretionary {-}{}{}Dsc.m File Reference}{8}{section.2.12}
+\contentsline {subsection}{\numberline {2.12.1}Function Documentation}{8}{subsection.2.12.1}
+\contentsline {subsubsection}{\numberline {2.12.1.1}Cancel\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{8}{subsubsection.2.12.1.1}
+\contentsline {subsubsection}{\numberline {2.12.1.2}Edit\discretionary {-}{}{}Channel\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{8}{subsubsection.2.12.1.2}
+\contentsline {subsubsection}{\numberline {2.12.1.3}Edit\discretionary {-}{}{}Comment\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{8}{subsubsection.2.12.1.3}
+\contentsline {subsubsection}{\numberline {2.12.1.4}Edit\discretionary {-}{}{}Dsc}{8}{subsubsection.2.12.1.4}
+\contentsline {subsubsection}{\numberline {2.12.1.5}Edit\discretionary {-}{}{}Model\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{9}{subsubsection.2.12.1.5}
+\contentsline {subsubsection}{\numberline {2.12.1.6}Edit\discretionary {-}{}{}Name\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{9}{subsubsection.2.12.1.6}
+\contentsline {subsubsection}{\numberline {2.12.1.7}Edit\discretionary {-}{}{}No\discretionary {-}{}{}B\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{9}{subsubsection.2.12.1.7}
+\contentsline {subsubsection}{\numberline {2.12.1.8}Edit\discretionary {-}{}{}Serial\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{9}{subsubsection.2.12.1.8}
+\contentsline {subsubsection}{\numberline {2.12.1.9}Import\discretionary {-}{}{}Measurement\discretionary {-}{}{}Data\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{9}{subsubsection.2.12.1.9}
+\contentsline {subsubsection}{\numberline {2.12.1.10}O\discretionary {-}{}{}K\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{9}{subsubsection.2.12.1.10}
+\contentsline {subsubsection}{\numberline {2.12.1.11}Select\discretionary {-}{}{}Source\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{9}{subsubsection.2.12.1.11}
+\contentsline {subsubsection}{\numberline {2.12.1.12}Simulate\discretionary {-}{}{}Measurement\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{9}{subsubsection.2.12.1.12}
+\contentsline {subsubsection}{\numberline {2.12.1.13}Update\discretionary {-}{}{}Display}{9}{subsubsection.2.12.1.13}
+\contentsline {section}{\numberline {2.13}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/ell4.m File Reference}{9}{section.2.13}
+\contentsline {subsection}{\numberline {2.13.1}Function Documentation}{9}{subsection.2.13.1}
+\contentsline {subsubsection}{\numberline {2.13.1.1}ell4}{9}{subsubsection.2.13.1.1}
+\contentsline {section}{\numberline {2.14}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Estimate4p\discretionary {-}{}{}L\discretionary {-}{}{}S\discretionary {-}{}{}Gauss\discretionary {-}{}{}Newton.m File Reference}{9}{section.2.14}
+\contentsline {subsection}{\numberline {2.14.1}Function Documentation}{9}{subsection.2.14.1}
+\contentsline {subsubsection}{\numberline {2.14.1.1}Create\discretionary {-}{}{}Cov\discretionary {-}{}{}Matrix}{9}{subsubsection.2.14.1.1}
+\contentsline {subsubsection}{\numberline {2.14.1.2}Estimate4p\discretionary {-}{}{}L\discretionary {-}{}{}S\discretionary {-}{}{}Gauss\discretionary {-}{}{}Newton}{9}{subsubsection.2.14.1.2}
+\contentsline {subsubsection}{\numberline {2.14.1.3}freq}{9}{subsubsection.2.14.1.3}
+\contentsline {subsubsection}{\numberline {2.14.1.4}g1}{9}{subsubsection.2.14.1.4}
+\contentsline {subsubsection}{\numberline {2.14.1.5}g2bh3}{9}{subsubsection.2.14.1.5}
+\contentsline {subsubsection}{\numberline {2.14.1.6}polinom}{9}{subsubsection.2.14.1.6}
+\contentsline {section}{\numberline {2.15}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Estimate\discretionary {-}{}{}Freq\discretionary {-}{}{}B\discretionary {-}{}{}H3\discretionary {-}{}{}Ipfft.m File Reference}{10}{section.2.15}
+\contentsline {subsection}{\numberline {2.15.1}Function Documentation}{10}{subsection.2.15.1}
+\contentsline {subsubsection}{\numberline {2.15.1.1}Estimate\discretionary {-}{}{}Freq\discretionary {-}{}{}B\discretionary {-}{}{}H3\discretionary {-}{}{}Ipfft}{10}{subsubsection.2.15.1.1}
+\contentsline {section}{\numberline {2.16}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Estimate\discretionary {-}{}{}Freq\discretionary {-}{}{}Rect.m File Reference}{10}{section.2.16}
+\contentsline {subsection}{\numberline {2.16.1}Function Documentation}{10}{subsection.2.16.1}
+\contentsline {subsubsection}{\numberline {2.16.1.1}Estimate\discretionary {-}{}{}Freq\discretionary {-}{}{}Rect}{10}{subsubsection.2.16.1.1}
+\contentsline {section}{\numberline {2.17}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Evaluate\discretionary {-}{}{}C\discretionary {-}{}{}F.m File Reference}{10}{section.2.17}
+\contentsline {subsection}{\numberline {2.17.1}Function Documentation}{10}{subsection.2.17.1}
+\contentsline {subsubsection}{\numberline {2.17.1.1}Evaluate\discretionary {-}{}{}C\discretionary {-}{}{}F}{10}{subsubsection.2.17.1.1}
+\contentsline {section}{\numberline {2.18}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Evaluate\discretionary {-}{}{}C\discretionary {-}{}{}F\discretionary {-}{}{}\_\discretionary {-}{}{}old.m File Reference}{10}{section.2.18}
+\contentsline {subsection}{\numberline {2.18.1}Function Documentation}{10}{subsection.2.18.1}
+\contentsline {subsubsection}{\numberline {2.18.1.1}Evaluate\discretionary {-}{}{}C\discretionary {-}{}{}F}{10}{subsubsection.2.18.1.1}
+\contentsline {section}{\numberline {2.19}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Export\discretionary {-}{}{}Results\discretionary {-}{}{}To\discretionary {-}{}{}H\discretionary {-}{}{}T\discretionary {-}{}{}M\discretionary {-}{}{}L.m File Reference}{10}{section.2.19}
+\contentsline {subsection}{\numberline {2.19.1}Function Documentation}{11}{subsection.2.19.1}
+\contentsline {subsubsection}{\numberline {2.19.1.1}Export\discretionary {-}{}{}Results\discretionary {-}{}{}To\discretionary {-}{}{}H\discretionary {-}{}{}T\discretionary {-}{}{}M\discretionary {-}{}{}L}{11}{subsubsection.2.19.1.1}
+\contentsline {section}{\numberline {2.20}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/fdsfit4\discretionary {-}{}{}\_\discretionary {-}{}{}bh3.m File Reference}{11}{section.2.20}
+\contentsline {subsection}{\numberline {2.20.1}Function Documentation}{11}{subsection.2.20.1}
+\contentsline {subsubsection}{\numberline {2.20.1.1}fdsfit4\discretionary {-}{}{}\_\discretionary {-}{}{}bh3}{11}{subsubsection.2.20.1.1}
+\contentsline {section}{\numberline {2.21}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Fit\discretionary {-}{}{}L\discretionary {-}{}{}S\discretionary {-}{}{}M\discretionary {-}{}{}L.m File Reference}{11}{section.2.21}
+\contentsline {subsection}{\numberline {2.21.1}Function Documentation}{11}{subsection.2.21.1}
+\contentsline {subsubsection}{\numberline {2.21.1.1}Fit\discretionary {-}{}{}L\discretionary {-}{}{}S\discretionary {-}{}{}M\discretionary {-}{}{}L}{11}{subsubsection.2.21.1.1}
+\contentsline {section}{\numberline {2.22}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/g1\discretionary {-}{}{}\_\discretionary {-}{}{}bh3.m File Reference}{11}{section.2.22}
+\contentsline {subsection}{\numberline {2.22.1}Function Documentation}{11}{subsection.2.22.1}
+\contentsline {subsubsection}{\numberline {2.22.1.1}g1\discretionary {-}{}{}\_\discretionary {-}{}{}bh3}{11}{subsubsection.2.22.1.1}
+\contentsline {section}{\numberline {2.23}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/g2\discretionary {-}{}{}\_\discretionary {-}{}{}bh3.m File Reference}{11}{section.2.23}
+\contentsline {subsection}{\numberline {2.23.1}Function Documentation}{11}{subsection.2.23.1}
+\contentsline {subsubsection}{\numberline {2.23.1.1}g2\discretionary {-}{}{}\_\discretionary {-}{}{}bh3}{11}{subsubsection.2.23.1.1}
+\contentsline {section}{\numberline {2.24}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}I\discretionary {-}{}{}N\discretionary {-}{}{}L2\discretionary {-}{}{}Trans\discretionary {-}{}{}Levels.m File Reference}{11}{section.2.24}
+\contentsline {subsection}{\numberline {2.24.1}Function Documentation}{12}{subsection.2.24.1}
+\contentsline {subsubsection}{\numberline {2.24.1.1}I\discretionary {-}{}{}N\discretionary {-}{}{}L2\discretionary {-}{}{}Trans\discretionary {-}{}{}Levels}{12}{subsubsection.2.24.1.1}
+\contentsline {section}{\numberline {2.25}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}I\discretionary {-}{}{}N\discretionary {-}{}{}L2\discretionary {-}{}{}Trans\discretionary {-}{}{}Levels\discretionary {-}{}{}Extended.m File Reference}{12}{section.2.25}
+\contentsline {subsection}{\numberline {2.25.1}Function Documentation}{12}{subsection.2.25.1}
+\contentsline {subsubsection}{\numberline {2.25.1.1}I\discretionary {-}{}{}N\discretionary {-}{}{}L2\discretionary {-}{}{}Trans\discretionary {-}{}{}Levels\discretionary {-}{}{}Extended}{12}{subsubsection.2.25.1.1}
+\contentsline {section}{\numberline {2.26}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Load\discretionary {-}{}{}Dsc\discretionary {-}{}{}From\discretionary {-}{}{}X\discretionary {-}{}{}M\discretionary {-}{}{}L.m File Reference}{12}{section.2.26}
+\contentsline {subsection}{\numberline {2.26.1}Function Documentation}{12}{subsection.2.26.1}
+\contentsline {subsubsection}{\numberline {2.26.1.1}Load\discretionary {-}{}{}Dsc\discretionary {-}{}{}From\discretionary {-}{}{}X\discretionary {-}{}{}M\discretionary {-}{}{}L}{12}{subsubsection.2.26.1.1}
+\contentsline {section}{\numberline {2.27}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}L\discretionary {-}{}{}S\discretionary {-}{}{}\_\discretionary {-}{}{}options.m File Reference}{12}{section.2.27}
+\contentsline {subsection}{\numberline {2.27.1}Function Documentation}{12}{subsection.2.27.1}
+\contentsline {subsubsection}{\numberline {2.27.1.1}edit\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}fr\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{12}{subsubsection.2.27.1.1}
+\contentsline {subsubsection}{\numberline {2.27.1.2}edit\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}fr\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}{12}{subsubsection.2.27.1.2}
+\contentsline {subsubsection}{\numberline {2.27.1.3}L\discretionary {-}{}{}S\discretionary {-}{}{}\_\discretionary {-}{}{}options}{12}{subsubsection.2.27.1.3}
+\contentsline {subsubsection}{\numberline {2.27.1.4}L\discretionary {-}{}{}S\discretionary {-}{}{}\_\discretionary {-}{}{}options\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Opening\discretionary {-}{}{}Fcn}{12}{subsubsection.2.27.1.4}
+\contentsline {subsubsection}{\numberline {2.27.1.5}L\discretionary {-}{}{}S\discretionary {-}{}{}\_\discretionary {-}{}{}options\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Output\discretionary {-}{}{}Fcn}{12}{subsubsection.2.27.1.5}
+\contentsline {subsubsection}{\numberline {2.27.1.6}popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}fr\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{13}{subsubsection.2.27.1.6}
+\contentsline {subsubsection}{\numberline {2.27.1.7}popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}fr\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}{13}{subsubsection.2.27.1.7}
+\contentsline {subsubsection}{\numberline {2.27.1.8}popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}iteration\discretionary {-}{}{}\_\discretionary {-}{}{}method\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{13}{subsubsection.2.27.1.8}
+\contentsline {subsubsection}{\numberline {2.27.1.9}popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}iteration\discretionary {-}{}{}\_\discretionary {-}{}{}method\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}{13}{subsubsection.2.27.1.9}
+\contentsline {subsubsection}{\numberline {2.27.1.10}pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}O\discretionary {-}{}{}K\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{13}{subsubsection.2.27.1.10}
+\contentsline {section}{\numberline {2.28}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options.m File Reference}{13}{section.2.28}
+\contentsline {subsection}{\numberline {2.28.1}Function Documentation}{13}{subsection.2.28.1}
+\contentsline {subsubsection}{\numberline {2.28.1.1}edit2\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{13}{subsubsection.2.28.1.1}
+\contentsline {subsubsection}{\numberline {2.28.1.2}edit2\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}{13}{subsubsection.2.28.1.2}
+\contentsline {subsubsection}{\numberline {2.28.1.3}edit4\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{13}{subsubsection.2.28.1.3}
+\contentsline {subsubsection}{\numberline {2.28.1.4}edit4\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}{13}{subsubsection.2.28.1.4}
+\contentsline {subsubsection}{\numberline {2.28.1.5}edit5\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{13}{subsubsection.2.28.1.5}
+\contentsline {subsubsection}{\numberline {2.28.1.6}edit5\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}{13}{subsubsection.2.28.1.6}
+\contentsline {subsubsection}{\numberline {2.28.1.7}edit6\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{13}{subsubsection.2.28.1.7}
+\contentsline {subsubsection}{\numberline {2.28.1.8}edit6\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}{14}{subsubsection.2.28.1.8}
+\contentsline {subsubsection}{\numberline {2.28.1.9}edit\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}fr\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{14}{subsubsection.2.28.1.9}
+\contentsline {subsubsection}{\numberline {2.28.1.10}edit\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}fr\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}{14}{subsubsection.2.28.1.10}
+\contentsline {subsubsection}{\numberline {2.28.1.11}edit\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}lambda\discretionary {-}{}{}\_\discretionary {-}{}{}coeff\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{14}{subsubsection.2.28.1.11}
+\contentsline {subsubsection}{\numberline {2.28.1.12}edit\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}lambda\discretionary {-}{}{}\_\discretionary {-}{}{}coeff\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}{14}{subsubsection.2.28.1.12}
+\contentsline {subsubsection}{\numberline {2.28.1.13}M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options}{14}{subsubsection.2.28.1.13}
+\contentsline {subsubsection}{\numberline {2.28.1.14}M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Opening\discretionary {-}{}{}Fcn}{14}{subsubsection.2.28.1.14}
+\contentsline {subsubsection}{\numberline {2.28.1.15}M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Output\discretionary {-}{}{}Fcn}{14}{subsubsection.2.28.1.15}
+\contentsline {subsubsection}{\numberline {2.28.1.16}popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}fr\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{14}{subsubsection.2.28.1.16}
+\contentsline {subsubsection}{\numberline {2.28.1.17}popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}fr\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}{14}{subsubsection.2.28.1.17}
+\contentsline {subsubsection}{\numberline {2.28.1.18}popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}lambda\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{14}{subsubsection.2.28.1.18}
+\contentsline {subsubsection}{\numberline {2.28.1.19}popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}lambda\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}{14}{subsubsection.2.28.1.19}
+\contentsline {subsubsection}{\numberline {2.28.1.20}popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}lambda\discretionary {-}{}{}\_\discretionary {-}{}{}uints\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{14}{subsubsection.2.28.1.20}
+\contentsline {subsubsection}{\numberline {2.28.1.21}popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}lambda\discretionary {-}{}{}\_\discretionary {-}{}{}uints\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}{14}{subsubsection.2.28.1.21}
+\contentsline {subsubsection}{\numberline {2.28.1.22}popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}iteration\discretionary {-}{}{}\_\discretionary {-}{}{}method\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{14}{subsubsection.2.28.1.22}
+\contentsline {subsubsection}{\numberline {2.28.1.23}popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}iteration\discretionary {-}{}{}\_\discretionary {-}{}{}method\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}{14}{subsubsection.2.28.1.23}
+\contentsline {section}{\numberline {2.29}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/ng\discretionary {-}{}{}\_\discretionary {-}{}{}bh3.m File Reference}{14}{section.2.29}
+\contentsline {subsection}{\numberline {2.29.1}Function Documentation}{14}{subsection.2.29.1}
+\contentsline {subsubsection}{\numberline {2.29.1.1}ng\discretionary {-}{}{}\_\discretionary {-}{}{}bh3}{14}{subsubsection.2.29.1.1}
+\contentsline {section}{\numberline {2.30}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/poli\discretionary {-}{}{}\_\discretionary {-}{}{}bh3.m File Reference}{14}{section.2.30}
+\contentsline {subsection}{\numberline {2.30.1}Function Documentation}{14}{subsection.2.30.1}
+\contentsline {subsubsection}{\numberline {2.30.1.1}poli\discretionary {-}{}{}\_\discretionary {-}{}{}bh3}{14}{subsubsection.2.30.1.1}
+\contentsline {section}{\numberline {2.31}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Pos\discretionary {-}{}{}Int\discretionary {-}{}{}Hist.m File Reference}{15}{section.2.31}
+\contentsline {subsection}{\numberline {2.31.1}Function Documentation}{15}{subsection.2.31.1}
+\contentsline {subsubsection}{\numberline {2.31.1.1}Pos\discretionary {-}{}{}Int\discretionary {-}{}{}Hist}{15}{subsubsection.2.31.1.1}
+\contentsline {section}{\numberline {2.32}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}L\discretionary {-}{}{}S4p\discretionary {-}{}{}Fit.m File Reference}{15}{section.2.32}
+\contentsline {subsection}{\numberline {2.32.1}Function Documentation}{15}{subsection.2.32.1}
+\contentsline {subsubsection}{\numberline {2.32.1.1}Edit\discretionary {-}{}{}Amp\discretionary {-}{}{}Lim\discretionary {-}{}{}Max\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{15}{subsubsection.2.32.1.1}
+\contentsline {subsubsection}{\numberline {2.32.1.2}Edit\discretionary {-}{}{}Amp\discretionary {-}{}{}Lim\discretionary {-}{}{}Min\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{15}{subsubsection.2.32.1.2}
+\contentsline {subsubsection}{\numberline {2.32.1.3}Edit\discretionary {-}{}{}First\discretionary {-}{}{}Sample\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{15}{subsubsection.2.32.1.3}
+\contentsline {subsubsection}{\numberline {2.32.1.4}Edit\discretionary {-}{}{}Last\discretionary {-}{}{}Sample\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{15}{subsubsection.2.32.1.4}
+\contentsline {subsubsection}{\numberline {2.32.1.5}Edit\discretionary {-}{}{}Max\discretionary {-}{}{}Fun\discretionary {-}{}{}Evals\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{15}{subsubsection.2.32.1.5}
+\contentsline {subsubsection}{\numberline {2.32.1.6}Edit\discretionary {-}{}{}Max\discretionary {-}{}{}Iter\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{15}{subsubsection.2.32.1.6}
+\contentsline {subsubsection}{\numberline {2.32.1.7}Edit\discretionary {-}{}{}Tol\discretionary {-}{}{}Fun\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{15}{subsubsection.2.32.1.7}
+\contentsline {subsubsection}{\numberline {2.32.1.8}Initial\discretionary {-}{}{}Fr\discretionary {-}{}{}Value\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{15}{subsubsection.2.32.1.8}
+\contentsline {subsubsection}{\numberline {2.32.1.9}Pre\discretionary {-}{}{}Process\discretionary {-}{}{}Data}{15}{subsubsection.2.32.1.9}
+\contentsline {subsubsection}{\numberline {2.32.1.10}Process\discretionary {-}{}{}And\discretionary {-}{}{}Perform\discretionary {-}{}{}M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{15}{subsubsection.2.32.1.10}
+\contentsline {subsubsection}{\numberline {2.32.1.11}Process\discretionary {-}{}{}And\discretionary {-}{}{}Show\discretionary {-}{}{}Results\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{16}{subsubsection.2.32.1.11}
+\contentsline {subsubsection}{\numberline {2.32.1.12}Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}L\discretionary {-}{}{}S4p\discretionary {-}{}{}Fit}{16}{subsubsection.2.32.1.12}
+\contentsline {subsubsection}{\numberline {2.32.1.13}Select\discretionary {-}{}{}Method\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{16}{subsubsection.2.32.1.13}
+\contentsline {subsubsection}{\numberline {2.32.1.14}Source\discretionary {-}{}{}Of\discretionary {-}{}{}Init\discretionary {-}{}{}Fr\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{16}{subsubsection.2.32.1.14}
+\contentsline {subsubsection}{\numberline {2.32.1.15}Update\discretionary {-}{}{}Display}{16}{subsubsection.2.32.1.15}
+\contentsline {section}{\numberline {2.33}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}M\discretionary {-}{}{}L5p\discretionary {-}{}{}Fit.m File Reference}{16}{section.2.33}
+\contentsline {subsection}{\numberline {2.33.1}Function Documentation}{16}{subsection.2.33.1}
+\contentsline {subsubsection}{\numberline {2.33.1.1}Compare\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{16}{subsubsection.2.33.1.1}
+\contentsline {subsubsection}{\numberline {2.33.1.2}Edit\discretionary {-}{}{}Max\discretionary {-}{}{}Fun\discretionary {-}{}{}Evals\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{16}{subsubsection.2.33.1.2}
+\contentsline {subsubsection}{\numberline {2.33.1.3}Edit\discretionary {-}{}{}Max\discretionary {-}{}{}Iter\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{16}{subsubsection.2.33.1.3}
+\contentsline {subsubsection}{\numberline {2.33.1.4}Edit\discretionary {-}{}{}Tol\discretionary {-}{}{}Fun\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{16}{subsubsection.2.33.1.4}
+\contentsline {subsubsection}{\numberline {2.33.1.5}Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}M\discretionary {-}{}{}L5p\discretionary {-}{}{}Fit}{16}{subsubsection.2.33.1.5}
+\contentsline {subsubsection}{\numberline {2.33.1.6}Reset\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{16}{subsubsection.2.33.1.6}
+\contentsline {subsubsection}{\numberline {2.33.1.7}Run\discretionary {-}{}{}Iterations}{16}{subsubsection.2.33.1.7}
+\contentsline {subsubsection}{\numberline {2.33.1.8}Start\discretionary {-}{}{}Pause\discretionary {-}{}{}Resume\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{16}{subsubsection.2.33.1.8}
+\contentsline {subsubsection}{\numberline {2.33.1.9}Stop\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{16}{subsubsection.2.33.1.9}
+\contentsline {subsubsection}{\numberline {2.33.1.10}Update\discretionary {-}{}{}Display}{16}{subsubsection.2.33.1.10}
+\contentsline {section}{\numberline {2.34}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Process\discretionary {-}{}{}F\discretionary {-}{}{}F\discretionary {-}{}{}T\discretionary {-}{}{}Test.m File Reference}{16}{section.2.34}
+\contentsline {subsection}{\numberline {2.34.1}Function Documentation}{17}{subsection.2.34.1}
+\contentsline {subsubsection}{\numberline {2.34.1.1}Process\discretionary {-}{}{}Data}{17}{subsubsection.2.34.1.1}
+\contentsline {subsubsection}{\numberline {2.34.1.2}Process\discretionary {-}{}{}F\discretionary {-}{}{}F\discretionary {-}{}{}T\discretionary {-}{}{}Test}{17}{subsubsection.2.34.1.2}
+\contentsline {subsubsection}{\numberline {2.34.1.3}Windowing\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{17}{subsubsection.2.34.1.3}
+\contentsline {section}{\numberline {2.35}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Process\discretionary {-}{}{}Histogram\discretionary {-}{}{}Test.m File Reference}{17}{section.2.35}
+\contentsline {subsection}{\numberline {2.35.1}Function Documentation}{17}{subsection.2.35.1}
+\contentsline {subsubsection}{\numberline {2.35.1.1}O\discretionary {-}{}{}K\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{17}{subsubsection.2.35.1.1}
+\contentsline {subsubsection}{\numberline {2.35.1.2}Process\discretionary {-}{}{}Histogram\discretionary {-}{}{}Test}{17}{subsubsection.2.35.1.2}
+\contentsline {section}{\numberline {2.36}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Quantize\discretionary {-}{}{}Signal.m File Reference}{17}{section.2.36}
+\contentsline {subsection}{\numberline {2.36.1}Function Documentation}{17}{subsection.2.36.1}
+\contentsline {subsubsection}{\numberline {2.36.1.1}Quantize\discretionary {-}{}{}Signal}{17}{subsubsection.2.36.1.1}
+\contentsline {section}{\numberline {2.37}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/rms.m File Reference}{17}{section.2.37}
+\contentsline {subsection}{\numberline {2.37.1}Function Documentation}{17}{subsection.2.37.1}
+\contentsline {subsubsection}{\numberline {2.37.1.1}rms}{17}{subsubsection.2.37.1.1}
+\contentsline {section}{\numberline {2.38}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Save\discretionary {-}{}{}Dsc\discretionary {-}{}{}To\discretionary {-}{}{}X\discretionary {-}{}{}M\discretionary {-}{}{}L.m File Reference}{17}{section.2.38}
+\contentsline {subsection}{\numberline {2.38.1}Function Documentation}{17}{subsection.2.38.1}
+\contentsline {subsubsection}{\numberline {2.38.1.1}Save\discretionary {-}{}{}Dsc\discretionary {-}{}{}To\discretionary {-}{}{}X\discretionary {-}{}{}M\discretionary {-}{}{}L}{18}{subsubsection.2.38.1.1}
+\contentsline {section}{\numberline {2.39}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/scanning.m File Reference}{18}{section.2.39}
+\contentsline {section}{\numberline {2.40}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/sfit4imp.m File Reference}{18}{section.2.40}
+\contentsline {subsection}{\numberline {2.40.1}Function Documentation}{18}{subsection.2.40.1}
+\contentsline {subsubsection}{\numberline {2.40.1.1}sfit4imp}{18}{subsubsection.2.40.1.1}
+\contentsline {section}{\numberline {2.41}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Simulate\discretionary {-}{}{}Measurement.m File Reference}{18}{section.2.41}
+\contentsline {subsection}{\numberline {2.41.1}Function Documentation}{18}{subsection.2.41.1}
+\contentsline {subsubsection}{\numberline {2.41.1.1}Amp\discretionary {-}{}{}Phase\discretionary {-}{}{}Vs\discretionary {-}{}{}Cosine\discretionary {-}{}{}Sine\discretionary {-}{}{}Selector\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{18}{subsubsection.2.41.1.1}
+\contentsline {subsubsection}{\numberline {2.41.1.2}Cancel\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{18}{subsubsection.2.41.1.2}
+\contentsline {subsubsection}{\numberline {2.41.1.3}Edit\discretionary {-}{}{}Cosine\discretionary {-}{}{}Coefficient\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{18}{subsubsection.2.41.1.3}
+\contentsline {subsubsection}{\numberline {2.41.1.4}Edit\discretionary {-}{}{}D\discretionary {-}{}{}C\discretionary {-}{}{}Component\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{18}{subsubsection.2.41.1.4}
+\contentsline {subsubsection}{\numberline {2.41.1.5}Edit\discretionary {-}{}{}I\discretionary {-}{}{}N\discretionary {-}{}{}L\discretionary {-}{}{}From\discretionary {-}{}{}Workspace\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{18}{subsubsection.2.41.1.5}
+\contentsline {subsubsection}{\numberline {2.41.1.6}Edit\discretionary {-}{}{}I\discretionary {-}{}{}N\discretionary {-}{}{}L\discretionary {-}{}{}Shape\discretionary {-}{}{}Coefficient\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{19}{subsubsection.2.41.1.6}
+\contentsline {subsubsection}{\numberline {2.41.1.7}Edit\discretionary {-}{}{}Noise\discretionary {-}{}{}On\discretionary {-}{}{}I\discretionary {-}{}{}N\discretionary {-}{}{}L\discretionary {-}{}{}Coefficient\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{19}{subsubsection.2.41.1.7}
+\contentsline {subsubsection}{\numberline {2.41.1.8}Edit\discretionary {-}{}{}Number\discretionary {-}{}{}Of\discretionary {-}{}{}Bits\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{19}{subsubsection.2.41.1.8}
+\contentsline {subsubsection}{\numberline {2.41.1.9}Edit\discretionary {-}{}{}Number\discretionary {-}{}{}Of\discretionary {-}{}{}Periods\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{19}{subsubsection.2.41.1.9}
+\contentsline {subsubsection}{\numberline {2.41.1.10}Edit\discretionary {-}{}{}Number\discretionary {-}{}{}Of\discretionary {-}{}{}Samples\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{19}{subsubsection.2.41.1.10}
+\contentsline {subsubsection}{\numberline {2.41.1.11}Edit\discretionary {-}{}{}Sine\discretionary {-}{}{}Coefficient\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{19}{subsubsection.2.41.1.11}
+\contentsline {subsubsection}{\numberline {2.41.1.12}Edit\discretionary {-}{}{}Std\discretionary {-}{}{}Of\discretionary {-}{}{}Noise\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{19}{subsubsection.2.41.1.12}
+\contentsline {subsubsection}{\numberline {2.41.1.13}Help\discretionary {-}{}{}How\discretionary {-}{}{}To\discretionary {-}{}{}Simulate\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{19}{subsubsection.2.41.1.13}
+\contentsline {subsubsection}{\numberline {2.41.1.14}I\discretionary {-}{}{}N\discretionary {-}{}{}L\discretionary {-}{}{}Selection\discretionary {-}{}{}Method\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{19}{subsubsection.2.41.1.14}
+\contentsline {subsubsection}{\numberline {2.41.1.15}I\discretionary {-}{}{}N\discretionary {-}{}{}L\discretionary {-}{}{}Shape\discretionary {-}{}{}Selector\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{19}{subsubsection.2.41.1.15}
+\contentsline {subsubsection}{\numberline {2.41.1.16}Noise\discretionary {-}{}{}On\discretionary {-}{}{}I\discretionary {-}{}{}N\discretionary {-}{}{}L\discretionary {-}{}{}Selector\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{19}{subsubsection.2.41.1.16}
+\contentsline {subsubsection}{\numberline {2.41.1.17}Simulate\discretionary {-}{}{}Measurement}{19}{subsubsection.2.41.1.17}
+\contentsline {subsubsection}{\numberline {2.41.1.18}Simulate\discretionary {-}{}{}Measurement\discretionary {-}{}{}\_\discretionary {-}{}{}callback}{19}{subsubsection.2.41.1.18}
+\contentsline {subsubsection}{\numberline {2.41.1.19}Synchronize\discretionary {-}{}{}A\discretionary {-}{}{}B}{19}{subsubsection.2.41.1.19}
+\contentsline {subsubsection}{\numberline {2.41.1.20}Synchronize\discretionary {-}{}{}Amp\discretionary {-}{}{}Phase}{19}{subsubsection.2.41.1.20}
+\contentsline {subsubsection}{\numberline {2.41.1.21}Update\discretionary {-}{}{}Display}{19}{subsubsection.2.41.1.21}
+\contentsline {section}{\numberline {2.42}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Sine\discretionary {-}{}{}Wave\discretionary {-}{}{}Fit4p\discretionary {-}{}{}Lsq\discretionary {-}{}{}Nonlin.m File Reference}{19}{section.2.42}
+\contentsline {subsection}{\numberline {2.42.1}Function Documentation}{19}{subsection.2.42.1}
+\contentsline {subsubsection}{\numberline {2.42.1.1}Sine\discretionary {-}{}{}Wave\discretionary {-}{}{}Fit4p\discretionary {-}{}{}Lsq\discretionary {-}{}{}Nonlin}{19}{subsubsection.2.42.1.1}
+\contentsline {section}{\numberline {2.43}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/step\discretionary {-}{}{}\_\discretionary {-}{}{}1.m File Reference}{19}{section.2.43}
+\contentsline {subsection}{\numberline {2.43.1}Function Documentation}{20}{subsection.2.43.1}
+\contentsline {subsubsection}{\numberline {2.43.1.1}About\discretionary {-}{}{}\_\discretionary {-}{}{}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{20}{subsubsection.2.43.1.1}
+\contentsline {subsubsection}{\numberline {2.43.1.2}Getting\discretionary {-}{}{}\_\discretionary {-}{}{}started\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{20}{subsubsection.2.43.1.2}
+\contentsline {subsubsection}{\numberline {2.43.1.3}Help\discretionary {-}{}{}\_\discretionary {-}{}{}menu\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{20}{subsubsection.2.43.1.3}
+\contentsline {subsubsection}{\numberline {2.43.1.4}popup\discretionary {-}{}{}\_\discretionary {-}{}{}option\discretionary {-}{}{}\_\discretionary {-}{}{}selector\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{20}{subsubsection.2.43.1.4}
+\contentsline {subsubsection}{\numberline {2.43.1.5}popup\discretionary {-}{}{}\_\discretionary {-}{}{}option\discretionary {-}{}{}\_\discretionary {-}{}{}selector\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}{20}{subsubsection.2.43.1.5}
+\contentsline {subsubsection}{\numberline {2.43.1.6}pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}export\discretionary {-}{}{}\_\discretionary {-}{}{}to\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}H\discretionary {-}{}{}T\discretionary {-}{}{}M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{20}{subsubsection.2.43.1.6}
+\contentsline {subsubsection}{\numberline {2.43.1.7}pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}help\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{20}{subsubsection.2.43.1.7}
+\contentsline {subsubsection}{\numberline {2.43.1.8}pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}next\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{20}{subsubsection.2.43.1.8}
+\contentsline {subsubsection}{\numberline {2.43.1.9}pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}previous\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{20}{subsubsection.2.43.1.9}
+\contentsline {subsubsection}{\numberline {2.43.1.10}pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}process\discretionary {-}{}{}\_\discretionary {-}{}{}fft\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{20}{subsubsection.2.43.1.10}
+\contentsline {subsubsection}{\numberline {2.43.1.11}pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}process\discretionary {-}{}{}\_\discretionary {-}{}{}hist\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{20}{subsubsection.2.43.1.11}
+\contentsline {subsubsection}{\numberline {2.43.1.12}pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}process\discretionary {-}{}{}\_\discretionary {-}{}{}ls\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{20}{subsubsection.2.43.1.12}
+\contentsline {subsubsection}{\numberline {2.43.1.13}pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}process\discretionary {-}{}{}\_\discretionary {-}{}{}ml\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{20}{subsubsection.2.43.1.13}
+\contentsline {subsubsection}{\numberline {2.43.1.14}pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}show\discretionary {-}{}{}\_\discretionary {-}{}{}selections\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{20}{subsubsection.2.43.1.14}
+\contentsline {subsubsection}{\numberline {2.43.1.15}pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}showerrors\discretionary {-}{}{}\_\discretionary {-}{}{}1\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{20}{subsubsection.2.43.1.15}
+\contentsline {subsubsection}{\numberline {2.43.1.16}pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}showerrors\discretionary {-}{}{}\_\discretionary {-}{}{}2\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{20}{subsubsection.2.43.1.16}
+\contentsline {subsubsection}{\numberline {2.43.1.17}pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}showerrors\discretionary {-}{}{}\_\discretionary {-}{}{}3\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{20}{subsubsection.2.43.1.17}
+\contentsline {subsubsection}{\numberline {2.43.1.18}pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}showerrors\discretionary {-}{}{}\_\discretionary {-}{}{}4\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{20}{subsubsection.2.43.1.18}
+\contentsline {subsubsection}{\numberline {2.43.1.19}pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}showwarns\discretionary {-}{}{}\_\discretionary {-}{}{}1\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{21}{subsubsection.2.43.1.19}
+\contentsline {subsubsection}{\numberline {2.43.1.20}pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}showwarns\discretionary {-}{}{}\_\discretionary {-}{}{}2\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{21}{subsubsection.2.43.1.20}
+\contentsline {subsubsection}{\numberline {2.43.1.21}pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}showwarns\discretionary {-}{}{}\_\discretionary {-}{}{}3\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{21}{subsubsection.2.43.1.21}
+\contentsline {subsubsection}{\numberline {2.43.1.22}pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}showwarns\discretionary {-}{}{}\_\discretionary {-}{}{}4\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{21}{subsubsection.2.43.1.22}
+\contentsline {subsubsection}{\numberline {2.43.1.23}step\discretionary {-}{}{}\_\discretionary {-}{}{}1}{21}{subsubsection.2.43.1.23}
+\contentsline {subsubsection}{\numberline {2.43.1.24}step\discretionary {-}{}{}\_\discretionary {-}{}{}1\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Opening\discretionary {-}{}{}Fcn}{21}{subsubsection.2.43.1.24}
+\contentsline {subsubsection}{\numberline {2.43.1.25}step\discretionary {-}{}{}\_\discretionary {-}{}{}1\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Output\discretionary {-}{}{}Fcn}{21}{subsubsection.2.43.1.25}
+\contentsline {section}{\numberline {2.44}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/step\discretionary {-}{}{}\_\discretionary {-}{}{}2.m File Reference}{21}{section.2.44}
+\contentsline {subsection}{\numberline {2.44.1}Function Documentation}{21}{subsection.2.44.1}
+\contentsline {subsubsection}{\numberline {2.44.1.1}About\discretionary {-}{}{}\_\discretionary {-}{}{}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{21}{subsubsection.2.44.1.1}
+\contentsline {subsubsection}{\numberline {2.44.1.2}edit\discretionary {-}{}{}\_\discretionary {-}{}{}first\discretionary {-}{}{}\_\discretionary {-}{}{}valid\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{21}{subsubsection.2.44.1.2}
+\contentsline {subsubsection}{\numberline {2.44.1.3}edit\discretionary {-}{}{}\_\discretionary {-}{}{}first\discretionary {-}{}{}\_\discretionary {-}{}{}valid\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}{21}{subsubsection.2.44.1.3}
+\contentsline {subsubsection}{\numberline {2.44.1.4}edit\discretionary {-}{}{}\_\discretionary {-}{}{}highest\discretionary {-}{}{}\_\discretionary {-}{}{}valid\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{21}{subsubsection.2.44.1.4}
+\contentsline {subsubsection}{\numberline {2.44.1.5}edit\discretionary {-}{}{}\_\discretionary {-}{}{}highest\discretionary {-}{}{}\_\discretionary {-}{}{}valid\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}{21}{subsubsection.2.44.1.5}
+\contentsline {subsubsection}{\numberline {2.44.1.6}edit\discretionary {-}{}{}\_\discretionary {-}{}{}last\discretionary {-}{}{}\_\discretionary {-}{}{}valid\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{21}{subsubsection.2.44.1.6}
+\contentsline {subsubsection}{\numberline {2.44.1.7}edit\discretionary {-}{}{}\_\discretionary {-}{}{}last\discretionary {-}{}{}\_\discretionary {-}{}{}valid\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}{21}{subsubsection.2.44.1.7}
+\contentsline {subsubsection}{\numberline {2.44.1.8}edit\discretionary {-}{}{}\_\discretionary {-}{}{}lowest\discretionary {-}{}{}\_\discretionary {-}{}{}valid\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{21}{subsubsection.2.44.1.8}
+\contentsline {subsubsection}{\numberline {2.44.1.9}edit\discretionary {-}{}{}\_\discretionary {-}{}{}lowest\discretionary {-}{}{}\_\discretionary {-}{}{}valid\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}{22}{subsubsection.2.44.1.9}
+\contentsline {subsubsection}{\numberline {2.44.1.10}Getting\discretionary {-}{}{}\_\discretionary {-}{}{}started\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{22}{subsubsection.2.44.1.10}
+\contentsline {subsubsection}{\numberline {2.44.1.11}Help\discretionary {-}{}{}\_\discretionary {-}{}{}menu\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{22}{subsubsection.2.44.1.11}
+\contentsline {subsubsection}{\numberline {2.44.1.12}pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}next\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{22}{subsubsection.2.44.1.12}
+\contentsline {subsubsection}{\numberline {2.44.1.13}pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}preprocess\discretionary {-}{}{}\_\discretionary {-}{}{}record\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{22}{subsubsection.2.44.1.13}
+\contentsline {subsubsection}{\numberline {2.44.1.14}pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}previous\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}{22}{subsubsection.2.44.1.14}
+\contentsline {subsubsection}{\numberline {2.44.1.15}step\discretionary {-}{}{}\_\discretionary {-}{}{}2}{22}{subsubsection.2.44.1.15}
+\contentsline {subsubsection}{\numberline {2.44.1.16}step\discretionary {-}{}{}\_\discretionary {-}{}{}2\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Opening\discretionary {-}{}{}Fcn}{22}{subsubsection.2.44.1.16}
+\contentsline {subsubsection}{\numberline {2.44.1.17}step\discretionary {-}{}{}\_\discretionary {-}{}{}2\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Output\discretionary {-}{}{}Fcn}{22}{subsubsection.2.44.1.17}
+\contentsline {section}{\numberline {2.45}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Time\discretionary {-}{}{}Domain2\discretionary {-}{}{}I\discretionary {-}{}{}N\discretionary {-}{}{}L.m File Reference}{22}{section.2.45}
+\contentsline {subsection}{\numberline {2.45.1}Function Documentation}{22}{subsection.2.45.1}
+\contentsline {subsubsection}{\numberline {2.45.1.1}Time\discretionary {-}{}{}Domain2\discretionary {-}{}{}I\discretionary {-}{}{}N\discretionary {-}{}{}L}{22}{subsubsection.2.45.1.1}
+\contentsline {section}{\numberline {2.46}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Trans\discretionary {-}{}{}Levels2\discretionary {-}{}{}I\discretionary {-}{}{}N\discretionary {-}{}{}L.m File Reference}{22}{section.2.46}
+\contentsline {subsection}{\numberline {2.46.1}Function Documentation}{22}{subsection.2.46.1}
+\contentsline {subsubsection}{\numberline {2.46.1.1}Trans\discretionary {-}{}{}Levels2\discretionary {-}{}{}I\discretionary {-}{}{}N\discretionary {-}{}{}L}{22}{subsubsection.2.46.1.1}
+\contentsline {chapter}{Index}{23}{section*.46}

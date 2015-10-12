@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of SineWaveFit4pLsqNonlin</title>
+  <meta name="keywords" content="SineWaveFit4pLsqNonlin">
+  <meta name="description" content="@fn SineWaveFit4pLsqNonlin">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; SineWaveFit4pLsqNonlin.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>SineWaveFit4pLsqNonlin
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>@fn SineWaveFit4pLsqNonlin</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function p = SineWaveFit4pLsqNonlin(datavect,timevect,initial_freq,options) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> @fn SineWaveFit4pLsqNonlin
+ @brief Fits a sine wave to the recorded data in least squares sense using
+        4 parameters
+ @param datavect Vector of the recorded ADC codes
+ @param timevect Sampling times of the elements of datavect
+ @param initial_freq Initial frequency estimator normalized to the
+                     sampling frequency (f/fs)
+ @param options Options of the numerical optimization (the nonlinear LS fit)
+ @return p The estimated signal parameters
+ @author Tam� Virosztek, Budapest University of Technology and Economics,
+         Department of Measurement and Information Systems,
+         Virosztek.Tamas@mit.bme.hu</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="CalculateResidualsForLS4pFit.html" class="code" title="function residuals = CalculateResidualsForLS4pFit(p,datavect,timevect)">CalculateResidualsForLS4pFit</a>	p = [A B C theta].'</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="ProcessDscLS4pFit.html" class="code" title="function ProcessDscLS4pFit(dsc,reason)">ProcessDscLS4pFit</a>	@fn ProcessDscLS4pFit</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function p = SineWaveFit4pLsqNonlin(datavect,timevect,initial_freq,options)</a>
+0002 <span class="comment">% @fn SineWaveFit4pLsqNonlin</span>
+0003 <span class="comment">% @brief Fits a sine wave to the recorded data in least squares sense using</span>
+0004 <span class="comment">%        4 parameters</span>
+0005 <span class="comment">% @param datavect Vector of the recorded ADC codes</span>
+0006 <span class="comment">% @param timevect Sampling times of the elements of datavect</span>
+0007 <span class="comment">% @param initial_freq Initial frequency estimator normalized to the</span>
+0008 <span class="comment">%                     sampling frequency (f/fs)</span>
+0009 <span class="comment">% @param options Options of the numerical optimization (the nonlinear LS fit)</span>
+0010 <span class="comment">% @return p The estimated signal parameters</span>
+0011 <span class="comment">% @author Tam� Virosztek, Budapest University of Technology and Economics,</span>
+0012 <span class="comment">%         Department of Measurement and Information Systems,</span>
+0013 <span class="comment">%         Virosztek.Tamas@mit.bme.hu</span>
+0014 
+0015 <span class="comment">% p = [A; B; C; theta]</span>
+0016 theta0 = 2*pi*initial_freq; <span class="comment">%Initial frequency is given in f/fs;</span>
+0017 
+0018 <span class="comment">%Estimating sine wave coefficients using theta0 and 3-parameter fit</span>
+0019 D0 = [cos(timevect*theta0) sin(timevect*theta0) ones(length(timevect),1)];
+0020 p0 = D0\datavect; <span class="comment">%p0 = [A0 B0 C0].';</span>
+0021 
+0022 p0 = [p0; theta0];
+0023 options.Display = <span class="string">'off'</span>; <span class="comment">%To suppress display in Command Window</span>
+0024 p = lsqnonlin(@(p)<a href="CalculateResidualsForLS4pFit.html" class="code" title="function residuals = CalculateResidualsForLS4pFit(p,datavect,timevect)">CalculateResidualsForLS4pFit</a>(p,datavect,timevect),p0,-Inf,Inf,options);
+0025 
+0026 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

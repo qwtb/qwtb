@@ -1,4 +1,4 @@
-\documentclass[12pt]{article} %<<<1 ------------------------------
+\documentclass[12pt,a4paper,oneside]{report} %<<<1 ------------------------------
 % fonty, kodovani:
 \usepackage[utf8]{inputenc}             % soubor je v utf8:
 \usepackage{cmap}                       % preklad kodovani aby pdfko bylo kopirovatelne se spravnymi cs znaky, musi byt vhodny font, viz dalsi 2 radky
@@ -15,8 +15,14 @@
 \grffilesetup{ multidot=false, babel=false, encoding, inputencoding=utf8, filenameencoding=utf8, space=true}
 \newcommand*{\FILEDOT}{.}                   % pokud obrazek v souboru s teckou (napr. aaa.bbb.pdf), pak si TeX mysli ze to uz je pripona, musi % se tecka obejit timhle: \includegraphics{aaa\FILEDOT bbb.eps}
 % ostatni:
-\usepackage[unicode]{hyperref}                   % klikatelne odkazy v pdfkach
-\usepackage[a4paper]{geometry}          % zajisti A4
+\usepackage[pdftex,
+            unicode,
+            pdfauthor={Q-Wave consorcium},
+            pdftitle={Quantum Wave ToolBox documentation},
+            pdfkeywords={algorithm, data procesing, sampling, toolbox},
+            pdfproducer={Latex with hyperref},
+            pdfcreator={pdflatex}]{hyperref}
+%\usepackage[a4paper]{geometry}          % zajisti A4
 %\geometry{verbose,lmargin=2.5cm,rmargin=2.5cm,tmargin=2.5cm,bmargin=2.5cm}      % nastaveni okraju
 \usepackage{url}                        % moznost parametru url v bibtexu
 %\usepackage{setspace} \doublespacing   % dvojite radkovani, pokud 1.5 pak \onehalfspace
@@ -24,14 +30,46 @@
 \usepackage{amsmath}                    % 
 \usepackage{color}
 
+% lstlisting settings %<<<1 ----------------------------------------------------
 \definecolor{mygreen}{rgb}{0,0.6,0}
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
 \definecolor{lightgray}{rgb}{0.95,0.95,0.95}
 \definecolor{mymauve}{rgb}{0.58,0,0.82}
 \usepackage{listings}
-\lstset{ %
+\lstdefinestyle{mcode}{
+%\lstset{ %
   backgroundcolor=\color{lightgray},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
   basicstyle=\normalsize\sffamily,        % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  deletekeywords={...},            % if you want to delete keywords from the given language
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  frame=single,	                   % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  language=Matlab,                 % the language of the code
+  otherkeywords={*,qwtb,alg_info,alg_wrapper,alg_test,alg_example,...},           % if you want to add more keywords to the set
+  numbers=none,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{mymauve},     % string literal style
+  tabsize=2,                       % sets default tabsize to 2 spaces
+  title=\lstname,                  % show the filename of files included with \lstinputlisting; also try caption instead of title
+  belowskip=0pt                  % skip after end of lstlistings
+}
+
+\lstdefinestyle{output}{
+%\lstset{ %
+  backgroundcolor=\color{lightgray},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+  basicstyle=\normalsize\itshape,        % the size of the fonts that are used for the code
   breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
   breaklines=true,                 % sets automatic line breaking
   captionpos=b,                    % sets the caption-position to bottom
@@ -55,9 +93,13 @@
   stringstyle=\color{mymauve},     % string literal style
   tabsize=2,                       % sets default tabsize to 2 spaces
   title=\lstname,                  % show the filename of files included with \lstinputlisting; also try caption instead of title
-  %belowskip=-10pt                  % skip after end of lstlistings
+  belowskip=0pt,                  % skip after end of lstlistings
+  xleftmargin=20pt                      % margin on left side
 }
 
+\lstset{style=mcode}
+
+% bibliography settings %<<<1 ----------------------------------------------------
 \usepackage[english]{babel} % main language of the document must be last
 \usepackage[
    backend=biber      % if we want unicode 
@@ -82,8 +124,6 @@
 %    {\endlist}
 %    {\item}
 
-
-
 % zkratky %<<<1 ----------------------------------------------------
 
 \def\Alg{{\sc Algorithm}\xspace}
@@ -100,7 +140,7 @@
 \def\labview{{\sc LabVIEW}\xspace}
 \def\mgo{\matlab/\octave\xspace}
         
-\begin{document} %--------------------------------------------------------------------
+\begin{document} % dalsi nastaveni dokumentu --------------------------------------------%<<<1
 % jak rozdelit specialni slova, napr.: au-to-ma-ti-za-ce
 \hyphenation{Frame-work OpenOffice SourceForge Windows vstu-pních pra-vdě-po-do-bno-stní roz-dě-le-ní me-ze pra-vdě-po-do-bnost pra-vdě-po-do-bnos-tí
 pse-u-do-ná-hod-ná pse-u-do-ná-hod-ných kan-ce-lář-ských ro-vno-měr-né}
@@ -109,6 +149,13 @@ pse-u-do-ná-hod-ná pse-u-do-ná-hod-ných kan-ce-lář-ských ro-vno-měr-né}
 \renewcommand{\labelitemi}{--}          % oddelovac itemu
 \setlength{\unitlength}{1mm}            % standartni delka v prostredi picture
 
+
+\newenvironment{tightdesc}{\begin{description}[itemsep=0pt]} 
+                              {\end{description}}
+
+\title{Quantum Wave ToolBox documentation}
+\author{Q-Wave consorcium}
+
 % prvni strana ----------------------------------------------------------------------- %<<<1 ------------------------------
 \thispagestyle{empty}
 \begin{center}
@@ -116,44 +163,46 @@ pse-u-do-ná-hod-ná pse-u-do-ná-hod-ných kan-ce-lář-ských ro-vno-měr-né}
 \hfill
 \includegraphics[width=0.3\textwidth]{sources/eurametlogo.jpg}
 
-        \vspace{5em}
-        {\large \it 
-        JRP SIB59 Q-WAVE\\
-        \textsc{A quantum standard for sampled electrical measurements}\\
-
-        \vspace{2em}
-        WP 4: \textsc{Theoretical underpinning}\\
+        \vspace{8em}
+        {\huge
+        Quantum Wave ToolBox\\
+        documentation}\\
 
         \vfill
-        \textsc{XXX} D4.4.1, \textsc{Report:}\\
-        \textsc{Documentation to the toolbox for evaluation of digital/quantum generators errors}\\
-
-        \bigskip
         {\Huge \color{red}{BETA version}}
 
         \vfill
-        \textsc{CMI}\\
-        %XXX \textsc{Jul} 2015
+        {\Large Q-Wave consortium}\\
+        \today
+        
+        \bigskip
+        contact: \texttt{msira@cmi.cz}
 
         \vfill
-        }
 \end{center}
 \newpage
 
 \tableofcontents
 
-%%% MOTO: press a button with bold title AMPLITUDE - (drink a coffee) - and get the result
-\newpage
+\begin{abstract} %<<<1 ------------------------------
+\bigskip
+\begin{center}
+        \parbox{0.7\textwidth}{\textit{Press a button with bold title AMPLITUDE\\
+        \dots drink a coffee \dots\\
+        and get the result}}
+\end{center}
 
-\section{Introduction} %<<<1 ------------------------------
-Quantum Wave Tool Box (QWTB) is a toolbox for evaluation of measured data. QWTB consist of data
+\bigskip
+\noindent Quantum Wave Tool Box (QWTB) is a toolbox for evaluation of measured data. QWTB consist of data
 processing algorithms from very different sources and unificating application interface. The toolbox
 gives the possibility to use different data processing algorithms with one set of data and removes
 the need to reformat data for every particular algorithm. Toolbox is extensible. The toolbox
 can variate input data and calculate uncertainties by means of Monte Carlo Method
 (MCM)~\cite{JCGM2008}.
+\end{abstract}
 
-\section{Toolbox basic scheme} %<<<1 ------------------------------
+\chapter{Basic description of the toolbox} %<<<1 ------------------------
+\section{Toolbox overall scheme} %<<<2 ------------------------------
 The basic scheme of the toolbox is following:
 \begin{center}
         \includegraphics{sources/basic scheme v2.pdf}
@@ -174,10 +223,10 @@ toolbox to apply a selected algorithm on the data and review results. Toolbox wi
 Another algorithm can be used immediately on the same data. User interface of the toolbox is represented
 by the function \lstinline{qwtb} defined in the file {\tt qwtb.m}.
 
-\section{Toolbox use} %<<<1 ------------------------------
+\section{Toolbox use} %<<<2 ------------------------------
 The toolbox is used in several modes according to a number and character of input arguments.
 
-\subsection{Get list of implemented algorithms}
+\subsection{Get list of implemented algorithms} %<<<3
 \begin{lstlisting}
 alginfo = qwtb()
 \end{lstlisting}
@@ -186,7 +235,7 @@ With no input arguments, toolbox returns informations on all available algorithm
 \lstinline{alginfo} contains structures for every algorithm found in the same directory as
 \texttt{qwtb.m}. Format of structures is defined in~\ref{structalginfo}.
 
-\subsection{Application of an algorithm on the data} %<<<2 ------------------------------
+\subsection{Application of an algorithm on the data} %<<<3 ------------------------------
 \begin{lstlisting}
 dataout = qwtb('algid', datain)
 \end{lstlisting}
@@ -216,7 +265,7 @@ third output argument:
 [dataout, datain, calcset] = qwtb('algid', datain, calcset)
 \end{lstlisting}
 
-\subsection{Running an example of algorithm use} %<<<2 ------------------------------
+\subsection{Running an example of algorithm use} %<<<3 ------------------------------
 Algorithm can have implemented an example of the use. This can be run by following syntax:
 
 \begin{lstlisting}
@@ -229,7 +278,7 @@ string. Toolbox will run a script \lstinline{alg_example.m} located in a algorit
 
 After finish user can review input and output data or resulted figures if any.
 
-\subsection{Running a test of algorithm} %<<<2 ------------------------------
+\subsection{Running a test of algorithm} %<<<3 ------------------------------
 Algorithm can have implemented a self test. This can be run by following syntax:
 
 \begin{lstlisting}
@@ -243,7 +292,7 @@ string. Toolbox will run a script \lstinline{alg_test.m} located in a algorithm 
 Test should prepare data, run algorithm and check results. If implementation of algorithm
 behaves incorrectly, an error will occur.
 
-\subsection{Adding or removing algorithm path} %<<<2 ------------------------------
+\subsection{Adding or removing algorithm path} %<<<3 ------------------------------
 Algorithms are stored in different directories, which are not in \mgo load path. To add directory
 with selected path to \mgo load path, following syntax is used:
 
@@ -259,7 +308,8 @@ To remove path, use:
 
 Adding or removing path should be required only in special cases, such as debugging etc.
 
-\section{Algorithm directory structure implementation} %<<<1 ------------------------------
+\chapter{Detailed description of the toolbox} %<<<1 ------------------------------
+\section{Algorithm directory structure implementation} %<<<2 ------------------------------
 Every algorithm is placed in a directory of following name:
 \begin{center}
         {\tt alg\_X}
@@ -267,15 +317,15 @@ Every algorithm is placed in a directory of following name:
 These directories have to be located in the directory containing the toolbox main script {\tt qwtb.m}.
 
 Every algorithm directory contains following files:
-\begin{description}
+\begin{tightdesc}
         \item [{\tt X1}, {\tt X2}, \dots] ---  Mandatory. One or more files with the algorithm itself.
         \item [{\tt alg\_info.m}] ---  Mandatory. Description of the algorithm. See \ref{filealginfo}.
         \item [{\tt alg\_wrapper.m}] ---  Mandatory. Wrapper of the algorithm. See \ref{filealgwrapper}.
         \item [{\tt alg\_test.m}] ---  Recomended. Testing function. See \ref{filealgtest}.
         \item [{\tt alg\_example.m}] ---  Recomended. Example script. See \ref{filealgexample}.
-\end{description}
+\end{tightdesc}
 
-\subsection{File {\tt alg\_info.m}} %<<<2 ------------------------------
+\subsection{File {\tt alg\_info.m}} %<<<3 ------------------------------
 \label{filealginfo}
 File contains a function with definition:
 
@@ -289,7 +339,7 @@ defined in~\ref{structalginfo}.
 File is mandatory. If file is missing in algorithm directory, QWTB will not recognize this
 algorithm as part of the toolbox.
 
-\subsection{File {\tt alg\_wrapper.m}} %<<<2 ------------------------------
+\subsection{File {\tt alg\_wrapper.m}} %<<<3 ------------------------------
 \label{filealgwrapper}
 File contains a function with definition:
 
@@ -313,7 +363,7 @@ The wrapper does following:
 File is mandatory. If file is missing in algorithm directory, QWTB will not recognize this
 algorithm as part of the toolbox.
 
-\subsection{File {\tt alg\_test.m}} %<<<2 ------------------------------
+\subsection{File {\tt alg\_test.m}} %<<<3 ------------------------------
 \label{filealgtest}
 File contains a function with following definition:
 
@@ -326,7 +376,7 @@ QWTB will provide a standard calculation settings structure \lstinline{calcset} 
 
 This file is not mandatory, however is recommended.
 
-\subsection{File {\tt alg\_example.m}} %<<<2 ------------------------------
+\subsection{File {\tt alg\_example.m}} %<<<3 ------------------------------
 \label{filealgexample}
 
 Example contains a script showing a basic use of the algorithm. The format of the file should
@@ -337,17 +387,18 @@ the example script will be accessible to the user.
 To create a documentation of the QWTB, function \lstinline{publish} is applied to the example script
 and resulting file is attached to the documentation file.
 
-\section{Algorithm informations structure} %<<<1 ------------------------------
+\section{Algorithm informations structure} %<<<2 ------------------------------
 \label{structalginfo}
 Structure defines properties and possibilities of the algorithm. All fields are mandatory but
 \lstinline{.fullpath}.
 
-\begin{description}
+\begin{tightdesc}
         \item [\textsf{.id}] --- Designator of the algorithm.
         \item [\textsf{.name}] ---  Name of the algorithm.
         \item [\textsf{.desc}] ---  Basic description.
         \item [\textsf{.citation}] ---  Reference.
         \item [\textsf{.remarks}] ---  Any remark.
+        \item [\textsf{.license}] ---  License of the algorithm.
         \item [\textsf{.requires}] ---  Required quantities.
         \item [\textsf{.reqdesc}] ---  Short description of required quantities.
         \item [\textsf{.returns}] ---  Output quantities.
@@ -355,76 +406,79 @@ Structure defines properties and possibilities of the algorithm. All fields are 
         \item [\textsf{.providesGUF}] ---  Algorithm/wrapper calculates GUF uncertainty.
         \item [\textsf{.providesMCM}] ---  Algorithm/wrapper calculates MCM uncertainty.
         \item [\textsf{.fullpath}] ---  Full path to the algorithm. Automatically generated by the toolbox.
-\end{description}
+\end{tightdesc}
 
-\subsection{\textsf{.id}} %<<<2 ------------------------------
+\subsection{\textsf{.id}} %<<<3 ------------------------------
 String. Designator of the algorithm. It is unique identifier, no two algorithms can have same id.
 
-\subsection{\textsf{.longname}} %<<<2 ------------------------------
+\subsection{\textsf{.longname}} %<<<3 ------------------------------
 String. Full name of the algorithm. 
 
-\subsection{\textsf{.desc}} %<<<2 ------------------------------
+\subsection{\textsf{.desc}} %<<<3 ------------------------------
 String. Basic description of the algorithm.
 
-\subsection{\textsf{.citation}} %<<<2 ------------------------------
+\subsection{\textsf{.citation}} %<<<3 ------------------------------
 String. A reference to the paper, book or other literature with full description of the algorithm.
 
-\subsection{\textsf{.remarks}} %<<<2 ------------------------------
+\subsection{\textsf{.remarks}} %<<<3 ------------------------------
 String. Remarks, license or others related to the algorithm.
 
-\subsection{\textsf{.requires}} %<<<2 ------------------------------
+\subsection{\textsf{.license}} %<<<3 ------------------------------
+String. License of the algorithm. This is not license of the toolbox!
+
+\subsection{\textsf{.requires}} %<<<3 ------------------------------
 Cell array of strings. Names of quantities required by the algorithm.
 
-\subsection{\textsf{.reqdesc}} %<<<2 ------------------------------
+\subsection{\textsf{.reqdesc}} %<<<3 ------------------------------
 Cell array of strings. Short description of quantities required by the algorithm.
 
-\subsection{\textsf{.returns}} %<<<2 ------------------------------
+\subsection{\textsf{.returns}} %<<<3 ------------------------------
 Cell array of strings. Names of quantities returned by the algorithm.
 
-\subsection{\textsf{.retdesc}} %<<<2 ------------------------------
+\subsection{\textsf{.retdesc}} %<<<3 ------------------------------
 Cell array of strings. Short description of quantities returned by the algorithm.
 
-\subsection{\textsf{.providesGUF}} %<<<2 ------------------------------
+\subsection{\textsf{.providesGUF}} %<<<3 ------------------------------
 Boolean. If nonzero, the wrapper or the algorithm calculates uncertainty by means of GUM Uncertainty
 Framework.
 
-\subsection{\textsf{.providesMCM}} %<<<2 ------------------------------
+\subsection{\textsf{.providesMCM}} %<<<3 ------------------------------
 Boolean. If nonzero, the wrapper or the algorithm calculates uncertainty by means of Monte Carlo
 Method.
 
-\subsection{\textsf{.fullpath}} %<<<2 ------------------------------
+\subsection{\textsf{.fullpath}} %<<<3 ------------------------------
 String. Full path to the algorithm. This field is automatically generated by QWTB.
 
-\section{Quantity structure} %<<<1 ------------------------------
+\section{Quantity structure} %<<<2 ------------------------------
 \label{structquantity}
 Every quantity is a structure with following fields:
-\begin{description}
+\begin{tightdesc}
         \item [\textsf{.v}] --- Value.
         \item [\textsf{.u}] --- Uncertainty.
         \item [\textsf{.d}] --- Degree of freedom.
         \item [\textsf{.c}] --- Correlation.
         \item [\textsf{.r}] --- Randomized uncertainty.
-\end{description}
+\end{tightdesc}
 
-\subsection{\textsf{.v}} %<<<2 ------------------------------
+\subsection{\textsf{.v}} %<<<3 ------------------------------
 Value of the quantity. Can be a scalar, \emph{row} vector or matrix. More dimensions are not supported.
 
-\subsection{\textsf{.u}} %<<<2 ------------------------------
+\subsection{\textsf{.u}} %<<<3 ------------------------------
 Standard uncertainty of the quantity. Dimensions are the same as of the value field. 
 
-\subsection{\textsf{.d}} %<<<2 ------------------------------
+\subsection{\textsf{.d}} %<<<3 ------------------------------
 Degrees of freedom the uncertainty according GUM Uncertainty Framework. Dimensions are the same as of the value field.
 
 This field is automatically generated by the toolbox if missing, required and \lstinline{calcset.dof.gen}
 is set to nonzero. The value will be set to 50.
 
-\subsection{\textsf{.c}} %<<<2 ------------------------------
+\subsection{\textsf{.c}} %<<<3 ------------------------------
 Correlation matrix for quantity. 2DO XXX.
 
 This field can be automatically generated by the toolbox if missing, required and \lstinline{calcset.cor.gen}
 is set to nonzero. The value will be set to 0.
 
-\subsection{\textsf{.r}} %<<<2 ------------------------------
+\subsection{\textsf{.r}} %<<<3 ------------------------------
 Randomized uncertainties according Monte Carlo method. In the case of scalar quantity it is
 \emph{column} vector of length equal to \lstinline{calcset.mcm.repeats}. For a vector quantity it is a matrix with number
 of columns equal to length of value of the quantity and number of rows equal to
@@ -436,7 +490,7 @@ This field is required if Monte Carlo uncertainty calculation is required. In th
 automatically generated by the toolbox if missing and \lstinline{calcset.mcm.randomize} is set to
 boolean. The pdf will be normal, sigma will be equal to the standard uncertainty of the quantity.
 
-\subsection{Quantity structure examples} %<<<2 ------------------------------
+\subsection{Quantity structure examples} %<<<3 ------------------------------
 Example of scalar quantity of mean value 1, standard uncertainty 0.1, degrees of freedom 9, correlation has no
 sense for scalar quantity, and radnomized matrix has number of elements equal to \lstinline{calcset.mcm.randomize}.
 \begin{eqnarray*}
@@ -503,7 +557,7 @@ Example of matrix quantity with $i$ times $j$ elements, $M$ is equal to \lstinli
 \section{Calculation settings structure} %<<<2 ------------------------------
 \label{structcalcset}
 Structure defines calculation methods.
-\begin{description}
+\begin{tightdesc}
         \item [\textsf{.strict}] ---  (0) If zero, other fields generated automatically.
         \item [\textsf{.verbose}] ---  (1) Display various informations.
         \item [\textsf{.unc}] ---  ('none') How uncertainty is calculated ('none', 'guf', 'mcm').
@@ -517,7 +571,7 @@ Structure defines calculation methods.
         \item [\textsf{.mcm.procno}] ---  (1) Number of processors to use.
         \item [\textsf{.mcm.tmpdir}] ---  ('.') Directory for temporary data.
         \item [\textsf{.mcm.randomize}] ---  (1) Randomized uncertainties are generated automatically if missing.
-\end{description}
+\end{tightdesc}
 
 \subsection{\textsf{.strict}} %<<<3 ------------------------------
 Boolean, default value 0. If set to zero, all other fields of the structure are generated
@@ -529,35 +583,35 @@ calculation, such as used uncertainty calculation method, automatic generation o
 
 \subsection{\textsf{.unc}} %<<<3 ------------------------------
 String, default value ''. Determines uncertainty calculation method. Only three values are possible:
-\begin{description}
+\begin{tightdesc}
         \item [\textsf{''}] ---  Uncertainty is not calculated.
         \item [\textsf{'guf'}] ---  Uncertainty is calculated by GUM Uncertainty Framework~\cite{JCGM1995}.
         \item [\textsf{'mcm'}] ---  Uncertainty is calculated by Monte Carlo Method~\cite{JCGM2008}.
-\end{description}
+\end{tightdesc}
 See chapter XXX %XXX
 for uncertainty calculation details.
 
 \subsection{\textsf{.cor}} %<<<3 ------------------------------
 Structure sets handling of correlation matrices of quantities. Structure has two fields:
-\begin{description}
+\begin{tightdesc}
         \item [\textsf{.req}] ---  Boolean, default value 0. If non-zero, correlation matrices are required for all quantities.
         \item [\textsf{.gen}] ---  Boolean, default value 1. If non-zero, correlation matrices will be generated
         automatically if missing in quantity.
-\end{description}
+\end{tightdesc}
 Automatically generated correlation matrices has all elements of zero value.
 
 \subsection{\textsf{.dof}} %<<<3 ------------------------------
 Structure sets handling of degrees of freedom of quantities. Structure has two fields:
-\begin{description}
+\begin{tightdesc}
         \item [\textsf{.req}] ---  Boolean, default value 0. If non-zero, degrees of freedom are required for all quantities.
         \item [\textsf{.gen}] ---  Boolean, default value 1. If non-zero, degree of freedom will be generated
         automatically if missing in quantity.
-\end{description}
+\end{tightdesc}
 Automatically generated degree of freedom has value 50.
 
 \subsection{\textsf{.mcm}} %<<<3 ------------------------------
 Structure sets handling of Monte Carlo calculation of uncertainties. Structure has following fields:
-\begin{description}
+\begin{tightdesc}
         \item [\textsf{.repeats}] ---  Positive non-zero integer, default value 100. Number of iterations of Monte Carlo method.
 
         \item [\textsf{.verbose}] ---  Boolean, default value 1. If set to non-zero value, various messages
@@ -566,18 +620,19 @@ Structure sets handling of Monte Carlo calculation of uncertainties. Structure h
 
         \item [\textsf{.method}] ---  String, default value 'singlecore'. Parallelization method used for Monte
         Carlo method calculation. Only three values are possible:
-        \begin{description}
+        \begin{tightdesc}
                 \item [\textsf{'singlecore'}] ---  No parallelization, all is calculated on one CPU core.
                 \item [\textsf{'multicore'}] ---  Calculation is divided into cores of one computer.
                 \item [\textsf{'multistation'}] ---  Calculation is distributed on several computers.
-        \end{description}
+        \end{tightdesc}
         Not all methods are possible to use on all computers. 'singlecore' is always possible to
         use. 'multicore' use parfor in Matlab or parcellfun in GNU Octave. 'multistation' use %XXX
 
         \item [\textsf{.procno}] ---  Zero or positive integer, default value 0. Number of CPU cores exploitable
-        by the parallelization method. If set to zero, all available CPU cores will be used. If
+        by the parallelization method \textsf{'multicore'}. If set to zero, all available CPU cores will be used. If
         desktop computer is used, it is good practice to set to number of CPU cores minus one, so
-        the computer can be used by other tasks also. %XXX is it only for 'multicore'?
+        the computer can be used by other task also. 
+        Works only in \octave.
 
         \item [\textsf{.tmpdir}] ---  String, default value '.' (current directory). Temporary directory for
         storing temporary data needed for some parallelization methods. %XXX which ones?
@@ -585,18 +640,20 @@ Structure sets handling of Monte Carlo calculation of uncertainties. Structure h
         \item [\textsf{.randomize}] ---  Boolean, default value 1. If non-zero, randomized uncertainties will be
         generated automatically if missing, but only if uncertainty calculation method is set to
         'mcm' (Monte Carlo) to prevent large memory usage.
-\end{description}
+\end{tightdesc}
+
+\section{How uncertainty calculation works}
+%2DO
+
+\section{How to add a new algorithm}
+%2DO
 
 % Bibliography %<<<1 ------------------------------
-%\renewcommand{\refname}{\section{Literatura}}
 %%\bibliographystyle{ieeetr}
-%\bibliographystyle{czechiso}
 \printbibliography[title={Bilbiography},heading={bibnumbered}]
 
-%\printbibliography
-
+\appendix \chapter{Quick reference} %<<<1 ------------------------------
 \newpage
-\section{Quick reference} %<<<1 ------------------------------
 {\small \textbf{Toolbox use:}\\[-1.5em]
 \begin{lstlisting}[basicstyle=\small]
 alginfo = qwtb()
@@ -618,6 +675,7 @@ dataout = qwtb('algid', datain, calcset)
         \item [\textsf{.desc}] ---  Basic description.
         \item [\textsf{.citation}] ---  Reference.
         \item [\textsf{.remarks}] ---  Any remark.
+        \item [\textsf{.license}] ---  License of the algorithm.
         \item [\textsf{.requires}] ---  Required quantities.
         \item [\textsf{.reqdesc}] ---  Description of required quantities.
         \item [\textsf{.returns}] ---  Output quantities.
@@ -652,6 +710,27 @@ dataout = qwtb('algid', datain, calcset)
 \end{description}
 }
 
+\chapter{INL -- Integral Non-Linearity of ADC} %<<<1 ------------------------------
+\def\infosection{Info file data}
+\def\examplesection{Example}
+% included files are automatically generated by info_all_algs.m script and by Matlab publish
+% function and converted by bash script betterpublish.
+\section*{\infosection} %<<<2 -------------------
+\input{alg_examples_published/info_INL.tex}
+\section*{\examplesection} %<<<2 ------------------------
+\input{alg_examples_published/doc_INL.tex}
+
+\chapter{PSFE -- Phase Sensitive Frequency Estimator} %<<<1 ------------------------------
+% included files are automatically generated by info_all_algs.m script and by Matlab publish
+% function and converted by bash script betterpublish.
+\section*{\infosection} %<<<2 -------------------
+\input{alg_examples_published/info_PSFE.tex}
+\section*{\examplesection} %<<<2 ------------------------
+\input{alg_examples_published/doc_PSFE.tex}
+
+
+
+%\input{alg_examples/allalgslist.tex}
 
 % \section{Introduction} %<<<1 ------------------------------
 % The following report is on the plan for software in preparation. The software should serve as

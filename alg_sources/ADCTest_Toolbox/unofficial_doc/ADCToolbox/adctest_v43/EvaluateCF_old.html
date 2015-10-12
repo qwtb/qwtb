@@ -1,0 +1,399 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of EvaluateCF_old</title>
+  <meta name="keywords" content="EvaluateCF_old">
+  <meta name="description" content="@fn EvaluateCF">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; EvaluateCF_old.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>EvaluateCF_old
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>@fn EvaluateCF</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function varargout = EvaluateCF(y,p0,NoB,INL) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> @fn EvaluateCF
+ @brief Evaluates the Maximum likelihood cost function using the actual
+        parameters
+ @param y The measurement record (in ADC codes)
+ @param p0 The parameters of the sine wave
+ @param NoB Number of bits of the ADC under test
+ @param INL The estimated INL of the ADC using histogram test
+ @return PML The value of the likelihood function
+ @return CF The value of the cost function: CF = -log(PML)
+ @return grad The gradient of the Cost Function
+ @return hess The Hesse-matrix of the Cost Function
+ @return probVect The probabilities of each recorded sample in a vector
+ @retunr probMTRX The probability of the ADC codes at each element of the
+                  record, collected in a matrix
+ @author Tam� Virosztek, Budapest University of Technology and Economics,
+         Department of Measurement and Infromation Systems,
+         Virosztek.Tamas@mit.bme.hu</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="INL2TransLevels.html" class="code" title="function translevels = INL2TransLevels(INL)">INL2TransLevels</a>	@fn INL2TransLevels</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout = EvaluateCF(y,p0,NoB,INL)</a>
+0002 <span class="comment">% @fn EvaluateCF</span>
+0003 <span class="comment">% @brief Evaluates the Maximum likelihood cost function using the actual</span>
+0004 <span class="comment">%        parameters</span>
+0005 <span class="comment">% @param y The measurement record (in ADC codes)</span>
+0006 <span class="comment">% @param p0 The parameters of the sine wave</span>
+0007 <span class="comment">% @param NoB Number of bits of the ADC under test</span>
+0008 <span class="comment">% @param INL The estimated INL of the ADC using histogram test</span>
+0009 <span class="comment">% @return PML The value of the likelihood function</span>
+0010 <span class="comment">% @return CF The value of the cost function: CF = -log(PML)</span>
+0011 <span class="comment">% @return grad The gradient of the Cost Function</span>
+0012 <span class="comment">% @return hess The Hesse-matrix of the Cost Function</span>
+0013 <span class="comment">% @return probVect The probabilities of each recorded sample in a vector</span>
+0014 <span class="comment">% @retunr probMTRX The probability of the ADC codes at each element of the</span>
+0015 <span class="comment">%                  record, collected in a matrix</span>
+0016 <span class="comment">% @author Tam� Virosztek, Budapest University of Technology and Economics,</span>
+0017 <span class="comment">%         Department of Measurement and Infromation Systems,</span>
+0018 <span class="comment">%         Virosztek.Tamas@mit.bme.hu</span>
+0019 
+0020 
+0021 <span class="comment">%function [PML,CF,grad,hess,probVect,probMTRX] = evaluateCF(y,p0,NoB,INL);</span>
+0022 
+0023 <span class="comment">% x(k) = A*cos(2*pi*f*t(k)) + B*sin(2*pi*f*t(k) + C)</span>
+0024 <span class="comment">% t(k) = k*T; 2*pi*f*t(k) = 2*pi*f*k*T = k * 2*pi*f/fs = k*theta</span>
+0025 <span class="comment">% x (k) = A*cos(k*theta) + B*sin(k*theta) + C</span>
+0026 <span class="comment">% P(Y(k) == 0) = 1/2*(1 + erf((T(1)-x(k))/(sqrt(2)*sigma)))</span>
+0027 <span class="comment">% P(Y(k) == 2^B-1) = 1/2*(1 - erf((T(2^B-1)-x(k))/(sqrt(2)*sigma)))</span>
+0028 <span class="comment">% T(0):= -Inf; T(2^B) := +Inf</span>
+0029 <span class="comment">% P(Y(k) == l) = 1/2*(erf((T(l+1)-x(k))/(sqrt(2)*sigma)) - erf((T(l)-x(k))/(sqrt(2)*sigma)))</span>
+0030 <span class="comment">% P(Y(k) == y[k]) = 1/2*(erf((T(y(k)+1)-x(k))/(sqrt(2)*sigma)) - erf((T(y(k))-x(k))/(sqrt(2)*sigma)))</span>
+0031 
+0032 <span class="comment">% PML = PROD(P(Y(k) == y(k)));</span>
+0033 <span class="comment">% CF = -ln(PML) = - SUM(ln(P(Y(k)==y(k))))</span>
+0034 <span class="comment">% CF = - SUM (-ln(2) + ln (erf((T(y(k)+1)-x(k))/(sqrt(2)*sigma)) - erf ((T(y(k))-x(k))/(sqrt(2)*sigma))))</span>
+0035 <span class="comment">% CF = M*ln(2) - SUM (ln(arg))</span>
+0036 <span class="comment">% arg = erf((T(y(k)+1)-x(k))/(sqrt(2)*sigma)) - erf</span>
+0037 <span class="comment">% ((T(y(k))-x(k))/(sqrt(2)*sigma))</span>
+0038 
+0039 
+0040 T = zeros (1,2^NoB + 1);
+0041 T(1) = -700; T(2^NoB + 1) = +700; <span class="comment">%exp(-700) ~=0 exp(700) ~= Inf</span>
+0042 T(2:2^NoB) = <a href="INL2TransLevels.html" class="code" title="function translevels = INL2TransLevels(INL)">INL2TransLevels</a>(INL);
+0043 <span class="comment">%Adding +1 offset to ADC codes: ADC codes between 1 and 2^NoB</span>
+0044 <span class="comment">%Compatible with transition levels between 2 and 2^NoB</span>
+0045 <span class="comment">%Equivalent with ADC codes between 0 and 2^NoB-1</span>
+0046 <span class="comment">%and transition levels between 1 and 2^NoB-1</span>
+0047 y = y + 1;
+0048 <span class="comment">%Initialize parameters</span>
+0049 A = p0(1); B = p0(2); C = p0(3); theta = p0(4); sigma = p0(5);
+0050 
+0051 <span class="keyword">if</span> (nargout&gt;=1)
+0052     <span class="comment">%Computing overall probaility</span>
+0053     M = length(y);
+0054     x = zeros(1,M);
+0055     probVect = zeros (1,M);
+0056     <span class="keyword">for</span> k = 1:M
+0057         x(k) = A*cos(k*theta) + B*sin(k*theta) + C;
+0058         probVect(k) = 1/2*(erf((T(y(k)+1)-x(k))/(sqrt(2)*sigma)) - erf((T(y(k))-x(k))/(sqrt(2)*sigma)));
+0059     <span class="keyword">end</span>
+0060     PML = prod(probVect);
+0061     varargout{1} = PML;
+0062 <span class="keyword">end</span>
+0063 
+0064 <span class="keyword">if</span> (nargout&gt;=2)
+0065     <span class="comment">%Computing ML Cost function</span>
+0066     arg = zeros(1,M);
+0067     <span class="keyword">for</span> k = 1:M
+0068         arg(k) = erf((T(y(k)+1)-x(k))/(sqrt(2)*sigma)) - erf((T(y(k))-x(k))/(sqrt(2)*sigma));
+0069     <span class="keyword">end</span>
+0070     CF = M*log(2) - sum(log(arg)); <span class="comment">%exactly the same as CF == -log(PML)</span>
+0071     varargout{2} = CF;
+0072 
+0073 <span class="keyword">end</span>
+0074 
+0075 <span class="keyword">if</span> (nargout&gt;=3) <span class="comment">%gradient vector shall be calculated</span>
+0076     <span class="comment">% Computing first order partial derivatives</span>
+0077     
+0078     <span class="comment">%Computing dCF(A,B,C,theta,sigma)/dA</span>
+0079     <span class="comment">%dCF/dA = -SUM(1/arg(k)*darg(k)/dA)</span>
+0080     <span class="comment">%darg(k)/dA = 2/sqrt(pi)*exp(-((T(y(k)+1)-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma))^2) * (-1)*cos(k*theta)/(sqrt(2)*sigma)) -</span>
+0081     <span class="comment">%                 2/sqrt(pi)*exp(-((T(y(k))-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma))^2) * (-1)*cos(k*theta)/(sqrt(2)*sigma))</span>
+0082     dCF_dA = 0;
+0083     darg_dA = zeros(1,M);
+0084     <span class="keyword">for</span> k = 1:M
+0085         darg_dA(k) = 2/sqrt(pi)*exp(-((T(y(k)+1)-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma))^2) * (-1)*cos(k*theta)/(sqrt(2)*sigma) - <span class="keyword">...</span>
+0086             2/sqrt(pi)*exp(-((T(y(k))-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma))^2) * (-1)*cos(k*theta)/(sqrt(2)*sigma);
+0087         dCF_dA = dCF_dA - 1/arg(k)*darg_dA(k);
+0088     <span class="keyword">end</span>
+0089 
+0090     <span class="comment">%Computing dCF(A,B,C,theta,sigma)/dB</span>
+0091     <span class="comment">%dCF/dB = -SUM(1/arg(k)*darg(k)/dB)</span>
+0092     <span class="comment">%darg(k)/dB = 2/sqrt(pi)*exp(-(T((y(k)+1)-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma))^2) * (-1)*sin(k*theta)/(sqrt(2)*sigma)) -</span>
+0093     <span class="comment">%              2/sqrt(pi)*exp(-(T((y(k))-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma))^2) * (-1)*sin(k*theta)/(sqrt(2)*sigma))</span>
+0094     dCF_dB = 0;
+0095     darg_dB = zeros(1,M);
+0096     <span class="keyword">for</span> k = 1:M
+0097         darg_dB(k) = 2/sqrt(pi)*exp(-((T(y(k)+1)-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma))^2) * (-1)*sin(k*theta)/(sqrt(2)*sigma) - <span class="keyword">...</span>
+0098             2/sqrt(pi)*exp(-((T(y(k))-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma))^2) * (-1)*sin(k*theta)/(sqrt(2)*sigma);
+0099         dCF_dB = dCF_dB - 1/arg(k)*darg_dB(k);
+0100     <span class="keyword">end</span>
+0101 
+0102     <span class="comment">%Computing dCF(A,B,C,theta,sigma)/dC</span>
+0103     <span class="comment">%dCF/dC = -SUM(1/arg(k)*darg(k)/dC)</span>
+0104     <span class="comment">%darg(k)/dC = 2/sqrt(pi)*exp(-((T(y(k)+1)-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma))^2) * (-1)/(sqrt(2)*sigma)) -</span>
+0105     <span class="comment">%              2/sqrt(pi)*exp(-((T(y(k))-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma))^2) * (-1)/(sqrt(2)*sigma))</span>
+0106     dCF_dC = 0;
+0107     darg_dC = zeros(1,M);
+0108     <span class="keyword">for</span> k = 1:M
+0109         darg_dC(k) = 2/sqrt(pi)*exp(-((T(y(k)+1)-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma))^2) * (-1)/(sqrt(2)*sigma) - <span class="keyword">...</span>
+0110             2/sqrt(pi)*exp(-((T(y(k))-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma))^2) * (-1)/(sqrt(2)*sigma);
+0111         dCF_dC = dCF_dC - 1/arg(k)*darg_dC(k);
+0112     <span class="keyword">end</span>
+0113 
+0114     <span class="comment">%Computing dCF(A,B,C,theta,sigma)/dtheta</span>
+0115     <span class="comment">%dCF/dC = -SUM(1/arg(k)*darg(k)/dtheta)</span>
+0116     <span class="comment">%darg(k)/dtheta = 2/sqrt(pi)*exp(-((T(y(k)+1)-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma))^2) * (A/(sqrt(2)*sigma)*sin(k*theta)*k - B/(sqrt(2)*sigma)*cos(k*theta)*k) -</span>
+0117     <span class="comment">%                    2/sqrt(pi)*exp(-((T(y(k))-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma))^2) * (A/(sqrt(2)*sigma)*sin(k*theta)*k - B/(sqrt(2)*sigma)*cos(k*theta)*k)</span>
+0118     dCF_dtheta = 0;
+0119     darg_dtheta = zeros(1,M);
+0120     <span class="keyword">for</span> k = 1:M
+0121         darg_dtheta(k) = 2/sqrt(pi)*exp(-((T(y(k)+1)-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma))^2) * (A/(sqrt(2)*sigma)*sin(k*theta)*k - B/(sqrt(2)*sigma)*cos(k*theta)*k) - <span class="keyword">...</span>
+0122             2/sqrt(pi)*exp(-((T(y(k))-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma))^2) * (A/(sqrt(2)*sigma)*sin(k*theta)*k - B/(sqrt(2)*sigma)*cos(k*theta)*k);
+0123         dCF_dtheta = dCF_dtheta - 1/arg(k)*darg_dtheta(k);
+0124     <span class="keyword">end</span>
+0125 
+0126     <span class="comment">%Computing dCF(A,B,C,theta,sigma)/dsigma</span>
+0127     <span class="comment">%dCF/dC = -SUM(1/arg(k)*darg(k)/dsigma)</span>
+0128     <span class="comment">%darg(k)/dsigma = 2/sqrt(pi)*exp(-((T(y(k)+1)-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma))^2) * (-1)/sigma^2*(T(y(k)+1)-A*cos(k*theta)-B*sin(k*theta)-C)/sqrt(2)) -</span>
+0129     <span class="comment">%                    2/sqrt(pi)*exp(-((T(y(k))-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma))^2) * (-1)/sigma^2*(T(y(k))-A*cos(k*theta)-B*sin(k*theta)-C)/sqrt(2)</span>
+0130     dCF_dsigma = 0;
+0131     darg_dsigma = zeros(1,M);
+0132 
+0133     <span class="keyword">for</span> k = 1:M
+0134         darg_dsigma(k) = 2/sqrt(pi)*exp(-((T(y(k)+1)-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma))^2) * (-1)/sigma^2*(T(y(k)+1)-A*cos(k*theta)-B*sin(k*theta)-C)/sqrt(2) - <span class="keyword">...</span>
+0135             2/sqrt(pi)*exp(-((T(y(k))-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma))^2) * (-1)/sigma^2*(T(y(k))-A*cos(k*theta)-B*sin(k*theta)-C)/sqrt(2);
+0136         dCF_dsigma = dCF_dsigma - 1/arg(k)*darg_dsigma(k);
+0137     <span class="keyword">end</span>
+0138 
+0139     <span class="comment">%Assembling the gradient vector:</span>
+0140     grad = [dCF_dA; dCF_dB; dCF_dC; dCF_dtheta; dCF_dsigma];
+0141     <span class="comment">%returning the gardient in varargout</span>
+0142     varargout{3} = grad;
+0143 <span class="keyword">end</span>
+0144 
+0145 <span class="keyword">if</span> (nargout&gt;=4) <span class="comment">%Hess matrix shall be calculated</span>
+0146     <span class="comment">%d2CF_dA2</span>
+0147     d2CF_dA2 = 0;
+0148     d2arg_dA2 = zeros(1,M);
+0149     <span class="keyword">for</span> k = 1:M
+0150         bracketplus = (T(y(k)+1)-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma);
+0151         bracketnull = (T(y(k))-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma);
+0152         d2arg_dA2(k) = 2/sqrt(pi)*exp(-bracketplus^2)*(-2)*(bracketplus)*(-1)*cos(k*theta)/(sqrt(2)*sigma)*(-1)*cos(k*theta)/(sqrt(2)*sigma) - <span class="keyword">...</span>
+0153                        2/sqrt(pi)*exp(-bracketnull^2)*(-2)*(bracketnull)*(-1)*cos(k*theta)/(sqrt(2)*sigma)*(-1)*cos(k*theta)/(sqrt(2)*sigma);
+0154         d2CF_dA2 = d2CF_dA2 + 1/arg(k)^2*darg_dA(k)*darg_dA(k) - 1/arg(k)*d2arg_dA2(k);
+0155     <span class="keyword">end</span>
+0156 
+0157     <span class="comment">%d2CF_dAdB</span>
+0158     d2CF_dAdB = 0;
+0159     d2arg_dAdB = zeros(1,M);
+0160     <span class="keyword">for</span> k = 1:M
+0161         bracketplus = (T(y(k)+1)-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma);
+0162         bracketnull = (T(y(k))-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma);
+0163         d2arg_dAdB(k) = 2/sqrt(pi)*exp(-bracketplus^2)*(-2)*(bracketplus)*(-1)*sin(k*theta)/(sqrt(2)*sigma)*(-1)*cos(k*theta)/(sqrt(2)*sigma) - <span class="keyword">...</span>
+0164                         2/sqrt(pi)*exp(-bracketnull^2)*(-2)*(bracketnull)*(-1)*sin(k*theta)/(sqrt(2)*sigma)*(-1)*cos(k*theta)/(sqrt(2)*sigma);
+0165         d2CF_dAdB = d2CF_dAdB + 1/arg(k)^2*darg_dB(k)*darg_dA(k) - 1/arg(k)*d2arg_dAdB(k);
+0166     <span class="keyword">end</span>
+0167     
+0168     <span class="comment">%d2CF_dAdC</span>
+0169     d2CF_dAdC = 0;
+0170     d2arg_dAdC = zeros(1,M);
+0171     <span class="keyword">for</span> k = 1:M
+0172         bracketplus = (T(y(k)+1)-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma);
+0173         bracketnull = (T(y(k))-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma);
+0174         d2arg_dAdC(k) = 2/sqrt(pi)*exp(-bracketplus^2)*(-2)*(bracketplus)*(-1)/(sqrt(2)*sigma)*(-1)*cos(k*theta)/(sqrt(2)*sigma) - <span class="keyword">...</span>
+0175                         2/sqrt(pi)*exp(-bracketnull^2)*(-2)*(bracketnull)*(-1)/(sqrt(2)*sigma)*(-1)*cos(k*theta)/(sqrt(2)*sigma);
+0176         d2CF_dAdC = d2CF_dAdC + 1/arg(k)^2*darg_dC(k)*darg_dA(k) - 1/arg(k)*d2arg_dAdC(k);
+0177     <span class="keyword">end</span>
+0178     
+0179     <span class="comment">%d2CFdAdtheta</span>
+0180     d2CF_dAdtheta = 0;
+0181     d2arg_dAdtheta = zeros(1,M);
+0182     <span class="keyword">for</span> k = 1:M
+0183         bracketplus = (T(y(k)+1)-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma);
+0184         bracketnull = (T(y(k))-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma);
+0185         d2arg_dAdtheta(k) = 2/sqrt(pi)*exp(-bracketplus^2)*(-2)*(bracketplus)*((A*sin(k*theta)*k-B*cos(k*theta)*k)/(sqrt(2)*sigma))*(-1)*cos(k*theta)/(sqrt(2)*sigma) + 2/sqrt(pi)*exp(-bracketplus^2)*(sin(k*theta)*k/(sqrt(2)*sigma)) - <span class="keyword">...</span>
+0186                             2/sqrt(pi)*exp(-bracketnull^2)*(-2)*(bracketnull)*((A*sin(k*theta)*k-B*cos(k*theta)*k)/(sqrt(2)*sigma))*(-1)*cos(k*theta)/(sqrt(2)*sigma) + 2/sqrt(pi)*exp(-bracketnull^2)*(sin(k*theta)*k/(sqrt(2)*sigma));
+0187         d2CF_dAdtheta = d2CF_dAdtheta + 1/arg(k)^2*darg_dtheta(k)*darg_dA(k) - 1/arg(k)*d2arg_dAdtheta(k);
+0188     <span class="keyword">end</span>
+0189     
+0190     <span class="comment">%d2CF_dAdsigma</span>
+0191     d2CF_dAdsigma = 0;
+0192     d2arg_dAdsigma = zeros(1,M);
+0193     <span class="keyword">for</span> k = 1:M
+0194         bracketplus = (T(y(k)+1)-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma);
+0195         bracketnull = (T(y(k))-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma);
+0196         d2arg_dAdsigma(k) = 2/sqrt(pi)*exp(-bracketplus^2)*(-2)*(bracketplus)*(-1)*(bracketplus/sigma)*(-1)*cos(k*theta)/(sqrt(2)*sigma) + 2/sqrt(pi)*exp(-bracketplus^2)*(cos(k*theta)/(sqrt(2)*sigma^2)) - <span class="keyword">...</span>
+0197                             2/sqrt(pi)*exp(-bracketnull^2)*(-2)*(bracketnull)*(-1)*(bracketnull/sigma)*(-1)*cos(k*theta)/(sqrt(2)*sigma) + 2/sqrt(pi)*exp(-bracketnull^2)*(cos(k*theta)/(sqrt(2)*sigma^2));
+0198         d2CF_dAdsigma = d2CF_dAdsigma + 1/arg(k)^2*darg_dsigma(k)*darg_dA(k) - 1/arg(k)*d2arg_dAdsigma(k);
+0199     <span class="keyword">end</span>
+0200 
+0201     <span class="comment">%d2CF_dB2</span>
+0202     d2CF_dB2 = 0;
+0203     d2arg_dB2 = zeros(1,M);
+0204     <span class="keyword">for</span> k = 1:M
+0205         bracketplus = (T(y(k)+1)-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma);
+0206         bracketnull = (T(y(k))-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma);
+0207         d2arg_dB2(k) = 2/sqrt(pi)*exp(-bracketplus^2)*(-2)*(bracketplus)*(-1)*sin(k*theta)/(sqrt(2)*sigma)*(-1)*sin(k*theta)/(sqrt(2)*sigma) - <span class="keyword">...</span>
+0208                        2/sqrt(pi)*exp(-bracketnull^2)*(-2)*(bracketnull)*(-1)*sin(k*theta)/(sqrt(2)*sigma)*(-1)*sin(k*theta)/(sqrt(2)*sigma);
+0209         d2CF_dB2 = d2CF_dB2 + 1/arg(k)^2*darg_dB(k)*darg_dB(k) - 1/arg(k)*d2arg_dB2(k);
+0210     <span class="keyword">end</span>
+0211     
+0212     <span class="comment">%d2CF_dBdC</span>
+0213     d2CF_dBdC = 0;
+0214     d2arg_dBdC = zeros(1,M);
+0215     <span class="keyword">for</span> k = 1:M
+0216         bracketplus = (T(y(k)+1)-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma);
+0217         bracketnull = (T(y(k))-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma);
+0218         d2arg_dBdC(k) = 2/sqrt(pi)*exp(-bracketplus^2)*(-2)*(bracketplus)*(-1)/(sqrt(2)*sigma)*(-1)*sin(k*theta)/(sqrt(2)*sigma) - <span class="keyword">...</span>
+0219                         2/sqrt(pi)*exp(-bracketnull^2)*(-2)*(bracketnull)*(-1)/(sqrt(2)*sigma)*(-1)*sin(k*theta)/(sqrt(2)*sigma);
+0220         d2CF_dBdC = d2CF_dBdC + 1/arg(k)^2*darg_dC(k)*darg_dB(k) - 1/arg(k)*d2arg_dBdC(k);
+0221     <span class="keyword">end</span>
+0222 
+0223     <span class="comment">%d2CF_dBdtheta</span>
+0224     d2CF_dBdtheta = 0;
+0225     d2arg_dBdtheta = zeros(1,M);
+0226     <span class="keyword">for</span> k = 1:M
+0227         bracketplus = (T(y(k)+1)-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma);
+0228         bracketnull = (T(y(k))-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma);
+0229         d2arg_dBdtheta(k) = 2/sqrt(pi)*exp(-bracketplus^2)*(-2)*(bracketplus)*((A*sin(k*theta)*k-B*cos(k*theta)*k)/(sqrt(2)*sigma))*(-1)*sin(k*theta)/(sqrt(2)*sigma) + 2/sqrt(pi)*exp(-bracketplus^2)*(-1)*(cos(k*theta)*k/(sqrt(2)*sigma)) - <span class="keyword">...</span>
+0230                             2/sqrt(pi)*exp(-bracketnull^2)*(-2)*(bracketnull)*((A*sin(k*theta)*k-B*cos(k*theta)*k)/(sqrt(2)*sigma))*(-1)*sin(k*theta)/(sqrt(2)*sigma) + 2/sqrt(pi)*exp(-bracketnull^2)*(-1)*(cos(k*theta)*k/(sqrt(2)*sigma));
+0231         d2CF_dBdtheta = d2CF_dBdtheta + 1/arg(k)^2*darg_dtheta(k)*darg_dB(k) - 1/arg(k)*d2arg_dBdtheta(k);
+0232     <span class="keyword">end</span>
+0233     
+0234     <span class="comment">%d2CF_dBdsigma</span>
+0235     d2CF_dBdsigma = 0;
+0236     d2arg_dBdsigma = zeros(1,M);
+0237     <span class="keyword">for</span> k = 1:M
+0238         bracketplus = (T(y(k)+1)-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma);
+0239         bracketnull = (T(y(k))-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma);
+0240         d2arg_dBdsigma(k) = 2/sqrt(pi)*exp(-bracketplus^2)*(-2)*(bracketplus)*(-1)*(bracketplus/sigma)*(-1)*sin(k*theta)/(sqrt(2)*sigma) + 2/sqrt(pi)*exp(-bracketplus^2)*(sin(k*theta)/(sqrt(2)*sigma^2)) - <span class="keyword">...</span>
+0241                             2/sqrt(pi)*exp(-bracketnull^2)*(-2)*(bracketnull)*(-1)*(bracketnull/sigma)*(-1)*sin(k*theta)/(sqrt(2)*sigma) + 2/sqrt(pi)*exp(-bracketplus^2)*(sin(k*theta)/(sqrt(2)*sigma^2));
+0242         d2CF_dBdsigma = d2CF_dBdsigma + 1/arg(k)^2*darg_dsigma(k)*darg_dB(k) - 1/arg(k)*d2arg_dBdsigma(k);
+0243     <span class="keyword">end</span>
+0244 
+0245     <span class="comment">%d2CF_dC2</span>
+0246     d2CF_dC2 = 0;
+0247     d2arg_dC2 = zeros(1,M);
+0248     <span class="keyword">for</span> k = 1:M
+0249         bracketplus = (T(y(k)+1)-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma);
+0250         bracketnull = (T(y(k))-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma);
+0251         d2arg_dC2(k) = 2/sqrt(pi)*exp(-bracketplus^2)*(-2)*(bracketplus)*(-1)/(sqrt(2)*sigma)*(-1)/(sqrt(2)*sigma) - <span class="keyword">...</span>
+0252                        2/sqrt(pi)*exp(-bracketnull^2)*(-2)*(bracketnull)*(-1)/(sqrt(2)*sigma)*(-1)/(sqrt(2)*sigma);
+0253             
+0254         d2CF_dC2 = d2CF_dC2 + 1/arg(k)^2*darg_dC(k)*darg_dC(k) - 1/arg(k)*d2arg_dC2(k);
+0255     <span class="keyword">end</span>
+0256 
+0257     <span class="comment">%d2CF_dCdtheta</span>
+0258     d2CF_dCdtheta = 0;
+0259     d2arg_dCdtheta = zeros(1,M);
+0260     <span class="keyword">for</span> k = 1:M
+0261         bracketplus = (T(y(k)+1)-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma);
+0262         bracketnull = (T(y(k))-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma);
+0263         d2arg_dCdtheta(k) = 2/sqrt(pi)*exp(-bracketplus^2)*(-2)*(bracketplus)*((A*sin(k*theta)*k-B*cos(k*theta)*k)/(sqrt(2)*sigma))*(-1)/(sqrt(2)*sigma) - <span class="keyword">...</span>
+0264                             2/sqrt(pi)*exp(-bracketnull^2)*(-2)*(bracketnull)*((A*sin(k*theta)*k-B*cos(k*theta)*k)/(sqrt(2)*sigma))*(-1)/(sqrt(2)*sigma);
+0265         d2CF_dCdtheta = d2CF_dCdtheta + 1/arg(k)^2*darg_dtheta(k)*darg_dC(k) - 1/arg(k)*d2arg_dCdtheta(k);
+0266     <span class="keyword">end</span>
+0267 
+0268     <span class="comment">%d2CF_dCdsigma</span>
+0269     d2CF_dCdsigma = 0;
+0270     d2arg_dCdsigma = zeros(1,M);
+0271     <span class="keyword">for</span> k = 1:M
+0272         bracketplus = (T(y(k)+1)-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma);
+0273         bracketnull = (T(y(k))-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma);
+0274         d2arg_dCdsigma(k) = 2/sqrt(pi)*exp(-bracketplus^2)*(-2)*(bracketplus)*(-1)*(bracketplus/sigma)*(-1)/(sqrt(2)*sigma) + 2/sqrt(pi)*exp(-bracketplus^2)*(1)/(sqrt(2*sigma)) - <span class="keyword">...</span>
+0275                             2/sqrt(pi)*exp(-bracketnull^2)*(-2)*(bracketnull)*(-1)*(bracketnull/sigma)*(-1)/(sqrt(2)*sigma) + 2/sqrt(pi)*exp(-bracketnull^2)*(1)/(sqrt(2*sigma));
+0276         d2CF_dCdsigma = d2CF_dCdsigma + 1/arg(k)^2*darg_dsigma(k)*darg_dC(k) - 1/arg(k)*d2arg_dCdsigma(k);
+0277     <span class="keyword">end</span>
+0278     
+0279     <span class="comment">%d2CF_dtheta2</span>
+0280     d2CF_dtheta2 = 0;
+0281     d2arg_dtheta2 = zeros(1,M);
+0282     <span class="keyword">for</span> k = 1:M
+0283         bracketplus = (T(y(k)+1)-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma);
+0284         bracketnull = (T(y(k))-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma);
+0285         d2arg_dtheta2(k) = 2/sqrt(pi)*exp(-bracketplus^2)*(-2)*(bracketplus)*((A*sin(k*theta)*k-B*cos(k*theta)*k)/(sqrt(2)*sigma))*((A*sin(k*theta)*k-B*cos(k*theta)*k)/(sqrt(2)*sigma)) + 2/sqrt(pi)*exp(-bracketplus^2)*((A*cos(k*theta)*k^2+B*sin(k*theta)*k^2)/(sqrt(2)*sigma)) - <span class="keyword">...</span>
+0286                            2/sqrt(pi)*exp(-bracketnull^2)*(-2)*(bracketnull)*((A*sin(k*theta)*k-B*cos(k*theta)*k)/(sqrt(2)*sigma))*((A*sin(k*theta)*k-B*cos(k*theta)*k)/(sqrt(2)*sigma)) + 2/sqrt(pi)*exp(-bracketnull^2)*((A*cos(k*theta)*k^2+B*sin(k*theta)*k^2)/(sqrt(2)*sigma));
+0287         d2CF_dtheta2 = d2CF_dtheta2 + 1/arg(k)^2*darg_dtheta(k)*darg_dtheta(k) - 1/arg(k)*d2arg_dtheta2(k);
+0288     <span class="keyword">end</span>
+0289 
+0290     <span class="comment">%d2CF_dthetadsigma</span>
+0291     d2CF_dthetadsigma = 0;
+0292     d2arg_dthetadsigma = zeros(1,M);
+0293     <span class="keyword">for</span> k = 1:M
+0294         bracketplus = (T(y(k)+1)-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma);
+0295         bracketnull = (T(y(k))-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma);
+0296         d2arg_dthetadsigma(k) = 2/sqrt(pi)*exp(-bracketplus^2)*(-2)*(bracketplus)*(-1)*(bracketplus/sigma)*((A*sin(k*theta)*k-B*cos(k*theta)*k)/(sqrt(2)*sigma)) + 2/sqrt(pi)*exp(-bracketplus^2)*(-1)*((A*sin(k*theta)*k-B*cos(k*theta)*k)/(sqrt(2)*sigma^2)) - <span class="keyword">...</span>
+0297                                 2/sqrt(pi)*exp(-bracketnull^2)*(-2)*(bracketnull)*(-1)*(bracketnull/sigma)*((A*sin(k*theta)*k-B*cos(k*theta)*k)/(sqrt(2)*sigma)) + 2/sqrt(pi)*exp(-bracketnull^2)*(-1)*((A*sin(k*theta)*k-B*cos(k*theta)*k)/(sqrt(2)*sigma^2));
+0298         d2CF_dthetadsigma = d2CF_dthetadsigma + 1/arg(k)^2*darg_dsigma(k)*darg_dtheta(k) - 1/arg(k)*d2arg_dthetadsigma(k);
+0299     <span class="keyword">end</span>
+0300 
+0301     <span class="comment">%d2CF_dsigma2</span>
+0302     d2CF_dsigma2 = 0;
+0303     d2arg_dsigma2 = zeros(1,M);
+0304     <span class="keyword">for</span> k = 1:M
+0305         bracketplus = (T(y(k)+1)-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma);
+0306         bracketnull = (T(y(k))-A*cos(k*theta)-B*sin(k*theta)-C)/(sqrt(2)*sigma);
+0307         d2arg_dsigma2(k) = 2/sqrt(pi)*exp(-bracketplus^2)*(-2)*(bracketplus)*(-1)*(bracketplus/sigma)*(-1)*(bracketplus/sigma) + 2/sqrt(pi)*exp(-bracketplus^2)*(2*bracketplus/sigma^2) - <span class="keyword">...</span>
+0308                            2/sqrt(pi)*exp(-bracketnull^2)*(-2)*(bracketnull)*(-1)*(bracketnull/sigma)*(-1)*(bracketnull/sigma) + 2/sqrt(pi)*exp(-bracketnull^2)*(2*bracketnull/sigma^2);
+0309         d2CF_dsigma2 = d2CF_dsigma2 + 1/arg(k)^2*darg_dsigma(k)*darg_dsigma(k) - 1/arg(k)*d2arg_dsigma2(k);
+0310     <span class="keyword">end</span>
+0311 
+0312     hess = [d2CF_dA2        d2CF_dAdB       d2CF_dAdB       d2CF_dAdtheta       d2CF_dAdsigma; <span class="keyword">...</span>
+0313             d2CF_dAdB       d2CF_dB2        d2CF_dBdC       d2CF_dBdtheta       d2CF_dBdsigma; <span class="keyword">...</span>
+0314             d2CF_dAdC       d2CF_dBdC       d2CF_dC2        d2CF_dCdtheta       d2CF_dCdsigma; <span class="keyword">...</span>
+0315             d2CF_dAdtheta   d2CF_dBdtheta   d2CF_dCdtheta   d2CF_dtheta2        d2CF_dthetadsigma;<span class="keyword">...</span>
+0316             d2CF_dAdsigma   d2CF_dBdsigma   d2CF_dCdsigma   d2CF_dthetadsigma   d2CF_dsigma2];
+0317 
+0318     varargout{4} = hess;
+0319 <span class="keyword">end</span>
+0320 
+0321 <span class="keyword">if</span> (nargout&gt;=5) <span class="comment">%probVect shall be returned</span>
+0322     varargout{5} = probVect;
+0323 <span class="keyword">end</span>
+0324 
+0325 <span class="keyword">if</span> (nargout&gt;=6) <span class="comment">%probMTRX shall be calculated</span>
+0326    probMTRX = zeros(2^NoB,M);
+0327     <span class="keyword">for</span> k = 1:M
+0328         <span class="keyword">for</span> l = 1:2^NoB
+0329             probMTRX(l,k) = 1/2*(erf((T(l+1)-x(k))/(sqrt(2)*sigma)) - erf((T(l)-x(k))/(sqrt(2)*sigma)));<span class="comment">%!! (l,k)</span>
+0330         <span class="keyword">end</span>
+0331     <span class="keyword">end</span>
+0332     <span class="comment">%returning probMTRX in varargout</span>
+0333     varargout{6} = probMTRX;
+0334 <span class="keyword">end</span>
+0335 
+0336 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

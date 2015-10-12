@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of g1_bh3</title>
+  <meta name="keywords" content="g1_bh3">
+  <meta name="description" content="teszt jelleggel">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; g1_bh3.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>g1_bh3
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>teszt jelleggel</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [X,dA,dB,dC,df]=g1_bh3(A,B,C,f,N,m,limit,sf,p) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> teszt jelleggel
+ [limit, sf, p]=poli(N);</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="g2_bh3.html" class="code" title="function [X,dA,dB,dC,df]=g2_bh3(A,B,C,f,N,bins,w0,w1,w2,limit,sf,p)">g2_bh3</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [X,dA,dB,dC,df]=g1_bh3(A,B,C,f,N,m,limit,sf,p)</a>
+0002 <span class="comment">% teszt jelleggel</span>
+0003 <span class="comment">% [limit, sf, p]=poli(N);</span>
+0004 f1=round(f); <span class="comment">% skal�</span>
+0005 f2=f-f1; <span class="comment">% skal�</span>
+0006 d1=1/N*(-f+m); <span class="comment">% vektor</span>
+0007 d2=1/N*(f+m); <span class="comment">% vektor</span>
+0008 e1=((-1).^(f1+m)).*exp(1i*(f2+d1)*pi); <span class="comment">% vektor</span>
+0009 e2=((-1).^(f1+m)).*exp(1i*(-f2+d2)*pi); <span class="comment">% vektor</span>
+0010 de1_df=(1i)*pi*(N-1)/N*e1; <span class="comment">% vektor</span>
+0011 de2_df=(-1i)*pi*(N-1)/N*e2; <span class="comment">% vektor</span>
+0012 b1=(A+1i*B)/2; <span class="comment">% skal�</span>
+0013 b2=(A-1i*B)/2; <span class="comment">% skal�</span>
+0014 
+0015 n1=sin(pi*d1); <span class="comment">% vektor</span>
+0016 sz1=sin(-pi*f2)*((-1).^(f1+m)); <span class="comment">% vektor</span>
+0017 dsz1_df=-pi*cos(f2*pi)*((-1).^(f1+m)); <span class="comment">% vektor</span>
+0018 dn1_df=-pi/N*cos(pi*d1); <span class="comment">% vektor</span>
+0019 sqr_n1=1/2*(1-cos(2*pi*d1)); <span class="comment">% vektor</span>
+0020 r1=sz1./n1; <span class="comment">% vektor</span>
+0021 dr1_df=(dsz1_df.*n1-dn1_df.*sz1)./sqr_n1; <span class="comment">% vektor</span>
+0022 w01=pi*(d1-round(d1)); <span class="comment">% vektor</span>
+0023 w1=sf*w01; <span class="comment">% vektor</span>
+0024 ind1=(abs(n1)&lt;limit);
+0025 r1(ind1)=polyval(p,w1(ind1));
+0026 q=polyder(p);
+0027 dr1_df(ind1)=polyval(q,w1(ind1));
+0028 <span class="comment">% if (rem(N,2)==0)</span>
+0029 <span class="comment">%     ind11=((rem(round(d1),2)~=0)&amp;ind1);</span>
+0030 <span class="comment">%     r1(ind11)=-r1(ind11);</span>
+0031 <span class="comment">%     dr1_df(ind11)=-dr1_df(ind11);</span>
+0032 <span class="comment">% end</span>
+0033 ind11=(mod((m-f1),2)==1)<span class="keyword">...</span><span class="comment"> % pluszb� tart minuszba</span>
+0034     &amp;(mod(round((m-f1)/N),2)==0); <span class="comment">% minuszb� tart pluszba</span>
+0035 ind12=(mod((m-f1),2)==0)<span class="keyword">...</span><span class="comment"> % minuszb� tart pluszba</span>
+0036     &amp;(mod(round((m-f1)/N),2)==1); <span class="comment">% pluszb� tart minuszba</span>
+0037 ind13=ind1&amp;(ind11|ind12);
+0038 r1(ind13)=-r1(ind13);
+0039 dr1_df(ind13)=-dr1_df(ind13);
+0040 
+0041 n2=sin(pi*d2);
+0042 sz2=sin(f2*pi)*((-1).^(f1+m));
+0043 dsz2_df=pi*cos(f2*pi)*((-1).^(f1+m));
+0044 dn2_df=pi/N*cos(pi*d2);
+0045 sqr_n2=1/2*(1-cos(2*pi*d2));
+0046 r2=sz2./n2;
+0047 dr2_df=(dsz2_df.*n2-dn2_df.*sz2)./sqr_n2;
+0048 
+0049 w02=pi*(d2-round(d2));
+0050 w2=sf*w02;
+0051 ind2=(abs(n2)&lt;limit);
+0052 r2(ind2)=polyval(p, w2(ind2));
+0053 q=polyder(p);
+0054 dr2_df(ind2)=polyval(q, w2(ind2));
+0055 <span class="comment">% if (rem(N,2)==0)</span>
+0056 <span class="comment">%     ind22=((rem(round(d2),2)~=0)&amp;ind2);</span>
+0057 <span class="comment">%     r2(ind22)=-r2(ind22);</span>
+0058 <span class="comment">%     dr2_df(ind22)=-dr2_df(ind22);</span>
+0059 <span class="comment">% end</span>
+0060 ind21=(mod(m+f1,2)==1)<span class="keyword">...</span><span class="comment"> % pluszb� tart minuszba</span>
+0061     &amp;(mod(round((m+f1)/N),2)==0); <span class="comment">% minuszb� tart pluszba</span>
+0062 ind22=(mod(m+f1,2)==0)<span class="keyword">...</span><span class="comment"> % minuszb� tart pluszba</span>
+0063     &amp;(mod(round((m+f1)/N),2)==1);
+0064 ind23=ind2&amp;(ind21|ind22);
+0065 r2(ind23)=-r2(ind23);
+0066 dr2_df(ind23)=-dr2_df(ind23);
+0067 
+0068 
+0069 X_sin=b1*e1.*r1+b2*e2.*r2;
+0070 X_dc=zeros(length(m),1);
+0071 X_dc(rem(m,N)==0)=C*N;
+0072 X=X_sin+X_dc;
+0073 dA=1/2*e1.*r1+1/2*e2.*r2;
+0074 dB=1i/2*e1.*r1-1i/2*e2.*r2;
+0075 dC=zeros(length(m),1);
+0076 dC(rem(m,N)==0)=N;
+0077 df=b1*de1_df.*r1+b1*e1.*dr1_df+b2*de2_df.*r2+b2*e2.*dr2_df;
+0078 
+0079</pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

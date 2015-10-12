@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of fdsfit4_bh3</title>
+  <meta name="keywords" content="fdsfit4_bh3">
+  <meta name="description" content="FDSFIT4_BH3 Summary of this function goes here">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; fdsfit4_bh3.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>fdsfit4_bh3
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>FDSFIT4_BH3 Summary of this function goes here</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [A,B,C,f,COV,time] = fdsfit4_bh3(xq) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">FDSFIT4_BH3 Summary of this function goes here
+   Detailed explanation goes here</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="ng_bh3.html" class="code" title="function [A,B,C,f,D]=ng_bh3(X,J_init)">ng_bh3</a>	N�yparam�eres frekvenciatartom�ybeli LS szinuszbecsl�</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="step_1.html" class="code" title="function varargout = step_1(varargin)">step_1</a>	STEP_1 M-file for step_1.fig</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [A,B,C,f,COV,time] = fdsfit4_bh3(xq)</a>
+0002 <span class="comment">%FDSFIT4_BH3 Summary of this function goes here</span>
+0003 <span class="comment">%   Detailed explanation goes here</span>
+0004 
+0005 N=length(xq);
+0006 
+0007 <span class="comment">% MSD ablakos IpFFT</span>
+0008 Fc=fft(xq);
+0009 F=abs(Fc);
+0010 [dummy,w]=max(F(2:round(N/2)));
+0011 <span class="comment">% w teh� a 2. indext� indul�t�b maximuma, azaz F-ben a t�yleges</span>
+0012 <span class="comment">% maximum a w+1 helyen van.</span>
+0013 J0=w; <span class="comment">% peri�usok sz��ak kezdeti becsl�e</span>
+0014 <span class="comment">% 3 t�yez� MSD ablak az id�artom�yban:</span>
+0015 a0=3/8;
+0016 a1=-1/2;
+0017 a2=1/8;
+0018 L=[<span class="keyword">...</span>
+0019     0, a2/2, a1/2, a0, a1/2, a2/2, 0, 0, 0;<span class="keyword">...</span><span class="comment"> % Xmsd(w-1)</span>
+0020     0, 0, a2/2, a1/2, a0, a1/2, a2/2, 0, 0;<span class="keyword">...</span><span class="comment"> % Xmsd(w)</span>
+0021     0, 0, 0, a2/2, a1/2, a0, a1/2, a2/2, 0;<span class="keyword">...</span><span class="comment"> % Xmsd(w+1)</span>
+0022     ];
+0023 v=[<span class="keyword">...</span>
+0024     Fc(w-3);<span class="keyword">...</span>
+0025     Fc(w-2);<span class="keyword">...</span>
+0026     Fc(w-1);<span class="keyword">...</span>
+0027     Fc(w);<span class="keyword">...</span>
+0028     Fc(w+1);<span class="keyword">...</span>
+0029     Fc(w+2);<span class="keyword">...</span>
+0030     Fc(w+3);<span class="keyword">...</span>
+0031     Fc(w+4);<span class="keyword">...</span>
+0032     Fc(w+5);<span class="keyword">...</span>
+0033     ];
+0034 Xmsd3=L*v;
+0035 dJ=3*(abs(Xmsd3(3))-abs(Xmsd3(1)))/(abs(Xmsd3(1))+2*abs(Xmsd3(2))+abs(Xmsd3(3)));
+0036 J_init=J0+dJ; 
+0037 <span class="comment">% MSD ablakos IpFFT v�e</span>
+0038 
+0039 <span class="comment">% T�vez�l� detekt��</span>
+0040 k=(0:N-1).';
+0041 Cmax=max(xq); <span class="comment">% legnagyobb k�</span>
+0042 Cmin=min(xq); <span class="comment">% legkisebb k�</span>
+0043 ind=((xq&lt;Cmax)&amp;(xq&gt;Cmin));
+0044 Fi=2*pi*J_init/N*k(ind); <span class="comment">% oszlopvektor</span>
+0045 Fi = Fi(:);
+0046 D=[cos(Fi), sin(Fi), ones(nnz(ind),1)];
+0047 xq = xq(:);
+0048 s=pinv(D,0)*xq(ind);
+0049 A_init=s(1);
+0050 B_init=s(2);
+0051 C_init=s(3);
+0052 <span class="comment">% t�vez�l� detekt��a, majd a szinuszjel kieg�z��e ahol sz�s�es</span>
+0053 Fi=2*pi*J_init/N*k;
+0054 x2=xq;
+0055 xf=A_init*cos(Fi)+B_init*sin(Fi)+C_init; <span class="comment">% illesztett szinusz</span>
+0056 th1=Cmax+1/2;
+0057 ind1=(xf&gt;th1); <span class="comment">% a felfel�t�vez�elt mint� indexe</span>
+0058 <span class="keyword">if</span> (nnz(ind1)&gt;0)
+0059     x2(ind1)=xf(ind1);
+0060 <span class="keyword">end</span>;
+0061 th2=Cmin-1/2;
+0062 ind2=(xf&lt;th2);
+0063 <span class="keyword">if</span> (nnz(ind2)&gt;0)
+0064     x2(ind2)=xf(ind2);
+0065 <span class="keyword">end</span>
+0066 X2=fft(x2);
+0067 <span class="comment">% T�vez�l� detekt�� v�e</span>
+0068 
+0069 <span class="comment">% Szinuszilleszt�</span>
+0070 tic;
+0071 [A,B,C,f,M]=<a href="ng_bh3.html" class="code" title="function [A,B,C,f,D]=ng_bh3(X,J_init)">ng_bh3</a>(X2, J_init);
+0072 time=toc;
+0073 N=length(x2);
+0074 t=(0:N-1)';
+0075 fi=2*pi*f/N*t;
+0076 xfit=C+A*cos(fi)-B*sin(fi);
+0077 <span class="keyword">if</span> (size(x2)~=size(xfit))
+0078     xfit=xfit.';
+0079 <span class="keyword">end</span>;
+0080 ind12=~(ind1|ind2);
+0081 r=xfit(ind12)-x2(ind12);
+0082 v=var(r);
+0083 <span class="comment">% Eredeti</span>
+0084 V=N*v; <span class="comment">% Mert ha v=var(x), akkor V=var(fft(x))=N*v.</span>
+0085 COV=V*M;
+0086 <span class="comment">% M�os�ott</span>
+0087 <span class="comment">% D2=[cos(fi), -sin(fi), ones(size(fi)), -1/f*fi.*(A*sin(fi)+B*cos(fi))];</span>
+0088 <span class="comment">% COV=v*pinv(D2.'*D2,0);</span>
+0089 
+0090</pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

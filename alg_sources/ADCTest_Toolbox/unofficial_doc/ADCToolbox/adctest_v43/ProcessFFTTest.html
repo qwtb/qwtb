@@ -1,0 +1,428 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ProcessFFTTest</title>
+  <meta name="keywords" content="ProcessFFTTest">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; ProcessFFTTest.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>ProcessFFTTest
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function ProcessFFTTest(dsc) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="BH3Win.html" class="code" title="function win = BH3Win(L)">BH3Win</a>	Coefficients 3-term Blackman-Harris window:</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="adctest.html" class="code" title="function adctest">adctest</a>	@fn adctest</li><li><a href="step_1.html" class="code" title="function varargout = step_1(varargin)">step_1</a>	STEP_1 M-file for step_1.fig</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function ProcessData</a></li><li><a href="#_sub2" class="code">function Windowing_callback(source,eventdata)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function ProcessFFTTest(dsc)</a>
+0002 
+0003 screensize = get(0,<span class="string">'ScreenSize'</span>);
+0004 
+0005 hFFT_Test_window = figure(<span class="string">'Visible'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+0006                               <span class="string">'Position'</span>, [screensize(3)*0.25 screensize(4)*0.25 screensize(3)*0.5 screensize(4)*0.5]',<span class="keyword">...</span>
+0007                               <span class="string">'Name'</span>,<span class="string">'FFT Test'</span>,<span class="keyword">...</span>
+0008                               <span class="string">'NumberTitle'</span>,<span class="string">'off'</span>);
+0009                           
+0010 hTextTitle = uicontrol (<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0011                            <span class="string">'String'</span>,<span class="string">'Frequency-domain analysis'</span>,<span class="keyword">...</span>
+0012                            <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0013                            <span class="string">'Position'</span>,[0.3 0.9 0.4 0.04],<span class="keyword">...</span>
+0014                            <span class="string">'HorizontalAlignment'</span>,<span class="string">'center'</span>,<span class="keyword">...</span>
+0015                            <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+0016                            <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);    
+0017                                                                             
+0018 hTextWindowing = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0019                            <span class="string">'String'</span>,<span class="string">'Window: '</span>,<span class="keyword">...</span>
+0020                            <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0021                            <span class="string">'Position'</span>,[0.65 0.8 0.1 0.04],<span class="keyword">...</span>
+0022                            <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0023                            <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);    
+0024                        
+0025 hPopupMenuWindowing = uicontrol(<span class="string">'Style'</span>,<span class="string">'popupmenu'</span>,<span class="keyword">...</span>
+0026                                 <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0027                                 <span class="string">'Position'</span>,[0.75 0.82 0.15 0.04],<span class="keyword">...</span>
+0028                                 <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0029                                 <span class="string">'String'</span>,{<span class="string">'None (Rect)'</span>,<span class="string">'Hann'</span>,<span class="string">'Blackman'</span>,<span class="string">'Blackman-Harris'</span>},<span class="keyword">...</span>
+0030                                 <span class="string">'Callback'</span>,@<a href="#_sub2" class="code" title="subfunction Windowing_callback(source,eventdata)">Windowing_callback</a>);                       
+0031 
+0032 hTextSFDR = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0033                            <span class="string">'String'</span>,<span class="string">'SFDR: '</span>,<span class="keyword">...</span>
+0034                            <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0035                            <span class="string">'Position'</span>,[0.1 0.8 0.2 0.04],<span class="keyword">...</span>
+0036                            <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0037                            <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+0038                            <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0039                        
+0040 hTextSFDRValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0041                            <span class="string">'String'</span>,<span class="string">'NaN'</span>,<span class="keyword">...</span>
+0042                            <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0043                            <span class="string">'Position'</span>,[0.3 0.8 0.1 0.04],<span class="keyword">...</span>
+0044                            <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0045                            <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+0046                            <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0047 
+0048 hTextSFDRdBFSValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0049                            <span class="string">'String'</span>,<span class="string">'NaN'</span>,<span class="keyword">...</span>
+0050                            <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0051                            <span class="string">'Position'</span>,[0.3 0.75 0.1 0.04],<span class="keyword">...</span>
+0052                            <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0053                            <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+0054                            <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0055 
+0056 hTextComponent =   uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0057                         <span class="string">'String'</span>,<span class="string">'Component:'</span>,<span class="keyword">...</span>
+0058                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0059                         <span class="string">'Position'</span>,[0.1 0.7 0.1 0.04],<span class="keyword">...</span>
+0060                         <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0061                         <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+0062                         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0063                     
+0064 hTextFrequency =   uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0065                         <span class="string">'String'</span>,<span class="string">'Frequency (f/fs):'</span>,<span class="keyword">...</span>
+0066                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0067                         <span class="string">'Position'</span>,[0.2 0.7 0.2 0.04],<span class="keyword">...</span>
+0068                         <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0069                         <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+0070                         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0071                     
+0072 hTextAmpRelFS =   uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0073                         <span class="string">'String'</span>,<span class="string">'Amplitude (rel. FS):'</span>,<span class="keyword">...</span>
+0074                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0075                         <span class="string">'Position'</span>,[0.45 0.7 0.2 0.04],<span class="keyword">...</span>
+0076                         <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0077                         <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+0078                         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0079 
+0080 hTextAmpRelCarrier =   uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0081                         <span class="string">'String'</span>,<span class="string">'Amplitude (rel. carrier):'</span>,<span class="keyword">...</span>
+0082                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0083                         <span class="string">'Position'</span>,[0.7 0.7 0.2 0.04],<span class="keyword">...</span>
+0084                         <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0085                         <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+0086                         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);                        
+0087                                                 
+0088 hTextCarrier =  uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0089                         <span class="string">'String'</span>,<span class="string">'Carrier: '</span>,<span class="keyword">...</span>
+0090                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0091                         <span class="string">'Position'</span>,[0.1 0.65 0.2 0.04],<span class="keyword">...</span>
+0092                         <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0093                         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);                       
+0094 
+0095 hText_2nd_harm =  uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0096                         <span class="string">'String'</span>,<span class="string">'2nd harmonic: '</span>,<span class="keyword">...</span>
+0097                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0098                         <span class="string">'Position'</span>,[0.1 0.6 0.2 0.04],<span class="keyword">...</span>
+0099                         <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0100                         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);                       
+0101 
+0102 
+0103 hText_3rd_harm =  uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0104                         <span class="string">'String'</span>,<span class="string">'3rd harmonic: '</span>,<span class="keyword">...</span>
+0105                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0106                         <span class="string">'Position'</span>,[0.1 0.55 0.2 0.04],<span class="keyword">...</span>
+0107                         <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0108                         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);                       
+0109                     
+0110 hText_4th_harm =  uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0111                         <span class="string">'String'</span>,<span class="string">'4th harmonic: '</span>,<span class="keyword">...</span>
+0112                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0113                         <span class="string">'Position'</span>,[0.1 0.5 0.2 0.04],<span class="keyword">...</span>
+0114                         <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0115                         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);                       
+0116 
+0117 hText_5th_harm =  uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0118                         <span class="string">'String'</span>,<span class="string">'5th harmonic: '</span>,<span class="keyword">...</span>
+0119                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0120                         <span class="string">'Position'</span>,[0.1 0.45 0.2 0.04],<span class="keyword">...</span>
+0121                         <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0122                         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);                       
+0123                     
+0124 hTextCarrierFreqValue =  uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0125                         <span class="string">'String'</span>,<span class="string">'NaN'</span>,<span class="keyword">...</span>
+0126                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0127                         <span class="string">'Position'</span>,[0.2 0.65 0.2 0.04],<span class="keyword">...</span>
+0128                         <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0129                         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);                       
+0130                         
+0131 hText2thHarmFreqValue =  uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0132                         <span class="string">'String'</span>,<span class="string">'NaN'</span>,<span class="keyword">...</span>
+0133                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0134                         <span class="string">'Position'</span>,[0.2 0.6 0.2 0.04],<span class="keyword">...</span>
+0135                         <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0136                         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);                       
+0137 
+0138 hText3thHarmFreqValue =  uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0139                         <span class="string">'String'</span>,<span class="string">'NaN'</span>,<span class="keyword">...</span>
+0140                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0141                         <span class="string">'Position'</span>,[0.2 0.55 0.2 0.04],<span class="keyword">...</span>
+0142                         <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0143                         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);                       
+0144                     
+0145 hText4thHarmFreqValue =  uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0146                         <span class="string">'String'</span>,<span class="string">'NaN'</span>,<span class="keyword">...</span>
+0147                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0148                         <span class="string">'Position'</span>,[0.2 0.5 0.2 0.04],<span class="keyword">...</span>
+0149                         <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0150                         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);                       
+0151                     
+0152 hText5thHarmFreqValue =  uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0153                         <span class="string">'String'</span>,<span class="string">'NaN'</span>,<span class="keyword">...</span>
+0154                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0155                         <span class="string">'Position'</span>,[0.2 0.45 0.2 0.04],<span class="keyword">...</span>
+0156                         <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0157                         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);                       
+0158                     
+0159 hTextCarrierAmpFSValue =  uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0160                         <span class="string">'String'</span>,<span class="string">'NaN'</span>,<span class="keyword">...</span>
+0161                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0162                         <span class="string">'Position'</span>,[0.45 0.65 0.2 0.04],<span class="keyword">...</span>
+0163                         <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0164                         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);                       
+0165                         
+0166 hText2thHarmAmpFSValue =  uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0167                         <span class="string">'String'</span>,<span class="string">'NaN'</span>,<span class="keyword">...</span>
+0168                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0169                         <span class="string">'Position'</span>,[0.45 0.6 0.2 0.04],<span class="keyword">...</span>
+0170                         <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0171                         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);                       
+0172 
+0173 hText3thHarmAmpFSValue =  uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0174                         <span class="string">'String'</span>,<span class="string">'NaN'</span>,<span class="keyword">...</span>
+0175                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0176                         <span class="string">'Position'</span>,[0.45 0.55 0.2 0.04],<span class="keyword">...</span>
+0177                         <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0178                         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);                       
+0179                     
+0180 hText4thHarmAmpFSValue =  uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0181                         <span class="string">'String'</span>,<span class="string">'NaN'</span>,<span class="keyword">...</span>
+0182                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0183                         <span class="string">'Position'</span>,[0.45 0.5 0.2 0.04],<span class="keyword">...</span>
+0184                         <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0185                         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);                       
+0186                     
+0187 hText5thHarmAmpFSValue =  uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0188                         <span class="string">'String'</span>,<span class="string">'NaN'</span>,<span class="keyword">...</span>
+0189                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0190                         <span class="string">'Position'</span>,[0.45 0.45 0.2 0.04],<span class="keyword">...</span>
+0191                         <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0192                         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);                       
+0193 
+0194 hTextCarrierAmpCValue =  uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0195                         <span class="string">'String'</span>,<span class="string">'NaN'</span>,<span class="keyword">...</span>
+0196                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0197                         <span class="string">'Position'</span>,[0.7 0.65 0.2 0.04],<span class="keyword">...</span>
+0198                         <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0199                         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);                       
+0200                         
+0201 hText2thHarmAmpCValue =  uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0202                         <span class="string">'String'</span>,<span class="string">'NaN'</span>,<span class="keyword">...</span>
+0203                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0204                         <span class="string">'Position'</span>,[0.7 0.6 0.2 0.04],<span class="keyword">...</span>
+0205                         <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0206                         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);                       
+0207 
+0208 hText3thHarmAmpCValue =  uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0209                         <span class="string">'String'</span>,<span class="string">'NaN'</span>,<span class="keyword">...</span>
+0210                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0211                         <span class="string">'Position'</span>,[0.7 0.55 0.2 0.04],<span class="keyword">...</span>
+0212                         <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0213                         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);                       
+0214                     
+0215 hText4thHarmAmpCValue =  uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0216                         <span class="string">'String'</span>,<span class="string">'NaN'</span>,<span class="keyword">...</span>
+0217                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0218                         <span class="string">'Position'</span>,[0.7 0.5 0.2 0.04],<span class="keyword">...</span>
+0219                         <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0220                         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);                       
+0221                     
+0222 hText5thHarmAmpCValue =  uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0223                         <span class="string">'String'</span>,<span class="string">'NaN'</span>,<span class="keyword">...</span>
+0224                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0225                         <span class="string">'Position'</span>,[0.7 0.45 0.2 0.04],<span class="keyword">...</span>
+0226                         <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0227                         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);                       
+0228 
+0229 hAxesSpectrum = axes (<span class="string">'Position'</span>,[0.1 0.1 0.8 0.3]);
+0230 
+0231 <span class="comment">%Initializing state variables</span>
+0232 NUM_OF_HARMONICS = 5;
+0233 N_FFT = 1e6; <span class="comment">%length of FFT</span>
+0234 datavect = dsc.data(:) - mean(dsc.data); <span class="comment">%AC-coupling and forcing column vectors</span>
+0235 N = length(datavect);
+0236 set(hPopupMenuWindowing,<span class="string">'Value'</span>,3); <span class="comment">%default window is Blackman window</span>
+0237 window_vector = blackman(N)/sum(blackman(N));
+0238 warning_displayed = 0;
+0239 NoB = dsc.NoB;
+0240 <a href="#_sub1" class="code" title="subfunction ProcessData">ProcessData</a>;
+0241 
+0242     <a name="_sub1" href="#_subfunctions" class="code">function ProcessData</a>
+0243         windowed_data = datavect.*window_vector;
+0244         windowed_data = windowed_data(:);
+0245         spect = abs(fft(windowed_data,N_FFT));
+0246         half_side = spect(1:floor(length(spect)/2)+1);
+0247         [amp_max, index_max] = max(half_side);
+0248         rel_freq_max = (index_max-1)/N_FFT; <span class="comment">%estimated relative frequency of the 1st harmonic</span>
+0249         <span class="comment">%Amplitude of carrier relative to full scale:</span>
+0250         <span class="comment">%Windows are normalized (sum(win) == 1), thus 1/N is implicitly done by the windowing</span>
+0251         carrier_to_FS = 2*amp_max/((2^NoB)/2);        
+0252         
+0253         H = [1;zeros(NUM_OF_HARMONICS-1,1)];
+0254         indeces = [index_max; zeros(NUM_OF_HARMONICS-1,1)];
+0255         <span class="comment">%Calculating harmonics relative to carrier</span>
+0256         <span class="keyword">for</span> k = 2:NUM_OF_HARMONICS
+0257             <span class="comment">%k. harmonic:</span>
+0258             indeces(k) = 1 + round(k*(rel_freq_max*N_FFT));
+0259             <span class="keyword">if</span> (indeces(k) &lt;= length(half_side)) <span class="comment">%k-th harmonic is within the Nyquist frequency</span>
+0260                 H(k) = half_side(indeces(k))/half_side(indeces(1));
+0261             <span class="keyword">else</span>
+0262                 H(k) = NaN;
+0263             <span class="keyword">end</span>
+0264         <span class="keyword">end</span>
+0265         <span class="comment">%Calculating SFDR:</span>
+0266         max_harmonic_distortion = 20*log10(max(H(2:end)));
+0267         <span class="comment">%Discarding main lobe from spourious components:</span>
+0268         <span class="comment">%Windows' main lobe is no more than DFT bins wide, thus</span>
+0269         <span class="comment">%N_FFT/N*5 samples shall be discarded to calculate SFDR</span>
+0270         max_spur = max([half_side(1:index_max-round(5*N_FFT/N));half_side(index_max+round(5*N_FFT/N):end)]);
+0271         max_spourious_component = 20*log10(max_spur/half_side(indeces(1)));
+0272         <span class="comment">%Without windowing, SFDR can be misleading:</span>
+0273         <span class="keyword">if</span> (get(hPopupMenuWindowing,<span class="string">'Value'</span>)==1) <span class="comment">%rectangular window is used</span>
+0274             SFDR = max_harmonic_distortion;
+0275         <span class="keyword">else</span>
+0276             SFDR = max([max_harmonic_distortion,max_spourious_component]);
+0277         <span class="keyword">end</span>
+0278         SFDRdBc = (-1)*SFDR; <span class="comment">%SFDR is nonnegative</span>
+0279         SFDRdBFS = SFDRdBc + (-1)*20*log10(carrier_to_FS); <span class="comment">%SFRD dBFS</span>
+0280 
+0281         axes(hAxesSpectrum);
+0282         half_side_reduced = half_side(2:end)/half_side(indeces(1));
+0283         plot((2:floor(N_FFT/2)+1)/N_FFT,20*log10(half_side_reduced));
+0284         axis([0 0.5 -150 10]);
+0285         xlabel(<span class="string">'f/fs'</span>);
+0286         ylabel(<span class="string">'Amplitude [dBc]'</span>);
+0287         <span class="comment">%Updating display:</span>
+0288         set (hTextCarrierFreqValue,<span class="string">'String'</span>,sprintf(<span class="string">'%1.4e'</span>,rel_freq_max));
+0289         set (hText2thHarmFreqValue,<span class="string">'String'</span>,sprintf(<span class="string">'%1.4e'</span>,2*rel_freq_max));
+0290         set (hText3thHarmFreqValue,<span class="string">'String'</span>,sprintf(<span class="string">'%1.4e'</span>,3*rel_freq_max));        
+0291         set (hText4thHarmFreqValue,<span class="string">'String'</span>,sprintf(<span class="string">'%1.4e'</span>,4*rel_freq_max));        
+0292         set (hText5thHarmFreqValue,<span class="string">'String'</span>,sprintf(<span class="string">'%1.4e'</span>,5*rel_freq_max));
+0293         
+0294         set (hTextCarrierAmpFSValue,<span class="string">'String'</span>,sprintf(<span class="string">'%2.2f dBFS'</span>,20*log10(carrier_to_FS)));
+0295         set (hText2thHarmAmpFSValue,<span class="string">'String'</span>,sprintf(<span class="string">'%2.2f dBFS'</span>,20*log10(H(2)) + 20*log10(carrier_to_FS)));
+0296         set (hText3thHarmAmpFSValue,<span class="string">'String'</span>,sprintf(<span class="string">'%2.2f dBFS'</span>,20*log10(H(3)) + 20*log10(carrier_to_FS)));        
+0297         set (hText4thHarmAmpFSValue,<span class="string">'String'</span>,sprintf(<span class="string">'%2.2f dBFS'</span>,20*log10(H(4)) + 20*log10(carrier_to_FS)));        
+0298         set (hText5thHarmAmpFSValue,<span class="string">'String'</span>,sprintf(<span class="string">'%2.2f dBFS'</span>,20*log10(H(5)) + 20*log10(carrier_to_FS)));        
+0299         
+0300         set (hTextCarrierAmpCValue,<span class="string">'String'</span>,sprintf(<span class="string">'%2.2f dBc'</span>,0));
+0301         set (hText2thHarmAmpCValue,<span class="string">'String'</span>,sprintf(<span class="string">'%2.2f dBc'</span>,20*log10(H(2))));
+0302         set (hText3thHarmAmpCValue,<span class="string">'String'</span>,sprintf(<span class="string">'%2.2f dBc'</span>,20*log10(H(3))));        
+0303         set (hText4thHarmAmpCValue,<span class="string">'String'</span>,sprintf(<span class="string">'%2.2f dBc'</span>,20*log10(H(4))));        
+0304         set (hText5thHarmAmpCValue,<span class="string">'String'</span>,sprintf(<span class="string">'%2.2f dBc'</span>,20*log10(H(5))));        
+0305         
+0306         set (hTextSFDRValue,<span class="string">'String'</span>,sprintf(<span class="string">'%2.2f dBc  '</span>,SFDRdBc));
+0307         set (hTextSFDRdBFSValue,<span class="string">'String'</span>,sprintf(<span class="string">'%2.2f dBFS'</span>,SFDRdBFS));
+0308         
+0309         <span class="comment">%Warning in case of overdriven ADC</span>
+0310         <span class="keyword">if</span> ((carrier_to_FS &gt; 1) &amp;&amp; (~warning_displayed))
+0311             warndlg({<span class="string">'The excitation signal seemingly overdrives'</span>;<span class="keyword">...</span>
+0312                 <span class="string">'the ADC under test. Please consider it evaluating the value of SFDR'</span>;<span class="keyword">...</span>
+0313                 <span class="string">'relative to full scale (dbFS) and relative to carrier (dBc).'</span>;<span class="keyword">...</span>
+0314                 <span class="string">'Also note that the harmonic components'</span>;<span class="keyword">...</span>
+0315                 <span class="string">'can be as result of nonlinearity as result of saturation.'</span>},<span class="keyword">...</span>
+0316                 <span class="string">'Warning on overdrive'</span>);
+0317             warning_displayed = 1;
+0318         <span class="keyword">end</span>
+0319     <span class="keyword">end</span>
+0320 
+0321 <span class="comment">%%%%%%%%%Adding evaluation result to results cell array:</span>
+0322 <span class="keyword">try</span>
+0323     testresults = evalin(<span class="string">'base'</span>,<span class="string">'adctest_process_results'</span>);
+0324     res_len = size(testresults,1);
+0325     <span class="comment">%Search for existing results block</span>
+0326     existings_index = 0;
+0327     <span class="keyword">for</span> k = 1:res_len        
+0328         <span class="keyword">if</span> strcmpi(dsc.model,testresults{k,1}.DUT.model) <span class="keyword">...</span>
+0329                 &amp;&amp; strcmpi(dsc.serial,testresults{k,1}.DUT.serial)<span class="keyword">...</span>
+0330                 &amp;&amp; (dsc.channel == testresults{k,1}.DUT.channel)<span class="keyword">...</span>
+0331                 &amp;&amp; (dsc.NoB == testresults{k,1}.DUT.NoB)
+0332             existings_index = k;                    
+0333         <span class="keyword">end</span>
+0334     <span class="keyword">end</span>    
+0335     <span class="keyword">if</span> (existings_index ~= 0) <span class="comment">%existing result struct</span>
+0336         <span class="comment">%Adding new results:</span>
+0337         testresults{existings_index,1}.FFT.SFDRdBc = SFDRdBc;
+0338         testresults{existings_index,1}.FFT.SFDRdBFS = SFDRdBFS;                
+0339     <span class="keyword">else</span> <span class="comment">%new result struct shall be added</span>
+0340         testresults{res_len + 1,1}.DUT.model = dsc.model;
+0341         testresults{res_len + 1,1}.DUT.serial = dsc.serial;
+0342         testresults{res_len + 1,1}.DUT.channel = dsc.channel;
+0343         testresults{res_len + 1,1}.DUT.NoB = dsc.NoB;
+0344         <span class="comment">%Adding new results:</span>
+0345         testresults{res_len + 1,1}.FFT.SFDRdBc = SFDRdBc;
+0346         testresults{res_len + 1,1}.FFT.SFDRdBFS = SFDRdBFS;        
+0347     <span class="keyword">end</span>
+0348     <span class="comment">%updating adctest_process_results</span>
+0349     assignin (<span class="string">'base'</span>,<span class="string">'adctest_process_results'</span>,testresults);
+0350         
+0351 <span class="keyword">catch</span>
+0352     <span class="comment">%If testresults global variable does not exist:</span>
+0353     testresults = cell(1,1); <span class="comment">%creating new cell array for testresults</span>
+0354     testresults{1,1}.DUT.model = dsc.model;
+0355     testresults{1,1}.DUT.serial = dsc.serial;
+0356     testresults{1,1}.DUT.channel = dsc.channel;
+0357     testresults{1,1}.DUT.NoB = dsc.NoB;
+0358     <span class="comment">%Adding new results:</span>
+0359     testresults{1,1}.FFT.SFDRdBc = SFDRdBc;
+0360     testresults{1,1}.FFT.SFDRdBFS = SFDRdBFS;        
+0361     assignin (<span class="string">'base'</span>,<span class="string">'adctest_process_results'</span>,testresults);
+0362 <span class="keyword">end</span>
+0363 <span class="comment">%%%%%%End of adding evaluatin results to cell array%%%%%%%%%%</span>
+0364 
+0365     <a name="_sub2" href="#_subfunctions" class="code">function Windowing_callback(source,eventdata)</a>
+0366         menuval = get(source,<span class="string">'Value'</span>);
+0367         <span class="keyword">if</span> (menuval == 1) <span class="comment">%Rectangular window</span>
+0368             window_vector = ones(N,1)/sum(ones(N,1));
+0369         <span class="keyword">elseif</span> (menuval == 2) <span class="comment">%Hann window</span>
+0370             window_vector = hann(N)/sum(hann(N)); 
+0371         <span class="keyword">elseif</span> (menuval == 3) <span class="comment">%Blackman window</span>
+0372             window_vector = blackman(N)/sum(blackman(N));
+0373         <span class="keyword">elseif</span> (menuval == 4) <span class="comment">%3-term Blackman-Harris window</span>
+0374             window_vector = <a href="BH3Win.html" class="code" title="function win = BH3Win(L)">BH3Win</a>(N)/sum(<a href="BH3Win.html" class="code" title="function win = BH3Win(L)">BH3Win</a>(N));
+0375         <span class="keyword">end</span>
+0376         <a href="#_sub1" class="code" title="subfunction ProcessData">ProcessData</a>;
+0377     <span class="keyword">end</span>
+0378                         
+0379 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

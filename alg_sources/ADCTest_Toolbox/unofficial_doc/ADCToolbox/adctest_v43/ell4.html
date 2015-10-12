@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ell4</title>
+  <meta name="keywords" content="ell4">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; ell4.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>ell4
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [N_t, G_t, P_t]=ell4(J0,N0,s0) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="step_1.html" class="code" title="function varargout = step_1(varargin)">step_1</a>	STEP_1 M-file for step_1.fig</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [N_t, G_t, P_t]=ell4(J0,N0,s0)</a>
+0002 N_t=zeros(1,5);
+0003 G_t=N_t;
+0004 P_t=N_t;
+0005 <span class="keyword">if</span> (round(J0)&lt;5)
+0006     error(<span class="string">'T� kev� peri�us! Legal�b 5 peri�usb� �l�m�� sz�s�es!'</span>);
+0007 <span class="keyword">end</span>
+0008 d=J0/N0;
+0009 N=round(1/d*(round(J0):-1:1));
+0010 J=N*d;
+0011 <span class="keyword">if</span> (J0&lt;round(J0))
+0012     N(1)=N0;
+0013 <span class="keyword">end</span>
+0014 P=0;
+0015 G=0;
+0016 <span class="keyword">for</span> ii=1:length(J);
+0017     s=N(ii)/N0*s0;
+0018     CC=1/2/N(ii);
+0019     x=1/s*(round(J(ii))+CC-J(ii));
+0020     y=1/s*(J(ii)-round(J(ii))+CC);
+0021     P(ii)=normcdf(y)-normcdf(-x);
+0022     G(ii)=gcd(N(ii), round(J(ii)));
+0023 <span class="keyword">end</span>
+0024 [dummy,ind]=sort(P.*N./G, <span class="string">'descend'</span>);
+0025 <span class="keyword">for</span> ii=1:5
+0026     N_t(ii)=N(ind(ii));
+0027     G_t(ii)=G(ind(ii));
+0028     P_t(ii)=P(ind(ii));
+0029     <span class="comment">% fprintf('N=%d, G=%d, P=%.3f\n', N(ind(ii)), G(ind(ii)), P(ind(ii)));</span>
+0030 <span class="keyword">end</span>
+0031 
+0032 
+0033 
+0034 <span class="comment">% J0(1)=round(J);</span>
+0035 <span class="comment">% CC(1)=1/2/N;</span>
+0036 <span class="comment">% x=(J0+CC-J)/s;</span>
+0037 <span class="comment">% y=(J-J0+CC)/s;</span>
+0038 <span class="comment">% P(1)=normcdf(y)-normcdf(-x);</span>
+0039 <span class="comment">% G(1)=gcd(N,J0);</span></pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

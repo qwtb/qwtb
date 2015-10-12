@@ -1,0 +1,609 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of step_1</title>
+  <meta name="keywords" content="step_1">
+  <meta name="description" content="STEP_1 M-file for step_1.fig">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; step_1.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>step_1
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>STEP_1 M-file for step_1.fig</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function varargout = step_1(varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> STEP_1 M-file for step_1.fig
+      STEP_1, by itself, creates a new STEP_1 or raises the existing
+      singleton*.
+
+      H = STEP_1 returns the handle to a new STEP_1 or the handle to
+      the existing singleton*.
+
+      STEP_1('CALLBACK',hObject,eventData,handles,...) calls the local
+      function named CALLBACK in STEP_1.M with the given input arguments.
+
+      STEP_1('Property','Value',...) creates a new STEP_1 or raises the
+      existing singleton*.  Starting from the left, property value pairs are
+      applied to the GUI before step_1_OpeningFcn gets called.  An
+      unrecognized property name or invalid value makes property application
+      stop.  All inputs are passed to step_1_OpeningFcn via varargin.
+
+      *See GUI Options on GUIDE's Tools menu.  Choose &quot;GUI allows only one
+      instance to run (singleton)&quot;.
+
+ See also: GUIDE, GUIDATA, GUIHANDLES</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="ClassifyMeasurementRecord.html" class="code" title="function classresults = ClassifyMeasurementRecord(dsc)">ClassifyMeasurementRecord</a>	</li><li><a href="ExportResultsToHTML.html" class="code" title="function ExportResultsToHTML(results,filename)">ExportResultsToHTML</a>	</li><li><a href="ProcessDscLS4pFit.html" class="code" title="function ProcessDscLS4pFit(dsc,reason)">ProcessDscLS4pFit</a>	@fn ProcessDscLS4pFit</li><li><a href="ProcessFFTTest.html" class="code" title="function ProcessFFTTest(dsc)">ProcessFFTTest</a>	</li><li><a href="ProcessHistogramTest.html" class="code" title="function INL = ProcessHistogramTest(dsc,display_settings,varargin)">ProcessHistogramTest</a>	@fn ProcessHistogramtest</li><li><a href="ell4.html" class="code" title="function [N_t, G_t, P_t]=ell4(J0,N0,s0)">ell4</a>	</li><li><a href="fdsfit4_bh3.html" class="code" title="function [A,B,C,f,COV,time] = fdsfit4_bh3(xq)">fdsfit4_bh3</a>	FDSFIT4_BH3 Summary of this function goes here</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="adctest.html" class="code" title="function adctest">adctest</a>	@fn adctest</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function step_1_OpeningFcn(hObject, eventdata, handles, varargin)</a></li><li><a href="#_sub2" class="code">function varargout = step_1_OutputFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub3" class="code">function Help_menu_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub4" class="code">function About_adctest_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub5" class="code">function Getting_started_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub6" class="code">function pushbutton_next_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub7" class="code">function pushbutton_previous_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub8" class="code">function pushbutton_showwarns_1_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub9" class="code">function pushbutton_showwarns_2_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub10" class="code">function pushbutton_showwarns_3_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub11" class="code">function pushbutton_showwarns_4_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub12" class="code">function pushbutton_showerrors_1_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub13" class="code">function pushbutton_showerrors_2_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub14" class="code">function pushbutton_showerrors_3_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub15" class="code">function pushbutton_showerrors_4_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub16" class="code">function pushbutton_process_ls_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub17" class="code">function pushbutton_process_fft_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub18" class="code">function pushbutton_process_hist_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub19" class="code">function pushbutton_process_ml_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub20" class="code">function pushbutton_export_to_HTML_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub21" class="code">function popup_option_selector_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub22" class="code">function popup_option_selector_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub23" class="code">function pushbutton_help_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub24" class="code">function pushbutton_show_selections_Callback(hObject, eventdata, handles)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout = step_1(varargin)</a>
+0002 <span class="comment">% STEP_1 M-file for step_1.fig</span>
+0003 <span class="comment">%      STEP_1, by itself, creates a new STEP_1 or raises the existing</span>
+0004 <span class="comment">%      singleton*.</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%      H = STEP_1 returns the handle to a new STEP_1 or the handle to</span>
+0007 <span class="comment">%      the existing singleton*.</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">%      STEP_1('CALLBACK',hObject,eventData,handles,...) calls the local</span>
+0010 <span class="comment">%      function named CALLBACK in STEP_1.M with the given input arguments.</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">%      STEP_1('Property','Value',...) creates a new STEP_1 or raises the</span>
+0013 <span class="comment">%      existing singleton*.  Starting from the left, property value pairs are</span>
+0014 <span class="comment">%      applied to the GUI before step_1_OpeningFcn gets called.  An</span>
+0015 <span class="comment">%      unrecognized property name or invalid value makes property application</span>
+0016 <span class="comment">%      stop.  All inputs are passed to step_1_OpeningFcn via varargin.</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">%      *See GUI Options on GUIDE's Tools menu.  Choose &quot;GUI allows only one</span>
+0019 <span class="comment">%      instance to run (singleton)&quot;.</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">% See also: GUIDE, GUIDATA, GUIHANDLES</span>
+0022 
+0023 <span class="comment">% Edit the above text to modify the response to help step_1</span>
+0024 
+0025 <span class="comment">% Last Modified by GUIDE v2.5 19-Nov-2014 13:29:25</span>
+0026 
+0027 <span class="comment">% Begin initialization code - DO NOT EDIT</span>
+0028 gui_Singleton = 1;
+0029 gui_State = struct(<span class="string">'gui_Name'</span>,       mfilename, <span class="keyword">...</span>
+0030                    <span class="string">'gui_Singleton'</span>,  gui_Singleton, <span class="keyword">...</span>
+0031                    <span class="string">'gui_OpeningFcn'</span>, @<a href="#_sub1" class="code" title="subfunction step_1_OpeningFcn(hObject, eventdata, handles, varargin)">step_1_OpeningFcn</a>, <span class="keyword">...</span>
+0032                    <span class="string">'gui_OutputFcn'</span>,  @<a href="#_sub2" class="code" title="subfunction varargout = step_1_OutputFcn(hObject, eventdata, handles)">step_1_OutputFcn</a>, <span class="keyword">...</span>
+0033                    <span class="string">'gui_LayoutFcn'</span>,  [] , <span class="keyword">...</span>
+0034                    <span class="string">'gui_Callback'</span>,   []);
+0035 <span class="keyword">if</span> nargin &amp;&amp; ischar(varargin{1})
+0036     gui_State.gui_Callback = str2func(varargin{1});
+0037 <span class="keyword">end</span>
+0038 
+0039 <span class="keyword">if</span> nargout
+0040     [varargout{1:nargout}] = gui_mainfcn(gui_State, varargin{:});
+0041 <span class="keyword">else</span>
+0042     gui_mainfcn(gui_State, varargin{:});
+0043 <span class="keyword">end</span>
+0044 <span class="comment">% End initialization code - DO NOT EDIT</span>
+0045 
+0046 
+0047 <span class="comment">% --- Executes just before step_1 is made visible.</span>
+0048 <a name="_sub1" href="#_subfunctions" class="code">function step_1_OpeningFcn(hObject, eventdata, handles, varargin)</a>
+0049 <span class="comment">% This function has no output args, see OutputFcn.</span>
+0050 <span class="comment">% hObject    handle to figure</span>
+0051 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0052 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0053 <span class="comment">% varargin   command line arguments to step_1 (see VARARGIN)</span>
+0054 
+0055 <span class="comment">%Passing varargin{1} (dsc) to the figure</span>
+0056 setappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'dsc'</span>,varargin{1});
+0057 
+0058 <span class="keyword">if</span> (isstruct(varargin{1}) &amp;&amp; (isfield(varargin{1},<span class="string">'data'</span>))) <span class="comment">%first commmand line argument of step_1 is a descriptor</span>
+0059 <span class="comment">%Displaying measurement record is obsolete. Coherence analyisi appears instead</span>
+0060 <span class="comment">%    %Display the measurement record</span>
+0061 <span class="comment">%    plot(varargin{1}.data);</span>
+0062     
+0063     <span class="comment">%Classify the measurement record</span>
+0064     classresults = <a href="ClassifyMeasurementRecord.html" class="code" title="function classresults = ClassifyMeasurementRecord(dsc)">ClassifyMeasurementRecord</a>(varargin{1});
+0065     
+0066     <span class="comment">%Setting appdata for current figure to enable passing variables between</span>
+0067     <span class="comment">%callbacks</span>
+0068     setappdata (get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'classresults'</span>,classresults);
+0069     
+0070     <span class="comment">%Define colors</span>
+0071     color_green = [0 0.5 0];
+0072     color_orange = [1 0.4 0];
+0073     color_red = [1 0 0];
+0074 
+0075     <span class="comment">%Setting enable/disable for pushbuttons</span>
+0076     <span class="keyword">if</span> strcmpi(classresults.LS_app,<span class="string">'OK'</span>)
+0077         set(handles.pushbutton_showwarns_1,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0078         set(handles.pushbutton_showerrors_1,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0079         set(handles.text_LS_app,<span class="string">'String'</span>,<span class="string">'Appopriate'</span>);
+0080         set(handles.text_LS_app,<span class="string">'ForegroundColor'</span>,color_green);
+0081         set(handles.pushbutton_process_ls,<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0082         
+0083     <span class="keyword">elseif</span> strcmpi(classresults.LS_app,<span class="string">'Warning'</span>)
+0084         set(handles.pushbutton_showwarns_1,<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0085         set(handles.pushbutton_showerrors_1,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0086         set(handles.text_LS_app,<span class="string">'String'</span>,<span class="string">'With restrictions'</span>);
+0087         set(handles.text_LS_app,<span class="string">'ForegroundColor'</span>,color_orange);        
+0088         set(handles.pushbutton_process_ls,<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0089         
+0090     <span class="keyword">elseif</span> strcmpi(classresults.LS_app,<span class="string">'Error'</span>)
+0091         set(handles.pushbutton_showwarns_1,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0092         set(handles.pushbutton_showerrors_1,<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0093         set(handles.text_LS_app,<span class="string">'String'</span>,<span class="string">'Inappropriate'</span>);
+0094         set(handles.text_LS_app,<span class="string">'ForegroundColor'</span>,color_red);        
+0095         set(handles.pushbutton_process_ls,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0096         
+0097     <span class="keyword">else</span>
+0098         set(handles.pushbutton_showwarns_1,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0099         set(handles.pushbutton_showerrors_1,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0100         set(handles.text_LS_app,<span class="string">'String'</span>,<span class="string">'Undefined'</span>);
+0101         set(handles.text_LS_app,<span class="string">'ForegroundColor'</span>,[0.5 0.5 0.5]);        
+0102         set(handles.pushbutton_process_ls,<span class="string">'Enable'</span>,<span class="string">'off'</span>);        
+0103     <span class="keyword">end</span>
+0104 
+0105     <span class="keyword">if</span> strcmpi(classresults.FFT_app,<span class="string">'OK'</span>)
+0106         set(handles.pushbutton_showwarns_2,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0107         set(handles.pushbutton_showerrors_2,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0108         set(handles.text_FFT_app,<span class="string">'String'</span>,<span class="string">'Appopriate'</span>);
+0109         set(handles.text_FFT_app,<span class="string">'ForegroundColor'</span>,color_green);        
+0110         set(handles.pushbutton_process_fft,<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0111         
+0112     <span class="keyword">elseif</span> strcmpi(classresults.FFT_app,<span class="string">'Warning'</span>)
+0113         set(handles.pushbutton_showwarns_2,<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0114         set(handles.pushbutton_showerrors_2,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0115         set(handles.text_FFT_app,<span class="string">'String'</span>,<span class="string">'With restrictions'</span>);
+0116         set(handles.text_FFT_app,<span class="string">'ForegroundColor'</span>,color_orange);        
+0117         set(handles.pushbutton_process_fft,<span class="string">'Enable'</span>,<span class="string">'on'</span>);        
+0118         
+0119     <span class="keyword">elseif</span> strcmpi(classresults.FFT_app,<span class="string">'Error'</span>)
+0120         set(handles.pushbutton_showwarns_2,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0121         set(handles.pushbutton_showerrors_2,<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0122         set(handles.text_FFT_app,<span class="string">'String'</span>,<span class="string">'Inappropriate'</span>);
+0123         set(handles.text_FFT_app,<span class="string">'ForegroundColor'</span>,color_red);        
+0124         set(handles.pushbutton_process_fft,<span class="string">'Enable'</span>,<span class="string">'off'</span>);        
+0125     <span class="keyword">else</span>
+0126         set(handles.pushbutton_showwarns_2,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0127         set(handles.pushbutton_showerrors_2,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0128         set(handles.text_FFT_app,<span class="string">'String'</span>,<span class="string">'Undefined'</span>);
+0129         set(handles.text_FFT_app,<span class="string">'ForegroundColor'</span>,[0.5 0.5 0.5]);
+0130         set(handles.pushbutton_process_fft,<span class="string">'Enable'</span>,<span class="string">'off'</span>);        
+0131     <span class="keyword">end</span>
+0132     
+0133     <span class="keyword">if</span> strcmpi(classresults.Hist_app,<span class="string">'OK'</span>)
+0134         set(handles.pushbutton_showwarns_3,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0135         set(handles.pushbutton_showerrors_3,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0136         set(handles.text_Hist_app,<span class="string">'String'</span>,<span class="string">'Appopriate'</span>);
+0137         set(handles.text_Hist_app,<span class="string">'ForegroundColor'</span>,color_green);        
+0138         set(handles.pushbutton_process_hist,<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0139         
+0140     <span class="keyword">elseif</span> strcmpi(classresults.Hist_app,<span class="string">'Warning'</span>)
+0141         set(handles.pushbutton_showwarns_3,<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0142         set(handles.pushbutton_showerrors_3,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0143         set(handles.text_Hist_app,<span class="string">'String'</span>,<span class="string">'With restrictions'</span>);
+0144         set(handles.text_Hist_app,<span class="string">'ForegroundColor'</span>,color_orange);        
+0145         set(handles.pushbutton_process_hist,<span class="string">'Enable'</span>,<span class="string">'on'</span>);        
+0146         
+0147     <span class="keyword">elseif</span> strcmpi(classresults.Hist_app,<span class="string">'Error'</span>)
+0148         set(handles.pushbutton_showwarns_3,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0149         set(handles.pushbutton_showerrors_3,<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0150         set(handles.text_LS_app,<span class="string">'String'</span>,<span class="string">'Inappropriate'</span>);
+0151         set(handles.text_LS_app,<span class="string">'ForegroundColor'</span>,color_red);                
+0152         set(handles.pushbutton_process_hist,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0153         
+0154     <span class="keyword">else</span>
+0155         set(handles.pushbutton_showwarns_3,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0156         set(handles.pushbutton_showerrors_3,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0157         set(handles.text_Hist_app,<span class="string">'String'</span>,<span class="string">'Undefined'</span>);
+0158         set(handles.text_Hist_app,<span class="string">'ForegroundColor'</span>,[0.5 0.5 0.5]);
+0159         set(handles.pushbutton_process_hist,<span class="string">'Enable'</span>,<span class="string">'off'</span>);        
+0160     <span class="keyword">end</span>
+0161 
+0162     <span class="keyword">if</span> strcmpi(classresults.ML_app,<span class="string">'OK'</span>)
+0163         set(handles.pushbutton_showwarns_4,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0164         set(handles.pushbutton_showerrors_4,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0165         set(handles.text_Hist_app,<span class="string">'String'</span>,<span class="string">'Appopriate'</span>);
+0166         set(handles.text_Hist_app,<span class="string">'ForegroundColor'</span>,color_green);        
+0167         set(handles.pushbutton_process_ml,<span class="string">'Enable'</span>,<span class="string">'on'</span>);   
+0168         
+0169     <span class="keyword">elseif</span> strcmpi(classresults.ML_app,<span class="string">'Warning'</span>)
+0170         set(handles.pushbutton_showwarns_4,<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0171         set(handles.pushbutton_showerrors_4,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0172         set(handles.text_ML_app,<span class="string">'String'</span>,<span class="string">'With restrictions'</span>);
+0173         set(handles.text_ML_app,<span class="string">'ForegroundColor'</span>,color_orange);                
+0174         set(handles.pushbutton_process_ml,<span class="string">'Enable'</span>,<span class="string">'on'</span>);        
+0175         
+0176     <span class="keyword">elseif</span> strcmpi(classresults.ML_app,<span class="string">'Error'</span>)
+0177         set(handles.pushbutton_showwarns_4,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0178         set(handles.pushbutton_showerrors_4,<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0179         set(handles.text_ML_app,<span class="string">'String'</span>,<span class="string">'Inappropriate'</span>);
+0180         set(handles.text_ML_app,<span class="string">'ForegroundColor'</span>,color_red);                
+0181         set(handles.pushbutton_process_ml,<span class="string">'Enable'</span>,<span class="string">'off'</span>);        
+0182         
+0183     <span class="keyword">else</span>
+0184         set(handles.pushbutton_showwarns_4,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0185         set(handles.pushbutton_showerrors_4,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0186         set(handles.text_ML_app,<span class="string">'String'</span>,<span class="string">'Undefined'</span>);
+0187         set(handles.text_ML_app,<span class="string">'ForegroundColor'</span>,[0.5 0.5 0.5]);
+0188         set(handles.pushbutton_process_ml,<span class="string">'Enable'</span>,<span class="string">'off'</span>);        
+0189     <span class="keyword">end</span>
+0190     
+0191     <span class="comment">%Examining Coherence</span>
+0192     <span class="comment">%4-parameter sine wave fit in the frequency domain</span>
+0193     [est_A,est_B,est_C,est_f,est_COV] = <a href="fdsfit4_bh3.html" class="code" title="function [A,B,C,f,COV,time] = fdsfit4_bh3(xq)">fdsfit4_bh3</a>(varargin{1}.data);
+0194     J0 = est_f; <span class="comment">%fdsfit4 returns the number of periods as &quot;frequency&quot;</span>
+0195     sigma_f = sqrt(est_COV(4,4)); <span class="comment">%standard deviation of the frequency is the square root of the variance of the frequency estimator: COV(4,4)</span>
+0196     N0 = length(varargin{1}.data);
+0197     [N_t, G_t, P_t]=<a href="ell4.html" class="code" title="function [N_t, G_t, P_t]=ell4(J0,N0,s0)">ell4</a>(J0,N0,sigma_f);
+0198     
+0199     set(handles.sel_1_N,<span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,N_t(1)));
+0200     set(handles.sel_2_N,<span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,N_t(2)));
+0201     set(handles.sel_3_N,<span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,N_t(3)));
+0202     
+0203     set(handles.sel_1_GCD,<span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,G_t(1)));
+0204     set(handles.sel_2_GCD,<span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,G_t(2)));
+0205     set(handles.sel_3_GCD,<span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,G_t(3)));
+0206 
+0207     set(handles.sel_1_P,<span class="string">'String'</span>,sprintf(<span class="string">'%3.2f'</span>,P_t(1)*100));
+0208     set(handles.sel_2_P,<span class="string">'String'</span>,sprintf(<span class="string">'%3.2f'</span>,P_t(2)*100));
+0209     set(handles.sel_3_P,<span class="string">'String'</span>,sprintf(<span class="string">'%3.2f'</span>,P_t(3)*100));
+0210     
+0211     <span class="comment">%N_t values are required by the selection callback function</span>
+0212     setappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'N_t'</span>,N_t);
+0213     setappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'sigma_f'</span>,sigma_f);
+0214     
+0215     <span class="comment">%selection shall also be set for histogram test. Default selection is</span>
+0216     <span class="comment">%the entire record</span>
+0217     selection = varargin{1}.data(1:end);
+0218     setappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'selection'</span>,selection);
+0219 <span class="keyword">end</span>
+0220     
+0221 
+0222 <span class="comment">% Choose default command line output for step_1</span>
+0223 handles.output = hObject;
+0224 
+0225 <span class="comment">% Update handles structure</span>
+0226 guidata(hObject, handles);
+0227 
+0228 <span class="comment">% UIWAIT makes step_1 wait for user response (see UIRESUME)</span>
+0229 <span class="comment">% uiwait(handles.figure1);</span>
+0230 
+0231 
+0232 <span class="comment">% --- Outputs from this function are returned to the command line.</span>
+0233 <a name="_sub2" href="#_subfunctions" class="code">function varargout = step_1_OutputFcn(hObject, eventdata, handles) </a>
+0234 <span class="comment">% varargout  cell array for returning output args (see VARARGOUT);</span>
+0235 <span class="comment">% hObject    handle to figure</span>
+0236 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0237 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0238 
+0239 <span class="comment">% Get default command line output from handles structure</span>
+0240 varargout{1} = handles.output;
+0241 
+0242 <span class="comment">% --------------------------------------------------------------------</span>
+0243 <a name="_sub3" href="#_subfunctions" class="code">function Help_menu_Callback(hObject, eventdata, handles)</a>
+0244 <span class="comment">% hObject    handle to Help_menu (see GCBO)</span>
+0245 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0246 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0247 
+0248 
+0249 <span class="comment">% --------------------------------------------------------------------</span>
+0250 <a name="_sub4" href="#_subfunctions" class="code">function About_adctest_Callback(hObject, eventdata, handles)</a>
+0251 <span class="comment">% hObject    handle to About_adctest (see GCBO)</span>
+0252 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0253 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0254 
+0255 
+0256 <span class="comment">% --------------------------------------------------------------------</span>
+0257 <a name="_sub5" href="#_subfunctions" class="code">function Getting_started_Callback(hObject, eventdata, handles)</a>
+0258 <span class="comment">% hObject    handle to Getting_started (see GCBO)</span>
+0259 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0260 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0261 
+0262 
+0263 <span class="comment">% --- Executes on button press in pushbutton_next.</span>
+0264 <a name="_sub6" href="#_subfunctions" class="code">function pushbutton_next_Callback(hObject, eventdata, handles)</a>
+0265 <span class="comment">% hObject    handle to pushbutton_next (see GCBO)</span>
+0266 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0267 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0268 
+0269 <span class="comment">% Commands caller to go to next step</span>
+0270 
+0271 <span class="comment">% Closes current window</span>
+0272 close(get(0,<span class="string">'CurrentFigure'</span>));
+0273 
+0274 
+0275 <span class="comment">% --- Executes on button press in pushbutton_previous.</span>
+0276 <a name="_sub7" href="#_subfunctions" class="code">function pushbutton_previous_Callback(hObject, eventdata, handles)</a>
+0277 <span class="comment">% hObject    handle to pushbutton_previous (see GCBO)</span>
+0278 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0279 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0280 
+0281 
+0282 <span class="comment">% --- Executes on button press in pushbutton_showwarns_1.</span>
+0283 <a name="_sub8" href="#_subfunctions" class="code">function pushbutton_showwarns_1_Callback(hObject, eventdata, handles)</a>
+0284 <span class="comment">% hObject    handle to pushbutton_showwarns_1 (see GCBO)</span>
+0285 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0286 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0287 classresults = getappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'classresults'</span>);
+0288 warndlg(classresults.LS_warn,<span class="string">'Warnings for LS fit'</span>);
+0289 
+0290 
+0291 <span class="comment">% --- Executes on button press in pushbutton_showwarns_2.</span>
+0292 <a name="_sub9" href="#_subfunctions" class="code">function pushbutton_showwarns_2_Callback(hObject, eventdata, handles)</a>
+0293 <span class="comment">% hObject    handle to pushbutton_showwarns_2 (see GCBO)</span>
+0294 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0295 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0296 classresults = getappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'classresults'</span>);
+0297 warndlg(classresults.FFT_warn,<span class="string">'Warnings for FFT test'</span>);
+0298 
+0299 
+0300 <span class="comment">% --- Executes on button press in pushbutton_showwarns_3.</span>
+0301 <a name="_sub10" href="#_subfunctions" class="code">function pushbutton_showwarns_3_Callback(hObject, eventdata, handles)</a>
+0302 <span class="comment">% hObject    handle to pushbutton_showwarns_3 (see GCBO)</span>
+0303 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0304 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0305 classresults = getappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'classresults'</span>);
+0306 warndlg(classresults.Hist_warn,<span class="string">'Warnings for Histogram test'</span>);
+0307 
+0308 <span class="comment">% --- Executes on button press in pushbutton_showwarns_4.</span>
+0309 <a name="_sub11" href="#_subfunctions" class="code">function pushbutton_showwarns_4_Callback(hObject, eventdata, handles)</a>
+0310 <span class="comment">% hObject    handle to pushbutton_showwarns_4 (see GCBO)</span>
+0311 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0312 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0313 classresults = getappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'classresults'</span>);
+0314 warndlg(classresults.ML_warn,<span class="string">'Warnings for ML fit'</span>);
+0315 
+0316 <span class="comment">% --- Executes on button press in pushbutton_showerrors_1.</span>
+0317 <a name="_sub12" href="#_subfunctions" class="code">function pushbutton_showerrors_1_Callback(hObject, eventdata, handles)</a>
+0318 <span class="comment">% hObject    handle to pushbutton_showerrors_1 (see GCBO)</span>
+0319 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0320 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0321 classresults = getappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'classresults'</span>);
+0322 errordlg(classresults.LS_error,<span class="string">'Errors for LS fit'</span>);
+0323 
+0324 <span class="comment">% --- Executes on button press in pushbutton_showerrors_2.</span>
+0325 <a name="_sub13" href="#_subfunctions" class="code">function pushbutton_showerrors_2_Callback(hObject, eventdata, handles)</a>
+0326 <span class="comment">% hObject    handle to pushbutton_showerrors_2 (see GCBO)</span>
+0327 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0328 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0329 classresults = getappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'classresults'</span>);
+0330 errordlg(classresults.FFT_error,<span class="string">'Errors for FFT test'</span>);
+0331 
+0332 
+0333 
+0334 <span class="comment">% --- Executes on button press in pushbutton_showerrors_3.</span>
+0335 <a name="_sub14" href="#_subfunctions" class="code">function pushbutton_showerrors_3_Callback(hObject, eventdata, handles)</a>
+0336 <span class="comment">% hObject    handle to pushbutton_showerrors_3 (see GCBO)</span>
+0337 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0338 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0339 classresults = getappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'classresults'</span>);
+0340 errordlg(classresults.Hist_error,<span class="string">'Errors for histogram test'</span>);
+0341 
+0342 
+0343 <span class="comment">% --- Executes on button press in pushbutton_showerrors_4.</span>
+0344 <a name="_sub15" href="#_subfunctions" class="code">function pushbutton_showerrors_4_Callback(hObject, eventdata, handles)</a>
+0345 <span class="comment">% hObject    handle to pushbutton_showerrors_4 (see GCBO)</span>
+0346 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0347 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0348 classresults = getappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'classresults'</span>);
+0349 errordlg(classresults.ML_error,<span class="string">'Errors for ML fit'</span>);
+0350 
+0351 
+0352 <span class="comment">% --- Executes on button press in pushbutton_process_ls.</span>
+0353 <a name="_sub16" href="#_subfunctions" class="code">function pushbutton_process_ls_Callback(hObject, eventdata, handles)</a>
+0354 <span class="comment">% hObject    handle to pushbutton_process_ls (see GCBO)</span>
+0355 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0356 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0357 dsc = getappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'dsc'</span>);
+0358 <a href="ProcessDscLS4pFit.html" class="code" title="function ProcessDscLS4pFit(dsc,reason)">ProcessDscLS4pFit</a>(dsc,<span class="string">'LS4p_only'</span>); <span class="comment">%To perform only LS fit without ML</span>
+0359 
+0360 
+0361 <span class="comment">% --- Executes on button press in pushbutton_process_fft.</span>
+0362 <a name="_sub17" href="#_subfunctions" class="code">function pushbutton_process_fft_Callback(hObject, eventdata, handles)</a>
+0363 <span class="comment">% hObject    handle to pushbutton_process_fft (see GCBO)</span>
+0364 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0365 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0366 dsc = getappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'dsc'</span>);
+0367 <a href="ProcessFFTTest.html" class="code" title="function ProcessFFTTest(dsc)">ProcessFFTTest</a>(dsc);
+0368 
+0369 
+0370 <span class="comment">% --- Executes on button press in pushbutton_process_hist.</span>
+0371 <a name="_sub18" href="#_subfunctions" class="code">function pushbutton_process_hist_Callback(hObject, eventdata, handles)</a>
+0372 <span class="comment">% hObject    handle to pushbutton_process_hist (see GCBO)</span>
+0373 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0374 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0375 dsc = getappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'dsc'</span>);
+0376 display_settings.warning_dialog = 1;
+0377 display_settings.summary_win = 1;
+0378 display_settings.results_win = 1;
+0379 estimate_ratio = 0.08;
+0380 edge_cut = 0.08;
+0381 <span class="comment">%Changing dsc.data to selection:</span>
+0382 selection = getappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'selection'</span>);
+0383 selected_dsc = dsc;
+0384 selected_dsc.data = selection;
+0385 <a href="ProcessHistogramTest.html" class="code" title="function INL = ProcessHistogramTest(dsc,display_settings,varargin)">ProcessHistogramTest</a>(selected_dsc,display_settings,estimate_ratio,edge_cut);
+0386 
+0387 
+0388 <span class="comment">% --- Executes on button press in pushbutton_process_ml.</span>
+0389 <a name="_sub19" href="#_subfunctions" class="code">function pushbutton_process_ml_Callback(hObject, eventdata, handles)</a>
+0390 <span class="comment">% hObject    handle to pushbutton_process_ml (see GCBO)</span>
+0391 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0392 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0393 dsc = getappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'dsc'</span>);
+0394 <a href="ProcessDscLS4pFit.html" class="code" title="function ProcessDscLS4pFit(dsc,reason)">ProcessDscLS4pFit</a>(dsc,<span class="string">'ML_fit'</span>); <span class="comment">%To ML fit with LS initials</span>
+0395 
+0396 
+0397 <span class="comment">% --- Executes on button press in pushbutton_export_to_HTML.</span>
+0398 <a name="_sub20" href="#_subfunctions" class="code">function pushbutton_export_to_HTML_Callback(hObject, eventdata, handles)</a>
+0399 <span class="comment">% hObject    handle to pushbutton_export_to_HTML (see GCBO)</span>
+0400 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0401 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0402 dsc = getappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'dsc'</span>);
+0403 <span class="keyword">try</span>
+0404     testresults = evalin(<span class="string">'base'</span>,<span class="string">'adctest_process_results'</span>);
+0405     res_len = size(testresults,1);
+0406     <span class="comment">%Search for existing results block</span>
+0407     existings_index = 0;
+0408     <span class="keyword">for</span> k = 1:res_len        
+0409         <span class="keyword">if</span> strcmpi(dsc.model,testresults{k,1}.DUT.model) <span class="keyword">...</span>
+0410                 &amp;&amp; strcmpi(dsc.serial,testresults{k,1}.DUT.serial)<span class="keyword">...</span>
+0411                 &amp;&amp; (dsc.channel == testresults{k,1}.DUT.channel)<span class="keyword">...</span>
+0412                 &amp;&amp; (dsc.NoB == testresults{k,1}.DUT.NoB)
+0413             existings_index = k;                    
+0414         <span class="keyword">end</span>
+0415     <span class="keyword">end</span>
+0416     <span class="keyword">if</span> (existings_index ~= 0)
+0417         [filename,path] = uiputfile(<span class="string">'*.html'</span>,<span class="string">'Export evaluation results to HTML'</span>);
+0418                 <span class="keyword">if</span> (ischar(filename) &amp;&amp; ischar(path))
+0419                     <a href="ExportResultsToHTML.html" class="code" title="function ExportResultsToHTML(results,filename)">ExportResultsToHTML</a>(testresults{existings_index,1},fullfile(path,filename));
+0420                 <span class="keyword">end</span>                
+0421     <span class="keyword">else</span>
+0422         errordlg({<span class="string">'No matching evaluation'</span>;<span class="string">'results found.'</span>},<span class="string">'No results found'</span>);
+0423     <span class="keyword">end</span>    
+0424 <span class="keyword">catch</span>
+0425     errordlg({<span class="string">'No matching evaluation'</span>;<span class="string">'results found.'</span>},<span class="string">'No results found'</span>);
+0426 <span class="keyword">end</span>
+0427 
+0428 
+0429 <span class="comment">% --- Executes on selection change in popup_option_selector.</span>
+0430 <a name="_sub21" href="#_subfunctions" class="code">function popup_option_selector_Callback(hObject, eventdata, handles)</a>
+0431 <span class="comment">% hObject    handle to popup_option_selector (see GCBO)</span>
+0432 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0433 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0434 
+0435 <span class="comment">% Hints: contents = get(hObject,'String') returns popup_option_selector contents as cell array</span>
+0436 <span class="comment">%        contents{get(hObject,'Value')} returns selected item from popup_option_selector</span>
+0437 
+0438 <span class="comment">%N_t values and the descriptor are get from the figures</span>
+0439 N_t = getappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'N_t'</span>);
+0440 dsc = getappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'dsc'</span>);
+0441 
+0442 <span class="keyword">if</span> (get(hObject,<span class="string">'Value'</span>) == 1) <span class="comment">%Default: all measurement record is selected</span>
+0443     selection = dsc.data(1:end);
+0444 <span class="keyword">elseif</span> (get(hObject,<span class="string">'Value'</span>) == 2) <span class="comment">%Selection 1</span>
+0445     selection = dsc.data(1:N_t(1));
+0446 <span class="keyword">elseif</span> (get(hObject,<span class="string">'Value'</span>) == 3) <span class="comment">%Selection 2</span>
+0447     selection = dsc.data(1:N_t(2));
+0448 <span class="keyword">elseif</span> (get(hObject,<span class="string">'Value'</span>) == 4) <span class="comment">%Selection 3</span>
+0449     selection = dsc.data(1:N_t(3));
+0450 <span class="keyword">end</span>
+0451 
+0452 <span class="comment">%Setting selection to the figure</span>
+0453 setappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'selection'</span>,selection);
+0454 
+0455 
+0456 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0457 <a name="_sub22" href="#_subfunctions" class="code">function popup_option_selector_CreateFcn(hObject, eventdata, handles)</a>
+0458 <span class="comment">% hObject    handle to popup_option_selector (see GCBO)</span>
+0459 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0460 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0461 
+0462 <span class="comment">% Hint: popupmenu controls usually have a white background on Windows.</span>
+0463 <span class="comment">%       See ISPC and COMPUTER.</span>
+0464 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0465     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0466 <span class="keyword">end</span>
+0467 
+0468 
+0469 
+0470 
+0471 
+0472 
+0473 <span class="comment">% --- Executes on button press in pushbutton_help.</span>
+0474 <a name="_sub23" href="#_subfunctions" class="code">function pushbutton_help_Callback(hObject, eventdata, handles)</a>
+0475 <span class="comment">% hObject    handle to pushbutton_help (see GCBO)</span>
+0476 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0477 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0478 helpdlg ({<span class="string">''</span>;<span class="keyword">...</span>
+0479           <span class="string">'Number of independent samples: the number of samples which excite the ADC at a unique voltage level. The variance of the histogram test is inversely porpotional to this value.'</span>;<span class="keyword">...</span>
+0480           <span class="string">''</span>;<span class="keyword">...</span>
+0481           <span class="string">'Greatest Common Divisor of J and N: the greatest common divisor of the number of samples (N) and the number of periods (J) in the coherent part. The ideal value is 1, which means that J and N are coprimes, thus the samples are independent in the given record part.'</span>;<span class="keyword">...</span>
+0482           <span class="string">''</span>;<span class="keyword">...</span>
+0483           <span class="string">'Probability of coherence: the probability of the satisfaction of the Carbone-Chiorboli coherence condition. The closer to 100%, the more reliable histogram test results.'</span>},<span class="keyword">...</span>
+0484           <span class="string">'Help for coherence analysis'</span>);
+0485 
+0486 
+0487 <span class="comment">% --- Executes on button press in pushbutton_show_selections.</span>
+0488 <a name="_sub24" href="#_subfunctions" class="code">function pushbutton_show_selections_Callback(hObject, eventdata, handles)</a>
+0489 <span class="comment">% hObject    handle to pushbutton_show_selections (see GCBO)</span>
+0490 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0491 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0492 N_t = getappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'N_t'</span>);
+0493 dsc = getappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'dsc'</span>);
+0494 sigma_f = getappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'sigma_f'</span>);
+0495 
+0496 [N_t_sorted,N_t_indeces] = sort(N_t(1:3));
+0497 
+0498 oldfig = get(0,<span class="string">'CurrentFigure'</span>);
+0499 new_fig = figure(<span class="string">'Name'</span>,<span class="string">'Selections'</span>,<span class="string">'NumberTitle'</span>,<span class="string">'off'</span>);
+0500 set(0,<span class="string">'CurrentFigure'</span>,new_fig);
+0501 
+0502 plot(1:length(dsc.data),dsc.data,<span class="string">'b'</span>,1:N_t_sorted(3),dsc.data(1:N_t_sorted(3)),<span class="string">'r'</span>,1:N_t_sorted(2),dsc.data(1:N_t_sorted(2)),<span class="string">'g'</span>,1:N_t_sorted(1),dsc.data(1:N_t_sorted(1)),<span class="string">'m'</span>);
+0503 legend({<span class="string">'Entire record'</span>; sprintf(<span class="string">'Selection %d'</span>,N_t_indeces(3)); sprintf(<span class="string">'Selection %d'</span>,N_t_indeces(2)); sprintf(<span class="string">'Selection %d'</span>,N_t_indeces(1))});
+0504 <span class="comment">%Confidence intervals:</span>
+0505 
+0506 hold on;
+0507 
+0508 x_values = [N_t_sorted(1)*(1 - 2*sigma_f); N_t_sorted(1)*(1 + 2*sigma_f); N_t_sorted(1)*(1 + 2*sigma_f); N_t_sorted(1)*(1 - 2*sigma_f)];
+0509 y_values = [min(dsc.data) - 10; min(dsc.data) - 10; max(dsc.data) + 10; max(dsc.data) + 10];
+0510 color_fill = <span class="string">'magenta'</span>;
+0511 fill(x_values,y_values,color_fill);
+0512 
+0513 x_values = [N_t_sorted(2)*(1 - 2*sigma_f); N_t_sorted(2)*(1 + 2*sigma_f); N_t_sorted(2)*(1 + 2*sigma_f); N_t_sorted(2)*(1 - 2*sigma_f)];
+0514 y_values = [min(dsc.data) - 10; min(dsc.data) - 10; max(dsc.data) + 10; max(dsc.data) + 10];
+0515 color_fill = <span class="string">'green'</span>;
+0516 fill(x_values,y_values,color_fill);
+0517 
+0518 x_values = [N_t_sorted(3)*(1 - 2*sigma_f); N_t_sorted(3)*(1 + 2*sigma_f); N_t_sorted(3)*(1 + 2*sigma_f); N_t_sorted(3)*(1 - 2*sigma_f)];
+0519 y_values = [min(dsc.data) - 10; min(dsc.data) - 10; max(dsc.data) + 10; max(dsc.data) + 10];
+0520 color_fill = <span class="string">'red'</span>;
+0521 fill(x_values,y_values,color_fill);
+0522 
+0523 x_values = [1; N_t_sorted(1); N_t_sorted(1);1];
+0524 y_values = [-20; -20; -15; -15];
+0525 color_fill = <span class="string">'magenta'</span>;
+0526 fill(x_values,y_values,color_fill);
+0527 
+0528 x_values = [1; N_t_sorted(2); N_t_sorted(2);1];
+0529 y_values = [-25; -25; -20; -20];
+0530 color_fill = <span class="string">'green'</span>;
+0531 fill(x_values,y_values,color_fill);
+0532 
+0533 x_values = [1; N_t_sorted(3); N_t_sorted(3);1];
+0534 y_values = [-30; -30; -25; -25];
+0535 color_fill = <span class="string">'red'</span>;
+0536 fill(x_values,y_values,color_fill);
+0537 
+0538 hold off;
+0539 
+0540 set(0,<span class="string">'CurrentFigure'</span>,oldfig);
+0541</pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

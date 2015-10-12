@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of FitLSML</title>
+  <meta name="keywords" content="FitLSML">
+  <meta name="description" content="Default optimization parameters for ML">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; FitLSML.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>FitLSML
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>Default optimization parameters for ML</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function result_struct = FitLSML(datavect,timevect,estimated_INL,NoB) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment">Default optimization parameters for ML</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="EvaluateCF.html" class="code" title="function varargout = EvaluateCF(y,p0,NoB,INL)">EvaluateCF</a>	@fn EvaluateCF</li><li><a href="INL2TransLevels.html" class="code" title="function translevels = INL2TransLevels(INL)">INL2TransLevels</a>	@fn INL2TransLevels</li><li><a href="sfit4imp.html" class="code" title="function [X, Rn, Q]=sfit4imp(data, varargin)">sfit4imp</a>	SFIT4IMP  Improved four parameter fit of a sine wave to measured data</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function result_struct = FitLSML(datavect,timevect,estimated_INL,NoB)</a>
+0002 <span class="comment">%Default optimization parameters for ML</span>
+0003 MAX_ITER_DEFAULT = 30;
+0004 MAX_FUN_EVALS_DEFAULT = 60;
+0005 TOL_FUN_DEFAULT = 0;
+0006 
+0007 <span class="comment">%INL</span>
+0008 <span class="comment">%estimated_INL = TimeDomain2INL(datavect,NoB);</span>
+0009 trans_levels = <a href="INL2TransLevels.html" class="code" title="function translevels = INL2TransLevels(INL)">INL2TransLevels</a>(estimated_INL);
+0010 
+0011 <span class="comment">%LS 4p</span>
+0012 X = <a href="sfit4imp.html" class="code" title="function [X, Rn, Q]=sfit4imp(data, varargin)">sfit4imp</a>(datavect,timevect);
+0013 p_LS = zeros(4,1);
+0014 p_LS(1) = X.A*cos(X.phi/180*pi) ;
+0015 p_LS(2) = (-1)*X.A*sin(X.phi/180*pi);
+0016 p_LS(3) = X.DC - 1; <span class="comment">%1..2^NoB - &gt;0..2^NoB-1</span>
+0017 p_LS(4) = 2*pi*X.f;
+0018 
+0019 <span class="comment">%ML fit</span>
+0020 <span class="comment">%Getting initial estimators</span>
+0021 p = zeros(5,1);
+0022 p(1:2) = p_LS(1:2)/(2^NoB-2);
+0023 p(3) = (p_LS(3) - 0.5)*1/(2^NoB - 2); <span class="comment">%0.5-&gt;0 2^NoB-1.5-&gt; 1</span>
+0024 p(4) = p_LS(4);
+0025 M = length(datavect);
+0026 <span class="comment">%pure_sinewave = p(1)*cos(((1:M).')*p(4)) + p(2)*sin(((1:M).')*p(4)) + p(3);</span>
+0027 <span class="comment">%quantized_sinewave = QuantizeSignal(pure_sinewave,trans_levels) + 1;</span>
+0028 p(5) = 0.2; <span class="comment">%rms(quantized_sinewave - datavect)/(2^NoB-2);</span>
+0029 
+0030 <span class="comment">%Nelder-Mead method: (fminsearch)</span>
+0031 p0 = p;
+0032 fminsearch(@(p) <a href="EvaluateCF.html" class="code" title="function varargout = EvaluateCF(y,p0,NoB,INL)">EvaluateCF</a>(datavect,p,NoB,estimated_INL),p0);
+0033 p_ML_NM = p;
+0034 CF_NM = <a href="EvaluateCF.html" class="code" title="function varargout = EvaluateCF(y,p0,NoB,INL)">EvaluateCF</a>(datavect,p_ML_NM,NoB,estimated_INL);
+0035 
+0036 p_ML_NM(1:2) = p_ML_NM(1:2)*(2^NoB-2);
+0037 p_ML_NM(3) = p_ML_NM(3)*(2^NoB-2) + 0.5;
+0038 p_ML_NM(4) = p_ML_NM(4);
+0039 p_ML_NM(5) = p_ML_NM(5)*(2^NoB-2);
+0040 
+0041 
+0042 <span class="comment">%Gradient method:</span>
+0043 p = p0;
+0044 <span class="comment">%Initializing iteration</span>
+0045 evaluation_counter = 0;
+0046 [PML,CF,grad,hess] = <a href="EvaluateCF.html" class="code" title="function varargout = EvaluateCF(y,p0,NoB,INL)">EvaluateCF</a>(datavect,p,NoB,estimated_INL);
+0047 evaluation_counter = evaluation_counter + 1;
+0048 l = max(max(hess));
+0049 index = 0;
+0050 optim_status = <span class="string">'Running'</span>;
+0051 termination_reason = <span class="string">'None'</span>;
+0052 <span class="keyword">while</span> strcmpi(optim_status,<span class="string">'Running'</span>)
+0053     p_next = p - inv(hess + l*eye(5))*grad;
+0054     <span class="keyword">while</span> (p_next(5) &lt; 0)
+0055         l  = l*10;
+0056         p_next = p - inv(hess + l *eye(5))*grad;
+0057     <span class="keyword">end</span>
+0058     [PML_next,CF_next] = <a href="EvaluateCF.html" class="code" title="function varargout = EvaluateCF(y,p0,NoB,INL)">EvaluateCF</a>(datavect,p_next,NoB,estimated_INL);
+0059     evaluation_counter = evaluation_counter + 1;
+0060     <span class="keyword">while</span> (CF_next &gt; CF)
+0061         l = l*10;
+0062         p_next = p - inv(hess + l*eye(5))*grad;
+0063         <span class="keyword">while</span> (p_next(5) &lt; 0)
+0064             l  = l*10;
+0065             p_next = p - inv(hess + l *eye(5))*grad;
+0066         <span class="keyword">end</span>
+0067         [PML_next,CF_next] = <a href="EvaluateCF.html" class="code" title="function varargout = EvaluateCF(y,p0,NoB,INL)">EvaluateCF</a>(datavect,p_next,NoB,estimated_INL);
+0068         evaluation_counter = evaluation_counter + 1;        
+0069     <span class="keyword">end</span>
+0070     [PML_next,CF_next,grad_next,hess_next] = <a href="EvaluateCF.html" class="code" title="function varargout = EvaluateCF(y,p0,NoB,INL)">EvaluateCF</a>(datavect,p_next,NoB,estimated_INL);
+0071     evaluation_counter = evaluation_counter + 1;    
+0072     l = l*0.1;
+0073     <span class="comment">%Checking termination conditions</span>
+0074     <span class="keyword">if</span> (index == MAX_ITER_DEFAULT - 1)
+0075         termination_reason = <span class="string">'MaxIter'</span>;
+0076         optim_status = <span class="string">'Terminated'</span>;
+0077     <span class="keyword">elseif</span> (evaluation_counter &gt; MAX_FUN_EVALS_DEFAULT)
+0078         termination_reason = <span class="string">'MaxFunEvals'</span>;
+0079         optim_status = <span class="string">'Terminated'</span>;
+0080     <span class="keyword">elseif</span> (abs(CF - CF_next) &lt; TOL_FUN_DEFAULT)
+0081         termination_reason = <span class="string">'TolFun'</span>;
+0082         optim_status = <span class="string">'Terminated'</span>;
+0083     <span class="keyword">end</span>
+0084     p = p_next;
+0085     CF = CF_next;
+0086     PML = PML_next;
+0087     grad = grad_next;
+0088     hess = hess_next;
+0089     index = index + 1;
+0090 <span class="keyword">end</span>
+0091 
+0092 <span class="comment">%Converting estimators to the same scale;</span>
+0093 p_ML = zeros(5,1);
+0094 p_ML(1:2) = p(1:2)*(2^NoB - 2);
+0095 p_ML(3) = p(3)*(2^NoB - 2) + 0.5; <span class="comment">%0-&gt;0.5 1-&gt;2^NoB-1.5</span>
+0096 p_ML(4) = p(4);
+0097 p_ML(5) = p(5)*(2^NoB - 2);
+0098 
+0099 result_struct.LS = p_LS;
+0100 result_struct.ML = p_ML;
+0101 result_struct.p_ML_MN = p_ML_NM;
+0102 result_struct.INL = estimated_INL;
+0103 result_struct.termination_resaon = termination_reason;
+0104 result_struct.CF = CF;
+0105 result_struct.CF_NM = CF_NM;
+0106 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

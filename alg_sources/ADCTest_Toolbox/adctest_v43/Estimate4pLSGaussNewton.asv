@@ -1,0 +1,360 @@
+function P = Estimate4pLSGaussNewton(x)
+
+% @fn Estimate4pLSGaussNewton
+% @brief Performs four parameter sine wave fit in least squares sense using
+% Gauss-Newton steps in iterations
+% @param x The sampled (and quantized) sine wave
+% @return P struct contains the four parameters of the sine wave
+%           P.A cosine coefficient
+%           P.B sine coefficient
+%           P.C DC component
+%           P.f frequency normalized to the sampling frequency (f/fs)
+% @author Vilmos Pálfi and Tamás Virosztek, Budapest University of Technology and Economics,
+%         Department of Measurement and Information Systems,
+%         Virosztek.Tamas@mit.bme.hu
+
+
+% A bemenõ jel legyen oszlopvektor
+% if (isrow(x))
+%     x=x.';
+% end;
+
+x = x(:);
+
+% A bemenõ jel hossza
+Nx=length(x);
+n=transpose(0:Nx-1);
+
+% A 3 tagú Blackman-Harris ablak együtthatói
+Abh3.A0=+4.243800934609435e-001;
+Abh3.A1=-4.973406350967378e-001;
+Abh3.A2=+7.827927144231873e-002;
+
+% Az ablak az idõtartományban
+wbh3=...
+    Abh3.A0+...
+    Abh3.A1*cos(2*pi*n/Nx)+...
+    Abh3.A2*cos(4*pi*n/Nx);
+
+% A mért jel ablakozása, elõállítása
+xbh3=x.*wbh3;
+Xbh3teljes.X=fft(xbh3);
+Xbh3teljes.bin=(0:Nx-1).';
+
+% A paraméterek kezdõértéke a becslésnél
+P.A=0;
+P.B=0;
+P.C=0;
+P.f=freq(x);
+k=round(P.f);
+
+% Az illesztésnél használt binek kiválasztása
+bins=([-2:2, k-2:k+2, Nx-k-2:Nx-k+2]).';
+inds0=(bins<0); % Azon elemek indexe, amelyek nullánál kisebbek
+bins(inds0)=Nx+bins(inds0);
+indsN=(bins>Nx-1); % Azon elemek indexe, amelyek N-1-nél nagyobbak
+bins(indsN)=-Nx+bins(indsN);
+bins=unique(bins); % Sorba van rendezve a 0:N-1 között, nincs 2 azonos elem.
+
+% Az illesztéshez használt mért jel elõállítása
+Xbh3m.bin=bins;
+inds=ismember(Xbh3teljes.bin, Xbh3m.bin);
+Xbh3m.X=Xbh3teljes.X(inds); % DC, k, N-k körüli pontok
+
+% Kovariancamátrix
+K=CreateCovMatrix(Abh3,bins,Nx);
+
+% A polinomillesztéshez használt adatok elõállítása
+[limit,sf,p]=polinom(Nx);
+
+% A Gauss-Newton illesztés
+It_szam=10;
+for ii=1:It_szam
+    Xbh3=g2bh3(P,Nx,bins,limit,sf,p,Abh3);
+    e=Xbh3m.X-Xbh3.X;
+    J=[Xbh3.dA, Xbh3.dB, Xbh3.dC, Xbh3.df];
+    dP=pinv(real(J'*pinv(K)*J))*real(J'*pinv(K)*e);
+    P.A=P.A+dP(1);
+    P.B=P.B+dP(2);
+    P.C=P.C+dP(3);
+    P.f=P.f+dP(4);
+end
+
+%Fáziskorrekció:
+est_phase = atan2(P.B,P.A);
+est_phase = est_phase + 2*pi*
+
+%periódusból f/fs:
+P.f = P.f/Nx;
+%Szinusz el?jele korrigálva:
+P.B = (-1)*P.B;
+end
+
+%FUNCTIONS called in "main"
+
+function K=CreateCovMatrix(Abh3,bins,Nx)
+Mb=length(bins);
+K=zeros(Mb);
+pp=[...
+    Abh3.A2/2;
+    Abh3.A1/2;
+    Abh3.A0;
+    Abh3.A1/2;
+    Abh3.A2/2;
+    ];
+c0=pp.'*pp;
+c1=pp(1:4).'*pp(2:5);
+c2=pp(1:3).'*pp(3:5);
+c3=pp(1:2).'*pp(4:5);
+c4=pp(1)*pp(5);
+for ii=1:Mb
+    for jj=1:Mb
+        d=abs(bins(ii)-bins(jj)); % d lehet [0,1,2,...,N-1]
+        if (d>Nx/2)
+            d=abs(d-Nx); % Ha a távolság pl. N-k, az valójában k!
+        end
+        switch(d)
+            case 0
+                K(ii,jj)=c0;
+            case 1
+                K(ii,jj)=c1;
+            case 2
+                K(ii,jj)=c2;
+            case 3
+                K(ii,jj)=c3;
+            case 4
+                K(ii,jj)=c4;
+            otherwise
+                K(ii,jj)=0;
+        end
+    end
+end
+end
+
+function Xbh3=g2bh3(P,Nx,bins,limit,sf,p,Abh3)
+
+% if (isrow(bins))
+%     bins=bin.';
+% end
+
+bins = bins(:);
+
+Mb=length(bins);
+Xbh3.bin=bins;
+Xbh3.X=zeros(Mb,1);
+Xbh3.dA=zeros(Mb,1);
+Xbh3.dB=zeros(Mb,1);
+Xbh3.dC=zeros(Mb,1);
+Xbh3.df=zeros(Mb,1);
+
+a=[
+    Abh3.A2/2;
+    Abh3.A1/2;
+    Abh3.A0;
+    Abh3.A1/2;
+    Abh3.A2/2;
+    ];
+
+rect_bins=unique([...
+    -2+bins;
+    -1+bins;
+    bins;
+    1+bins;
+    2+bins;
+    ]);
+
+X_rect=g1(P.A,P.B,P.C,P.f,Nx,rect_bins,limit,sf,p);
+
+for ii=1:Mb
+    m=Xbh3.bin(ii);
+    rect_inds=ismember(X_rect.bin, (m-2:m+2).');
+    Xbh3.X(ii)=a.'*X_rect.X(rect_inds);
+    Xbh3.dA(ii)=a.'*X_rect.dA(rect_inds);
+    Xbh3.dB(ii)=a.'*X_rect.dB(rect_inds);
+    Xbh3.dC(ii)=a.'*X_rect.dC(rect_inds);
+    Xbh3.df(ii)=a.'*X_rect.df(rect_inds);
+end
+end
+
+function X_rect=g1(A,B,C,f,N,bins,limit,sf,p)
+
+% Segédváltozók
+M=length(bins);
+X_sin=zeros(M,1);
+X_dc=zeros(M,1);
+% Visszatérési érték struktúrája
+X_rect.bin=bins;
+X_rect.X=zeros(M,1);
+X_rect.dA=zeros(M,1);
+X_rect.dB=zeros(M,1);
+X_rect.dC=zeros(M,1);
+X_rect.df=zeros(M,1);
+% A spektrum kiszámítása az adott bineken
+for ii=1:M
+    m=bins(ii);
+    if (rem(m,N)==0)
+        X_dc(ii)=C*N;
+        X_rect.dC(ii)=N;
+    end;
+    f1=fix(f);
+    f2=f-f1;
+    d1=(m-f)/N;
+    d2=(m+f)/N;
+    e1=((-1)^(m+f1))*exp(1i*(f2+d1)*pi);
+    e2=((-1)^(m+f1))*exp(1i*(-f2+d2)*pi);
+    %e1=exp(1i*(f2+d1)*pi);
+    %e2=exp(1i*(-f2+d2)*pi);
+    de1_df=((-1)^(m+f1))*1i*pi*(N-1)/N*e1;
+    de2_df=((-1)^(m+f1))*(-1i)*pi*(N-1)/N*e2;
+    %de1_df=1i*pi*(N-1)/N*e1;
+    %de2_df=-1i*pi*(N-1)/N*e2;
+    b1=(A+1i*B)/2;
+    b2=(A-1i*B)/2;
+    n1=sin((d1)*pi);
+    if (abs(n1)>=limit)
+        sz1=((-1)^(m+f1))*sin(-f2*pi);
+        %sz1=sin(-f2*pi);
+        dsz1_df=-pi*cos(f2*pi);
+        dn1_df=-pi/N*cos((d1)*pi);
+        sqr_n1=(1-cos(2*pi*d1))/2;
+        r1=sz1/n1;
+        dr1_df=(dsz1_df*n1-dn1_df*sz1)/sqr_n1;
+    else
+        % if (d1<1/2)
+        % if (abs(d1)<1/2)
+        if (abs(rem(round(d1),2))<1/2)
+            % w01=d1*pi;
+            w01=(d1-round(d1))*pi;
+            w1=sf*w01;
+            r1=((-1)^(m+f1))*polyval(p(end:-1:1),w1);
+            q=polyder(p(end:-1:1));
+            dr1_df=((-1)^(m+f1))*polyval(q,w1);
+        else % d1>1/2
+            w01=(d1-round(d1))*pi;
+            w1=sf*w01;
+            r1=-((-1)^(m+f1))*polyval(p(end:-1:1),w1);
+            q=polyder(p(end:-1:1));
+            dr1_df=-((-1)^(m+f1))*polyval(q,w1);
+        end;
+    end;
+
+    n2=sin((d2)*pi);
+    if (abs(n2)>=limit)
+        sz2=((-1)^(m+f1))*sin(f2*pi);
+        %sz2=sin(f2*pi);
+        dsz2_df=pi*cos(f2*pi);
+        dn2_df=pi/N*cos((d2)*pi);
+        sqr_n2=(1-cos(2*pi*d2))/2;
+        r2=sz2/n2;
+        dr2_df=(dsz2_df*n2-dn2_df*sz2)/sqr_n2;
+    else
+        % if (d2<1/2)
+        % if (abs(d2)<1/2)
+        if (abs(rem(round(d2),2))<1/2)
+            % w02=d2*pi;
+            w02=(d2-round(d2))*pi;
+            w2=sf*w02;
+            r2=((-1)^(m+f1))*polyval(p(end:-1:1),w2);
+            q=polyder(p(end:-1:1));
+            dr2_df=((-1)^(m+f1))*polyval(q,w2);
+        else % d2>1/2
+            w02=(d2-round(d2))*pi;
+            w2=sf*w02;
+            r2=-((-1)^(m+f1))*polyval(p(end:-1:1),w2);
+            q=polyder(p(end:-1:1));
+            dr2_df=-((-1)^(m+f1))*polyval(q,w2);
+        end;
+    end;
+    X_sin(ii)=e1*b1*r1+e2*b2*r2;
+    X_rect.X(ii)=X_sin(ii)+X_dc(ii);
+    X_rect.dA(ii)=e1/2*r1+e2/2*r2;
+    X_rect.dB(ii)=1i*e1/2*r1-1i*e2/2*r2;
+    X_rect.df(ii)=de1_df*b1*r1+e1*b1*dr1_df+de2_df*b2*r2+e2*b2*dr2_df;
+end
+end
+
+function f=freq(x)
+
+X=fft(x);
+Xa=abs(X);
+N=length(X);
+[val, ind]=max(Xa(2:round(N/2)));
+% Itt a következõ történik. A max() fv. argumentumában olyan vektor van,
+% melynek az elsõ elemét elhagyjuk. Az ind az új vektor maximum elemének
+% indexét adja vissza. Ez viszont eggyel kisebb lesz, mint a tényleges Xa
+% vektor maximum elemének indexe, mivel az új vektor 1. eleme az eredeti Xa
+% 2. eleme, ..., az új vektor n. eleme az eredeti Xa vektor (n+1). eleme.
+% Ezt figyelembe kell vennünk, amikor Xa vektorban jelöljük ki a maximális
+% elemet és annak szomszédját. Feltesszük, hogy van legalább egy
+% periódusunk a szinuszból, azaz f0>=1, és betartjuk a mintavételi tételt.
+% f0=1 esetéb Xa-ban a szinusz a k=2
+% ponton lenne, az új, csonkolt vektorban ez az 1. pontra kerül át (hisz a
+% DC-t dobtuk el), ezért az ind==1 feltételt vizsgáljuk. Továbbá ii az ind
+% értékét fogja felvenni, mivel Xa k. eleméhez az f=k-1 frekvencia
+% tartozik, a csonkolt vektor esetén tehát a k. elemhez a f=k frekvencia
+% fog tartozni.
+if (ind==1) % Ennél kisebb nem lehet a feltevés szerint (legalább 1 per.)
+    ii=ind;
+    jj=ii+1; % Muszáj jobb oldali szomszédot választani, mert a bal oldalin ülhet a DC (j=0).
+else
+    ii=ind;
+    if (Xa(ind-1)<Xa(ind+1))
+        jj=ii+1; % A jobb oldali szomszéd nagyobb, mint a bal oldali.
+    else
+        jj=ii-1; % Fordítva. Legkisebb felvehetõ érték a j=1, ami jó, ott nem lehet DC.
+    end;
+end;
+Ui=real(X(ii+1)); % Maximum
+Vi=imag(X(ii+1)); % Maximum
+Uj=real(X(jj+1)); % Szomszéd
+Vj=imag(X(jj+1)); % Szomszéd
+n=2*pi/N;
+Kopt=(sin(n*ii*(Vj-Vi))+cos(n*ii*(Uj-Ui)))/(Uj-Ui);
+Z2=Vj*((Kopt-cos(n*jj))/sin(n*jj))+Uj;
+Z1=Vi*((Kopt-cos(n*ii))/sin(n*ii))+Ui;
+lambda=1/n*acos((Z2*cos(n*(ii+1))-Z1*cos(n*ii))/(Z2-Z1));
+f=lambda;
+if (f>N/2)
+    f=N-f;
+end;
+end
+
+function [limit,sf,p] = polinom(N)
+% Polinomegyütthatókat adja meg melyek segítségével kiszámítjuk az X_sin
+% függvényban található sin(Nx)/sin(x) hányadost ha x zérushoz tart.
+
+% Polinom
+start=-2^-23;
+step=2^-30;
+stop=2^-23;
+limit=sin(stop);
+x=start:step:stop;
+M=length(x); % Legyen páratlan, azaz start=-1*stop, és step osztója mindkettõnek
+y=ones(1,M);
+center=(M+1)/2;
+for ii=1:center-1
+    y(ii)=sin(N*x(ii))/sin(x(ii));
+end;
+y(center)=N;
+for ii=center+1:M
+    y(ii)=sin(N*x(ii))/sin(x(ii));
+end;
+
+% 1. módszer
+sf=(M/norm(x,12)^12)^(1/12);
+x2=sf*x;
+s2=sum(x2.^2); s4=sum(x2.^4); s6=sum(x2.^6); s8=sum(x2.^8); s10=sum(x2.^10); s12=sum(x2.^12);
+U=[
+    M 0 s2 0 s4 0 s6;
+    0 s2 0 s4 0 s6 0;
+    s2 0 s4 0 s6 0 s8;
+    0 s4 0 s6 0 s8 0;
+    s4 0 s6 0 s8 0 s10;
+    0 s6 0 s8 0 s10 0;
+    s6 0 s8 0 s10 0 s12;
+    ];
+z=[sum(y); 0; sum((x2.^2)*y.'); 0; sum((x2.^4)*y.'); 0; sum((x2.^6)*y.');];
+p=U\z;
+end
+
+

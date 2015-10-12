@@ -1,36 +1,40 @@
 %% script runs `publish` of all algorithms
 % properly works only in Matlab, GNU Octave has some errors (4.0)
-% XXX
-% 2DO pdf output is USletter, but works out of box. latex and html output links
-% images absolutely, therefore incorrect paths. wkhtml is nice and colours
-% resembles standard matlab help but small font, latex->dvipdf seems ok, no
-% colours, good font
+% works only in linux, windows is missing proper shell
+
+if ispc
+    % windows system:
+    error('you have to use a better operating system!')
+end
+
 clear all
+% % remove old list of algorithms:
+% system('rm allalgslist.tex')
+% remove old figures:
+system('rm *.eps')
 
 % path to qwtb:
 addpath('../../qwtb');
 
 % get all algs:
 algs = qwtb();
-algsids = {algs.id};
+PAAalgsids = {algs.id};
 
-for i = 1:length(algsids)
+for PAAi = 1:length(PAAalgsids)
     % for every algorithm
-    disp(['publish on algorithm: ' algsids{i}]);
+    disp(['publish on algorithm: ' PAAalgsids{PAAi}]);
     % addpath of algorithm
-    qwtb(algsids{i}, 'addpath')
+    qwtb(PAAalgsids{PAAi}, 'addpath');
     % run publish on example
-    resfil = publish('alg_example', 'format', 'pdf', 'outputDir', '.')
-    % rename resulting pdf to a correct name so it do not get overwritten in
-    % next loop iteration
-    if ispc
-        system(['cp ' resfil ' doc_' algsids{i} '.pdf']);
-    else
-        system(['mv ' resfil ' doc_' algsids{i} '.pdf']);
-    end
-    %qwtb(algsids{i}, 'addpath')
-    %publish('alg_example', 'format', 'html', 'outputDir', '.')
-    qwtb(algsids{i}, 'rempath')
+    publish('alg_example', 'format', 'latex', 'outputDir', '.');
+
+    % reformat matlab latex output, copy files etc:
+    system(['./betterpublish alg_example.tex ' PAAalgsids{PAAi}])
+
+    % remove old path:
+    qwtb(PAAalgsids{PAAi}, 'rempath');
 end % for all algorithms
+
+close all
 
 % vim settings modeline: vim: foldmarker=%<<<,%>>> fdm=marker fen ft=octave textwidth=80 tabstop=4 shiftwidth=4

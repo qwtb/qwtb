@@ -1,0 +1,439 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ProcessHistogramTest</title>
+  <meta name="keywords" content="ProcessHistogramTest">
+  <meta name="description" content="@fn ProcessHistogramtest">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; ProcessHistogramTest.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>ProcessHistogramTest
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>@fn ProcessHistogramtest</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function INL = ProcessHistogramTest(dsc,display_settings,varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> @fn ProcessHistogramtest
+ @brief Processes measurement descriptor using histogram test with
+        sinusoidal excitation signal
+ @param dsc The measurement descriptor to process
+ @param display_settings A struct sets the options for each window to
+                           appear or not
+            warning_dialog : Warning_dialog box
+            results_win: Results window
+            summary_win: summary window            
+ @param varargin Additional paramemetrs to be passed:
+            varargin{1} = estimate_ratio: the ratio of histogram bins not used to
+               estimate the amplitude and the DC component
+            varargin{2} = edge_cut: the INL values near the peak values
+               of the sine wave may be inaccurate accirding to the noise of
+               the measurement. These INL values will not be estimated.
+               edge_cutoff determines the ratio of INL values not to be
+               estimated
+            
+ @return none
+ @author Tam� Virosztek, Budapest University of Technology and Economics,
+         Department of Measurement and Infromation Systems,
+         Virosztek.Tamas@mit.bme.hu</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="EstimateFreqBH3Ipfft.html" class="code" title="function f = EstimateFreqBH3Ipfft(x,varargin)">EstimateFreqBH3Ipfft</a>	@fn EstimateFreqBH3Ipfft</li><li><a href="PosIntHist.html" class="code" title="function y = PosIntHist(x)">PosIntHist</a>	@fn PosIntHist</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="ProcessDscML5pFit.html" class="code" title="function ProcessDscML5pFit(dsc,reduced_data,timevect,pLS)">ProcessDscML5pFit</a>	@fn ProcessDscML5pFit</li><li><a href="adctest.html" class="code" title="function adctest">adctest</a>	@fn adctest</li><li><a href="step_1.html" class="code" title="function varargout = step_1(varargin)">step_1</a>	STEP_1 M-file for step_1.fig</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function OK_callback(source,eventdata)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function INL = ProcessHistogramTest(dsc,display_settings,varargin)</a>
+0002 <span class="comment">% @fn ProcessHistogramtest</span>
+0003 <span class="comment">% @brief Processes measurement descriptor using histogram test with</span>
+0004 <span class="comment">%        sinusoidal excitation signal</span>
+0005 <span class="comment">% @param dsc The measurement descriptor to process</span>
+0006 <span class="comment">% @param display_settings A struct sets the options for each window to</span>
+0007 <span class="comment">%                           appear or not</span>
+0008 <span class="comment">%            warning_dialog : Warning_dialog box</span>
+0009 <span class="comment">%            results_win: Results window</span>
+0010 <span class="comment">%            summary_win: summary window</span>
+0011 <span class="comment">% @param varargin Additional paramemetrs to be passed:</span>
+0012 <span class="comment">%            varargin{1} = estimate_ratio: the ratio of histogram bins not used to</span>
+0013 <span class="comment">%               estimate the amplitude and the DC component</span>
+0014 <span class="comment">%            varargin{2} = edge_cut: the INL values near the peak values</span>
+0015 <span class="comment">%               of the sine wave may be inaccurate accirding to the noise of</span>
+0016 <span class="comment">%               the measurement. These INL values will not be estimated.</span>
+0017 <span class="comment">%               edge_cutoff determines the ratio of INL values not to be</span>
+0018 <span class="comment">%               estimated</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% @return none</span>
+0021 <span class="comment">% @author Tam� Virosztek, Budapest University of Technology and Economics,</span>
+0022 <span class="comment">%         Department of Measurement and Infromation Systems,</span>
+0023 <span class="comment">%         Virosztek.Tamas@mit.bme.hu</span>
+0024 
+0025 <span class="comment">% ProcessHistogramTest (dsc,display_settings,estimate_ratio,edge_cut);</span>
+0026 
+0027 <span class="keyword">if</span> (nargin == 3) <span class="comment">%estimate_ratio is passed</span>
+0028     ESTIMATE_RATIO = varargin{1};
+0029     EDGE_CUT = 0.08;
+0030 <span class="keyword">elseif</span> (nargin == 4) <span class="comment">%edge_cut is passed</span>
+0031     ESTIMATE_RATIO = varargin{1};
+0032     EDGE_CUT = varargin{2};
+0033 <span class="keyword">else</span> <span class="comment">%no addtional parameters passed, or incorrect call of ProcessHistogramtest()</span>
+0034     ESTIMATE_RATIO = 0.08;
+0035     EDGE_CUT = 0.08;    
+0036 <span class="keyword">end</span>
+0037 screensize = get(0,<span class="string">'ScreenSize'</span>);
+0038 
+0039 <span class="comment">%Pre-processing time domain data:</span>
+0040 <span class="comment">%ADC codes must be positive integers to perform PosIntHist</span>
+0041 <span class="keyword">if</span> (min(dsc.data) &lt; 0)
+0042    dsc.data = dsc.data + (0 - min(dsc.data)) ;
+0043    warndlg(<span class="string">'ADC codes are not nonnegative integers. Added %d to each code to process histogram test'</span>, (0 - min(dsc.data)));
+0044 <span class="keyword">end</span>
+0045 
+0046 <span class="keyword">if</span> ((min(dsc.data) &lt; 0) || (max(dsc.data) &gt; 2^dsc.NoB - 1))
+0047     warndlg(<span class="string">'Mismatch between number of bits provided and ADC codes in the measurement record'</span>);
+0048 <span class="keyword">end</span>
+0049 <span class="comment">%Adding code offset +1 to process PosintHist in histogram test</span>
+0050 dsc.data = dsc.data + 1;
+0051 
+0052 h = <a href="PosIntHist.html" class="code" title="function y = PosIntHist(x)">PosIntHist</a>(dsc.data);
+0053 nh = h/sum(h); <span class="comment">%Normalized histogram;</span>
+0054 nch = zeros(2^dsc.NoB,1);
+0055 acc = 0;
+0056 <span class="keyword">for</span> k = 1:length(nh)
+0057     acc = acc + nh(k);
+0058     nch(k) = acc;
+0059 <span class="keyword">end</span>
+0060 <span class="comment">%End of the normalized cumulative histogram shall be filled with ones:</span>
+0061 nch(length(nh)+1:end) = ones(length(nch) - length(nh),1);
+0062 
+0063 ideal_trans_levels = linspace(0,1,(2^dsc.NoB-1)).';
+0064 <span class="comment">%Finding transition levels assumed to be correct:</span>
+0065 [val,ind_low] = min(abs(nch - ESTIMATE_RATIO));
+0066 [val,ind_high] = min(abs(nch - (1 - ESTIMATE_RATIO)));
+0067 <span class="keyword">if</span> (ind_low &lt; 1)
+0068     ind_low = 1;
+0069 <span class="keyword">end</span>
+0070 <span class="keyword">if</span> (ind_high &gt; 2^dsc.NoB - 1)
+0071     ind_high = 2^dsc.NoB -1;
+0072 <span class="keyword">end</span>
+0073 <span class="comment">%Transition levels between T[m] and T[l] are used to estimate A and Mu</span>
+0074 <span class="comment">%Finding the optimal solution of these equations in least squares sense:</span>
+0075 D = zeros(ind_high-ind_low+1,2);
+0076 D(:,1) = ones(ind_high-ind_low+1,1);
+0077 <span class="keyword">for</span> k = ind_low:ind_high
+0078     D(k-ind_low+1,2) = -cos(pi*nch(k));
+0079 <span class="keyword">end</span>
+0080 p = inv(D.'*D)*D.'*ideal_trans_levels(ind_low:ind_high); <span class="comment">%p = [mu;A] = inv(D.'*D)*D.'*T(ind_low:ind_high);</span>
+0081 
+0082 trans_levels = zeros(2^dsc.NoB-1,1);
+0083 small = 0.1/sum(h); <span class="comment">%Effect of &quot;0.1 sample&quot; in the normalized histogram</span>
+0084 <span class="keyword">for</span> k = 1:length(trans_levels)
+0085     <span class="keyword">if</span> (abs((nch(k)) - 0) &lt; small) <span class="comment">% there are no code bins tested below this transition level</span>
+0086         trans_levels(k) = NaN;
+0087     <span class="keyword">elseif</span> (abs(nch(k) - 1) &lt; small) <span class="comment">%thereare no code bins tested above this transition level</span>
+0088         trans_levels(k) = NaN;
+0089     <span class="keyword">else</span> trans_levels(k) = p(1) - p(2)*cos(pi*nch(k));
+0090     <span class="keyword">end</span>
+0091 <span class="keyword">end</span>
+0092 
+0093 q = 1/(2^dsc.NoB - 2);
+0094 INL = (trans_levels - ideal_trans_levels)/q;
+0095 
+0096 <span class="comment">%Discarding uncertain values of INL near the edge of the sine wave</span>
+0097 <span class="keyword">for</span> k = 1:length(INL)
+0098     <span class="keyword">if</span> ((nch(k) &lt; EDGE_CUT) || (nch(k)) &gt; (1 - EDGE_CUT))
+0099         INL(k) = NaN;
+0100     <span class="keyword">end</span>
+0101 <span class="keyword">end</span>
+0102 
+0103 <span class="comment">%Calibrating INL values to the lowest and highest transition level estimated.</span>
+0104 lowest_estimated = find(~isnan(INL),1,<span class="string">'first'</span>);
+0105 highest_estimated = find(~isnan(INL),1,<span class="string">'last'</span>);
+0106 INL_calib = [zeros(lowest_estimated-1,1);linspace(INL(lowest_estimated),INL(highest_estimated),highest_estimated-lowest_estimated+1).';zeros(length(INL)-highest_estimated,1)];
+0107 INL = INL - INL_calib;
+0108 DNL = diff(INL);
+0109 
+0110 <span class="comment">%RESULTS WINDOW</span>
+0111 <span class="comment">%Displaying histogram test results</span>
+0112 <span class="keyword">if</span> (display_settings.results_win)
+0113     histogram_results_window = figure(<span class="string">'Visible'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+0114         <span class="string">'Position'</span>, [screensize(3)*0.1 screensize(4)*0.1 screensize(3)*0.8 screensize(4)*0.8]',<span class="keyword">...</span>
+0115         <span class="string">'Name'</span>,<span class="string">'Histogram Test Results'</span>,<span class="keyword">...</span>
+0116         <span class="string">'NumberTitle'</span>,<span class="string">'off'</span>);
+0117     hAxesINL = axes(<span class="string">'Position'</span>,[0.1 0.6 0.8 0.3]);
+0118     hAxesDNL = axes(<span class="string">'Position'</span>,[0.1 0.1 0.8 0.3]);
+0119 
+0120     set(histogram_results_window,<span class="string">'CurrentAxes'</span>,hAxesINL);
+0121     plot(1:length(INL),INL);
+0122     xlabel(<span class="string">'Transition levels'</span>);
+0123     ylabel(<span class="string">'INL[k]'</span>);
+0124     title(<span class="string">'Integral nonlinearity'</span>);
+0125     axis([0 length(INL)+1 min(INL) max(INL)]);
+0126     <span class="comment">%</span>
+0127     set(histogram_results_window,<span class="string">'CurrentAxes'</span>,hAxesDNL);
+0128     plot((1:length(DNL)),DNL);
+0129     xlabel(<span class="string">'Code bins'</span>);
+0130     ylabel(<span class="string">'DNL[k]'</span>);
+0131     title(<span class="string">'Differential nonlinearity'</span>);
+0132     axis([0 length(DNL)+1 min(DNL) max(DNL)]);
+0133 <span class="keyword">end</span>
+0134 
+0135 <span class="comment">%SUMMARY WINDOW</span>
+0136 <span class="comment">%Displaying necessary information about the quality of estimation:</span>
+0137 <span class="keyword">if</span> (display_settings.summary_win)
+0138     histogram_summary_window = figure(<span class="string">'Visible'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+0139         <span class="string">'Position'</span>, [screensize(3)*0.25 screensize(4)*0.25 screensize(3)*0.5 screensize(4)*0.5]',<span class="keyword">...</span>
+0140         <span class="string">'Name'</span>,<span class="string">'Histogram Test Summary'</span>,<span class="keyword">...</span>
+0141         <span class="string">'NumberTitle'</span>,<span class="string">'off'</span>);
+0142 
+0143     hTextTitle = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0144         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0145         <span class="string">'Position'</span>,[0.3 0.85 0.4 0.08],<span class="keyword">...</span>
+0146         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0147         <span class="string">'String'</span>,<span class="string">'Quantitative traits of histogram test'</span>,<span class="keyword">...</span>
+0148         <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+0149         <span class="string">'FontSize'</span>,9,<span class="keyword">...</span>
+0150         <span class="string">'HorizontalAlignment'</span>,<span class="string">'center'</span>);
+0151 
+0152     hTextNumOfSamples = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0153         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0154         <span class="string">'Position'</span>,[0.05 0.7 0.3 0.08],<span class="keyword">...</span>
+0155         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0156         <span class="string">'String'</span>,<span class="string">'Number of samples: '</span>,<span class="keyword">...</span>
+0157         <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);
+0158 
+0159     hTextNumOfSamplesValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0160         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0161         <span class="string">'Position'</span>,[0.35 0.7 0.1 0.08],<span class="keyword">...</span>
+0162         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0163         <span class="string">'String'</span>,<span class="string">'NaN'</span>,<span class="keyword">...</span>
+0164         <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0165 
+0166     hTextAvgSamplePerCodeBin = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0167         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0168         <span class="string">'Position'</span>,[0.05 0.6 0.3 0.08],<span class="keyword">...</span>
+0169         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0170         <span class="string">'String'</span>,<span class="string">'Average number of samples in a code bin: '</span>,<span class="keyword">...</span>
+0171         <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);
+0172 
+0173     hTextAvgSamplePerCodeBinValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0174         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0175         <span class="string">'Position'</span>,[0.35 0.6 0.1 0.08],<span class="keyword">...</span>
+0176         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0177         <span class="string">'String'</span>,<span class="string">'NaN'</span>,<span class="keyword">...</span>
+0178         <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0179 
+0180     hTextLowestTransLevelEst = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0181         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0182         <span class="string">'Position'</span>,[0.05 0.5 0.3 0.08],<span class="keyword">...</span>
+0183         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0184         <span class="string">'String'</span>,<span class="string">'Lowest transition level estimated: '</span>,<span class="keyword">...</span>
+0185         <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);
+0186 
+0187     hTextLowestTransLevelEstValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0188         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0189         <span class="string">'Position'</span>,[0.35 0.5 0.1 0.08],<span class="keyword">...</span>
+0190         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0191         <span class="string">'String'</span>,<span class="string">'NaN'</span>,<span class="keyword">...</span>
+0192         <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0193 
+0194     hTextHighestTransLevelEst = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0195         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0196         <span class="string">'Position'</span>,[0.05 0.4 0.3 0.08],<span class="keyword">...</span>
+0197         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0198         <span class="string">'String'</span>,<span class="string">'Highest transition level estimated: '</span>,<span class="keyword">...</span>
+0199         <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);
+0200 
+0201     hTextHighestTransLevelEstValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0202         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0203         <span class="string">'Position'</span>,[0.35 0.4 0.1 0.08],<span class="keyword">...</span>
+0204         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0205         <span class="string">'String'</span>,<span class="string">'NaN'</span>,<span class="keyword">...</span>
+0206         <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0207 
+0208     hTextNumOfPeriods = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0209         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0210         <span class="string">'Position'</span>,[0.55 0.7 0.3 0.08],<span class="keyword">...</span>
+0211         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0212         <span class="string">'String'</span>,<span class="string">'Number of periods: '</span>,<span class="keyword">...</span>
+0213         <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);
+0214 
+0215     hTextNumOfPeriodsValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0216         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0217         <span class="string">'Position'</span>,[0.85 0.7 0.1 0.08],<span class="keyword">...</span>
+0218         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0219         <span class="string">'String'</span>,<span class="string">'NaN'</span>,<span class="keyword">...</span>
+0220         <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0221 
+0222     hTextFractPeriodRatio = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0223         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0224         <span class="string">'Position'</span>,[0.55 0.6 0.3 0.08],<span class="keyword">...</span>
+0225         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0226         <span class="string">'String'</span>,<span class="string">'Ratio of samples in fractional periods: '</span>,<span class="keyword">...</span>
+0227         <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);
+0228 
+0229     hTextFractPeriodRatioValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0230         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0231         <span class="string">'Position'</span>,[0.85 0.6 0.1 0.08],<span class="keyword">...</span>
+0232         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0233         <span class="string">'String'</span>,<span class="string">'NaN'</span>,<span class="keyword">...</span>
+0234         <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0235 
+0236     hTextLowestNumOfSamples = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0237         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0238         <span class="string">'Position'</span>,[0.55 0.5 0.3 0.08],<span class="keyword">...</span>
+0239         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0240         <span class="string">'String'</span>,<span class="string">'Lowest number of samples in a code bin: '</span>,<span class="keyword">...</span>
+0241         <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);
+0242 
+0243     hTextLowestNumOfSamplesValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0244         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0245         <span class="string">'Position'</span>,[0.85 0.5 0.1 0.08],<span class="keyword">...</span>
+0246         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0247         <span class="string">'String'</span>,<span class="string">'NaN'</span>,<span class="keyword">...</span>
+0248         <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0249 
+0250     hTextHighestNumOfSamples = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0251         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0252         <span class="string">'Position'</span>,[0.55 0.4 0.3 0.08],<span class="keyword">...</span>
+0253         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0254         <span class="string">'String'</span>,<span class="string">'Highest number of samples in a code bin: '</span>,<span class="keyword">...</span>
+0255         <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);
+0256 
+0257     hTextHighestNumOfSamplesValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0258         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0259         <span class="string">'Position'</span>,[0.85 0.4 0.1 0.08],<span class="keyword">...</span>
+0260         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0261         <span class="string">'String'</span>,<span class="string">'NaN'</span>,<span class="keyword">...</span>
+0262         <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0263 
+0264     hPushButtonOk = uicontrol (<span class="string">'Style'</span>, <span class="string">'pushbutton'</span>,<span class="keyword">...</span>
+0265         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0266         <span class="string">'Position'</span>, [0.43 0.1 0.14 0.1],<span class="keyword">...</span>
+0267         <span class="string">'String'</span>,<span class="string">'OK'</span>,<span class="keyword">...</span>
+0268         <span class="string">'Callback'</span>,@<a href="#_sub1" class="code" title="subfunction OK_callback(source,eventdata)">OK_callback</a>);
+0269 
+0270     <span class="comment">%Calculating data for Histogram Summary:</span>
+0271     avg_sample_per_code_bin = length(dsc.data)/(2^dsc.NoB);
+0272     est_freq = <a href="EstimateFreqBH3Ipfft.html" class="code" title="function f = EstimateFreqBH3Ipfft(x,varargin)">EstimateFreqBH3Ipfft</a>(dsc.data);
+0273     num_of_periods = est_freq*length(dsc.data);
+0274     fractional_ratio = min(<span class="keyword">...</span><span class="comment"> %fractional part or missing fractional part</span>
+0275         (num_of_periods - floor(num_of_periods))/num_of_periods,<span class="keyword">...</span>
+0276         (ceil(num_of_periods) - num_of_periods)/num_of_periods);
+0277     lowest_density = min(h); <span class="comment">%Maximal value of histogram</span>
+0278     highest_density = max(h); <span class="comment">%Minimal value of histogram</span>
+0279 
+0280     <span class="comment">%Filling fields with information:</span>
+0281     set (hTextNumOfSamplesValue,<span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,length(dsc.data)));
+0282     set (hTextAvgSamplePerCodeBinValue,<span class="string">'String'</span>,sprintf(<span class="string">'%3.2f'</span>,avg_sample_per_code_bin));
+0283     set (hTextLowestTransLevelEstValue,<span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,lowest_estimated));
+0284     set (hTextHighestTransLevelEstValue,<span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,highest_estimated));
+0285     set (hTextNumOfPeriodsValue,<span class="string">'String'</span>,sprintf(<span class="string">'%3.5f'</span>,num_of_periods));
+0286     set (hTextFractPeriodRatioValue,<span class="string">'String'</span>,sprintf(<span class="string">'%1.3e'</span>,fractional_ratio));
+0287     set (hTextLowestNumOfSamplesValue,<span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,lowest_density));
+0288     set (hTextHighestNumOfSamplesValue,<span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,highest_density));
+0289 <span class="keyword">end</span>
+0290 
+0291 <span class="comment">%WARNING DIALOGS (if necessary)</span>
+0292 <span class="keyword">if</span> (display_settings.warning_dialog)
+0293     <span class="keyword">if</span> ((lowest_estimated ~= 1) || (highest_estimated ~= 2^dsc.NoB - 1))
+0294         warndlg({<span class="string">'The device is not overdriven enough'</span>;<span class="keyword">...</span>
+0295             sprintf(<span class="string">'Transition levels under %d and over %d cannot be estimated'</span>,lowest_estimated,highest_estimated);<span class="keyword">...</span>
+0296             <span class="string">'At least 120% full scale overdive is recommended'</span>;<span class="keyword">...</span>
+0297             <span class="string">'Non estimated INL values vill be assumed to be 0'</span>;<span class="keyword">...</span>
+0298             <span class="string">'Results of histogram test may be less accurate than desired'</span>},<span class="keyword">...</span>
+0299             <span class="string">'Histogram test warning'</span>);
+0300     <span class="keyword">end</span>
+0301     <span class="keyword">if</span> (avg_sample_per_code_bin &lt; 10)
+0302         warndlg({sprintf(<span class="string">'Average sample per code bin is few (%1.2f)'</span>,avg_sample_per_code_bin);<span class="keyword">...</span>
+0303             <span class="string">'Results of histogram test may be less accurate than desired'</span>},<span class="keyword">...</span>
+0304             <span class="string">'Histogram test warning'</span>);
+0305     <span class="keyword">end</span>
+0306     <span class="keyword">if</span> (fractional_ratio &gt; 1e-2)
+0307         warndlg({<span class="string">'Ratio of samples in fractional period is too high'</span>;<span class="keyword">...</span>
+0308             sprintf(<span class="string">'%1.3e'</span>,fractional_ratio);
+0309             <span class="string">'Results of histogram test may be less accurate than desired'</span>},<span class="keyword">...</span>
+0310             <span class="string">'Histogram test warning'</span>)
+0311     <span class="keyword">end</span>
+0312 <span class="keyword">end</span>
+0313 
+0314 <span class="comment">%%%%%%%%%Adding evaluation result to results cell array:</span>
+0315 <span class="keyword">try</span>
+0316     testresults = evalin(<span class="string">'base'</span>,<span class="string">'adctest_process_results'</span>);
+0317     res_len = size(testresults,1);
+0318     <span class="comment">%Search for existing results block</span>
+0319     existings_index = 0;
+0320     <span class="keyword">for</span> k = 1:res_len        
+0321         <span class="keyword">if</span> strcmpi(dsc.model,testresults{k,1}.DUT.model) <span class="keyword">...</span>
+0322                 &amp;&amp; strcmpi(dsc.serial,testresults{k,1}.DUT.serial)<span class="keyword">...</span>
+0323                 &amp;&amp; (dsc.channel == testresults{k,1}.DUT.channel)<span class="keyword">...</span>
+0324                 &amp;&amp; (dsc.NoB == testresults{k,1}.DUT.NoB)
+0325             existings_index = k;                    
+0326         <span class="keyword">end</span>
+0327     <span class="keyword">end</span>    
+0328     <span class="keyword">if</span> (existings_index ~= 0) <span class="comment">%existing result struct</span>
+0329         <span class="comment">%Adding new results:</span>
+0330         testresults{existings_index,1}.INL.max = max(INL);
+0331         testresults{existings_index,1}.INL.min = min(INL);                
+0332         testresults{existings_index,1}.DNL.max = max(DNL);
+0333         testresults{existings_index,1}.DNL.min = min(DNL);                        
+0334     <span class="keyword">else</span> <span class="comment">%new result struct shall be added</span>
+0335         testresults{res_len + 1,1}.DUT.model = dsc.model;
+0336         testresults{res_len + 1,1}.DUT.serial = dsc.serial;
+0337         testresults{res_len + 1,1}.DUT.channel = dsc.channel;
+0338         testresults{res_len + 1,1}.DUT.NoB = dsc.NoB;
+0339         <span class="comment">%Adding new results:</span>
+0340         testresults{res_len + 1,1}.INL.max = max(INL);
+0341         testresults{res_len + 1,1}.INL.min = min(INL);        
+0342         testresults{res_len + 1,1}.DNL.max = max(DNL);
+0343         testresults{res_len + 1,1}.DNL.min = min(DNL);                                
+0344     <span class="keyword">end</span>
+0345     <span class="comment">%updating adctest_process_results</span>
+0346     assignin (<span class="string">'base'</span>,<span class="string">'adctest_process_results'</span>,testresults);
+0347         
+0348 <span class="keyword">catch</span>
+0349     <span class="comment">%If testresults global variable does not exist:</span>
+0350     testresults = cell(1,1); <span class="comment">%creating new cell array for testresults</span>
+0351     testresults{1,1}.DUT.model = dsc.model;
+0352     testresults{1,1}.DUT.serial = dsc.serial;
+0353     testresults{1,1}.DUT.channel = dsc.channel;
+0354     testresults{1,1}.DUT.NoB = dsc.NoB;
+0355     <span class="comment">%Adding new results:</span>
+0356     testresults{1,1}.INL.max = max(INL);
+0357     testresults{1,1}.INL.min = min(INL);
+0358     testresults{1,1}.DNL.max = max(DNL);
+0359     testresults{1,1}.DNL.min = min(DNL);    
+0360     assignin (<span class="string">'base'</span>,<span class="string">'adctest_process_results'</span>,testresults);
+0361 <span class="keyword">end</span>
+0362 <span class="comment">%%%%%%End of adding evaluatin results to cell array%%%%%%%%%%</span>
+0363 
+0364 <span class="comment">%Callbacks: (for histogram_summary_window)</span>
+0365     <a name="_sub1" href="#_subfunctions" class="code">function OK_callback(source,eventdata)</a>
+0366         close(histogram_summary_window);
+0367     <span class="keyword">end</span>
+0368 
+0369 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

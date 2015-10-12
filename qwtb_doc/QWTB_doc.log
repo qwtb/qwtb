@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.1.6)  6 OCT 2015 09:18
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.1.6)  12 OCT 2015 17:36
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -6,19 +6,20 @@ entering extended mode
 (./QWTB_doc.tex
 LaTeX2e <2011/06/27>
 Babel <3.9h> and hyphenation patterns for 4 languages loaded.
-(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
-Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/report.cls
+Document Class: report 2007/10/19 v1.4h Standard LaTeX document class
 (/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo
 File: size12.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count79
-\c@section=\count80
-\c@subsection=\count81
-\c@subsubsection=\count82
-\c@paragraph=\count83
-\c@subparagraph=\count84
-\c@figure=\count85
-\c@table=\count86
+\c@chapter=\count80
+\c@section=\count81
+\c@subsection=\count82
+\c@subsubsection=\count83
+\c@paragraph=\count84
+\c@subparagraph=\count85
+\c@figure=\count86
+\c@table=\count87
 \abovecaptionskip=\skip41
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
@@ -449,15 +450,15 @@ LaTeX Info: Redefining \scshape on input line 65.
 )
 (/usr/share/texlive/texmf-dist/tex/latex/tools/calc.sty
 Package: calc 2007/08/22 v4.3 Infix arithmetic (KKT,FJ)
-\calc@Acount=\count87
-\calc@Bcount=\count88
+\calc@Acount=\count88
+\calc@Bcount=\count89
 \calc@Adimen=\dimen103
 \calc@Bdimen=\dimen104
 \calc@Askip=\skip43
 \calc@Bskip=\skip44
 LaTeX Info: Redefining \setlength on input line 76.
 LaTeX Info: Redefining \addtolength on input line 77.
-\calc@Ccount=\count89
+\calc@Ccount=\count90
 \calc@Cskip=\skip45
 )
 (/usr/share/texlive/texmf-dist/tex/latex/enumitem/enumitem.sty
@@ -466,7 +467,7 @@ Package: enumitem 2011/09/28 v3.5.2 Customized lists
 \enit@outerparindent=\dimen105
 \enit@toks=\toks17
 \enit@inbox=\box26
-\enitdp@description=\count90
+\enitdp@description=\count91
 )
 (/usr/share/texlive/texmf-dist/tex/latex/graphics/color.sty
 Package: color 2005/11/14 v1.0j Standard LaTeX Color (DPC)
@@ -478,7 +479,7 @@ Package color Info: Driver file: pdftex.def on input line 130.
 
 (/usr/share/texlive/texmf-dist/tex/latex/pdftex-def/pdftex.def
 File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
-\Gread@gobject=\count91
+\Gread@gobject=\count92
 ))
 (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
 Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
@@ -568,15 +569,15 @@ Package: hycolor 2011/01/30 v1.7 Color options for hyperref/bookmark (HO)
 Package: auxhook 2011/03/04 v1.3 Hooks for auxiliary files (HO)
 )
 \@linkdim=\dimen108
-\Hy@linkcounter=\count92
-\Hy@pagecounter=\count93
+\Hy@linkcounter=\count93
+\Hy@pagecounter=\count94
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def
 File: pd1enc.def 2012/11/06 v6.83m Hyperref: PDFDocEncoding definition (HO)
 Now handling font encoding PD1 ...
 ... no UTF-8 mapping file for font encoding PD1
 )
-\Hy@SavedSpaceFactor=\count94
+\Hy@SavedSpaceFactor=\count95
 
 (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/hyperref.cfg
 File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
@@ -595,7 +596,7 @@ Package hyperref Info: Plain pages OFF on input line 4458.
 Package hyperref Info: Backreferencing OFF on input line 4463.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4688.
-\c@Hy@tempcnt=\count95
+\c@Hy@tempcnt=\count96
 
 (/usr/share/texlive/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip10
@@ -603,7 +604,7 @@ Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
 LaTeX Info: Redefining \url on input line 5041.
 \XeTeXLinkMargin=\dimen109
-\Fld@menulength=\count96
+\Fld@menulength=\count97
 \Field@Width=\dimen110
 \Fld@charsize=\dimen111
 Package hyperref Info: Hyper figures OFF on input line 6295.
@@ -615,17 +616,17 @@ Package hyperref Info: Link coloring with OCG OFF on input line 6320.
 Package hyperref Info: PDF/A mode OFF on input line 6325.
 LaTeX Info: Redefining \ref on input line 6365.
 LaTeX Info: Redefining \pageref on input line 6369.
-\Hy@abspage=\count97
-\c@Item=\count98
-\c@Hfootnote=\count99
+\Hy@abspage=\count98
+\c@Item=\count99
+\c@Hfootnote=\count100
 )
 
-Package hyperref Message: Driver (autodetected): hpdftex.
+Package hyperref Message: Driver: hpdftex.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
 File: hpdftex.def 2012/11/06 v6.83m Hyperref driver for pdfTeX
-\Fld@listcount=\count100
-\c@bookmark@seq@number=\count101
+\Fld@listcount=\count101
+\c@bookmark@seq@number=\count102
 
 (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/rerunfilecheck.sty
 Package: rerunfilecheck 2011/04/15 v1.7 Rerun checks for auxiliary files (HO)
@@ -633,21 +634,6 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 82.
 )
 \Hy@SectionHShift=\skip47
-)
-(/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
-Package: geometry 2010/09/12 v5.6 Page Geometry
-\Gm@cnth=\count102
-\Gm@cntv=\count103
-\c@Gm@tempcnt=\count104
-\Gm@bindingoffset=\dimen112
-\Gm@wd@mp=\dimen113
-\Gm@odd@mp=\dimen114
-\Gm@even@mp=\dimen115
-\Gm@layoutwidth=\dimen116
-\Gm@layoutheight=\dimen117
-\Gm@layouthoffset=\dimen118
-\Gm@layoutvoffset=\dimen119
-\Gm@dimlist=\toks18
 )
 (/usr/share/texlive/texmf-dist/tex/latex/tools/xspace.sty
 Package: xspace 2009/10/20 v1.13 Space after command names (DPC,MH)
@@ -662,72 +648,72 @@ Package: amstext 2000/06/29 v2.01
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0
-\@emptytoks=\toks19
-\ex@=\dimen120
+\@emptytoks=\toks18
+\ex@=\dimen112
 ))
 (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d
-\pmbraise@=\dimen121
+\pmbraise@=\dimen113
 )
 (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty
 Package: amsopn 1999/12/14 v2.01 operator names
 )
-\inf@bad=\count105
+\inf@bad=\count103
 LaTeX Info: Redefining \frac on input line 210.
-\uproot@=\count106
-\leftroot@=\count107
+\uproot@=\count104
+\leftroot@=\count105
 LaTeX Info: Redefining \overline on input line 306.
-\classnum@=\count108
-\DOTSCASE@=\count109
+\classnum@=\count106
+\DOTSCASE@=\count107
 LaTeX Info: Redefining \ldots on input line 378.
 LaTeX Info: Redefining \dots on input line 381.
 LaTeX Info: Redefining \cdots on input line 466.
 \Mathstrutbox@=\box27
 \strutbox@=\box28
-\big@size=\dimen122
+\big@size=\dimen114
 LaTeX Font Info:    Redeclaring font encoding OML on input line 566.
 LaTeX Font Info:    Redeclaring font encoding OMS on input line 567.
-\macc@depth=\count110
-\c@MaxMatrixCols=\count111
+\macc@depth=\count108
+\c@MaxMatrixCols=\count109
 \dotsspace@=\muskip11
-\c@parentequation=\count112
-\dspbrk@lvl=\count113
-\tag@help=\toks20
-\row@=\count114
-\column@=\count115
-\maxfields@=\count116
-\andhelp@=\toks21
-\eqnshift@=\dimen123
-\alignsep@=\dimen124
-\tagshift@=\dimen125
-\tagwidth@=\dimen126
-\totwidth@=\dimen127
-\lineht@=\dimen128
-\@envbody=\toks22
+\c@parentequation=\count110
+\dspbrk@lvl=\count111
+\tag@help=\toks19
+\row@=\count112
+\column@=\count113
+\maxfields@=\count114
+\andhelp@=\toks20
+\eqnshift@=\dimen115
+\alignsep@=\dimen116
+\tagshift@=\dimen117
+\tagwidth@=\dimen118
+\totwidth@=\dimen119
+\lineht@=\dimen120
+\@envbody=\toks21
 \multlinegap=\skip49
 \multlinetaggap=\skip50
-\mathdisplay@stack=\toks23
+\mathdisplay@stack=\toks22
 LaTeX Info: Redefining \[ on input line 2665.
 LaTeX Info: Redefining \] on input line 2666.
 )
 (/usr/share/texlive/texmf-dist/tex/latex/listings/listings.sty
-\lst@mode=\count117
+\lst@mode=\count115
 \lst@gtempboxa=\box29
-\lst@token=\toks24
-\lst@length=\count118
-\lst@currlwidth=\dimen129
-\lst@column=\count119
-\lst@pos=\count120
-\lst@lostspace=\dimen130
-\lst@width=\dimen131
-\lst@newlines=\count121
-\lst@lineno=\count122
-\lst@maxwidth=\dimen132
+\lst@token=\toks23
+\lst@length=\count116
+\lst@currlwidth=\dimen121
+\lst@column=\count117
+\lst@pos=\count118
+\lst@lostspace=\dimen122
+\lst@width=\dimen123
+\lst@newlines=\count119
+\lst@lineno=\count120
+\lst@maxwidth=\dimen124
 
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2013/08/26 1.5b (Carsten Heinz)
-\c@lstnumber=\count123
-\lst@skipnumbers=\count124
+\c@lstnumber=\count121
+\lst@skipnumbers=\count122
 \lst@framebox=\box30
 )
 (/usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg
@@ -746,8 +732,8 @@ Language: english 2012/08/20 v3.3p English support from the babel system
 
 (/usr/share/texlive/texmf-dist/tex/generic/babel/babel.def
 File: babel.def 2013/12/03 3.9h Babel common definitions
-\babel@savecnt=\count125
-\U@D=\dimen133
+\babel@savecnt=\count123
+\U@D=\dimen125
 )
 \l@british = a dialect from \language\l@english 
 \l@UKenglish = a dialect from \language\l@english 
@@ -767,55 +753,55 @@ Package: etoolbox 2011/01/03 v2.1 e-TeX tools for LaTeX
 
 (/usr/share/texlive/texmf-dist/tex/latex/etex-pkg/etex.sty
 Package: etex 1998/03/26 v2.0 eTeX basic definition package (PEB)
-\et@xins=\count126
+\et@xins=\count124
 )
-\etb@tempcnta=\count127
+\etb@tempcnta=\count125
 )
 (/usr/share/texlive/texmf-dist/tex/latex/logreq/logreq.sty
 Package: logreq 2010/08/04 v1.0 xml request logger
-\lrq@indent=\count128
+\lrq@indent=\count126
 
 (/usr/share/texlive/texmf-dist/tex/latex/logreq/logreq.def
 File: logreq.def 2010/08/04 v1.0 logreq spec v1.0
 ))
-\c@tabx@nest=\count129
-\c@listtotal=\count130
-\c@listcount=\count131
-\c@liststart=\count132
-\c@liststop=\count133
-\c@citecount=\count134
-\c@citetotal=\count135
-\c@multicitecount=\count136
-\c@multicitetotal=\count137
-\c@instcount=\count138
-\c@maxnames=\count139
-\c@minnames=\count140
-\c@maxitems=\count141
-\c@minitems=\count142
-\c@citecounter=\count143
-\c@savedcitecounter=\count144
-\c@uniquelist=\count145
-\c@uniquename=\count146
-\c@refsection=\count147
-\c@refsegment=\count148
-\c@maxextratitle=\count149
-\c@maxextratitleyear=\count150
-\c@maxextrayear=\count151
-\c@maxextraalpha=\count152
-\c@abbrvpenalty=\count153
-\c@highnamepenalty=\count154
-\c@lownamepenalty=\count155
-\c@maxparens=\count156
-\c@parenlevel=\count157
-\blx@tempcnta=\count158
-\blx@tempcntb=\count159
-\blx@tempcntc=\count160
-\blx@maxsection=\count161
-\blx@maxsegment@0=\count162
-\blx@notetype=\count163
-\blx@parenlevel@text=\count164
-\blx@parenlevel@foot=\count165
-\blx@sectionciteorder@0=\count166
+\c@tabx@nest=\count127
+\c@listtotal=\count128
+\c@listcount=\count129
+\c@liststart=\count130
+\c@liststop=\count131
+\c@citecount=\count132
+\c@citetotal=\count133
+\c@multicitecount=\count134
+\c@multicitetotal=\count135
+\c@instcount=\count136
+\c@maxnames=\count137
+\c@minnames=\count138
+\c@maxitems=\count139
+\c@minitems=\count140
+\c@citecounter=\count141
+\c@savedcitecounter=\count142
+\c@uniquelist=\count143
+\c@uniquename=\count144
+\c@refsection=\count145
+\c@refsegment=\count146
+\c@maxextratitle=\count147
+\c@maxextratitleyear=\count148
+\c@maxextrayear=\count149
+\c@maxextraalpha=\count150
+\c@abbrvpenalty=\count151
+\c@highnamepenalty=\count152
+\c@lownamepenalty=\count153
+\c@maxparens=\count154
+\c@parenlevel=\count155
+\blx@tempcnta=\count156
+\blx@tempcntb=\count157
+\blx@tempcntc=\count158
+\blx@maxsection=\count159
+\blx@maxsegment@0=\count160
+\blx@notetype=\count161
+\blx@parenlevel@text=\count162
+\blx@parenlevel@foot=\count163
+\blx@sectionciteorder@0=\count164
 \labelnumberwidth=\skip51
 \labelalphawidth=\skip52
 \shorthandwidth=\skip53
@@ -827,9 +813,9 @@ File: logreq.def 2010/08/04 v1.0 logreq spec v1.0
 \bibhang=\skip59
 \blx@bcfin=\read1
 \blx@bcfout=\write3
-\c@mincomprange=\count167
-\c@maxcomprange=\count168
-\c@mincompwidth=\count169
+\c@mincomprange=\count165
+\c@maxcomprange=\count166
+\c@mincompwidth=\count167
 Package biblatex Info: Trying to load biblatex default data model...
 Package biblatex Info: ... file 'blx-dm.def' found.
 
@@ -838,73 +824,72 @@ Package biblatex Info: Trying to load biblatex style data model...
 Package biblatex Info: ... file 'ieee.dbx' not found.
 Package biblatex Info: Trying to load biblatex custom data model...
 Package biblatex Info: ... file 'biblatex-dm.cfg' not found.
-\c@afterword=\count170
-\c@savedafterword=\count171
-\c@annotator=\count172
-\c@savedannotator=\count173
-\c@author=\count174
-\c@savedauthor=\count175
-\c@bookauthor=\count176
-\c@savedbookauthor=\count177
-\c@commentator=\count178
-\c@savedcommentator=\count179
-\c@editor=\count180
-\c@savededitor=\count181
-\c@editora=\count182
-\c@savededitora=\count183
-\c@editorb=\count184
-\c@savededitorb=\count185
-\c@editorc=\count186
-\c@savededitorc=\count187
-\c@foreword=\count188
-\c@savedforeword=\count189
-\c@holder=\count190
-\c@savedholder=\count191
-\c@introduction=\count192
-\c@savedintroduction=\count193
-\c@namea=\count194
-\c@savednamea=\count195
-\c@nameb=\count196
-\c@savednameb=\count197
-\c@namec=\count198
-\c@savednamec=\count199
-\c@shortauthor=\count200
-\c@savedshortauthor=\count201
-\c@shorteditor=\count202
-\c@savedshorteditor=\count203
-\c@translator=\count204
-\c@savedtranslator=\count205
-\c@labelname=\count206
-\c@savedlabelname=\count207
-\c@institution=\count208
-\c@savedinstitution=\count209
-\c@lista=\count210
-\c@savedlista=\count211
-\c@listb=\count212
-\c@savedlistb=\count213
-\c@listc=\count214
-\c@savedlistc=\count215
-\c@listd=\count216
-\c@savedlistd=\count217
-\c@liste=\count218
-\c@savedliste=\count219
-\c@listf=\count220
-\c@savedlistf=\count221
-\c@location=\count222
-\c@savedlocation=\count223
-\c@organization=\count224
-\c@savedorganization=\count225
-\c@origlocation=\count226
-\c@savedoriglocation=\count227
-\c@origpublisher=\count228
-\c@savedorigpublisher=\count229
-\c@publisher=\count230
-\c@savedpublisher=\count231
-\c@language=\count232
-\c@savedlanguage=\count233
-Normal \count register pool exhausted, switching to extended pool.
-\c@pageref=\count277
-\c@savedpageref=\count278
+\c@afterword=\count168
+\c@savedafterword=\count169
+\c@annotator=\count170
+\c@savedannotator=\count171
+\c@author=\count172
+\c@savedauthor=\count173
+\c@bookauthor=\count174
+\c@savedbookauthor=\count175
+\c@commentator=\count176
+\c@savedcommentator=\count177
+\c@editor=\count178
+\c@savededitor=\count179
+\c@editora=\count180
+\c@savededitora=\count181
+\c@editorb=\count182
+\c@savededitorb=\count183
+\c@editorc=\count184
+\c@savededitorc=\count185
+\c@foreword=\count186
+\c@savedforeword=\count187
+\c@holder=\count188
+\c@savedholder=\count189
+\c@introduction=\count190
+\c@savedintroduction=\count191
+\c@namea=\count192
+\c@savednamea=\count193
+\c@nameb=\count194
+\c@savednameb=\count195
+\c@namec=\count196
+\c@savednamec=\count197
+\c@shortauthor=\count198
+\c@savedshortauthor=\count199
+\c@shorteditor=\count200
+\c@savedshorteditor=\count201
+\c@translator=\count202
+\c@savedtranslator=\count203
+\c@labelname=\count204
+\c@savedlabelname=\count205
+\c@institution=\count206
+\c@savedinstitution=\count207
+\c@lista=\count208
+\c@savedlista=\count209
+\c@listb=\count210
+\c@savedlistb=\count211
+\c@listc=\count212
+\c@savedlistc=\count213
+\c@listd=\count214
+\c@savedlistd=\count215
+\c@liste=\count216
+\c@savedliste=\count217
+\c@listf=\count218
+\c@savedlistf=\count219
+\c@location=\count220
+\c@savedlocation=\count221
+\c@organization=\count222
+\c@savedorganization=\count223
+\c@origlocation=\count224
+\c@savedoriglocation=\count225
+\c@origpublisher=\count226
+\c@savedorigpublisher=\count227
+\c@publisher=\count228
+\c@savedpublisher=\count229
+\c@language=\count230
+\c@savedlanguage=\count231
+\c@pageref=\count232
+\c@savedpageref=\count233
 Package biblatex Info: Trying to load compatibility code...
 Package biblatex Info: ... file 'blx-compat.def' found.
 
@@ -916,13 +901,14 @@ Package biblatex Info: ... file 'biblatex.def' found.
 
 (/usr/share/texlive/texmf-dist/tex/latex/biblatex/biblatex.def
 File: biblatex.def 
-\c@textcitecount=\count279
-\c@textcitetotal=\count280
-\c@textcitemaxnames=\count281
-\c@biburlnumpenalty=\count282
-\c@biburlucpenalty=\count283
-\c@biburllcpenalty=\count284
-\c@smartand=\count285
+Normal \count register pool exhausted, switching to extended pool.
+\c@textcitecount=\count277
+\c@textcitetotal=\count278
+\c@textcitemaxnames=\count279
+\c@biburlnumpenalty=\count280
+\c@biburlucpenalty=\count281
+\c@biburllcpenalty=\count282
+\c@smartand=\count283
 )
 Package biblatex Info: Trying to load bibliography style 'ieee'...
 Package biblatex Info: ... file 'ieee.bbx' found.
@@ -944,8 +930,8 @@ Package biblatex Info: ... file 'standard.bbx' found.
 
 (/usr/share/texlive/texmf-dist/tex/latex/biblatex/bbx/standard.bbx
 File: standard.bbx 2013/11/25 v2.8a biblatex bibliography style (PK/JW/AB)
-\c@bbx:relatedcount=\count286
-\c@bbx:relatedtotal=\count287
+\c@bbx:relatedcount=\count284
+\c@bbx:relatedtotal=\count285
 ))))
 Package biblatex Info: Trying to load citation style 'ieee'...
 Package biblatex Info: ... file 'ieee.cbx' found.
@@ -957,8 +943,8 @@ Package biblatex Info: ... file 'numeric-comp.cbx' found.
 
 (/usr/share/texlive/texmf-dist/tex/latex/biblatex/cbx/numeric-comp.cbx
 File: numeric-comp.cbx 2013/11/25 v2.8a biblatex citation style (PK/JW/AB)
-\c@cbx@tempcnta=\count288
-\c@cbx@tempcntb=\count289
+\c@cbx@tempcnta=\count286
+\c@cbx@tempcntb=\count287
 Package biblatex Info: Redefining '\cite'.
 Package biblatex Info: Redefining '\parencite'.
 Package biblatex Info: Redefining '\footcite'.
@@ -994,52 +980,52 @@ File: english.lbx 2013/11/25 v2.8a biblatex localization (PK/JW/AB)
 Package biblatex Warning: 'babel/polyglossia' detected but 'csquotes' missing.
 (biblatex)                Loading 'csquotes' recommended.
 
-\@quotelevel=\count290
-\@quotereset=\count291
+\@quotelevel=\count288
+\@quotereset=\count289
 (./QWTB_doc.aux)
 \openout1 = `QWTB_doc.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 103.
-LaTeX Font Info:    ... okay on input line 103.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 103.
-LaTeX Font Info:    ... okay on input line 103.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 103.
-LaTeX Font Info:    ... okay on input line 103.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 103.
-LaTeX Font Info:    ... okay on input line 103.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 103.
-LaTeX Font Info:    ... okay on input line 103.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 103.
-LaTeX Font Info:    ... okay on input line 103.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 103.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 103.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 143.
+LaTeX Font Info:    ... okay on input line 143.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 143.
+LaTeX Font Info:    ... okay on input line 143.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 143.
+LaTeX Font Info:    ... okay on input line 143.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 143.
+LaTeX Font Info:    ... okay on input line 143.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 143.
+LaTeX Font Info:    ... okay on input line 143.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 143.
+LaTeX Font Info:    ... okay on input line 143.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 143.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 143.
 
  (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 103.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 103.
-LaTeX Font Info:    ... okay on input line 103.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 103.
-LaTeX Font Info:    ... okay on input line 103.
-LaTeX Font Info:    Try loading font information for T1+qtm on input line 103.
+LaTeX Font Info:    ... okay on input line 143.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 143.
+LaTeX Font Info:    ... okay on input line 143.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 143.
+LaTeX Font Info:    ... okay on input line 143.
+LaTeX Font Info:    Try loading font information for T1+qtm on input line 143.
 
 (/usr/share/texmf/tex/latex/tex-gyre/t1qtm.fd
 File: t1qtm.fd 2009/09/25 v1.2 font definition file for T1/qtm
 )
 (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count292
-\scratchdimen=\dimen134
+\scratchcounter=\count290
+\scratchdimen=\dimen126
 \scratchbox=\box31
-\nofMPsegments=\count293
-\nofMParguments=\count294
-\everyMPshowfont=\toks25
-\MPscratchCnt=\count295
-\MPscratchDim=\dimen135
-\MPnumerator=\count296
-\makeMPintoPDFobject=\count297
-\everyMPtoPDFconversion=\toks26
+\nofMPsegments=\count291
+\nofMParguments=\count292
+\everyMPshowfont=\toks24
+\MPscratchCnt=\count293
+\MPscratchDim=\dimen127
+\MPnumerator=\count294
+\makeMPintoPDFobject=\count295
+\everyMPtoPDFconversion=\toks25
 ) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
 
@@ -1056,7 +1042,7 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 \AtBeginShipoutBox=\box32
-Package hyperref Info: Link coloring OFF on input line 103.
+Package hyperref Info: Link coloring OFF on input line 143.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
@@ -1064,52 +1050,17 @@ Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
-\c@section@level=\count298
+\c@section@level=\count296
 )
-LaTeX Info: Redefining \ref on input line 103.
-LaTeX Info: Redefining \pageref on input line 103.
-LaTeX Info: Redefining \nameref on input line 103.
+LaTeX Info: Redefining \ref on input line 143.
+LaTeX Info: Redefining \pageref on input line 143.
+LaTeX Info: Redefining \nameref on input line 143.
 
 (./QWTB_doc.out) (./QWTB_doc.out)
 \@outlinefile=\write4
 \openout4 = `QWTB_doc.out'.
 
-
-*geometry* driver: auto-detecting
-*geometry* detected driver: pdftex
-*geometry* verbose mode - [ preamble ] result:
-* driver: pdftex
-* paper: a4paper
-* layout: <same size as paper>
-* layoutoffset:(h,v)=(0.0pt,0.0pt)
-* modes: 
-* h-part:(L,W,R)=(89.62709pt, 418.25368pt, 89.6271pt)
-* v-part:(T,H,B)=(101.40665pt, 591.5302pt, 152.11pt)
-* \paperwidth=597.50787pt
-* \paperheight=845.04684pt
-* \textwidth=418.25368pt
-* \textheight=591.5302pt
-* \oddsidemargin=17.3571pt
-* \evensidemargin=17.3571pt
-* \topmargin=-7.86334pt
-* \headheight=12.0pt
-* \headsep=25.0pt
-* \topskip=12.0pt
-* \footskip=30.0pt
-* \marginparwidth=44.0pt
-* \marginparsep=10.0pt
-* \columnsep=10.0pt
-* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
-* \hoffset=0.0pt
-* \voffset=0.0pt
-* \mag=1000
-* \@twocolumnfalse
-* \@twosidefalse
-* \@mparswitchfalse
-* \@reversemarginfalse
-* (1in=72.27pt=25.4mm, 1cm=28.453pt)
-
-\c@lstlisting=\count299
+\c@lstlisting=\count297
 Package biblatex Info: Input encoding 'utf8' detected.
 Package biblatex Info: Data encoding 'UTF8' specified.
 (biblatex)             Backend will reencode on the fly.
@@ -1117,82 +1068,203 @@ Package biblatex Info: Data encoding 'UTF8' specified.
 
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'QWTB_doc.bbl' found.
-(./QWTB_doc.bbl)
-Package biblatex Info: Reference section=0 on input line 103.
-Package biblatex Info: Reference segment=0 on input line 103.
- <sources/qwlogo.jpg, id=173, 58.1445pt x 29.565pt>
+ (./QWTB_doc.bbl)
+Package biblatex Info: Reference section=0 on input line 143.
+Package biblatex Info: Reference segment=0 on input line 143.
+
+<sources/qwlogo.jpg, id=197, 58.1445pt x 29.565pt>
 File: sources/qwlogo.jpg Graphic file (type jpg)
+ <use sources/qwlogo.jpg>
+Package pdftex.def Info: sources/qwlogo.jpg used on input line 162.
+(pdftex.def)             Requested size: 117.00119pt x 59.49568pt.
 
-<use sources/qwlogo.jpg>
-Package pdftex.def Info: sources/qwlogo.jpg used on input line 115.
-(pdftex.def)             Requested size: 125.47737pt x 63.80573pt.
-
-<sources/eurametlogo.jpg, id=174, 593.21625pt x 261.97874pt>
+<sources/eurametlogo.jpg, id=198, 593.21625pt x 261.97874pt>
 File: sources/eurametlogo.jpg Graphic file (type jpg)
 
 <use sources/eurametlogo.jpg>
-Package pdftex.def Info: sources/eurametlogo.jpg used on input line 117.
-(pdftex.def)             Requested size: 125.47737pt x 55.4129pt.
- [1
+Package pdftex.def Info: sources/eurametlogo.jpg used on input line 164.
+(pdftex.def)             Requested size: 117.00119pt x 51.66727pt.
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 179.
+
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
+File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+) [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./sources/qwlogo.jpg> <./s
 ources/eurametlogo.jpg>] (./QWTB_doc.toc<<ot1.cmap>><<oml.cmap>><<oms.cmap>><<o
 mx.cmap>>
-LaTeX Font Info:    Try loading font information for T1+cmtt on input line 23.
-
-(/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
-File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
-)
-LaTeX Font Info:    Try loading font information for T1+cmss on input line 33.
+LaTeX Font Info:    Try loading font information for T1+cmss on input line 35.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmss.fd
 File: t1cmss.fd 1999/05/25 v2.5h Standard LaTeX font definitions
-) [2])
+) [2
+
+])
 \tf@toc=\write5
 \openout5 = `QWTB_doc.toc'.
 
- [3]
-<sources/basic scheme v2.pdf, id=243, 398.91533pt x 151.08946pt>
+ [3]pdfTeX warning (ext4): destination with the same identifier (name{page.1}) 
+has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.202 \end{abstract}
+                     [1]
+Chapter 1.
+<sources/basic scheme v2.pdf, id=276, 398.91533pt x 151.08946pt>
 File: sources/basic scheme v2.pdf Graphic file (type pdf)
 
 <use sources/basic scheme v2.pdf>
-Package pdftex.def Info: sources/basic scheme v2.pdf used on input line 159.
+Package pdftex.def Info: sources/basic scheme v2.pdf used on input line 208.
 (pdftex.def)             Requested size: 398.91434pt x 151.08908pt.
- [4 <./sources/basic scheme v2.pdf>] [5]
-[6] [7]
+
+Overfull \hbox (8.91434pt too wide) in paragraph at lines 208--209
+ [] 
+ []
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.220         \item O
+                     utput data are the result of the toolbox. [1
+
+ <./sources/basic scheme v2.pdf>]pdfTeX warning (ext4): destination with the sa
+me identifier (name{page.2}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.265 [d
+        ataout, datain, calcset] = qwtb('algid', datain, calcset) [2]pdfTeX war
+ning (ext4): destination with the same identifier (name{page.3}) has been alrea
+dy used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.307 \end{lstlisting}
+                       [3] [4]
+Chapter 2.
+[5
+
+]
+Overfull \hbox (1.20396pt too wide) in paragraph at lines 392--394
+\T1/qtm/m/n/12 Structure de-fines prop-er-ties and pos-si-bil-i-ties of the al-
+go-rithm. All fields are manda-
+ []
+
+[6]
 
 LaTeX Font Warning: Font shape `T1/cmss/b/n' undefined
-(Font)              using `T1/cmss/m/n' instead on input line 346.
+(Font)              using `T1/cmss/m/n' instead on input line 396.
 
-[8] [9] [10] [11] [12] [13] [14] [15]
-Underfull \hbox (badness 10000) in paragraph at lines 600--601
+[7] [8] [9]
+Overfull \hbox (17.2886pt too wide) in paragraph at lines 509--510
+[]\T1/qtm/m/n/12 Example of vec-tor quan-tity with $\OML/cmm/m/it/12 i$ \T1/qtm
+/m/n/12 el-e-ments, $\OML/cmm/m/it/12 M$ \T1/qtm/m/n/12 is equal to [][][][][][
+][][][]
+ []
+
+[10]
+Overfull \hbox (8.40569pt too wide) in paragraph at lines 569--570
+[]\T1/qtm/m/n/12 --- (1) Dis-play var-i-ous in-for-ma-tions con-cern-ing Monte 
+Carlo method. 
+ []
+
+
+Overfull \hbox (6.37285pt too wide) in paragraph at lines 570--571
+[]\T1/qtm/m/n/12 --- ('sin-glecore') Par-al-leliza-tion method ('mul-ti-core', 
+'mul-ti-sta-tion'). 
+ []
+
+[11] [12] [13] [14]
+Chapter 3.
+[15
+
+]
+Appendix A.
+[16
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 657--658
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 614--615
+Underfull \hbox (badness 10000) in paragraph at lines 671--672
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 629--630
+Underfull \hbox (badness 10000) in paragraph at lines 687--688
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 637--638
+Underfull \hbox (badness 10000) in paragraph at lines 695--696
 
  []
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1031.
-[16]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1031.
+[17]
+Appendix B.
+(./alg_examples_published/info_INL.tex
+Overfull \hbox (10.76424pt too wide) in paragraph at lines 4--5
+[]\T1/qtm/m/n/12 --- Cal-cu-lates In-te-gral Non-Linearity of an ADC. ADC has t
+o sam-ple sinewave,
+ []
+
+) (./alg_examples_published/doc_INL.tex [18
+
+]
+Overfull \hbox (13.64264pt too wide) in paragraph at lines 26--28
+\T1/qtm/m/n/12 Márkus J., Bi-lau Z. T., AD-CTest project site: []$\T1/cmtt/m/n/
+12 http : / / www . mit . bme . hu / projects /
+ []
+
+LaTeX Font Info:    Try loading font information for TS1+cmss on input line 53.
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmss.fd
+File: ts1cmss.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+) [19]
+<alg_examples_published/INL_alg_example_01.pdf, id=518, 387.4475pt x 315.1775pt
+>
+File: alg_examples_published/INL_alg_example_01.pdf Graphic file (type pdf)
+ <use alg_examples_published/INL_alg_example_01.pdf>
+Package pdftex.def Info: alg_examples_published/INL_alg_example_01.pdf used on 
+input line 92.
+(pdftex.def)             Requested size: 272.99881pt x 222.07993pt.
+ [20]
+<alg_examples_published/INL_alg_example_02.pdf, id=547, 399.4925pt x 313.17pt>
+File: alg_examples_published/INL_alg_example_02.pdf Graphic file (type pdf)
+
+<use alg_examples_published/INL_alg_example_02.pdf>
+Package pdftex.def Info: alg_examples_published/INL_alg_example_02.pdf used on 
+input line 119.
+(pdftex.def)             Requested size: 272.99881pt x 214.01839pt.
+ [21 <./alg_examples_published/INL_alg_example_01.pdf>]) [22 <./alg_examples_pu
+blished/INL_alg_example_02.pdf>]
+Appendix C.
+(./alg_examples_published/info_PSFE.tex
+Overfull \hbox (22.13123pt too wide) in paragraph at lines 5--6
+\T1/cmtt/m/n/12 ieee . org / stamp / stamp . jsp ? tp = &arnumber = 7061456 & i
+snumber = 7104190$[] 
+ []
+
+[23
+
+]) (./alg_examples_published/doc_PSFE.tex
+Overfull \hbox (21.6414pt too wide) in paragraph at lines 26--28
+\T1/qtm/m/n/12 10.1109/TIM.2015.2401211, URL: []$\T1/cmtt/m/n/12 http : / / iee
+explore . ieee . org / stamp / stamp .
+ []
+
+[24] [25])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1110.
+ [26]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1110.
  (./QWTB_doc.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1031.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1031.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1110.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1110.
 
 Package rerunfilecheck Info: File `QWTB_doc.out' has not changed.
-(rerunfilecheck)             Checksum: 64A4190137CB20896663469E96261B81;5419.
+(rerunfilecheck)             Checksum: 8D1FFB5320678C394D68D90DE37FAC5D;7014.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
@@ -1200,33 +1272,35 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 Package logreq Info: Writing requests to 'QWTB_doc.run.xml'.
 \openout1 = `QWTB_doc.run.xml'.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1031.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1110.
  ) 
 Here is how much of TeX's memory you used:
- 18951 strings out of 494994
- 282382 string characters out of 6180201
- 720805 words of memory out of 5000000
- 21768 multiletter control sequences out of 15000+600000
- 55462 words of font info for 49 fonts, out of 8000000 for 9000
+ 18740 strings out of 494994
+ 279958 string characters out of 6180201
+ 752807 words of memory out of 5000000
+ 21426 multiletter control sequences out of 15000+600000
+ 52733 words of font info for 49 fonts, out of 8000000 for 9000
  38 hyphenation exceptions out of 8191
- 40i,14n,48p,914b,1766s stack positions out of 5000i,500n,10000p,200000b,80000s
- </home/martin/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecss1095.600pk> </home/
-martin/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecss1440.600pk> </home/martin/.te
-xmf-var/fonts/pk/ljfour/jknappen/ec/ectt1440.600pk>{/usr/share/texmf/fonts/enc/
-dvips/tex-gyre/q-ec-sc.enc} </home/martin/.texmf-var/fonts/pk/ljfour/jknappen/e
-c/ecss1200.600pk> </home/martin/.texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1200
-.600pk>{/usr/share/texmf/fonts/enc/dvips/tex-gyre/q-ec.enc}</usr/share/texlive/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-
-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/f
-onts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/ty
-pe1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/pub
-lic/amsfonts/cm/cmr8.pfb></usr/share/texmf/fonts/type1/public/tex-gyre/qtmb.pfb
-></usr/share/texmf/fonts/type1/public/tex-gyre/qtmr.pfb></usr/share/texmf/fonts
-/type1/public/tex-gyre/qtmri.pfb>
-Output written on QWTB_doc.pdf (16 pages, 353803 bytes).
+ 40i,14n,48p,914b,1973s stack positions out of 5000i,500n,10000p,200000b,80000s
+ </home/martin/.texmf-var/fonts/pk/ljfour/jknappen/ec/tcss1200.600pk> </home/
+martin/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecss1095.600pk> </home/martin/.te
+xmf-var/fonts/pk/ljfour/jknappen/ec/ecss1440.600pk> </home/martin/.texmf-var/fo
+nts/pk/ljfour/jknappen/ec/ectt1440.600pk>{/usr/share/texmf/fonts/enc/dvips/tex-
+gyre/q-ec-sc.enc}{/usr/share/texmf/fonts/enc/dvips/tex-gyre/q-ec.enc} </home/ma
+rtin/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecss1200.600pk> </home/martin/.texm
+f-var/fonts/pk/ljfour/jknappen/ec/ectt1200.600pk></usr/share/texlive/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+sy10.pfb></usr/share/texmf/fonts/type1/public/tex-gyre/qtmb.pfb></usr/share/tex
+mf/fonts/type1/public/tex-gyre/qtmr.pfb></usr/share/texmf/fonts/type1/public/te
+x-gyre/qtmri.pfb>
+Output written on QWTB_doc.pdf (30 pages, 433903 bytes).
 PDF statistics:
- 650 PDF objects out of 1000 (max. 8388607)
- 445 compressed objects within 5 object streams
- 103 named destinations out of 1000 (max. 500000)
- 372 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 933 PDF objects out of 1000 (max. 8388607)
+ 663 compressed objects within 7 object streams
+ 220 named destinations out of 1000 (max. 500000)
+ 430 words of extra memory for PDF output out of 10000 (max. 10000000)
 

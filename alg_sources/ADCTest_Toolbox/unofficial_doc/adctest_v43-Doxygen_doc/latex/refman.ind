@@ -1,0 +1,1274 @@
+\begin{theindex}
+
+  \item {About\discretionary {-}{}{}\_\discretionary {-}{}{}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}1.\discretionary {-}{}{}m}, 
+		\hyperpage{20}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}2.\discretionary {-}{}{}m}, 
+		\hyperpage{21}
+  \item {adctest}
+    \subitem {adctest.\discretionary {-}{}{}m}, \hyperpage{3}
+  \item {adctest.\discretionary {-}{}{}m}
+    \subitem {adctest}, \hyperpage{3}
+    \subitem {Classify\discretionary {-}{}{}And\discretionary {-}{}{}Process\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{3}
+    \subitem {Delete\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{3}
+    \subitem {Descriptor\discretionary {-}{}{}Selector\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{3}
+    \subitem {Edit\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{3}
+    \subitem {Export\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{3}
+    \subitem {Help\discretionary {-}{}{}About\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{3}
+    \subitem {Help\discretionary {-}{}{}Getting\discretionary {-}{}{}Started\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{4}
+    \subitem {Help\discretionary {-}{}{}Users\discretionary {-}{}{}Manual\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{4}
+    \subitem {Import\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{4}
+    \subitem {Load\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{4}
+    \subitem {New\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{4}
+    \subitem {Process\discretionary {-}{}{}F\discretionary {-}{}{}F\discretionary {-}{}{}T\discretionary {-}{}{}Test\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{4}
+    \subitem {Process\discretionary {-}{}{}Histogram\discretionary {-}{}{}Test\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{4}
+    \subitem {Process\discretionary {-}{}{}L\discretionary {-}{}{}S4p\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{4}
+    \subitem {Process\discretionary {-}{}{}M\discretionary {-}{}{}L\discretionary {-}{}{}Fit\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{4}
+    \subitem {Quit\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{4}
+    \subitem {Save\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{4}
+    \subitem {Update\discretionary {-}{}{}Display}, \hyperpage{4}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}B\discretionary {-}{}{}H3\discretionary {-}{}{}Win.\discretionary {-}{}{}m}, 
+		\hyperpage{4}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Calculate\discretionary {-}{}{}Residuals\discretionary {-}{}{}For\discretionary {-}{}{}L\discretionary {-}{}{}S4p\discretionary {-}{}{}Fit.\discretionary {-}{}{}m}, 
+		\hyperpage{6}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Classify\discretionary {-}{}{}Measurement\discretionary {-}{}{}Record.\discretionary {-}{}{}m}, 
+		\hyperpage{6}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Compare\discretionary {-}{}{}L\discretionary {-}{}{}Svs\discretionary {-}{}{}M\discretionary {-}{}{}L.\discretionary {-}{}{}m}, 
+		\hyperpage{6}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Consistence.\discretionary {-}{}{}m}, 
+		\hyperpage{6}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Create\discretionary {-}{}{}New\discretionary {-}{}{}Dsc.\discretionary {-}{}{}m}, 
+		\hyperpage{7}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Display\discretionary {-}{}{}Results\discretionary {-}{}{}L\discretionary {-}{}{}S4p.\discretionary {-}{}{}m}, 
+		\hyperpage{8}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Display\discretionary {-}{}{}Warnings.\discretionary {-}{}{}m}, 
+		\hyperpage{8}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Edit\discretionary {-}{}{}Dsc.\discretionary {-}{}{}m}, 
+		\hyperpage{8}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Estimate4p\discretionary {-}{}{}L\discretionary {-}{}{}S\discretionary {-}{}{}Gauss\discretionary {-}{}{}Newton.\discretionary {-}{}{}m}, 
+		\hyperpage{9}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Estimate\discretionary {-}{}{}Freq\discretionary {-}{}{}B\discretionary {-}{}{}H3\discretionary {-}{}{}Ipfft.\discretionary {-}{}{}m}, 
+		\hyperpage{10}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Estimate\discretionary {-}{}{}Freq\discretionary {-}{}{}Rect.\discretionary {-}{}{}m}, 
+		\hyperpage{10}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Evaluate\discretionary {-}{}{}C\discretionary {-}{}{}F.\discretionary {-}{}{}m}, 
+		\hyperpage{10}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Evaluate\discretionary {-}{}{}C\discretionary {-}{}{}F\discretionary {-}{}{}\_\discretionary {-}{}{}old.\discretionary {-}{}{}m}, 
+		\hyperpage{10}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Export\discretionary {-}{}{}Results\discretionary {-}{}{}To\discretionary {-}{}{}H\discretionary {-}{}{}T\discretionary {-}{}{}M\discretionary {-}{}{}L.\discretionary {-}{}{}m}, 
+		\hyperpage{10}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Fit\discretionary {-}{}{}L\discretionary {-}{}{}S\discretionary {-}{}{}M\discretionary {-}{}{}L.\discretionary {-}{}{}m}, 
+		\hyperpage{11}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}I\discretionary {-}{}{}N\discretionary {-}{}{}L2\discretionary {-}{}{}Trans\discretionary {-}{}{}Levels.\discretionary {-}{}{}m}, 
+		\hyperpage{11}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}I\discretionary {-}{}{}N\discretionary {-}{}{}L2\discretionary {-}{}{}Trans\discretionary {-}{}{}Levels\discretionary {-}{}{}Extended.\discretionary {-}{}{}m}, 
+		\hyperpage{12}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}L\discretionary {-}{}{}S\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{12}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Load\discretionary {-}{}{}Dsc\discretionary {-}{}{}From\discretionary {-}{}{}X\discretionary {-}{}{}M\discretionary {-}{}{}L.\discretionary {-}{}{}m}, 
+		\hyperpage{12}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{13}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Pos\discretionary {-}{}{}Int\discretionary {-}{}{}Hist.\discretionary {-}{}{}m}, 
+		\hyperpage{15}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}L\discretionary {-}{}{}S4p\discretionary {-}{}{}Fit.\discretionary {-}{}{}m}, 
+		\hyperpage{15}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}M\discretionary {-}{}{}L5p\discretionary {-}{}{}Fit.\discretionary {-}{}{}m}, 
+		\hyperpage{16}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Process\discretionary {-}{}{}F\discretionary {-}{}{}F\discretionary {-}{}{}T\discretionary {-}{}{}Test.\discretionary {-}{}{}m}, 
+		\hyperpage{16}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Process\discretionary {-}{}{}Histogram\discretionary {-}{}{}Test.\discretionary {-}{}{}m}, 
+		\hyperpage{17}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Quantize\discretionary {-}{}{}Signal.\discretionary {-}{}{}m}, 
+		\hyperpage{17}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Save\discretionary {-}{}{}Dsc\discretionary {-}{}{}To\discretionary {-}{}{}X\discretionary {-}{}{}M\discretionary {-}{}{}L.\discretionary {-}{}{}m}, 
+		\hyperpage{17}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Simulate\discretionary {-}{}{}Measurement.\discretionary {-}{}{}m}, 
+		\hyperpage{18}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Sine\discretionary {-}{}{}Wave\discretionary {-}{}{}Fit4p\discretionary {-}{}{}Lsq\discretionary {-}{}{}Nonlin.\discretionary {-}{}{}m}, 
+		\hyperpage{19}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Time\discretionary {-}{}{}Domain2\discretionary {-}{}{}I\discretionary {-}{}{}N\discretionary {-}{}{}L.\discretionary {-}{}{}m}, 
+		\hyperpage{22}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/\discretionary {-}{}{}Trans\discretionary {-}{}{}Levels2\discretionary {-}{}{}I\discretionary {-}{}{}N\discretionary {-}{}{}L.\discretionary {-}{}{}m}, 
+		\hyperpage{22}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/adctest.\discretionary {-}{}{}m}, 
+		\hyperpage{3}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary.\discretionary {-}{}{}m}, 
+		\hyperpage{4}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/cov\discretionary {-}{}{}\_\discretionary {-}{}{}bh3.\discretionary {-}{}{}m}, 
+		\hyperpage{6}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/ell4.\discretionary {-}{}{}m}, 
+		\hyperpage{9}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/fdsfit4\discretionary {-}{}{}\_\discretionary {-}{}{}bh3.\discretionary {-}{}{}m}, 
+		\hyperpage{11}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/g1\discretionary {-}{}{}\_\discretionary {-}{}{}bh3.\discretionary {-}{}{}m}, 
+		\hyperpage{11}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/g2\discretionary {-}{}{}\_\discretionary {-}{}{}bh3.\discretionary {-}{}{}m}, 
+		\hyperpage{11}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/ng\discretionary {-}{}{}\_\discretionary {-}{}{}bh3.\discretionary {-}{}{}m}, 
+		\hyperpage{14}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/poli\discretionary {-}{}{}\_\discretionary {-}{}{}bh3.\discretionary {-}{}{}m}, 
+		\hyperpage{14}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/rms.\discretionary {-}{}{}m}, 
+		\hyperpage{17}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/scanning.\discretionary {-}{}{}m}, 
+		\hyperpage{18}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/sfit4imp.\discretionary {-}{}{}m}, 
+		\hyperpage{18}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/step\discretionary {-}{}{}\_\discretionary {-}{}{}1.\discretionary {-}{}{}m}, 
+		\hyperpage{19}
+  \item {adctest\discretionary {-}{}{}\_\discretionary {-}{}{}v43/step\discretionary {-}{}{}\_\discretionary {-}{}{}2.\discretionary {-}{}{}m}, 
+		\hyperpage{21}
+  \item {Amp\discretionary {-}{}{}Phase\discretionary {-}{}{}Vs\discretionary {-}{}{}Cosine\discretionary {-}{}{}Sine\discretionary {-}{}{}Selector\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Simulate\discretionary {-}{}{}Measurement.\discretionary {-}{}{}m}, 
+		\hyperpage{18}
+
+  \indexspace
+
+  \item {B\discretionary {-}{}{}H3\discretionary {-}{}{}Win}
+    \subitem {B\discretionary {-}{}{}H3\discretionary {-}{}{}Win.\discretionary {-}{}{}m}, 
+		\hyperpage{4}
+  \item {B\discretionary {-}{}{}H3\discretionary {-}{}{}Win.\discretionary {-}{}{}m}
+    \subitem {B\discretionary {-}{}{}H3\discretionary {-}{}{}Win}, 
+		\hyperpage{4}
+  \item {brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary}
+    \subitem {brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary.\discretionary {-}{}{}m}, 
+		\hyperpage{5}
+  \item {brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary.\discretionary {-}{}{}m}
+    \subitem {brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary}, 
+		\hyperpage{5}
+    \subitem {brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Opening\discretionary {-}{}{}Fcn}, 
+		\hyperpage{5}
+    \subitem {brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Output\discretionary {-}{}{}Fcn}, 
+		\hyperpage{5}
+    \subitem {edit2\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{5}
+    \subitem {edit2\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}, 
+		\hyperpage{5}
+    \subitem {edit4\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{5}
+    \subitem {edit4\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}, 
+		\hyperpage{5}
+    \subitem {edit5\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{5}
+    \subitem {edit5\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}, 
+		\hyperpage{5}
+    \subitem {edit6\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{5}
+    \subitem {edit6\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}, 
+		\hyperpage{5}
+    \subitem {edit\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}fr\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{5}
+    \subitem {edit\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}fr\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}, 
+		\hyperpage{5}
+    \subitem {edit\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}lambda\discretionary {-}{}{}\_\discretionary {-}{}{}coeff\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{5}
+    \subitem {edit\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}lambda\discretionary {-}{}{}\_\discretionary {-}{}{}coeff\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}, 
+		\hyperpage{5}
+    \subitem {popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}fr\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{5}
+    \subitem {popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}fr\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}, 
+		\hyperpage{5}
+    \subitem {popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}lambda\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{5}
+    \subitem {popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}lambda\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}, 
+		\hyperpage{5}
+    \subitem {popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}lambda\discretionary {-}{}{}\_\discretionary {-}{}{}uints\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{5}
+    \subitem {popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}lambda\discretionary {-}{}{}\_\discretionary {-}{}{}uints\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}, 
+		\hyperpage{5}
+    \subitem {popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}iteration\discretionary {-}{}{}\_\discretionary {-}{}{}method\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{5}
+    \subitem {popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}iteration\discretionary {-}{}{}\_\discretionary {-}{}{}method\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}, 
+		\hyperpage{6}
+    \subitem {pushbutton1\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{6}
+  \item {brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Opening\discretionary {-}{}{}Fcn}
+    \subitem {brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary.\discretionary {-}{}{}m}, 
+		\hyperpage{5}
+  \item {brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Output\discretionary {-}{}{}Fcn}
+    \subitem {brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary.\discretionary {-}{}{}m}, 
+		\hyperpage{5}
+
+  \indexspace
+
+  \item {Calculate\discretionary {-}{}{}Residuals\discretionary {-}{}{}For\discretionary {-}{}{}L\discretionary {-}{}{}S4p\discretionary {-}{}{}Fit}
+    \subitem {Calculate\discretionary {-}{}{}Residuals\discretionary {-}{}{}For\discretionary {-}{}{}L\discretionary {-}{}{}S4p\discretionary {-}{}{}Fit.\discretionary {-}{}{}m}, 
+		\hyperpage{6}
+  \item {Calculate\discretionary {-}{}{}Residuals\discretionary {-}{}{}For\discretionary {-}{}{}L\discretionary {-}{}{}S4p\discretionary {-}{}{}Fit.\discretionary {-}{}{}m}
+    \subitem {Calculate\discretionary {-}{}{}Residuals\discretionary {-}{}{}For\discretionary {-}{}{}L\discretionary {-}{}{}S4p\discretionary {-}{}{}Fit}, 
+		\hyperpage{6}
+  \item {Cancel\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Create\discretionary {-}{}{}New\discretionary {-}{}{}Dsc.\discretionary {-}{}{}m}, 
+		\hyperpage{7}
+    \subitem {Edit\discretionary {-}{}{}Dsc.\discretionary {-}{}{}m}, 
+		\hyperpage{8}
+    \subitem {Simulate\discretionary {-}{}{}Measurement.\discretionary {-}{}{}m}, 
+		\hyperpage{18}
+  \item {Classify\discretionary {-}{}{}And\discretionary {-}{}{}Process\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {adctest.\discretionary {-}{}{}m}, \hyperpage{3}
+  \item {Classify\discretionary {-}{}{}Measurement\discretionary {-}{}{}Record}
+    \subitem {Classify\discretionary {-}{}{}Measurement\discretionary {-}{}{}Record.\discretionary {-}{}{}m}, 
+		\hyperpage{6}
+  \item {Classify\discretionary {-}{}{}Measurement\discretionary {-}{}{}Record.\discretionary {-}{}{}m}
+    \subitem {Classify\discretionary {-}{}{}Measurement\discretionary {-}{}{}Record}, 
+		\hyperpage{6}
+  \item {Compare\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}M\discretionary {-}{}{}L5p\discretionary {-}{}{}Fit.\discretionary {-}{}{}m}, 
+		\hyperpage{16}
+  \item {Compare\discretionary {-}{}{}L\discretionary {-}{}{}Svs\discretionary {-}{}{}M\discretionary {-}{}{}L}
+    \subitem {Compare\discretionary {-}{}{}L\discretionary {-}{}{}Svs\discretionary {-}{}{}M\discretionary {-}{}{}L.\discretionary {-}{}{}m}, 
+		\hyperpage{6}
+  \item {Compare\discretionary {-}{}{}L\discretionary {-}{}{}Svs\discretionary {-}{}{}M\discretionary {-}{}{}L.\discretionary {-}{}{}m}
+    \subitem {Compare\discretionary {-}{}{}L\discretionary {-}{}{}Svs\discretionary {-}{}{}M\discretionary {-}{}{}L}, 
+		\hyperpage{6}
+    \subitem {Plot1\discretionary {-}{}{}Selector\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{6}
+    \subitem {Plot2\discretionary {-}{}{}Selector\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{6}
+    \subitem {Update\discretionary {-}{}{}Display}, \hyperpage{6}
+  \item {cov\discretionary {-}{}{}\_\discretionary {-}{}{}bh3}
+    \subitem {cov\discretionary {-}{}{}\_\discretionary {-}{}{}bh3.\discretionary {-}{}{}m}, 
+		\hyperpage{7}
+  \item {cov\discretionary {-}{}{}\_\discretionary {-}{}{}bh3.\discretionary {-}{}{}m}
+    \subitem {cov\discretionary {-}{}{}\_\discretionary {-}{}{}bh3}, 
+		\hyperpage{7}
+  \item {Create\discretionary {-}{}{}Cov\discretionary {-}{}{}Matrix}
+    \subitem {Estimate4p\discretionary {-}{}{}L\discretionary {-}{}{}S\discretionary {-}{}{}Gauss\discretionary {-}{}{}Newton.\discretionary {-}{}{}m}, 
+		\hyperpage{9}
+  \item {Create\discretionary {-}{}{}New\discretionary {-}{}{}Dsc}
+    \subitem {Create\discretionary {-}{}{}New\discretionary {-}{}{}Dsc.\discretionary {-}{}{}m}, 
+		\hyperpage{7}
+  \item {Create\discretionary {-}{}{}New\discretionary {-}{}{}Dsc.\discretionary {-}{}{}m}
+    \subitem {Cancel\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{7}
+    \subitem {Create\discretionary {-}{}{}New\discretionary {-}{}{}Dsc}, 
+		\hyperpage{7}
+    \subitem {Edit\discretionary {-}{}{}Channel\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{7}
+    \subitem {Edit\discretionary {-}{}{}Comment\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{7}
+    \subitem {Edit\discretionary {-}{}{}Model\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{7}
+    \subitem {Edit\discretionary {-}{}{}Name\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{7}
+    \subitem {Edit\discretionary {-}{}{}No\discretionary {-}{}{}B\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{7}
+    \subitem {Edit\discretionary {-}{}{}Serial\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{7}
+    \subitem {Import\discretionary {-}{}{}Measurement\discretionary {-}{}{}Data\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{7}
+    \subitem {O\discretionary {-}{}{}K\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{7}
+    \subitem {Select\discretionary {-}{}{}Source\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{7}
+    \subitem {Simulate\discretionary {-}{}{}Measurement\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{7}
+    \subitem {Update\discretionary {-}{}{}Display}, \hyperpage{7}
+
+  \indexspace
+
+  \item {Delete\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {adctest.\discretionary {-}{}{}m}, \hyperpage{3}
+  \item {Descriptor\discretionary {-}{}{}Selector\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {adctest.\discretionary {-}{}{}m}, \hyperpage{3}
+  \item {Display\discretionary {-}{}{}Results\discretionary {-}{}{}L\discretionary {-}{}{}S4p}
+    \subitem {Display\discretionary {-}{}{}Results\discretionary {-}{}{}L\discretionary {-}{}{}S4p.\discretionary {-}{}{}m}, 
+		\hyperpage{8}
+  \item {Display\discretionary {-}{}{}Results\discretionary {-}{}{}L\discretionary {-}{}{}S4p.\discretionary {-}{}{}m}
+    \subitem {Display\discretionary {-}{}{}Results\discretionary {-}{}{}L\discretionary {-}{}{}S4p}, 
+		\hyperpage{8}
+  \item {Display\discretionary {-}{}{}Warnings}
+    \subitem {Display\discretionary {-}{}{}Warnings.\discretionary {-}{}{}m}, 
+		\hyperpage{8}
+  \item {Display\discretionary {-}{}{}Warnings.\discretionary {-}{}{}m}
+    \subitem {Display\discretionary {-}{}{}Warnings}, \hyperpage{8}
+    \subitem {O\discretionary {-}{}{}K\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{8}
+
+  \indexspace
+
+  \item {edit2\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary.\discretionary {-}{}{}m}, 
+		\hyperpage{5}
+    \subitem {M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{13}
+  \item {edit2\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}
+    \subitem {brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary.\discretionary {-}{}{}m}, 
+		\hyperpage{5}
+    \subitem {M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{13}
+  \item {edit4\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary.\discretionary {-}{}{}m}, 
+		\hyperpage{5}
+    \subitem {M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{13}
+  \item {edit4\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}
+    \subitem {brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary.\discretionary {-}{}{}m}, 
+		\hyperpage{5}
+    \subitem {M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{13}
+  \item {edit5\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary.\discretionary {-}{}{}m}, 
+		\hyperpage{5}
+    \subitem {M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{13}
+  \item {edit5\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}
+    \subitem {brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary.\discretionary {-}{}{}m}, 
+		\hyperpage{5}
+    \subitem {M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{13}
+  \item {edit6\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary.\discretionary {-}{}{}m}, 
+		\hyperpage{5}
+    \subitem {M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{13}
+  \item {edit6\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}
+    \subitem {brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary.\discretionary {-}{}{}m}, 
+		\hyperpage{5}
+    \subitem {M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{13}
+  \item {Edit\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {adctest.\discretionary {-}{}{}m}, \hyperpage{3}
+  \item {edit\discretionary {-}{}{}\_\discretionary {-}{}{}first\discretionary {-}{}{}\_\discretionary {-}{}{}valid\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}2.\discretionary {-}{}{}m}, 
+		\hyperpage{21}
+  \item {edit\discretionary {-}{}{}\_\discretionary {-}{}{}first\discretionary {-}{}{}\_\discretionary {-}{}{}valid\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}2.\discretionary {-}{}{}m}, 
+		\hyperpage{21}
+  \item {edit\discretionary {-}{}{}\_\discretionary {-}{}{}highest\discretionary {-}{}{}\_\discretionary {-}{}{}valid\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}2.\discretionary {-}{}{}m}, 
+		\hyperpage{21}
+  \item {edit\discretionary {-}{}{}\_\discretionary {-}{}{}highest\discretionary {-}{}{}\_\discretionary {-}{}{}valid\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}2.\discretionary {-}{}{}m}, 
+		\hyperpage{21}
+  \item {edit\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}fr\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary.\discretionary {-}{}{}m}, 
+		\hyperpage{5}
+    \subitem {L\discretionary {-}{}{}S\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{12}
+    \subitem {M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{14}
+  \item {edit\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}fr\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}
+    \subitem {brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary.\discretionary {-}{}{}m}, 
+		\hyperpage{5}
+    \subitem {L\discretionary {-}{}{}S\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{12}
+    \subitem {M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{14}
+  \item {edit\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}lambda\discretionary {-}{}{}\_\discretionary {-}{}{}coeff\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary.\discretionary {-}{}{}m}, 
+		\hyperpage{5}
+    \subitem {M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{14}
+  \item {edit\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}lambda\discretionary {-}{}{}\_\discretionary {-}{}{}coeff\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}
+    \subitem {brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary.\discretionary {-}{}{}m}, 
+		\hyperpage{5}
+    \subitem {M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{14}
+  \item {edit\discretionary {-}{}{}\_\discretionary {-}{}{}last\discretionary {-}{}{}\_\discretionary {-}{}{}valid\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}2.\discretionary {-}{}{}m}, 
+		\hyperpage{21}
+  \item {edit\discretionary {-}{}{}\_\discretionary {-}{}{}last\discretionary {-}{}{}\_\discretionary {-}{}{}valid\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}2.\discretionary {-}{}{}m}, 
+		\hyperpage{21}
+  \item {edit\discretionary {-}{}{}\_\discretionary {-}{}{}lowest\discretionary {-}{}{}\_\discretionary {-}{}{}valid\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}2.\discretionary {-}{}{}m}, 
+		\hyperpage{21}
+  \item {edit\discretionary {-}{}{}\_\discretionary {-}{}{}lowest\discretionary {-}{}{}\_\discretionary {-}{}{}valid\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}2.\discretionary {-}{}{}m}, 
+		\hyperpage{21}
+  \item {Edit\discretionary {-}{}{}Amp\discretionary {-}{}{}Lim\discretionary {-}{}{}Max\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}L\discretionary {-}{}{}S4p\discretionary {-}{}{}Fit.\discretionary {-}{}{}m}, 
+		\hyperpage{15}
+  \item {Edit\discretionary {-}{}{}Amp\discretionary {-}{}{}Lim\discretionary {-}{}{}Min\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}L\discretionary {-}{}{}S4p\discretionary {-}{}{}Fit.\discretionary {-}{}{}m}, 
+		\hyperpage{15}
+  \item {Edit\discretionary {-}{}{}Channel\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Create\discretionary {-}{}{}New\discretionary {-}{}{}Dsc.\discretionary {-}{}{}m}, 
+		\hyperpage{7}
+    \subitem {Edit\discretionary {-}{}{}Dsc.\discretionary {-}{}{}m}, 
+		\hyperpage{8}
+  \item {Edit\discretionary {-}{}{}Comment\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Create\discretionary {-}{}{}New\discretionary {-}{}{}Dsc.\discretionary {-}{}{}m}, 
+		\hyperpage{7}
+    \subitem {Edit\discretionary {-}{}{}Dsc.\discretionary {-}{}{}m}, 
+		\hyperpage{8}
+  \item {Edit\discretionary {-}{}{}Cosine\discretionary {-}{}{}Coefficient\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Simulate\discretionary {-}{}{}Measurement.\discretionary {-}{}{}m}, 
+		\hyperpage{18}
+  \item {Edit\discretionary {-}{}{}D\discretionary {-}{}{}C\discretionary {-}{}{}Component\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Simulate\discretionary {-}{}{}Measurement.\discretionary {-}{}{}m}, 
+		\hyperpage{18}
+  \item {Edit\discretionary {-}{}{}Dsc}
+    \subitem {Edit\discretionary {-}{}{}Dsc.\discretionary {-}{}{}m}, 
+		\hyperpage{8}
+  \item {Edit\discretionary {-}{}{}Dsc.\discretionary {-}{}{}m}
+    \subitem {Cancel\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{8}
+    \subitem {Edit\discretionary {-}{}{}Channel\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{8}
+    \subitem {Edit\discretionary {-}{}{}Comment\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{8}
+    \subitem {Edit\discretionary {-}{}{}Dsc}, \hyperpage{8}
+    \subitem {Edit\discretionary {-}{}{}Model\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{8}
+    \subitem {Edit\discretionary {-}{}{}Name\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{9}
+    \subitem {Edit\discretionary {-}{}{}No\discretionary {-}{}{}B\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{9}
+    \subitem {Edit\discretionary {-}{}{}Serial\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{9}
+    \subitem {Import\discretionary {-}{}{}Measurement\discretionary {-}{}{}Data\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{9}
+    \subitem {O\discretionary {-}{}{}K\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{9}
+    \subitem {Select\discretionary {-}{}{}Source\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{9}
+    \subitem {Simulate\discretionary {-}{}{}Measurement\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{9}
+    \subitem {Update\discretionary {-}{}{}Display}, \hyperpage{9}
+  \item {Edit\discretionary {-}{}{}First\discretionary {-}{}{}Sample\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}L\discretionary {-}{}{}S4p\discretionary {-}{}{}Fit.\discretionary {-}{}{}m}, 
+		\hyperpage{15}
+  \item {Edit\discretionary {-}{}{}I\discretionary {-}{}{}N\discretionary {-}{}{}L\discretionary {-}{}{}From\discretionary {-}{}{}Workspace\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Simulate\discretionary {-}{}{}Measurement.\discretionary {-}{}{}m}, 
+		\hyperpage{18}
+  \item {Edit\discretionary {-}{}{}I\discretionary {-}{}{}N\discretionary {-}{}{}L\discretionary {-}{}{}Shape\discretionary {-}{}{}Coefficient\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Simulate\discretionary {-}{}{}Measurement.\discretionary {-}{}{}m}, 
+		\hyperpage{18}
+  \item {Edit\discretionary {-}{}{}Last\discretionary {-}{}{}Sample\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}L\discretionary {-}{}{}S4p\discretionary {-}{}{}Fit.\discretionary {-}{}{}m}, 
+		\hyperpage{15}
+  \item {Edit\discretionary {-}{}{}Max\discretionary {-}{}{}Fun\discretionary {-}{}{}Evals\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}L\discretionary {-}{}{}S4p\discretionary {-}{}{}Fit.\discretionary {-}{}{}m}, 
+		\hyperpage{15}
+    \subitem {Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}M\discretionary {-}{}{}L5p\discretionary {-}{}{}Fit.\discretionary {-}{}{}m}, 
+		\hyperpage{16}
+  \item {Edit\discretionary {-}{}{}Max\discretionary {-}{}{}Iter\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}L\discretionary {-}{}{}S4p\discretionary {-}{}{}Fit.\discretionary {-}{}{}m}, 
+		\hyperpage{15}
+    \subitem {Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}M\discretionary {-}{}{}L5p\discretionary {-}{}{}Fit.\discretionary {-}{}{}m}, 
+		\hyperpage{16}
+  \item {Edit\discretionary {-}{}{}Model\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Create\discretionary {-}{}{}New\discretionary {-}{}{}Dsc.\discretionary {-}{}{}m}, 
+		\hyperpage{7}
+    \subitem {Edit\discretionary {-}{}{}Dsc.\discretionary {-}{}{}m}, 
+		\hyperpage{8}
+  \item {Edit\discretionary {-}{}{}Name\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Create\discretionary {-}{}{}New\discretionary {-}{}{}Dsc.\discretionary {-}{}{}m}, 
+		\hyperpage{7}
+    \subitem {Edit\discretionary {-}{}{}Dsc.\discretionary {-}{}{}m}, 
+		\hyperpage{9}
+  \item {Edit\discretionary {-}{}{}No\discretionary {-}{}{}B\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Create\discretionary {-}{}{}New\discretionary {-}{}{}Dsc.\discretionary {-}{}{}m}, 
+		\hyperpage{7}
+    \subitem {Edit\discretionary {-}{}{}Dsc.\discretionary {-}{}{}m}, 
+		\hyperpage{9}
+  \item {Edit\discretionary {-}{}{}Noise\discretionary {-}{}{}On\discretionary {-}{}{}I\discretionary {-}{}{}N\discretionary {-}{}{}L\discretionary {-}{}{}Coefficient\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Simulate\discretionary {-}{}{}Measurement.\discretionary {-}{}{}m}, 
+		\hyperpage{19}
+  \item {Edit\discretionary {-}{}{}Number\discretionary {-}{}{}Of\discretionary {-}{}{}Bits\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Simulate\discretionary {-}{}{}Measurement.\discretionary {-}{}{}m}, 
+		\hyperpage{19}
+  \item {Edit\discretionary {-}{}{}Number\discretionary {-}{}{}Of\discretionary {-}{}{}Periods\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Simulate\discretionary {-}{}{}Measurement.\discretionary {-}{}{}m}, 
+		\hyperpage{19}
+  \item {Edit\discretionary {-}{}{}Number\discretionary {-}{}{}Of\discretionary {-}{}{}Samples\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Simulate\discretionary {-}{}{}Measurement.\discretionary {-}{}{}m}, 
+		\hyperpage{19}
+  \item {Edit\discretionary {-}{}{}Serial\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Create\discretionary {-}{}{}New\discretionary {-}{}{}Dsc.\discretionary {-}{}{}m}, 
+		\hyperpage{7}
+    \subitem {Edit\discretionary {-}{}{}Dsc.\discretionary {-}{}{}m}, 
+		\hyperpage{9}
+  \item {Edit\discretionary {-}{}{}Sine\discretionary {-}{}{}Coefficient\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Simulate\discretionary {-}{}{}Measurement.\discretionary {-}{}{}m}, 
+		\hyperpage{19}
+  \item {Edit\discretionary {-}{}{}Std\discretionary {-}{}{}Of\discretionary {-}{}{}Noise\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Simulate\discretionary {-}{}{}Measurement.\discretionary {-}{}{}m}, 
+		\hyperpage{19}
+  \item {Edit\discretionary {-}{}{}Tol\discretionary {-}{}{}Fun\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}L\discretionary {-}{}{}S4p\discretionary {-}{}{}Fit.\discretionary {-}{}{}m}, 
+		\hyperpage{15}
+    \subitem {Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}M\discretionary {-}{}{}L5p\discretionary {-}{}{}Fit.\discretionary {-}{}{}m}, 
+		\hyperpage{16}
+  \item {ell4}
+    \subitem {ell4.\discretionary {-}{}{}m}, \hyperpage{9}
+  \item {ell4.\discretionary {-}{}{}m}
+    \subitem {ell4}, \hyperpage{9}
+  \item {Estimate4p\discretionary {-}{}{}L\discretionary {-}{}{}S\discretionary {-}{}{}Gauss\discretionary {-}{}{}Newton}
+    \subitem {Estimate4p\discretionary {-}{}{}L\discretionary {-}{}{}S\discretionary {-}{}{}Gauss\discretionary {-}{}{}Newton.\discretionary {-}{}{}m}, 
+		\hyperpage{9}
+  \item {Estimate4p\discretionary {-}{}{}L\discretionary {-}{}{}S\discretionary {-}{}{}Gauss\discretionary {-}{}{}Newton.\discretionary {-}{}{}m}
+    \subitem {Create\discretionary {-}{}{}Cov\discretionary {-}{}{}Matrix}, 
+		\hyperpage{9}
+    \subitem {Estimate4p\discretionary {-}{}{}L\discretionary {-}{}{}S\discretionary {-}{}{}Gauss\discretionary {-}{}{}Newton}, 
+		\hyperpage{9}
+    \subitem {freq}, \hyperpage{9}
+    \subitem {g1}, \hyperpage{9}
+    \subitem {g2bh3}, \hyperpage{9}
+    \subitem {polinom}, \hyperpage{9}
+  \item {Estimate\discretionary {-}{}{}Freq\discretionary {-}{}{}B\discretionary {-}{}{}H3\discretionary {-}{}{}Ipfft}
+    \subitem {Estimate\discretionary {-}{}{}Freq\discretionary {-}{}{}B\discretionary {-}{}{}H3\discretionary {-}{}{}Ipfft.\discretionary {-}{}{}m}, 
+		\hyperpage{10}
+  \item {Estimate\discretionary {-}{}{}Freq\discretionary {-}{}{}B\discretionary {-}{}{}H3\discretionary {-}{}{}Ipfft.\discretionary {-}{}{}m}
+    \subitem {Estimate\discretionary {-}{}{}Freq\discretionary {-}{}{}B\discretionary {-}{}{}H3\discretionary {-}{}{}Ipfft}, 
+		\hyperpage{10}
+  \item {Estimate\discretionary {-}{}{}Freq\discretionary {-}{}{}Rect}
+    \subitem {Estimate\discretionary {-}{}{}Freq\discretionary {-}{}{}Rect.\discretionary {-}{}{}m}, 
+		\hyperpage{10}
+  \item {Estimate\discretionary {-}{}{}Freq\discretionary {-}{}{}Rect.\discretionary {-}{}{}m}
+    \subitem {Estimate\discretionary {-}{}{}Freq\discretionary {-}{}{}Rect}, 
+		\hyperpage{10}
+  \item {Evaluate\discretionary {-}{}{}C\discretionary {-}{}{}F}
+    \subitem {Evaluate\discretionary {-}{}{}C\discretionary {-}{}{}F.\discretionary {-}{}{}m}, 
+		\hyperpage{10}
+    \subitem {Evaluate\discretionary {-}{}{}C\discretionary {-}{}{}F\discretionary {-}{}{}\_\discretionary {-}{}{}old.\discretionary {-}{}{}m}, 
+		\hyperpage{10}
+  \item {Evaluate\discretionary {-}{}{}C\discretionary {-}{}{}F.\discretionary {-}{}{}m}
+    \subitem {Evaluate\discretionary {-}{}{}C\discretionary {-}{}{}F}, 
+		\hyperpage{10}
+  \item {Evaluate\discretionary {-}{}{}C\discretionary {-}{}{}F\discretionary {-}{}{}\_\discretionary {-}{}{}old.\discretionary {-}{}{}m}
+    \subitem {Evaluate\discretionary {-}{}{}C\discretionary {-}{}{}F}, 
+		\hyperpage{10}
+  \item {Export\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {adctest.\discretionary {-}{}{}m}, \hyperpage{3}
+  \item {Export\discretionary {-}{}{}Results\discretionary {-}{}{}To\discretionary {-}{}{}H\discretionary {-}{}{}T\discretionary {-}{}{}M\discretionary {-}{}{}L}
+    \subitem {Export\discretionary {-}{}{}Results\discretionary {-}{}{}To\discretionary {-}{}{}H\discretionary {-}{}{}T\discretionary {-}{}{}M\discretionary {-}{}{}L.\discretionary {-}{}{}m}, 
+		\hyperpage{11}
+  \item {Export\discretionary {-}{}{}Results\discretionary {-}{}{}To\discretionary {-}{}{}H\discretionary {-}{}{}T\discretionary {-}{}{}M\discretionary {-}{}{}L.\discretionary {-}{}{}m}
+    \subitem {Export\discretionary {-}{}{}Results\discretionary {-}{}{}To\discretionary {-}{}{}H\discretionary {-}{}{}T\discretionary {-}{}{}M\discretionary {-}{}{}L}, 
+		\hyperpage{11}
+
+  \indexspace
+
+  \item {fdsfit4\discretionary {-}{}{}\_\discretionary {-}{}{}bh3}
+    \subitem {fdsfit4\discretionary {-}{}{}\_\discretionary {-}{}{}bh3.\discretionary {-}{}{}m}, 
+		\hyperpage{11}
+  \item {fdsfit4\discretionary {-}{}{}\_\discretionary {-}{}{}bh3.\discretionary {-}{}{}m}
+    \subitem {fdsfit4\discretionary {-}{}{}\_\discretionary {-}{}{}bh3}, 
+		\hyperpage{11}
+  \item {Fit\discretionary {-}{}{}L\discretionary {-}{}{}S\discretionary {-}{}{}M\discretionary {-}{}{}L}
+    \subitem {Fit\discretionary {-}{}{}L\discretionary {-}{}{}S\discretionary {-}{}{}M\discretionary {-}{}{}L.\discretionary {-}{}{}m}, 
+		\hyperpage{11}
+  \item {Fit\discretionary {-}{}{}L\discretionary {-}{}{}S\discretionary {-}{}{}M\discretionary {-}{}{}L.\discretionary {-}{}{}m}
+    \subitem {Fit\discretionary {-}{}{}L\discretionary {-}{}{}S\discretionary {-}{}{}M\discretionary {-}{}{}L}, 
+		\hyperpage{11}
+  \item {freq}
+    \subitem {Estimate4p\discretionary {-}{}{}L\discretionary {-}{}{}S\discretionary {-}{}{}Gauss\discretionary {-}{}{}Newton.\discretionary {-}{}{}m}, 
+		\hyperpage{9}
+
+  \indexspace
+
+  \item {g1}
+    \subitem {Estimate4p\discretionary {-}{}{}L\discretionary {-}{}{}S\discretionary {-}{}{}Gauss\discretionary {-}{}{}Newton.\discretionary {-}{}{}m}, 
+		\hyperpage{9}
+  \item {g1\discretionary {-}{}{}\_\discretionary {-}{}{}bh3}
+    \subitem {g1\discretionary {-}{}{}\_\discretionary {-}{}{}bh3.\discretionary {-}{}{}m}, 
+		\hyperpage{11}
+  \item {g1\discretionary {-}{}{}\_\discretionary {-}{}{}bh3.\discretionary {-}{}{}m}
+    \subitem {g1\discretionary {-}{}{}\_\discretionary {-}{}{}bh3}, 
+		\hyperpage{11}
+  \item {g2\discretionary {-}{}{}\_\discretionary {-}{}{}bh3}
+    \subitem {g2\discretionary {-}{}{}\_\discretionary {-}{}{}bh3.\discretionary {-}{}{}m}, 
+		\hyperpage{11}
+  \item {g2\discretionary {-}{}{}\_\discretionary {-}{}{}bh3.\discretionary {-}{}{}m}
+    \subitem {g2\discretionary {-}{}{}\_\discretionary {-}{}{}bh3}, 
+		\hyperpage{11}
+  \item {g2bh3}
+    \subitem {Estimate4p\discretionary {-}{}{}L\discretionary {-}{}{}S\discretionary {-}{}{}Gauss\discretionary {-}{}{}Newton.\discretionary {-}{}{}m}, 
+		\hyperpage{9}
+  \item {Getting\discretionary {-}{}{}\_\discretionary {-}{}{}started\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}1.\discretionary {-}{}{}m}, 
+		\hyperpage{20}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}2.\discretionary {-}{}{}m}, 
+		\hyperpage{22}
+
+  \indexspace
+
+  \item {Help\discretionary {-}{}{}\_\discretionary {-}{}{}menu\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}1.\discretionary {-}{}{}m}, 
+		\hyperpage{20}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}2.\discretionary {-}{}{}m}, 
+		\hyperpage{22}
+  \item {Help\discretionary {-}{}{}About\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {adctest.\discretionary {-}{}{}m}, \hyperpage{3}
+  \item {Help\discretionary {-}{}{}Getting\discretionary {-}{}{}Started\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {adctest.\discretionary {-}{}{}m}, \hyperpage{4}
+  \item {Help\discretionary {-}{}{}How\discretionary {-}{}{}To\discretionary {-}{}{}Simulate\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Simulate\discretionary {-}{}{}Measurement.\discretionary {-}{}{}m}, 
+		\hyperpage{19}
+  \item {Help\discretionary {-}{}{}Users\discretionary {-}{}{}Manual\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {adctest.\discretionary {-}{}{}m}, \hyperpage{4}
+
+  \indexspace
+
+  \item {I\discretionary {-}{}{}N\discretionary {-}{}{}L2\discretionary {-}{}{}Trans\discretionary {-}{}{}Levels}
+    \subitem {I\discretionary {-}{}{}N\discretionary {-}{}{}L2\discretionary {-}{}{}Trans\discretionary {-}{}{}Levels.\discretionary {-}{}{}m}, 
+		\hyperpage{12}
+  \item {I\discretionary {-}{}{}N\discretionary {-}{}{}L2\discretionary {-}{}{}Trans\discretionary {-}{}{}Levels.\discretionary {-}{}{}m}
+    \subitem {I\discretionary {-}{}{}N\discretionary {-}{}{}L2\discretionary {-}{}{}Trans\discretionary {-}{}{}Levels}, 
+		\hyperpage{12}
+  \item {I\discretionary {-}{}{}N\discretionary {-}{}{}L2\discretionary {-}{}{}Trans\discretionary {-}{}{}Levels\discretionary {-}{}{}Extended}
+    \subitem {I\discretionary {-}{}{}N\discretionary {-}{}{}L2\discretionary {-}{}{}Trans\discretionary {-}{}{}Levels\discretionary {-}{}{}Extended.\discretionary {-}{}{}m}, 
+		\hyperpage{12}
+  \item {I\discretionary {-}{}{}N\discretionary {-}{}{}L2\discretionary {-}{}{}Trans\discretionary {-}{}{}Levels\discretionary {-}{}{}Extended.\discretionary {-}{}{}m}
+    \subitem {I\discretionary {-}{}{}N\discretionary {-}{}{}L2\discretionary {-}{}{}Trans\discretionary {-}{}{}Levels\discretionary {-}{}{}Extended}, 
+		\hyperpage{12}
+  \item {I\discretionary {-}{}{}N\discretionary {-}{}{}L\discretionary {-}{}{}Selection\discretionary {-}{}{}Method\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Simulate\discretionary {-}{}{}Measurement.\discretionary {-}{}{}m}, 
+		\hyperpage{19}
+  \item {I\discretionary {-}{}{}N\discretionary {-}{}{}L\discretionary {-}{}{}Shape\discretionary {-}{}{}Selector\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Simulate\discretionary {-}{}{}Measurement.\discretionary {-}{}{}m}, 
+		\hyperpage{19}
+  \item {Import\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {adctest.\discretionary {-}{}{}m}, \hyperpage{4}
+  \item {Import\discretionary {-}{}{}Measurement\discretionary {-}{}{}Data\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Create\discretionary {-}{}{}New\discretionary {-}{}{}Dsc.\discretionary {-}{}{}m}, 
+		\hyperpage{7}
+    \subitem {Edit\discretionary {-}{}{}Dsc.\discretionary {-}{}{}m}, 
+		\hyperpage{9}
+  \item {Initial\discretionary {-}{}{}Fr\discretionary {-}{}{}Value\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}L\discretionary {-}{}{}S4p\discretionary {-}{}{}Fit.\discretionary {-}{}{}m}, 
+		\hyperpage{15}
+
+  \indexspace
+
+  \item {L\discretionary {-}{}{}S\discretionary {-}{}{}\_\discretionary {-}{}{}options}
+    \subitem {L\discretionary {-}{}{}S\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{12}
+  \item {L\discretionary {-}{}{}S\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}
+    \subitem {edit\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}fr\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{12}
+    \subitem {edit\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}fr\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}, 
+		\hyperpage{12}
+    \subitem {L\discretionary {-}{}{}S\discretionary {-}{}{}\_\discretionary {-}{}{}options}, 
+		\hyperpage{12}
+    \subitem {L\discretionary {-}{}{}S\discretionary {-}{}{}\_\discretionary {-}{}{}options\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Opening\discretionary {-}{}{}Fcn}, 
+		\hyperpage{12}
+    \subitem {L\discretionary {-}{}{}S\discretionary {-}{}{}\_\discretionary {-}{}{}options\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Output\discretionary {-}{}{}Fcn}, 
+		\hyperpage{12}
+    \subitem {popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}fr\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{12}
+    \subitem {popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}fr\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}, 
+		\hyperpage{13}
+    \subitem {popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}iteration\discretionary {-}{}{}\_\discretionary {-}{}{}method\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{13}
+    \subitem {popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}iteration\discretionary {-}{}{}\_\discretionary {-}{}{}method\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}, 
+		\hyperpage{13}
+    \subitem {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}O\discretionary {-}{}{}K\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{13}
+  \item {L\discretionary {-}{}{}S\discretionary {-}{}{}\_\discretionary {-}{}{}options\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Opening\discretionary {-}{}{}Fcn}
+    \subitem {L\discretionary {-}{}{}S\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{12}
+  \item {L\discretionary {-}{}{}S\discretionary {-}{}{}\_\discretionary {-}{}{}options\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Output\discretionary {-}{}{}Fcn}
+    \subitem {L\discretionary {-}{}{}S\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{12}
+  \item {Load\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {adctest.\discretionary {-}{}{}m}, \hyperpage{4}
+  \item {Load\discretionary {-}{}{}Dsc\discretionary {-}{}{}From\discretionary {-}{}{}X\discretionary {-}{}{}M\discretionary {-}{}{}L}
+    \subitem {Load\discretionary {-}{}{}Dsc\discretionary {-}{}{}From\discretionary {-}{}{}X\discretionary {-}{}{}M\discretionary {-}{}{}L.\discretionary {-}{}{}m}, 
+		\hyperpage{12}
+  \item {Load\discretionary {-}{}{}Dsc\discretionary {-}{}{}From\discretionary {-}{}{}X\discretionary {-}{}{}M\discretionary {-}{}{}L.\discretionary {-}{}{}m}
+    \subitem {Load\discretionary {-}{}{}Dsc\discretionary {-}{}{}From\discretionary {-}{}{}X\discretionary {-}{}{}M\discretionary {-}{}{}L}, 
+		\hyperpage{12}
+
+  \indexspace
+
+  \item {M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options}
+    \subitem {M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{14}
+  \item {M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}
+    \subitem {edit2\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{13}
+    \subitem {edit2\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}, 
+		\hyperpage{13}
+    \subitem {edit4\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{13}
+    \subitem {edit4\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}, 
+		\hyperpage{13}
+    \subitem {edit5\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{13}
+    \subitem {edit5\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}, 
+		\hyperpage{13}
+    \subitem {edit6\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{13}
+    \subitem {edit6\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}, 
+		\hyperpage{13}
+    \subitem {edit\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}fr\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{14}
+    \subitem {edit\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}fr\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}, 
+		\hyperpage{14}
+    \subitem {edit\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}lambda\discretionary {-}{}{}\_\discretionary {-}{}{}coeff\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{14}
+    \subitem {edit\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}lambda\discretionary {-}{}{}\_\discretionary {-}{}{}coeff\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}, 
+		\hyperpage{14}
+    \subitem {M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options}, 
+		\hyperpage{14}
+    \subitem {M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Opening\discretionary {-}{}{}Fcn}, 
+		\hyperpage{14}
+    \subitem {M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Output\discretionary {-}{}{}Fcn}, 
+		\hyperpage{14}
+    \subitem {popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}fr\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{14}
+    \subitem {popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}fr\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}, 
+		\hyperpage{14}
+    \subitem {popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}lambda\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{14}
+    \subitem {popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}lambda\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}, 
+		\hyperpage{14}
+    \subitem {popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}lambda\discretionary {-}{}{}\_\discretionary {-}{}{}uints\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{14}
+    \subitem {popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}lambda\discretionary {-}{}{}\_\discretionary {-}{}{}uints\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}, 
+		\hyperpage{14}
+    \subitem {popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}iteration\discretionary {-}{}{}\_\discretionary {-}{}{}method\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{14}
+    \subitem {popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}iteration\discretionary {-}{}{}\_\discretionary {-}{}{}method\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}, 
+		\hyperpage{14}
+  \item {M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Opening\discretionary {-}{}{}Fcn}
+    \subitem {M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{14}
+  \item {M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Output\discretionary {-}{}{}Fcn}
+    \subitem {M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{14}
+
+  \indexspace
+
+  \item {New\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {adctest.\discretionary {-}{}{}m}, \hyperpage{4}
+  \item {ng\discretionary {-}{}{}\_\discretionary {-}{}{}bh3}
+    \subitem {ng\discretionary {-}{}{}\_\discretionary {-}{}{}bh3.\discretionary {-}{}{}m}, 
+		\hyperpage{14}
+  \item {ng\discretionary {-}{}{}\_\discretionary {-}{}{}bh3.\discretionary {-}{}{}m}
+    \subitem {ng\discretionary {-}{}{}\_\discretionary {-}{}{}bh3}, 
+		\hyperpage{14}
+  \item {Noise\discretionary {-}{}{}On\discretionary {-}{}{}I\discretionary {-}{}{}N\discretionary {-}{}{}L\discretionary {-}{}{}Selector\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Simulate\discretionary {-}{}{}Measurement.\discretionary {-}{}{}m}, 
+		\hyperpage{19}
+
+  \indexspace
+
+  \item {O\discretionary {-}{}{}K\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Create\discretionary {-}{}{}New\discretionary {-}{}{}Dsc.\discretionary {-}{}{}m}, 
+		\hyperpage{7}
+    \subitem {Display\discretionary {-}{}{}Warnings.\discretionary {-}{}{}m}, 
+		\hyperpage{8}
+    \subitem {Edit\discretionary {-}{}{}Dsc.\discretionary {-}{}{}m}, 
+		\hyperpage{9}
+    \subitem {Process\discretionary {-}{}{}Histogram\discretionary {-}{}{}Test.\discretionary {-}{}{}m}, 
+		\hyperpage{17}
+
+  \indexspace
+
+  \item {Plot1\discretionary {-}{}{}Selector\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Compare\discretionary {-}{}{}L\discretionary {-}{}{}Svs\discretionary {-}{}{}M\discretionary {-}{}{}L.\discretionary {-}{}{}m}, 
+		\hyperpage{6}
+  \item {Plot2\discretionary {-}{}{}Selector\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Compare\discretionary {-}{}{}L\discretionary {-}{}{}Svs\discretionary {-}{}{}M\discretionary {-}{}{}L.\discretionary {-}{}{}m}, 
+		\hyperpage{6}
+  \item {poli\discretionary {-}{}{}\_\discretionary {-}{}{}bh3}
+    \subitem {poli\discretionary {-}{}{}\_\discretionary {-}{}{}bh3.\discretionary {-}{}{}m}, 
+		\hyperpage{14}
+  \item {poli\discretionary {-}{}{}\_\discretionary {-}{}{}bh3.\discretionary {-}{}{}m}
+    \subitem {poli\discretionary {-}{}{}\_\discretionary {-}{}{}bh3}, 
+		\hyperpage{14}
+  \item {polinom}
+    \subitem {Estimate4p\discretionary {-}{}{}L\discretionary {-}{}{}S\discretionary {-}{}{}Gauss\discretionary {-}{}{}Newton.\discretionary {-}{}{}m}, 
+		\hyperpage{9}
+  \item {popup\discretionary {-}{}{}\_\discretionary {-}{}{}option\discretionary {-}{}{}\_\discretionary {-}{}{}selector\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}1.\discretionary {-}{}{}m}, 
+		\hyperpage{20}
+  \item {popup\discretionary {-}{}{}\_\discretionary {-}{}{}option\discretionary {-}{}{}\_\discretionary {-}{}{}selector\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}1.\discretionary {-}{}{}m}, 
+		\hyperpage{20}
+  \item {popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}fr\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary.\discretionary {-}{}{}m}, 
+		\hyperpage{5}
+    \subitem {L\discretionary {-}{}{}S\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{12}
+    \subitem {M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{14}
+  \item {popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}fr\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}
+    \subitem {brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary.\discretionary {-}{}{}m}, 
+		\hyperpage{5}
+    \subitem {L\discretionary {-}{}{}S\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{13}
+    \subitem {M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{14}
+  \item {popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}lambda\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary.\discretionary {-}{}{}m}, 
+		\hyperpage{5}
+    \subitem {M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{14}
+  \item {popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}lambda\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}
+    \subitem {brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary.\discretionary {-}{}{}m}, 
+		\hyperpage{5}
+    \subitem {M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{14}
+  \item {popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}lambda\discretionary {-}{}{}\_\discretionary {-}{}{}uints\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary.\discretionary {-}{}{}m}, 
+		\hyperpage{5}
+    \subitem {M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{14}
+  \item {popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}initial\discretionary {-}{}{}\_\discretionary {-}{}{}lambda\discretionary {-}{}{}\_\discretionary {-}{}{}uints\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}
+    \subitem {brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary.\discretionary {-}{}{}m}, 
+		\hyperpage{5}
+    \subitem {M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{14}
+  \item {popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}iteration\discretionary {-}{}{}\_\discretionary {-}{}{}method\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary.\discretionary {-}{}{}m}, 
+		\hyperpage{5}
+    \subitem {L\discretionary {-}{}{}S\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{13}
+    \subitem {M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{14}
+  \item {popupmenu\discretionary {-}{}{}\_\discretionary {-}{}{}iteration\discretionary {-}{}{}\_\discretionary {-}{}{}method\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}
+    \subitem {brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary.\discretionary {-}{}{}m}, 
+		\hyperpage{6}
+    \subitem {L\discretionary {-}{}{}S\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{13}
+    \subitem {M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{14}
+  \item {Pos\discretionary {-}{}{}Int\discretionary {-}{}{}Hist}
+    \subitem {Pos\discretionary {-}{}{}Int\discretionary {-}{}{}Hist.\discretionary {-}{}{}m}, 
+		\hyperpage{15}
+  \item {Pos\discretionary {-}{}{}Int\discretionary {-}{}{}Hist.\discretionary {-}{}{}m}
+    \subitem {Pos\discretionary {-}{}{}Int\discretionary {-}{}{}Hist}, 
+		\hyperpage{15}
+  \item {Pre\discretionary {-}{}{}Process\discretionary {-}{}{}Data}
+    \subitem {Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}L\discretionary {-}{}{}S4p\discretionary {-}{}{}Fit.\discretionary {-}{}{}m}, 
+		\hyperpage{15}
+  \item {Process\discretionary {-}{}{}And\discretionary {-}{}{}Perform\discretionary {-}{}{}M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}L\discretionary {-}{}{}S4p\discretionary {-}{}{}Fit.\discretionary {-}{}{}m}, 
+		\hyperpage{15}
+  \item {Process\discretionary {-}{}{}And\discretionary {-}{}{}Show\discretionary {-}{}{}Results\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}L\discretionary {-}{}{}S4p\discretionary {-}{}{}Fit.\discretionary {-}{}{}m}, 
+		\hyperpage{15}
+  \item {Process\discretionary {-}{}{}Data}
+    \subitem {Process\discretionary {-}{}{}F\discretionary {-}{}{}F\discretionary {-}{}{}T\discretionary {-}{}{}Test.\discretionary {-}{}{}m}, 
+		\hyperpage{17}
+  \item {Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}L\discretionary {-}{}{}S4p\discretionary {-}{}{}Fit}
+    \subitem {Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}L\discretionary {-}{}{}S4p\discretionary {-}{}{}Fit.\discretionary {-}{}{}m}, 
+		\hyperpage{16}
+  \item {Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}L\discretionary {-}{}{}S4p\discretionary {-}{}{}Fit.\discretionary {-}{}{}m}
+    \subitem {Edit\discretionary {-}{}{}Amp\discretionary {-}{}{}Lim\discretionary {-}{}{}Max\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{15}
+    \subitem {Edit\discretionary {-}{}{}Amp\discretionary {-}{}{}Lim\discretionary {-}{}{}Min\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{15}
+    \subitem {Edit\discretionary {-}{}{}First\discretionary {-}{}{}Sample\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{15}
+    \subitem {Edit\discretionary {-}{}{}Last\discretionary {-}{}{}Sample\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{15}
+    \subitem {Edit\discretionary {-}{}{}Max\discretionary {-}{}{}Fun\discretionary {-}{}{}Evals\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{15}
+    \subitem {Edit\discretionary {-}{}{}Max\discretionary {-}{}{}Iter\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{15}
+    \subitem {Edit\discretionary {-}{}{}Tol\discretionary {-}{}{}Fun\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{15}
+    \subitem {Initial\discretionary {-}{}{}Fr\discretionary {-}{}{}Value\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{15}
+    \subitem {Pre\discretionary {-}{}{}Process\discretionary {-}{}{}Data}, 
+		\hyperpage{15}
+    \subitem {Process\discretionary {-}{}{}And\discretionary {-}{}{}Perform\discretionary {-}{}{}M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{15}
+    \subitem {Process\discretionary {-}{}{}And\discretionary {-}{}{}Show\discretionary {-}{}{}Results\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{15}
+    \subitem {Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}L\discretionary {-}{}{}S4p\discretionary {-}{}{}Fit}, 
+		\hyperpage{16}
+    \subitem {Select\discretionary {-}{}{}Method\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{16}
+    \subitem {Source\discretionary {-}{}{}Of\discretionary {-}{}{}Init\discretionary {-}{}{}Fr\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{16}
+    \subitem {Update\discretionary {-}{}{}Display}, \hyperpage{16}
+  \item {Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}M\discretionary {-}{}{}L5p\discretionary {-}{}{}Fit}
+    \subitem {Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}M\discretionary {-}{}{}L5p\discretionary {-}{}{}Fit.\discretionary {-}{}{}m}, 
+		\hyperpage{16}
+  \item {Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}M\discretionary {-}{}{}L5p\discretionary {-}{}{}Fit.\discretionary {-}{}{}m}
+    \subitem {Compare\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{16}
+    \subitem {Edit\discretionary {-}{}{}Max\discretionary {-}{}{}Fun\discretionary {-}{}{}Evals\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{16}
+    \subitem {Edit\discretionary {-}{}{}Max\discretionary {-}{}{}Iter\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{16}
+    \subitem {Edit\discretionary {-}{}{}Tol\discretionary {-}{}{}Fun\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{16}
+    \subitem {Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}M\discretionary {-}{}{}L5p\discretionary {-}{}{}Fit}, 
+		\hyperpage{16}
+    \subitem {Reset\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{16}
+    \subitem {Run\discretionary {-}{}{}Iterations}, \hyperpage{16}
+    \subitem {Start\discretionary {-}{}{}Pause\discretionary {-}{}{}Resume\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{16}
+    \subitem {Stop\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{16}
+    \subitem {Update\discretionary {-}{}{}Display}, \hyperpage{16}
+  \item {Process\discretionary {-}{}{}F\discretionary {-}{}{}F\discretionary {-}{}{}T\discretionary {-}{}{}Test}
+    \subitem {Process\discretionary {-}{}{}F\discretionary {-}{}{}F\discretionary {-}{}{}T\discretionary {-}{}{}Test.\discretionary {-}{}{}m}, 
+		\hyperpage{17}
+  \item {Process\discretionary {-}{}{}F\discretionary {-}{}{}F\discretionary {-}{}{}T\discretionary {-}{}{}Test.\discretionary {-}{}{}m}
+    \subitem {Process\discretionary {-}{}{}Data}, \hyperpage{17}
+    \subitem {Process\discretionary {-}{}{}F\discretionary {-}{}{}F\discretionary {-}{}{}T\discretionary {-}{}{}Test}, 
+		\hyperpage{17}
+    \subitem {Windowing\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{17}
+  \item {Process\discretionary {-}{}{}F\discretionary {-}{}{}F\discretionary {-}{}{}T\discretionary {-}{}{}Test\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {adctest.\discretionary {-}{}{}m}, \hyperpage{4}
+  \item {Process\discretionary {-}{}{}Histogram\discretionary {-}{}{}Test}
+    \subitem {Process\discretionary {-}{}{}Histogram\discretionary {-}{}{}Test.\discretionary {-}{}{}m}, 
+		\hyperpage{17}
+  \item {Process\discretionary {-}{}{}Histogram\discretionary {-}{}{}Test.\discretionary {-}{}{}m}
+    \subitem {O\discretionary {-}{}{}K\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{17}
+    \subitem {Process\discretionary {-}{}{}Histogram\discretionary {-}{}{}Test}, 
+		\hyperpage{17}
+  \item {Process\discretionary {-}{}{}Histogram\discretionary {-}{}{}Test\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {adctest.\discretionary {-}{}{}m}, \hyperpage{4}
+  \item {Process\discretionary {-}{}{}L\discretionary {-}{}{}S4p\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {adctest.\discretionary {-}{}{}m}, \hyperpage{4}
+  \item {Process\discretionary {-}{}{}M\discretionary {-}{}{}L\discretionary {-}{}{}Fit\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {adctest.\discretionary {-}{}{}m}, \hyperpage{4}
+  \item {pushbutton1\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {brief\discretionary {-}{}{}\_\discretionary {-}{}{}summary.\discretionary {-}{}{}m}, 
+		\hyperpage{6}
+  \item {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}O\discretionary {-}{}{}K\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {L\discretionary {-}{}{}S\discretionary {-}{}{}\_\discretionary {-}{}{}options.\discretionary {-}{}{}m}, 
+		\hyperpage{13}
+  \item {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}export\discretionary {-}{}{}\_\discretionary {-}{}{}to\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}H\discretionary {-}{}{}T\discretionary {-}{}{}M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}1.\discretionary {-}{}{}m}, 
+		\hyperpage{20}
+  \item {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}help\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}1.\discretionary {-}{}{}m}, 
+		\hyperpage{20}
+  \item {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}next\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}1.\discretionary {-}{}{}m}, 
+		\hyperpage{20}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}2.\discretionary {-}{}{}m}, 
+		\hyperpage{22}
+  \item {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}preprocess\discretionary {-}{}{}\_\discretionary {-}{}{}record\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}2.\discretionary {-}{}{}m}, 
+		\hyperpage{22}
+  \item {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}previous\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}1.\discretionary {-}{}{}m}, 
+		\hyperpage{20}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}2.\discretionary {-}{}{}m}, 
+		\hyperpage{22}
+  \item {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}process\discretionary {-}{}{}\_\discretionary {-}{}{}fft\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}1.\discretionary {-}{}{}m}, 
+		\hyperpage{20}
+  \item {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}process\discretionary {-}{}{}\_\discretionary {-}{}{}hist\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}1.\discretionary {-}{}{}m}, 
+		\hyperpage{20}
+  \item {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}process\discretionary {-}{}{}\_\discretionary {-}{}{}ls\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}1.\discretionary {-}{}{}m}, 
+		\hyperpage{20}
+  \item {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}process\discretionary {-}{}{}\_\discretionary {-}{}{}ml\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}1.\discretionary {-}{}{}m}, 
+		\hyperpage{20}
+  \item {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}show\discretionary {-}{}{}\_\discretionary {-}{}{}selections\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}1.\discretionary {-}{}{}m}, 
+		\hyperpage{20}
+  \item {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}showerrors\discretionary {-}{}{}\_\discretionary {-}{}{}1\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}1.\discretionary {-}{}{}m}, 
+		\hyperpage{20}
+  \item {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}showerrors\discretionary {-}{}{}\_\discretionary {-}{}{}2\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}1.\discretionary {-}{}{}m}, 
+		\hyperpage{20}
+  \item {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}showerrors\discretionary {-}{}{}\_\discretionary {-}{}{}3\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}1.\discretionary {-}{}{}m}, 
+		\hyperpage{20}
+  \item {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}showerrors\discretionary {-}{}{}\_\discretionary {-}{}{}4\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}1.\discretionary {-}{}{}m}, 
+		\hyperpage{20}
+  \item {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}showwarns\discretionary {-}{}{}\_\discretionary {-}{}{}1\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}1.\discretionary {-}{}{}m}, 
+		\hyperpage{20}
+  \item {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}showwarns\discretionary {-}{}{}\_\discretionary {-}{}{}2\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}1.\discretionary {-}{}{}m}, 
+		\hyperpage{21}
+  \item {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}showwarns\discretionary {-}{}{}\_\discretionary {-}{}{}3\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}1.\discretionary {-}{}{}m}, 
+		\hyperpage{21}
+  \item {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}showwarns\discretionary {-}{}{}\_\discretionary {-}{}{}4\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}1.\discretionary {-}{}{}m}, 
+		\hyperpage{21}
+
+  \indexspace
+
+  \item {Quantize\discretionary {-}{}{}Signal}
+    \subitem {Quantize\discretionary {-}{}{}Signal.\discretionary {-}{}{}m}, 
+		\hyperpage{17}
+  \item {Quantize\discretionary {-}{}{}Signal.\discretionary {-}{}{}m}
+    \subitem {Quantize\discretionary {-}{}{}Signal}, \hyperpage{17}
+  \item {Quit\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {adctest.\discretionary {-}{}{}m}, \hyperpage{4}
+
+  \indexspace
+
+  \item {Reset\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}M\discretionary {-}{}{}L5p\discretionary {-}{}{}Fit.\discretionary {-}{}{}m}, 
+		\hyperpage{16}
+  \item {rms}
+    \subitem {rms.\discretionary {-}{}{}m}, \hyperpage{17}
+  \item {rms.\discretionary {-}{}{}m}
+    \subitem {rms}, \hyperpage{17}
+  \item {Run\discretionary {-}{}{}Iterations}
+    \subitem {Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}M\discretionary {-}{}{}L5p\discretionary {-}{}{}Fit.\discretionary {-}{}{}m}, 
+		\hyperpage{16}
+
+  \indexspace
+
+  \item {Save\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {adctest.\discretionary {-}{}{}m}, \hyperpage{4}
+  \item {Save\discretionary {-}{}{}Dsc\discretionary {-}{}{}To\discretionary {-}{}{}X\discretionary {-}{}{}M\discretionary {-}{}{}L}
+    \subitem {Save\discretionary {-}{}{}Dsc\discretionary {-}{}{}To\discretionary {-}{}{}X\discretionary {-}{}{}M\discretionary {-}{}{}L.\discretionary {-}{}{}m}, 
+		\hyperpage{17}
+  \item {Save\discretionary {-}{}{}Dsc\discretionary {-}{}{}To\discretionary {-}{}{}X\discretionary {-}{}{}M\discretionary {-}{}{}L.\discretionary {-}{}{}m}
+    \subitem {Save\discretionary {-}{}{}Dsc\discretionary {-}{}{}To\discretionary {-}{}{}X\discretionary {-}{}{}M\discretionary {-}{}{}L}, 
+		\hyperpage{17}
+  \item {Select\discretionary {-}{}{}Method\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}L\discretionary {-}{}{}S4p\discretionary {-}{}{}Fit.\discretionary {-}{}{}m}, 
+		\hyperpage{16}
+  \item {Select\discretionary {-}{}{}Source\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Create\discretionary {-}{}{}New\discretionary {-}{}{}Dsc.\discretionary {-}{}{}m}, 
+		\hyperpage{7}
+    \subitem {Edit\discretionary {-}{}{}Dsc.\discretionary {-}{}{}m}, 
+		\hyperpage{9}
+  \item {sfit4imp}
+    \subitem {sfit4imp.\discretionary {-}{}{}m}, \hyperpage{18}
+  \item {sfit4imp.\discretionary {-}{}{}m}
+    \subitem {sfit4imp}, \hyperpage{18}
+  \item {Simulate\discretionary {-}{}{}Measurement}
+    \subitem {Simulate\discretionary {-}{}{}Measurement.\discretionary {-}{}{}m}, 
+		\hyperpage{19}
+  \item {Simulate\discretionary {-}{}{}Measurement.\discretionary {-}{}{}m}
+    \subitem {Amp\discretionary {-}{}{}Phase\discretionary {-}{}{}Vs\discretionary {-}{}{}Cosine\discretionary {-}{}{}Sine\discretionary {-}{}{}Selector\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{18}
+    \subitem {Cancel\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{18}
+    \subitem {Edit\discretionary {-}{}{}Cosine\discretionary {-}{}{}Coefficient\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{18}
+    \subitem {Edit\discretionary {-}{}{}D\discretionary {-}{}{}C\discretionary {-}{}{}Component\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{18}
+    \subitem {Edit\discretionary {-}{}{}I\discretionary {-}{}{}N\discretionary {-}{}{}L\discretionary {-}{}{}From\discretionary {-}{}{}Workspace\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{18}
+    \subitem {Edit\discretionary {-}{}{}I\discretionary {-}{}{}N\discretionary {-}{}{}L\discretionary {-}{}{}Shape\discretionary {-}{}{}Coefficient\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{18}
+    \subitem {Edit\discretionary {-}{}{}Noise\discretionary {-}{}{}On\discretionary {-}{}{}I\discretionary {-}{}{}N\discretionary {-}{}{}L\discretionary {-}{}{}Coefficient\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{19}
+    \subitem {Edit\discretionary {-}{}{}Number\discretionary {-}{}{}Of\discretionary {-}{}{}Bits\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{19}
+    \subitem {Edit\discretionary {-}{}{}Number\discretionary {-}{}{}Of\discretionary {-}{}{}Periods\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{19}
+    \subitem {Edit\discretionary {-}{}{}Number\discretionary {-}{}{}Of\discretionary {-}{}{}Samples\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{19}
+    \subitem {Edit\discretionary {-}{}{}Sine\discretionary {-}{}{}Coefficient\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{19}
+    \subitem {Edit\discretionary {-}{}{}Std\discretionary {-}{}{}Of\discretionary {-}{}{}Noise\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{19}
+    \subitem {Help\discretionary {-}{}{}How\discretionary {-}{}{}To\discretionary {-}{}{}Simulate\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{19}
+    \subitem {I\discretionary {-}{}{}N\discretionary {-}{}{}L\discretionary {-}{}{}Selection\discretionary {-}{}{}Method\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{19}
+    \subitem {I\discretionary {-}{}{}N\discretionary {-}{}{}L\discretionary {-}{}{}Shape\discretionary {-}{}{}Selector\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{19}
+    \subitem {Noise\discretionary {-}{}{}On\discretionary {-}{}{}I\discretionary {-}{}{}N\discretionary {-}{}{}L\discretionary {-}{}{}Selector\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{19}
+    \subitem {Simulate\discretionary {-}{}{}Measurement}, 
+		\hyperpage{19}
+    \subitem {Simulate\discretionary {-}{}{}Measurement\discretionary {-}{}{}\_\discretionary {-}{}{}callback}, 
+		\hyperpage{19}
+    \subitem {Synchronize\discretionary {-}{}{}A\discretionary {-}{}{}B}, 
+		\hyperpage{19}
+    \subitem {Synchronize\discretionary {-}{}{}Amp\discretionary {-}{}{}Phase}, 
+		\hyperpage{19}
+    \subitem {Update\discretionary {-}{}{}Display}, \hyperpage{19}
+  \item {Simulate\discretionary {-}{}{}Measurement\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Create\discretionary {-}{}{}New\discretionary {-}{}{}Dsc.\discretionary {-}{}{}m}, 
+		\hyperpage{7}
+    \subitem {Edit\discretionary {-}{}{}Dsc.\discretionary {-}{}{}m}, 
+		\hyperpage{9}
+    \subitem {Simulate\discretionary {-}{}{}Measurement.\discretionary {-}{}{}m}, 
+		\hyperpage{19}
+  \item {Sine\discretionary {-}{}{}Wave\discretionary {-}{}{}Fit4p\discretionary {-}{}{}Lsq\discretionary {-}{}{}Nonlin}
+    \subitem {Sine\discretionary {-}{}{}Wave\discretionary {-}{}{}Fit4p\discretionary {-}{}{}Lsq\discretionary {-}{}{}Nonlin.\discretionary {-}{}{}m}, 
+		\hyperpage{19}
+  \item {Sine\discretionary {-}{}{}Wave\discretionary {-}{}{}Fit4p\discretionary {-}{}{}Lsq\discretionary {-}{}{}Nonlin.\discretionary {-}{}{}m}
+    \subitem {Sine\discretionary {-}{}{}Wave\discretionary {-}{}{}Fit4p\discretionary {-}{}{}Lsq\discretionary {-}{}{}Nonlin}, 
+		\hyperpage{19}
+  \item {Source\discretionary {-}{}{}Of\discretionary {-}{}{}Init\discretionary {-}{}{}Fr\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}L\discretionary {-}{}{}S4p\discretionary {-}{}{}Fit.\discretionary {-}{}{}m}, 
+		\hyperpage{16}
+  \item {Start\discretionary {-}{}{}Pause\discretionary {-}{}{}Resume\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}M\discretionary {-}{}{}L5p\discretionary {-}{}{}Fit.\discretionary {-}{}{}m}, 
+		\hyperpage{16}
+  \item {step\discretionary {-}{}{}\_\discretionary {-}{}{}1}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}1.\discretionary {-}{}{}m}, 
+		\hyperpage{21}
+  \item {step\discretionary {-}{}{}\_\discretionary {-}{}{}1.\discretionary {-}{}{}m}
+    \subitem {About\discretionary {-}{}{}\_\discretionary {-}{}{}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{20}
+    \subitem {Getting\discretionary {-}{}{}\_\discretionary {-}{}{}started\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{20}
+    \subitem {Help\discretionary {-}{}{}\_\discretionary {-}{}{}menu\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{20}
+    \subitem {popup\discretionary {-}{}{}\_\discretionary {-}{}{}option\discretionary {-}{}{}\_\discretionary {-}{}{}selector\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{20}
+    \subitem {popup\discretionary {-}{}{}\_\discretionary {-}{}{}option\discretionary {-}{}{}\_\discretionary {-}{}{}selector\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}, 
+		\hyperpage{20}
+    \subitem {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}export\discretionary {-}{}{}\_\discretionary {-}{}{}to\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}H\discretionary {-}{}{}T\discretionary {-}{}{}M\discretionary {-}{}{}L\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{20}
+    \subitem {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}help\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{20}
+    \subitem {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}next\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{20}
+    \subitem {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}previous\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{20}
+    \subitem {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}process\discretionary {-}{}{}\_\discretionary {-}{}{}fft\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{20}
+    \subitem {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}process\discretionary {-}{}{}\_\discretionary {-}{}{}hist\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{20}
+    \subitem {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}process\discretionary {-}{}{}\_\discretionary {-}{}{}ls\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{20}
+    \subitem {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}process\discretionary {-}{}{}\_\discretionary {-}{}{}ml\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{20}
+    \subitem {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}show\discretionary {-}{}{}\_\discretionary {-}{}{}selections\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{20}
+    \subitem {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}showerrors\discretionary {-}{}{}\_\discretionary {-}{}{}1\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{20}
+    \subitem {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}showerrors\discretionary {-}{}{}\_\discretionary {-}{}{}2\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{20}
+    \subitem {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}showerrors\discretionary {-}{}{}\_\discretionary {-}{}{}3\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{20}
+    \subitem {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}showerrors\discretionary {-}{}{}\_\discretionary {-}{}{}4\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{20}
+    \subitem {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}showwarns\discretionary {-}{}{}\_\discretionary {-}{}{}1\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{20}
+    \subitem {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}showwarns\discretionary {-}{}{}\_\discretionary {-}{}{}2\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{21}
+    \subitem {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}showwarns\discretionary {-}{}{}\_\discretionary {-}{}{}3\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{21}
+    \subitem {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}showwarns\discretionary {-}{}{}\_\discretionary {-}{}{}4\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{21}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}1}, 
+		\hyperpage{21}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}1\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Opening\discretionary {-}{}{}Fcn}, 
+		\hyperpage{21}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}1\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Output\discretionary {-}{}{}Fcn}, 
+		\hyperpage{21}
+  \item {step\discretionary {-}{}{}\_\discretionary {-}{}{}1\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Opening\discretionary {-}{}{}Fcn}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}1.\discretionary {-}{}{}m}, 
+		\hyperpage{21}
+  \item {step\discretionary {-}{}{}\_\discretionary {-}{}{}1\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Output\discretionary {-}{}{}Fcn}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}1.\discretionary {-}{}{}m}, 
+		\hyperpage{21}
+  \item {step\discretionary {-}{}{}\_\discretionary {-}{}{}2}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}2.\discretionary {-}{}{}m}, 
+		\hyperpage{22}
+  \item {step\discretionary {-}{}{}\_\discretionary {-}{}{}2.\discretionary {-}{}{}m}
+    \subitem {About\discretionary {-}{}{}\_\discretionary {-}{}{}adctest\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{21}
+    \subitem {edit\discretionary {-}{}{}\_\discretionary {-}{}{}first\discretionary {-}{}{}\_\discretionary {-}{}{}valid\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{21}
+    \subitem {edit\discretionary {-}{}{}\_\discretionary {-}{}{}first\discretionary {-}{}{}\_\discretionary {-}{}{}valid\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}, 
+		\hyperpage{21}
+    \subitem {edit\discretionary {-}{}{}\_\discretionary {-}{}{}highest\discretionary {-}{}{}\_\discretionary {-}{}{}valid\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{21}
+    \subitem {edit\discretionary {-}{}{}\_\discretionary {-}{}{}highest\discretionary {-}{}{}\_\discretionary {-}{}{}valid\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}, 
+		\hyperpage{21}
+    \subitem {edit\discretionary {-}{}{}\_\discretionary {-}{}{}last\discretionary {-}{}{}\_\discretionary {-}{}{}valid\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{21}
+    \subitem {edit\discretionary {-}{}{}\_\discretionary {-}{}{}last\discretionary {-}{}{}\_\discretionary {-}{}{}valid\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}, 
+		\hyperpage{21}
+    \subitem {edit\discretionary {-}{}{}\_\discretionary {-}{}{}lowest\discretionary {-}{}{}\_\discretionary {-}{}{}valid\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{21}
+    \subitem {edit\discretionary {-}{}{}\_\discretionary {-}{}{}lowest\discretionary {-}{}{}\_\discretionary {-}{}{}valid\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Create\discretionary {-}{}{}Fcn}, 
+		\hyperpage{21}
+    \subitem {Getting\discretionary {-}{}{}\_\discretionary {-}{}{}started\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{22}
+    \subitem {Help\discretionary {-}{}{}\_\discretionary {-}{}{}menu\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{22}
+    \subitem {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}next\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{22}
+    \subitem {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}preprocess\discretionary {-}{}{}\_\discretionary {-}{}{}record\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{22}
+    \subitem {pushbutton\discretionary {-}{}{}\_\discretionary {-}{}{}previous\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Callback}, 
+		\hyperpage{22}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}2}, 
+		\hyperpage{22}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}2\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Opening\discretionary {-}{}{}Fcn}, 
+		\hyperpage{22}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}2\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Output\discretionary {-}{}{}Fcn}, 
+		\hyperpage{22}
+  \item {step\discretionary {-}{}{}\_\discretionary {-}{}{}2\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Opening\discretionary {-}{}{}Fcn}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}2.\discretionary {-}{}{}m}, 
+		\hyperpage{22}
+  \item {step\discretionary {-}{}{}\_\discretionary {-}{}{}2\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Output\discretionary {-}{}{}Fcn}
+    \subitem {step\discretionary {-}{}{}\_\discretionary {-}{}{}2.\discretionary {-}{}{}m}, 
+		\hyperpage{22}
+  \item {Stop\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}M\discretionary {-}{}{}L5p\discretionary {-}{}{}Fit.\discretionary {-}{}{}m}, 
+		\hyperpage{16}
+  \item {Synchronize\discretionary {-}{}{}A\discretionary {-}{}{}B}
+    \subitem {Simulate\discretionary {-}{}{}Measurement.\discretionary {-}{}{}m}, 
+		\hyperpage{19}
+  \item {Synchronize\discretionary {-}{}{}Amp\discretionary {-}{}{}Phase}
+    \subitem {Simulate\discretionary {-}{}{}Measurement.\discretionary {-}{}{}m}, 
+		\hyperpage{19}
+
+  \indexspace
+
+  \item {Time\discretionary {-}{}{}Domain2\discretionary {-}{}{}I\discretionary {-}{}{}N\discretionary {-}{}{}L}
+    \subitem {Time\discretionary {-}{}{}Domain2\discretionary {-}{}{}I\discretionary {-}{}{}N\discretionary {-}{}{}L.\discretionary {-}{}{}m}, 
+		\hyperpage{22}
+  \item {Time\discretionary {-}{}{}Domain2\discretionary {-}{}{}I\discretionary {-}{}{}N\discretionary {-}{}{}L.\discretionary {-}{}{}m}
+    \subitem {Time\discretionary {-}{}{}Domain2\discretionary {-}{}{}I\discretionary {-}{}{}N\discretionary {-}{}{}L}, 
+		\hyperpage{22}
+  \item {Trans\discretionary {-}{}{}Levels2\discretionary {-}{}{}I\discretionary {-}{}{}N\discretionary {-}{}{}L}
+    \subitem {Trans\discretionary {-}{}{}Levels2\discretionary {-}{}{}I\discretionary {-}{}{}N\discretionary {-}{}{}L.\discretionary {-}{}{}m}, 
+		\hyperpage{22}
+  \item {Trans\discretionary {-}{}{}Levels2\discretionary {-}{}{}I\discretionary {-}{}{}N\discretionary {-}{}{}L.\discretionary {-}{}{}m}
+    \subitem {Trans\discretionary {-}{}{}Levels2\discretionary {-}{}{}I\discretionary {-}{}{}N\discretionary {-}{}{}L}, 
+		\hyperpage{22}
+
+  \indexspace
+
+  \item {Update\discretionary {-}{}{}Display}
+    \subitem {adctest.\discretionary {-}{}{}m}, \hyperpage{4}
+    \subitem {Compare\discretionary {-}{}{}L\discretionary {-}{}{}Svs\discretionary {-}{}{}M\discretionary {-}{}{}L.\discretionary {-}{}{}m}, 
+		\hyperpage{6}
+    \subitem {Create\discretionary {-}{}{}New\discretionary {-}{}{}Dsc.\discretionary {-}{}{}m}, 
+		\hyperpage{7}
+    \subitem {Edit\discretionary {-}{}{}Dsc.\discretionary {-}{}{}m}, 
+		\hyperpage{9}
+    \subitem {Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}L\discretionary {-}{}{}S4p\discretionary {-}{}{}Fit.\discretionary {-}{}{}m}, 
+		\hyperpage{16}
+    \subitem {Process\discretionary {-}{}{}Dsc\discretionary {-}{}{}M\discretionary {-}{}{}L5p\discretionary {-}{}{}Fit.\discretionary {-}{}{}m}, 
+		\hyperpage{16}
+    \subitem {Simulate\discretionary {-}{}{}Measurement.\discretionary {-}{}{}m}, 
+		\hyperpage{19}
+
+  \indexspace
+
+  \item {Windowing\discretionary {-}{}{}\_\discretionary {-}{}{}callback}
+    \subitem {Process\discretionary {-}{}{}F\discretionary {-}{}{}F\discretionary {-}{}{}T\discretionary {-}{}{}Test.\discretionary {-}{}{}m}, 
+		\hyperpage{17}
+
+\end{theindex}

@@ -1,0 +1,293 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of DisplayResultsLS4p</title>
+  <meta name="keywords" content="DisplayResultsLS4p">
+  <meta name="description" content="@fn DisplayResultsLS4p">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; DisplayResultsLS4p.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>DisplayResultsLS4p
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>@fn DisplayResultsLS4p</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function DisplayResultsLS4p(p,residuals,timevect,NoB,dsc) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> @fn DisplayResultsLS4p
+ @brief Displays the results of estimation using 4-parameter fit in least squares sense
+ @param p The estimated parameters of the sine wave
+ @param residuals The difference between the estimated and the recorded signal
+ @param timevect Sampling times of the elements of the data record
+ @param NoB Number of bits of the ADC under test
+ @return none
+ @author Tam� Virosztek, Budapest University of Technology and Economics,
+         Department of Measurement and Information Systems,
+         Virosztek.Tamas@mit.bme.hu</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="rms.html" class="code" title="function y = rms(x)">rms</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="ProcessDscLS4pFit.html" class="code" title="function ProcessDscLS4pFit(dsc,reason)">ProcessDscLS4pFit</a>	@fn ProcessDscLS4pFit</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function DisplayResultsLS4p(p,residuals,timevect,NoB,dsc)</a>
+0002 <span class="comment">% @fn DisplayResultsLS4p</span>
+0003 <span class="comment">% @brief Displays the results of estimation using 4-parameter fit in least squares sense</span>
+0004 <span class="comment">% @param p The estimated parameters of the sine wave</span>
+0005 <span class="comment">% @param residuals The difference between the estimated and the recorded signal</span>
+0006 <span class="comment">% @param timevect Sampling times of the elements of the data record</span>
+0007 <span class="comment">% @param NoB Number of bits of the ADC under test</span>
+0008 <span class="comment">% @return none</span>
+0009 <span class="comment">% @author Tam� Virosztek, Budapest University of Technology and Economics,</span>
+0010 <span class="comment">%         Department of Measurement and Information Systems,</span>
+0011 <span class="comment">%         Virosztek.Tamas@mit.bme.hu</span>
+0012 
+0013 <span class="comment">%Settings of display</span>
+0014 HISTOGRAM_DENSITY = 50;
+0015 
+0016 <span class="comment">%Calculating signal parameters</span>
+0017 amplitude_LSB = sqrt(p(1)^2 + p(2)^2);
+0018 frequency = p(4)/(2*pi);
+0019 phase_deg = (-1)*atan2(p(2),p(1))*180/pi;
+0020 dc_LSB = p(3);
+0021 amplitude_relFS = amplitude_LSB*1/(2^NoB - 2)*100;
+0022 
+0023 <span class="comment">%Calculating ADC parameters</span>
+0024 ENOB = NoB - log2(<a href="rms.html" class="code" title="function y = rms(x)">rms</a>(residuals)*sqrt(12));
+0025 <span class="keyword">if</span> (ENOB &gt; NoB)
+0026     ENOB = NoB; <span class="comment">%Saturating ENOB to the theoretical bit number</span>
+0027 <span class="keyword">end</span>
+0028 SINAD = 20*log10((amplitude_LSB/sqrt(2))/<a href="rms.html" class="code" title="function y = rms(x)">rms</a>(residuals));
+0029 
+0030 <span class="comment">%Calculating Mod T plot</span>
+0031 time_mod_T = zeros(length(residuals),1);
+0032 <span class="keyword">for</span> k = 1:length(residuals)
+0033     time_mod_T(k) = timevect(k)*p(4) - 2*pi*floor(timevect(k)*p(4)/(2*pi));
+0034 <span class="keyword">end</span>
+0035 [time_mod_T_sorted,time_mod_T_indeces] = sort(time_mod_T);
+0036 
+0037 <span class="comment">%Calculating axis boundaries</span>
+0038 max_axis_residuals = max([max(residuals);abs(min(residuals))]);
+0039 min_axis_residuals = (-1)*max_axis_residuals;
+0040 
+0041 <span class="comment">%Calculating x_axis for histogram</span>
+0042 hist_vect = linspace(min_axis_residuals,max_axis_residuals,HISTOGRAM_DENSITY);
+0043 
+0044 screensize = get(0,<span class="string">'ScreenSize'</span>);
+0045 
+0046 dispay_results_window = figure(<span class="string">'Position'</span>,[screensize(3)*0.2 screensize(4)*0.2 screensize(3)*0.6 screensize(4)*0.6],<span class="keyword">...</span>
+0047     <span class="string">'Name'</span>,<span class="string">'Process Results'</span>,<span class="keyword">...</span>
+0048     <span class="string">'NumberTitle'</span>,<span class="string">'off'</span>);
+0049 
+0050 hTextEstimatedSignalParameters = uicontrol (<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0051     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0052     <span class="string">'Position'</span>,[0.1 0.9 0.3 0.04],<span class="keyword">...</span>
+0053     <span class="string">'String'</span>,<span class="string">'Estimated signal parameters'</span>,<span class="keyword">...</span>
+0054     <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+0055     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0056 
+0057 hTextAmplitude = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0058     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0059     <span class="string">'Position'</span>,[0.05 0.85 0.3 0.04],<span class="keyword">...</span>
+0060     <span class="string">'String'</span>,<span class="string">'Amplitude (in LSB): '</span>,<span class="keyword">...</span>
+0061     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0062     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0063 
+0064 hTextAmplitudeValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0065     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0066     <span class="string">'Position'</span>,[0.35 0.85 0.1 0.04],<span class="keyword">...</span>
+0067     <span class="string">'String'</span>,sprintf (<span class="string">'%3.3f'</span>,amplitude_LSB),<span class="keyword">...</span>
+0068     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0069     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0070 
+0071 hTextFrequency = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0072     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0073     <span class="string">'Position'</span>,[0.05 0.8 0.3 0.04],<span class="keyword">...</span>
+0074     <span class="string">'String'</span>,<span class="string">'Normalized frequency (f/fs):'</span>,<span class="keyword">...</span>
+0075     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0076     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0077 
+0078 hTextFrequencyValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0079     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0080     <span class="string">'Position'</span>,[0.35 0.8 0.1 0.04],<span class="keyword">...</span>
+0081     <span class="string">'String'</span>,sprintf (<span class="string">'%1.4e'</span>,frequency),<span class="keyword">...</span>
+0082     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0083     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0084 
+0085 hTextPhase = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0086     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0087     <span class="string">'Position'</span>,[0.05 0.75 0.3 0.04],<span class="keyword">...</span>
+0088     <span class="string">'String'</span>,<span class="string">'Initial phase (in degrees)'</span>,<span class="keyword">...</span>
+0089     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0090     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0091 
+0092 hTextPhaseValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0093     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0094     <span class="string">'Position'</span>,[0.35 0.75 0.1 0.04],<span class="keyword">...</span>
+0095     <span class="string">'String'</span>,sprintf (<span class="string">'%3.3f'</span>,phase_deg),<span class="keyword">...</span>
+0096     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0097     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0098 
+0099 hTextDCComponent = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0100     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0101     <span class="string">'Position'</span>,[0.05 0.7 0.3 0.04],<span class="keyword">...</span>
+0102     <span class="string">'String'</span>,<span class="string">'DC component (in LSB)'</span>,<span class="keyword">...</span>
+0103     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0104     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0105 
+0106 hTextDCComponentValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0107     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0108     <span class="string">'Position'</span>,[0.35 0.7 0.1 0.04],<span class="keyword">...</span>
+0109     <span class="string">'String'</span>,sprintf (<span class="string">'%3.3f'</span>,dc_LSB),<span class="keyword">...</span>
+0110     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0111     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0112 
+0113 hTextAmplitudeRelFullScale = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0114     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0115     <span class="string">'Position'</span>,[0.05 0.65 0.3 0.04],<span class="keyword">...</span>
+0116     <span class="string">'String'</span>,<span class="string">'Amplitude (%FS):'</span>,<span class="keyword">...</span>
+0117     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0118     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0119 
+0120 hTextAmplitudeRelFullScaleValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0121     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0122     <span class="string">'Position'</span>,[0.35 0.65 0.1 0.04],<span class="keyword">...</span>
+0123     <span class="string">'String'</span>,sprintf (<span class="string">'%2.3f'</span>,amplitude_relFS),<span class="keyword">...</span>
+0124     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0125     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0126 
+0127 hTextCalculatedADCparameters = uicontrol (<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0128     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0129     <span class="string">'Position'</span>,[0.6 0.9 0.3 0.04],<span class="keyword">...</span>
+0130     <span class="string">'String'</span>,<span class="string">'Calculated ADC parameters'</span>,<span class="keyword">...</span>
+0131     <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+0132     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0133 
+0134 hTextENOB = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0135     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0136     <span class="string">'Position'</span>,[0.55 0.85 0.33 0.04],<span class="keyword">...</span>
+0137     <span class="string">'String'</span>,<span class="string">'Effective number of bits :'</span>,<span class="keyword">...</span>
+0138     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0139     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0140 
+0141 hTextENOBValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0142     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0143     <span class="string">'Position'</span>,[0.88 0.85 0.07 0.04],<span class="keyword">...</span>
+0144     <span class="string">'String'</span>,sprintf (<span class="string">'%3.2f'</span>,ENOB),<span class="keyword">...</span>
+0145     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0146     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0147 
+0148 hTextSINAD = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0149     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0150     <span class="string">'Position'</span>,[0.55 0.8 0.33 0.04],<span class="keyword">...</span>
+0151     <span class="string">'String'</span>,<span class="string">'Signal to noise and distortion ratio (dB): '</span>,<span class="keyword">...</span>
+0152     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0153     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0154 
+0155 hTextSINADValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0156     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0157     <span class="string">'Position'</span>,[0.88 0.8 0.07 0.04],<span class="keyword">...</span>
+0158     <span class="string">'String'</span>,sprintf (<span class="string">'%3.2f'</span>,SINAD),<span class="keyword">...</span>
+0159     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0160     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0161 
+0162 hTextModTPlot = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0163     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0164     <span class="string">'Position'</span>,[0.4 0.55 0.2 0.04],<span class="keyword">...</span>
+0165     <span class="string">'String'</span>,<span class="string">'Mod T plot of residuals'</span>,<span class="keyword">...</span>
+0166     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0167 
+0168 hTextHistogram = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0169     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0170     <span class="string">'Position'</span>,[0.4 0.25 0.2 0.04],<span class="keyword">...</span>
+0171     <span class="string">'String'</span>,<span class="string">'Histogram of residuals'</span>,<span class="keyword">...</span>
+0172     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0173 
+0174 
+0175 hAxesModTPlot = axes (<span class="string">'Position'</span>,[0.1 0.35 0.8 0.2]);
+0176 reference_sinewave = (max_axis_residuals - min_axis_residuals)*0.4/(sqrt(p(1)^2 + p(2)^2))*(p(1)*cos(time_mod_T_sorted) + p(2)*sin(time_mod_T_sorted));
+0177 plot(time_mod_T_sorted,residuals(time_mod_T_indeces),<span class="string">'b.'</span>,<span class="string">'MarkerSize'</span>,2); hold on;
+0178 plot(time_mod_T_sorted,reference_sinewave,<span class="string">'r'</span>); hold off;
+0179 axis([0,2*pi,min_axis_residuals,max_axis_residuals]);
+0180 
+0181 hAxesHistogram = axes (<span class="string">'Position'</span>,[0.1 0.05 0.8 0.2]);
+0182 hist(residuals,hist_vect);
+0183 axis ([min_axis_residuals,max_axis_residuals,0,max(hist(residuals,hist_vect))]);
+0184 
+0185 <span class="comment">%Warning in case of overdriven ADC</span>
+0186 <span class="keyword">if</span> (max(diff(timevect)) &gt; 1) || (amplitude_LSB &gt; 2^(NoB-1))
+0187     warndlg({<span class="string">'The excitation signal seemingly overdrives'</span>;<span class="keyword">...</span>
+0188         <span class="string">'the ADC under test. Please consider it evaluating'</span>;<span class="keyword">...</span>
+0189         <span class="string">'the signal to noise and distortion ratio (SINAD).'</span>},<span class="keyword">...</span>
+0190         <span class="string">'Warning on overdrive'</span>);
+0191 <span class="keyword">end</span>
+0192 
+0193 <span class="comment">%%%%%%%%%Adding evaluation result to results cell array:</span>
+0194 <span class="keyword">try</span>
+0195     testresults = evalin(<span class="string">'base'</span>,<span class="string">'adctest_process_results'</span>);
+0196     res_len = size(testresults,1);
+0197     <span class="comment">%Search for existing results block</span>
+0198     existings_index = 0;
+0199     <span class="keyword">for</span> k = 1:res_len
+0200         <span class="keyword">if</span> strcmpi(dsc.model,testresults{k,1}.DUT.model) <span class="keyword">...</span>
+0201                 &amp;&amp; strcmpi(dsc.serial,testresults{k,1}.DUT.serial)<span class="keyword">...</span>
+0202                 &amp;&amp; (dsc.channel == testresults{k,1}.DUT.channel)<span class="keyword">...</span>
+0203                 &amp;&amp; (dsc.NoB == testresults{k,1}.DUT.NoB)
+0204             existings_index = k;
+0205         <span class="keyword">end</span>
+0206     <span class="keyword">end</span>
+0207     <span class="keyword">if</span> (existings_index ~= 0) <span class="comment">%existing result struct</span>
+0208         <span class="comment">%Adding new results:</span>
+0209         testresults{existings_index,1}.LS.SINAD = SINAD;
+0210         testresults{existings_index,1}.LS.ENOB = ENOB;
+0211     <span class="keyword">else</span> <span class="comment">%new result struct shall be added</span>
+0212         testresults{res_len + 1,1}.DUT.model = dsc.model;
+0213         testresults{res_len + 1,1}.DUT.serial = dsc.serial;
+0214         testresults{res_len + 1,1}.DUT.channel = dsc.channel;
+0215         testresults{res_len + 1,1}.DUT.NoB = dsc.NoB;
+0216         <span class="comment">%Adding new results:</span>
+0217         testresults{res_len + 1,1}.LS.SINAD = SINAD;
+0218         testresults{res_len + 1,1}.LS.ENOB = ENOB;
+0219     <span class="keyword">end</span>
+0220     <span class="comment">%updating adctest_process_results</span>
+0221     assignin (<span class="string">'base'</span>,<span class="string">'adctest_process_results'</span>,testresults);
+0222 
+0223 <span class="keyword">catch</span>
+0224     <span class="comment">%If testresults global variable does not exist:</span>
+0225     testresults = cell(1,1); <span class="comment">%creating new cell array for testresults</span>
+0226     testresults{1,1}.DUT.model = dsc.model;
+0227     testresults{1,1}.DUT.serial = dsc.serial;
+0228     testresults{1,1}.DUT.channel = dsc.channel;
+0229     testresults{1,1}.DUT.NoB = dsc.NoB;
+0230     <span class="comment">%Adding new results:</span>
+0231     testresults{1,1}.LS.SINAD = SINAD;
+0232     testresults{1,1}.LS.ENOB = ENOB;
+0233     assignin (<span class="string">'base'</span>,<span class="string">'adctest_process_results'</span>,testresults);
+0234 <span class="keyword">end</span>
+0235 <span class="comment">%%%%%%End of adding evaluatin results to cell array%%%%%%%%%%</span>
+0236 
+0237 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

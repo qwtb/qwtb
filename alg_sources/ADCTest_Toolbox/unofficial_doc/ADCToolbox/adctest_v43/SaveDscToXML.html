@@ -1,0 +1,177 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of SaveDscToXML</title>
+  <meta name="keywords" content="SaveDscToXML">
+  <meta name="description" content="@fn SaveDscToXML">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; SaveDscToXML.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>SaveDscToXML
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>@fn SaveDscToXML</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [success,error_msg] = SaveDscToXML(dsc,filename) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> @fn SaveDscToXML
+ @brief Saves a measurement descriptor to a XML file
+ @param dsc The measurement descriptor to save
+ @param filename The name of the file, where the descriptor shall be
+                 saved
+ @return success 1, if saving succeeded, 0 otherwise
+ @return error_msg Indicates the type of error (if appeared)
+ @author Tam� Virosztek, Budapest University of Technology and Economics,
+         Department of Measurement and Infromation Systems,
+         Virosztek.Tamas@mit.bme.hu</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="adctest.html" class="code" title="function adctest">adctest</a>	@fn adctest</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [success,error_msg] = SaveDscToXML(dsc,filename)</a>
+0002 <span class="comment">% @fn SaveDscToXML</span>
+0003 <span class="comment">% @brief Saves a measurement descriptor to a XML file</span>
+0004 <span class="comment">% @param dsc The measurement descriptor to save</span>
+0005 <span class="comment">% @param filename The name of the file, where the descriptor shall be</span>
+0006 <span class="comment">%                 saved</span>
+0007 <span class="comment">% @return success 1, if saving succeeded, 0 otherwise</span>
+0008 <span class="comment">% @return error_msg Indicates the type of error (if appeared)</span>
+0009 <span class="comment">% @author Tam� Virosztek, Budapest University of Technology and Economics,</span>
+0010 <span class="comment">%         Department of Measurement and Infromation Systems,</span>
+0011 <span class="comment">%         Virosztek.Tamas@mit.bme.hu</span>
+0012 
+0013 
+0014 <span class="comment">%Setting default return values</span>
+0015 success = 1;
+0016 error_msg = <span class="string">''</span>;
+0017 
+0018 <span class="keyword">try</span>
+0019     <span class="comment">%Creating Document Object Model Node</span>
+0020     docNode = com.mathworks.xml.XMLUtils.createDocument(<span class="string">'Descriptor'</span>);
+0021     docRootNode = docNode.getDocumentElement;
+0022 
+0023     <span class="comment">%Adding field 'Name'</span>
+0024     field_name = docNode.createElement(<span class="string">'Name'</span>);
+0025     field_name.appendChild(docNode.createTextNode(dsc.name));
+0026     docRootNode.appendChild(field_name);
+0027 
+0028     <span class="comment">%Adding comments</span>
+0029     field_comment = docNode.createElement(<span class="string">'Comment'</span>);
+0030     docRootNode.appendChild(field_comment);
+0031     <span class="keyword">for</span> k = 1:length(dsc.comment)
+0032         field_c = docNode.createElement(<span class="string">'c'</span>);
+0033         field_c.appendChild(docNode.createTextNode(dsc.comment{k,1}));
+0034         field_comment.appendChild(field_c);
+0035     <span class="keyword">end</span>
+0036 
+0037     <span class="comment">%Adding fileds about the Device Under Test</span>
+0038     field_DUT = docNode.createElement(<span class="string">'DUT'</span>);
+0039     docRootNode.appendChild(field_DUT);
+0040 
+0041         <span class="comment">%Adding field 'Model'</span>
+0042         field_model = docNode.createElement(<span class="string">'Model'</span>);
+0043         field_model.appendChild(docNode.createTextNode(dsc.model));
+0044         field_DUT.appendChild(field_model);
+0045 
+0046         <span class="comment">%Adding field 'Serial'</span>
+0047         field_serial = docNode.createElement(<span class="string">'Serial'</span>);
+0048         field_serial.appendChild(docNode.createTextNode(dsc.serial));
+0049         field_DUT.appendChild(field_serial);
+0050 
+0051         <span class="comment">%Adding field 'Channel'</span>
+0052         field_channel = docNode.createElement(<span class="string">'Channel'</span>);
+0053         field_channel.appendChild(docNode.createTextNode(sprintf(<span class="string">'%d'</span>,dsc.channel)));
+0054         field_DUT.appendChild(field_channel);
+0055 
+0056         <span class="comment">%Adding field 'Bit_number'</span>
+0057         field_bit_number = docNode.createElement(<span class="string">'Bit_number'</span>);
+0058         field_bit_number.appendChild(docNode.createTextNode(sprintf(<span class="string">'%d'</span>,dsc.NoB)));
+0059         field_DUT.appendChild(field_bit_number);
+0060 
+0061     <span class="comment">%Adding data fields</span>
+0062     field_input_vector = docNode.createElement(<span class="string">'Input_vector'</span>);
+0063     docRootNode.appendChild(field_input_vector);
+0064     <span class="keyword">for</span> k = 1:length(dsc.data)
+0065         field_s = docNode.createElement(<span class="string">'s'</span>);
+0066         field_s.appendChild(docNode.createTextNode(sprintf(<span class="string">'%d'</span>,dsc.data(k))));
+0067         field_input_vector.appendChild(field_s);
+0068     <span class="keyword">end</span>
+0069     
+0070     <span class="comment">%Setting field 'Simulation' to determine the measurement is real or simulated'</span>
+0071     field_simulation = docNode.createElement(<span class="string">'Simulation'</span>);
+0072     <span class="keyword">if</span> (isfield(dsc,<span class="string">'parameters'</span>)) <span class="comment">%the descriptor describes a simulated measurement</span>
+0073         field_simulation.appendChild(docNode.createTextNode(<span class="string">'Yes'</span>));
+0074     <span class="keyword">else</span>
+0075         field_simulation.appendChild(docNode.createTextNode(<span class="string">'No'</span>));
+0076     <span class="keyword">end</span>
+0077     docRootNode.appendChild(field_simulation);
+0078     
+0079     <span class="comment">%Adding real signal parameters, if the measurement is simulated</span>
+0080     <span class="keyword">if</span> (isfield(dsc,<span class="string">'parameters'</span>)) <span class="comment">%in case of simulation, parameters shall be saved</span>
+0081         field_parameters = docNode.createElement(<span class="string">'Parameters'</span>);
+0082         docRootNode.appendChild(field_parameters);
+0083         
+0084         field_parameter_A = docNode.createElement(<span class="string">'Parameter_A'</span>);
+0085         field_parameter_A.appendChild(docNode.createTextNode(sprintf(<span class="string">'%e'</span>,dsc.parameters.A)));
+0086         field_parameters.appendChild(field_parameter_A);
+0087         
+0088         field_parameter_B = docNode.createElement(<span class="string">'Parameter_B'</span>);
+0089         field_parameter_B.appendChild(docNode.createTextNode(sprintf(<span class="string">'%e'</span>,dsc.parameters.B)));
+0090         field_parameters.appendChild(field_parameter_B);
+0091         
+0092         field_parameter_C = docNode.createElement(<span class="string">'Parameter_C'</span>);
+0093         field_parameter_C.appendChild(docNode.createTextNode(sprintf(<span class="string">'%e'</span>,dsc.parameters.C)));
+0094         field_parameters.appendChild(field_parameter_C);
+0095         
+0096         field_parameter_theta = docNode.createElement(<span class="string">'Parameter_Theta'</span>);
+0097         field_parameter_theta.appendChild(docNode.createTextNode(sprintf(<span class="string">'%e'</span>,dsc.parameters.theta)));
+0098         field_parameters.appendChild(field_parameter_theta);
+0099         
+0100         field_parameter_sigma = docNode.createElement(<span class="string">'Parameter_Sigma'</span>);
+0101         field_parameter_sigma.appendChild(docNode.createTextNode(sprintf(<span class="string">'%e'</span>,dsc.parameters.sigma)));
+0102         field_parameters.appendChild(field_parameter_sigma);
+0103         
+0104         field_parameter_INL = docNode.createElement(<span class="string">'Parameter_INL'</span>);
+0105         field_parameters.appendChild(field_parameter_INL);
+0106         <span class="keyword">for</span> k = 1:length(dsc.parameters.INL)
+0107             field_actual_INL = docNode.createElement(<span class="string">'INL'</span>);
+0108             field_actual_INL.appendChild(docNode.createTextNode(sprintf(<span class="string">'%e'</span>,dsc.parameters.INL(k))));
+0109             field_parameter_INL.appendChild(field_actual_INL);
+0110         <span class="keyword">end</span>
+0111     <span class="keyword">end</span>
+0112 
+0113     <span class="comment">%Converting from DOM to XML</span>
+0114     xmlwrite(filename,docNode);
+0115 
+0116 <span class="keyword">catch</span>
+0117     error_msg = <span class="string">'Unable to save XML'</span>;
+0118     success = 0;
+0119     <span class="keyword">return</span>
+0120 <span class="keyword">end</span>
+0121 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

@@ -1,0 +1,49 @@
+#!/bin/bash
+f1=doc_testG.tex
+f2=doc_testG-v2.tex
+cp "$f1" "$f2"
+
+############ format output file:
+
+# comment headings
+sed -i 's/\(\\documentclass{article}\)$/%%% \1/' "$f2"
+# comment usepackages
+sed -i 's/\(\\usepackage.*\)$/%%% \1/' "$f2"
+# comment defined light gray (it is too dark)
+sed -i 's/\(\\definecolor.*\)$/%%% \1/' "$f2"
+# comment sloppy and include settings in betterpublishsettings.tex
+sed -i 's/\(\\sloppy.*\)$/%%% \1\n\\input{betterpublishsettings.tex}/' "$f2"
+# comment begin document
+sed -i 's/\(\\begin{document}\)$/%%% \1/' "$f2"
+# comment end document
+sed -i 's/\(\\end{document}\)$/%%% \1/' "$f2"
+
+# change sections to subsections
+sed -i 's/\(\\section\)$/\\subsection/' "$f2"
+
+# change \end{verbatim} to \end{lstlisting}
+sed -i 's/\\end{verbatim}/\\end{lstlisting}/' "$f2"
+# change lightgray-verbatim to lstlisting style output
+sed -i 's/\\color{lightgray} \\begin{verbatim}/\\begin{lstlisting}[style=output]\n/' "$f2"
+# change \begin{verbatim} to \begin{lstlisting}[style=mcode]
+sed -i 's/\\begin{verbatim}/\\begin{lstlisting}[style=mcode]/' "$f2"
+# change \texttt to \lstinline
+sed -i 's/\\texttt/\\lstinline/g' "$f2"
+
+
+# echo "Converts all eps files in directory to pdf by means of convert"
+# LIST=`ls *.eps` 
+# for iii in $LIST 
+# do
+#         echo "$iii"
+#         convert $iii pdf:`basename $iii .eps`.pdf
+# done
+
+
+# echo "Converts all eps files in directory to pdf by means of epstopdf"
+# LIST=`ls *.eps` 
+# for iii in $LIST 
+# do
+#         echo "$iii"
+#         epstopdf $iii
+# done

@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of TimeDomain2INL</title>
+  <meta name="keywords" content="TimeDomain2INL">
+  <meta name="description" content="@fn TimeDomain2INL">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; TimeDomain2INL.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>TimeDomain2INL
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>@fn TimeDomain2INL</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function INL = TimeDomain2INL(recorded_data,NoB) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> @fn TimeDomain2INL
+ @brief Estimates INL using histogram test form the the time domain representation of the recorded
+        ADC codes (creates histogram itself)
+ @param recorded_data Vector of the recorded ADC codes
+ @param NoB Number of Bits of the ADC under test
+ @return INL The estimated INL of the ADC
+ @author Tam� Virosztek, Budapest University of Technology and Economics,
+         Department of Measurement and Information Systems,
+         Virosztek.Tamas@mit.bme.hu</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="PosIntHist.html" class="code" title="function y = PosIntHist(x)">PosIntHist</a>	@fn PosIntHist</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function INL = TimeDomain2INL(recorded_data,NoB)</a>
+0002 <span class="comment">% @fn TimeDomain2INL</span>
+0003 <span class="comment">% @brief Estimates INL using histogram test form the the time domain representation of the recorded</span>
+0004 <span class="comment">%        ADC codes (creates histogram itself)</span>
+0005 <span class="comment">% @param recorded_data Vector of the recorded ADC codes</span>
+0006 <span class="comment">% @param NoB Number of Bits of the ADC under test</span>
+0007 <span class="comment">% @return INL The estimated INL of the ADC</span>
+0008 <span class="comment">% @author Tam� Virosztek, Budapest University of Technology and Economics,</span>
+0009 <span class="comment">%         Department of Measurement and Information Systems,</span>
+0010 <span class="comment">%         Virosztek.Tamas@mit.bme.hu</span>
+0011 
+0012 
+0013 histogram = <a href="PosIntHist.html" class="code" title="function y = PosIntHist(x)">PosIntHist</a>(recorded_data);
+0014 nh = histogram/sum(histogram);
+0015 nch = zeros(1,length(nh));
+0016 <span class="keyword">for</span> k = 1:length(nch)
+0017     nch(k) = sum(nh(1:k));
+0018 <span class="keyword">end</span>
+0019 
+0020 <span class="comment">%if the ADC is not overdriven, bins with zero value cannot be handled</span>
+0021 min_index = find(nh,1,<span class="string">'first'</span>); <span class="comment">%first nonzero bin</span>
+0022 max_index = find(nh,1,<span class="string">'last'</span>); <span class="comment">%last nonzero bin</span>
+0023 nchr = nch(min_index:max_index); <span class="comment">%reduced normalized cumulative histogram</span>
+0024 
+0025 INL_reduced = zeros(1,length(nchr)-1);
+0026 <span class="keyword">for</span> k = 1:length(INL_reduced)
+0027     INL_reduced(k) = (length(nchr) - 2) / (cos(pi*nchr(1))-cos(pi*nchr(end-1))) * (cos(pi*nchr(1))-cos(pi*nchr(k))) - (k-1);
+0028 <span class="keyword">end</span>
+0029 
+0030 INL = zeros(1,2^NoB-1);
+0031 INL(min_index:max_index-1) = INL_reduced;
+0032 
+0033 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

@@ -1,0 +1,130 @@
+
+% This LaTeX was auto-generated from an M-file by MATLAB.
+% To make changes, update the M-file and republish this document.
+
+%%% \documentclass{article}
+%%% \usepackage{graphicx}
+%%% \usepackage{color}
+
+%%% \sloppy
+%%% \definecolor{lightgray}{gray}{0.5}
+\setlength{\parindent}{0pt}
+
+%%% \begin{document}
+
+    
+    
+\subsection*{Phase Sensitive Frequency Estimator}
+
+\begin{par}
+Example for algorithm PSFE.
+\end{par} \vspace{1em}
+\begin{par}
+PSFE is an algorithm for estimating the frequency, amplitude, and phase of the fundamental component in harmonically distorted waveforms. The algorithm minimizes the phase difference between the sine model and the sampled waveform by effectively minimizing the influence of the harmonic components. It uses a three-parameter sine-fitting algorithm for all phase calculations. The resulting estimates show up to two orders of magnitude smaller sensitivity to harmonic distortions than the results of the four-parameter sine fitting algorithm.
+\end{par} \vspace{1em}
+\begin{par}
+See also Lapuh, R., "Estimating the Fundamental Component of Harmonically Distorted Signals From Noncoherently Sampled Data," Instrumentation and Measurement, IEEE Transactions on , vol.64, no.6, pp.1419,1424, June 2015, doi: 10.1109/TIM.2015.2401211, URL: \url{http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7061456&isnumber=7104190}'
+\end{par} \vspace{1em}
+
+\subsubsection*{Contents}
+
+\begin{itemize}
+\setlength{\itemsep}{-1ex}
+   \item Generate sample data
+   \item Call algorithm
+   \item Display results
+\end{itemize}
+
+
+\subsubsection*{Generate sample data}
+
+\begin{par}
+Two quantities are prepared: \lstinline{t} and \lstinline{y}, representing 1 second of sinus waveform of nominal frequency 100 Hz, nominal amplitude 1 V and nominal phase 1 rad, sampled at sampling frequency 10 kHz.
+\end{par} \vspace{1em}
+\begin{lstlisting}[style=mcode]
+DI = [];
+Anom = 1; fnom = 100; phnom = 1;
+DI.t.v = [0:1/1e4:1-1/1e4];
+DI.y.v = Anom*sin(2*pi*fnom*DI.t.v + phnom);
+\end{lstlisting}
+\begin{par}
+Add noise:
+\end{par} \vspace{1em}
+\begin{lstlisting}[style=mcode]
+DI.y.v = DI.y.v + normrnd(0, 1e-3, size(DI.y.v));
+\end{lstlisting}
+
+
+\subsubsection*{Call algorithm}
+
+\begin{par}
+Use QWTB to apply algorithm \lstinline{PSFE} to data \lstinline{DI}.
+\end{par} \vspace{1em}
+\begin{lstlisting}[style=mcode]
+DO = qwtb('PSFE', DI);
+\end{lstlisting}
+
+        \begin{lstlisting}[style=output]
+QWTB: no uncertainty calculation
+\end{lstlisting} \color{black}
+    
+
+\subsubsection*{Display results}
+
+\begin{par}
+Results is the amplitude, frequency and phase of sampled waveform.
+\end{par} \vspace{1em}
+\begin{lstlisting}[style=mcode]
+f = DO.f.v
+A = DO.A.v
+ph = DO.ph.v
+\end{lstlisting}
+
+        \begin{lstlisting}[style=output]
+
+f =
+
+  100.0000
+
+
+A =
+
+    1.0000
+
+
+ph =
+
+    1.0000
+
+\end{lstlisting} \color{black}
+    \begin{par}
+Errors of estimation in parts per milion:
+\end{par} \vspace{1em}
+\begin{lstlisting}[style=mcode]
+ferrppm = (DO.f.v - fnom)/fnom .* 1e6
+Aerrppm = (DO.A.v - Anom)/Anom .* 1e6
+pherrppm = (DO.ph.v - phnom)/phnom .* 1e6
+\end{lstlisting}
+
+        \begin{lstlisting}[style=output]
+
+ferrppm =
+
+    0.1113
+
+
+Aerrppm =
+
+    4.3774
+
+
+pherrppm =
+
+  -13.7952
+
+\end{lstlisting} \color{black}
+    
+
+
+%%% \end{document}
+    

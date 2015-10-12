@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of DisplayWarnings</title>
+  <meta name="keywords" content="DisplayWarnings">
+  <meta name="description" content="@fn DisplayWarnings">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; DisplayWarnings.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>DisplayWarnings
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>@fn DisplayWarnings</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function DisplayWarnings(warnings) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> @fn DisplayWarnings
+ @brief Displays the warnings that appeared while loading an XML
+        descriptor
+ @param warnings Struct of the warning messages
+ @return none
+ @author Tam� Virosztek, Budapest University of Technology and Economics,
+         Department of Measurement and Infromation Systems,
+         Virosztek.Tamas@mit.bme.hu</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="adctest.html" class="code" title="function adctest">adctest</a>	@fn adctest</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function OK_callback(source,eventdata)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function DisplayWarnings(warnings)</a>
+0002 <span class="comment">% @fn DisplayWarnings</span>
+0003 <span class="comment">% @brief Displays the warnings that appeared while loading an XML</span>
+0004 <span class="comment">%        descriptor</span>
+0005 <span class="comment">% @param warnings Struct of the warning messages</span>
+0006 <span class="comment">% @return none</span>
+0007 <span class="comment">% @author Tam� Virosztek, Budapest University of Technology and Economics,</span>
+0008 <span class="comment">%         Department of Measurement and Infromation Systems,</span>
+0009 <span class="comment">%         Virosztek.Tamas@mit.bme.hu</span>
+0010 
+0011 
+0012 
+0013 screensize = get(0,<span class="string">'ScreenSize'</span>);
+0014 
+0015 display_warnings_window = figure(<span class="string">'Visible'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+0016                                  <span class="string">'Position'</span>, [screensize(3)*0.3 screensize(4)*0.3 screensize(3)*0.4 screensize(4)*0.4],<span class="keyword">...</span>
+0017                                  <span class="string">'Name'</span>,<span class="string">'XML load warnings'</span>,<span class="keyword">...</span>
+0018                                  <span class="string">'NumberTitle'</span>,<span class="string">'off'</span>);
+0019                              
+0020 to_display = [];
+0021 <span class="keyword">for</span> k = 1:length(warnings)
+0022     to_display = [to_display ;warnings{k}];
+0023 <span class="keyword">end</span>
+0024                              
+0025 hTextWarnings = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0026                           <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0027                           <span class="string">'Position'</span>, [0.1 0.1 0.8 0.8],<span class="keyword">...</span>
+0028                           <span class="string">'String'</span>,to_display);
+0029                       
+0030 hPushButtonOk = uicontrol(<span class="string">'Style'</span>,<span class="string">'pushbutton'</span>,<span class="keyword">...</span>
+0031                           <span class="string">'String'</span>,<span class="string">'OK'</span>,<span class="keyword">...</span>
+0032                           <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0033                           <span class="string">'Position'</span>,[0.45 0 0.1 0.1],<span class="keyword">...</span>
+0034                           <span class="string">'Callback'</span>,@<a href="#_sub1" class="code" title="subfunction OK_callback(source,eventdata)">OK_callback</a>);
+0035                       
+0036     <a name="_sub1" href="#_subfunctions" class="code">function OK_callback(source,eventdata)</a>
+0037         close(display_warnings_window);
+0038     <span class="keyword">end</span>
+0039 
+0040 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

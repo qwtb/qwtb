@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of g2_bh3</title>
+  <meta name="keywords" content="g2_bh3">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; g2_bh3.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>g2_bh3
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [X,dA,dB,dC,df]=g2_bh3(A,B,C,f,N,bins,w0,w1,w2,limit,sf,p) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="g1_bh3.html" class="code" title="function [X,dA,dB,dC,df]=g1_bh3(A,B,C,f,N,m,limit,sf,p)">g1_bh3</a>	teszt jelleggel</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="ng_bh3.html" class="code" title="function [A,B,C,f,D]=ng_bh3(X,J_init)">ng_bh3</a>	N�yparam�eres frekvenciatartom�ybeli LS szinuszbecsl�</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [X,dA,dB,dC,df]=g2_bh3(A,B,C,f,N,bins,w0,w1,w2,limit,sf,p)</a>
+0002 s=size(bins);
+0003 <span class="keyword">if</span> (s(2)&gt;s(1))
+0004     bins=bins.';
+0005 <span class="keyword">end</span>
+0006 w=[
+0007     w2/2;
+0008     w1/2;
+0009     w0;
+0010     w1/2;
+0011     w2/2;
+0012     ];
+0013 D=[-2+bins, -1+bins, bins, 1+bins, 2+bins];
+0014 rect_bins=unique(D);
+0015 [X_rect,dA_rect,dB_rect,dC_rect,df_rect]=<a href="g1_bh3.html" class="code" title="function [X,dA,dB,dC,df]=g1_bh3(A,B,C,f,N,m,limit,sf,p)">g1_bh3</a>(A,B,C,f,N,rect_bins,limit,sf,p);
+0016 ind1=(ismember(rect_bins, -2+bins));
+0017 ind2=(ismember(rect_bins, -1+bins));
+0018 ind3=(ismember(rect_bins, bins));
+0019 ind4=(ismember(rect_bins, 1+bins));
+0020 ind5=(ismember(rect_bins, 2+bins));
+0021 X_rect_m=[X_rect(ind1), X_rect(ind2), X_rect(ind3), X_rect(ind4), X_rect(ind5)];
+0022 X=X_rect_m*w;
+0023 dA_rect_m=[dA_rect(ind1), dA_rect(ind2), dA_rect(ind3), dA_rect(ind4), dA_rect(ind5)];
+0024 dA=dA_rect_m*w;
+0025 dB_rect_m=[dB_rect(ind1), dB_rect(ind2), dB_rect(ind3), dB_rect(ind4), dB_rect(ind5)];
+0026 dB=dB_rect_m*w;
+0027 dC_rect_m=[dC_rect(ind1), dC_rect(ind2), dC_rect(ind3), dC_rect(ind4), dC_rect(ind5)];
+0028 dC=dC_rect_m*w;
+0029 df_rect_m=[df_rect(ind1), df_rect(ind2), df_rect(ind3), df_rect(ind4), df_rect(ind5)];
+0030 df=df_rect_m*w;
+0031 
+0032 
+0033</pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

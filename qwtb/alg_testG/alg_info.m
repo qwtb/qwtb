@@ -10,6 +10,7 @@ alginfo.name = 'Test with GUF';
 alginfo.desc = 'Calculates maximum value of the measured record';
 alginfo.citation = 'see EMRP Q-Wave';
 alginfo.remarks = 'Do not use. This is only for testing QWTB';
+alginfo.license = 'see license of QWTB';
 alginfo.requires = {'x', 'y'};
 alginfo.reqdesc = {'independent quantity', 'dependent quantity'};
 alginfo.returns = {'max', 'min'};

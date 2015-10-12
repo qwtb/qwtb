@@ -1,0 +1,342 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of step_2</title>
+  <meta name="keywords" content="step_2">
+  <meta name="description" content="STEP_2 M-file for step_2.fig">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; step_2.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>step_2
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>STEP_2 M-file for step_2.fig</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function varargout = step_2(varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> STEP_2 M-file for step_2.fig
+      STEP_2, by itself, creates a new STEP_2 or raises the existing
+      singleton*.
+
+      H = STEP_2 returns the handle to a new STEP_2 or the handle to
+      the existing singleton*.
+
+      STEP_2('CALLBACK',hObject,eventData,handles,...) calls the local
+      function named CALLBACK in STEP_2.M with the given input arguments.
+
+      STEP_2('Property','Value',...) creates a new STEP_2 or raises the
+      existing singleton*.  Starting from the left, property value pairs are
+      applied to the GUI before step_2_OpeningFcn gets called.  An
+      unrecognized property name or invalid value makes property application
+      stop.  All inputs are passed to step_2_OpeningFcn via varargin.
+
+      *See GUI Options on GUIDE's Tools menu.  Choose &quot;GUI allows only one
+      instance to run (singleton)&quot;.
+
+ See also: GUIDE, GUIDATA, GUIHANDLES</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function step_2_OpeningFcn(hObject, eventdata, handles, varargin)</a></li><li><a href="#_sub2" class="code">function varargout = step_2_OutputFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub3" class="code">function Help_menu_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub4" class="code">function About_adctest_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub5" class="code">function Getting_started_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub6" class="code">function edit_first_valid_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub7" class="code">function edit_first_valid_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub8" class="code">function edit_last_valid_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub9" class="code">function edit_last_valid_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub10" class="code">function edit_lowest_valid_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub11" class="code">function edit_lowest_valid_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub12" class="code">function edit_highest_valid_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub13" class="code">function edit_highest_valid_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub14" class="code">function pushbutton_preprocess_record_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub15" class="code">function pushbutton_next_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub16" class="code">function pushbutton_previous_Callback(hObject, eventdata, handles)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout = step_2(varargin)</a>
+0002 <span class="comment">% STEP_2 M-file for step_2.fig</span>
+0003 <span class="comment">%      STEP_2, by itself, creates a new STEP_2 or raises the existing</span>
+0004 <span class="comment">%      singleton*.</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%      H = STEP_2 returns the handle to a new STEP_2 or the handle to</span>
+0007 <span class="comment">%      the existing singleton*.</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">%      STEP_2('CALLBACK',hObject,eventData,handles,...) calls the local</span>
+0010 <span class="comment">%      function named CALLBACK in STEP_2.M with the given input arguments.</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">%      STEP_2('Property','Value',...) creates a new STEP_2 or raises the</span>
+0013 <span class="comment">%      existing singleton*.  Starting from the left, property value pairs are</span>
+0014 <span class="comment">%      applied to the GUI before step_2_OpeningFcn gets called.  An</span>
+0015 <span class="comment">%      unrecognized property name or invalid value makes property application</span>
+0016 <span class="comment">%      stop.  All inputs are passed to step_2_OpeningFcn via varargin.</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">%      *See GUI Options on GUIDE's Tools menu.  Choose &quot;GUI allows only one</span>
+0019 <span class="comment">%      instance to run (singleton)&quot;.</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">% See also: GUIDE, GUIDATA, GUIHANDLES</span>
+0022 
+0023 <span class="comment">% Edit the above text to modify the response to help step_2</span>
+0024 
+0025 <span class="comment">% Last Modified by GUIDE v2.5 13-Aug-2014 16:06:18</span>
+0026 
+0027 <span class="comment">% Begin initialization code - DO NOT EDIT</span>
+0028 gui_Singleton = 1;
+0029 gui_State = struct(<span class="string">'gui_Name'</span>,       mfilename, <span class="keyword">...</span>
+0030                    <span class="string">'gui_Singleton'</span>,  gui_Singleton, <span class="keyword">...</span>
+0031                    <span class="string">'gui_OpeningFcn'</span>, @<a href="#_sub1" class="code" title="subfunction step_2_OpeningFcn(hObject, eventdata, handles, varargin)">step_2_OpeningFcn</a>, <span class="keyword">...</span>
+0032                    <span class="string">'gui_OutputFcn'</span>,  @<a href="#_sub2" class="code" title="subfunction varargout = step_2_OutputFcn(hObject, eventdata, handles)">step_2_OutputFcn</a>, <span class="keyword">...</span>
+0033                    <span class="string">'gui_LayoutFcn'</span>,  [] , <span class="keyword">...</span>
+0034                    <span class="string">'gui_Callback'</span>,   []);
+0035 <span class="keyword">if</span> nargin &amp;&amp; ischar(varargin{1})
+0036     gui_State.gui_Callback = str2func(varargin{1});
+0037 <span class="keyword">end</span>
+0038 
+0039 <span class="keyword">if</span> nargout
+0040     [varargout{1:nargout}] = gui_mainfcn(gui_State, varargin{:});
+0041 <span class="keyword">else</span>
+0042     gui_mainfcn(gui_State, varargin{:});
+0043 <span class="keyword">end</span>
+0044 <span class="comment">% End initialization code - DO NOT EDIT</span>
+0045 
+0046 
+0047 <span class="comment">% --- Executes just before step_2 is made visible.</span>
+0048 <a name="_sub1" href="#_subfunctions" class="code">function step_2_OpeningFcn(hObject, eventdata, handles, varargin)</a>
+0049 <span class="comment">% This function has no output args, see OutputFcn.</span>
+0050 <span class="comment">% hObject    handle to figure</span>
+0051 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0052 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0053 <span class="comment">% varargin   command line arguments to step_2 (see VARARGIN)</span>
+0054 
+0055 <span class="keyword">if</span> isstruct(varargin{1}) &amp;&amp; isfield(varargin{1},<span class="string">'data'</span>)
+0056     <span class="comment">%Sharing descriptor with other callback functions</span>
+0057     setappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'descriptor'</span>,varargin{1});
+0058     
+0059     <span class="comment">%Plot original measurement record</span>
+0060     axes(handles.axes_original_measurement_record);
+0061     plot(varargin{1}.data)
+0062 
+0063     <span class="comment">% Setting default values for edit fields</span>
+0064     set(handles.edit_first_valid,<span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,1));
+0065     set(handles.edit_last_valid,<span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,length(varargin{1}.data)));
+0066     set(handles.edit_lowest_valid,<span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,round(min(varargin{1}.data))));
+0067     set(handles.edit_highest_valid,<span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,round(max(varargin{1}.data))));
+0068     
+0069     <span class="comment">%Passing parameters to appdata</span>
+0070     cut_parameters.first_valid = 1;
+0071     cut_parameters.last_valid = length(varargin{1}.data);
+0072     cut_parameters.lowest_valid = round(min(varargin{1}.data));
+0073     cut_parameters.highest_valid = round(max(varargin{1}.data));
+0074     setappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'cut_parameters'</span>,cut_parameters);
+0075     
+0076 <span class="keyword">end</span>
+0077 
+0078 <span class="comment">% Choose default command line output for step_2</span>
+0079 handles.output = hObject;
+0080 
+0081 <span class="comment">% Update handles structure</span>
+0082 guidata(hObject, handles);
+0083 
+0084 <span class="comment">% UIWAIT makes step_2 wait for user response (see UIRESUME)</span>
+0085 uiwait;
+0086 
+0087 
+0088 <span class="comment">% --- Outputs from this function are returned to the command line.</span>
+0089 <a name="_sub2" href="#_subfunctions" class="code">function varargout = step_2_OutputFcn(hObject, eventdata, handles) </a>
+0090 <span class="comment">% varargout  cell array for returning output args (see VARARGOUT);</span>
+0091 <span class="comment">% hObject    handle to figure</span>
+0092 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0093 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0094 
+0095 <span class="comment">% Get default command line output from handles structure</span>
+0096 varargout{1} = getappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'descriptor'</span>);
+0097 varargout{2} = getappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'reduced_datavect'</span>);
+0098 varargout{3} = getappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'reduced_timevect'</span>);
+0099 close(get(0,<span class="string">'CurrentFigure'</span>));
+0100 
+0101 
+0102 <span class="comment">% --------------------------------------------------------------------</span>
+0103 <a name="_sub3" href="#_subfunctions" class="code">function Help_menu_Callback(hObject, eventdata, handles)</a>
+0104 <span class="comment">% hObject    handle to Help_menu (see GCBO)</span>
+0105 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0106 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0107 
+0108 
+0109 <span class="comment">% --------------------------------------------------------------------</span>
+0110 <a name="_sub4" href="#_subfunctions" class="code">function About_adctest_Callback(hObject, eventdata, handles)</a>
+0111 <span class="comment">% hObject    handle to About_adctest (see GCBO)</span>
+0112 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0113 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0114 
+0115 
+0116 <span class="comment">% --------------------------------------------------------------------</span>
+0117 <a name="_sub5" href="#_subfunctions" class="code">function Getting_started_Callback(hObject, eventdata, handles)</a>
+0118 <span class="comment">% hObject    handle to Getting_started (see GCBO)</span>
+0119 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0120 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0121 
+0122 
+0123 
+0124 <a name="_sub6" href="#_subfunctions" class="code">function edit_first_valid_Callback(hObject, eventdata, handles)</a>
+0125 <span class="comment">% hObject    handle to edit_first_valid (see GCBO)</span>
+0126 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0127 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0128 
+0129 <span class="comment">% Hints: get(hObject,'String') returns contents of edit_first_valid as text</span>
+0130 <span class="comment">%        str2double(get(hObject,'String')) returns contents of edit_first_valid as a double</span>
+0131 cut_parameters = getappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'cut_parameters'</span>);
+0132 cut_parameters.first_valid = str2double(get(hObject,<span class="string">'String'</span>));
+0133 setappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'cut_parameters'</span>,cut_parameters);
+0134 
+0135 
+0136 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0137 <a name="_sub7" href="#_subfunctions" class="code">function edit_first_valid_CreateFcn(hObject, eventdata, handles)</a>
+0138 <span class="comment">% hObject    handle to edit_first_valid (see GCBO)</span>
+0139 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0140 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0141 
+0142 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0143 <span class="comment">%       See ISPC and COMPUTER.</span>
+0144 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0145     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0146 <span class="keyword">end</span>
+0147 
+0148 
+0149 
+0150 <a name="_sub8" href="#_subfunctions" class="code">function edit_last_valid_Callback(hObject, eventdata, handles)</a>
+0151 <span class="comment">% hObject    handle to edit_last_valid (see GCBO)</span>
+0152 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0153 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0154 cut_parameters = getappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'cut_parameters'</span>);
+0155 cut_parameters.last_valid = str2double(get(hObject,<span class="string">'String'</span>));
+0156 setappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'cut_parameters'</span>,cut_parameters);
+0157 
+0158 <span class="comment">% Hints: get(hObject,'String') returns contents of edit_last_valid as text</span>
+0159 <span class="comment">%        str2double(get(hObject,'String')) returns contents of edit_last_valid as a double</span>
+0160 
+0161 
+0162 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0163 <a name="_sub9" href="#_subfunctions" class="code">function edit_last_valid_CreateFcn(hObject, eventdata, handles)</a>
+0164 <span class="comment">% hObject    handle to edit_last_valid (see GCBO)</span>
+0165 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0166 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0167 
+0168 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0169 <span class="comment">%       See ISPC and COMPUTER.</span>
+0170 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0171     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0172 <span class="keyword">end</span>
+0173 
+0174 
+0175 
+0176 <a name="_sub10" href="#_subfunctions" class="code">function edit_lowest_valid_Callback(hObject, eventdata, handles)</a>
+0177 <span class="comment">% hObject    handle to edit_lowest_valid (see GCBO)</span>
+0178 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0179 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0180 
+0181 <span class="comment">% Hints: get(hObject,'String') returns contents of edit_lowest_valid as text</span>
+0182 <span class="comment">%        str2double(get(hObject,'String')) returns contents of edit_lowest_valid as a double</span>
+0183 cut_parameters = getappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'cut_parameters'</span>);
+0184 cut_parameters.lowest_valid = str2double(get(hObject,<span class="string">'String'</span>));
+0185 setappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'cut_parameters'</span>,cut_parameters);
+0186 
+0187 
+0188 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0189 <a name="_sub11" href="#_subfunctions" class="code">function edit_lowest_valid_CreateFcn(hObject, eventdata, handles)</a>
+0190 <span class="comment">% hObject    handle to edit_lowest_valid (see GCBO)</span>
+0191 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0192 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0193 
+0194 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0195 <span class="comment">%       See ISPC and COMPUTER.</span>
+0196 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0197     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0198 <span class="keyword">end</span>
+0199 
+0200 
+0201 
+0202 <a name="_sub12" href="#_subfunctions" class="code">function edit_highest_valid_Callback(hObject, eventdata, handles)</a>
+0203 <span class="comment">% hObject    handle to edit_highest_valid (see GCBO)</span>
+0204 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0205 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0206 
+0207 <span class="comment">% Hints: get(hObject,'String') returns contents of edit_highest_valid as text</span>
+0208 <span class="comment">%        str2double(get(hObject,'String')) returns contents of edit_highest_valid as a double</span>
+0209 cut_parameters = getappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'cut_parameters'</span>);
+0210 cut_parameters.highest_valid = str2double(get(hObject,<span class="string">'String'</span>));
+0211 setappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'cut_parameters'</span>,cut_parameters);
+0212 
+0213 
+0214 
+0215 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0216 <a name="_sub13" href="#_subfunctions" class="code">function edit_highest_valid_CreateFcn(hObject, eventdata, handles)</a>
+0217 <span class="comment">% hObject    handle to edit_highest_valid (see GCBO)</span>
+0218 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0219 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0220 
+0221 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0222 <span class="comment">%       See ISPC and COMPUTER.</span>
+0223 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0224     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0225 <span class="keyword">end</span>
+0226 
+0227 
+0228 <span class="comment">% --- Executes on button press in pushbutton_preprocess.</span>
+0229 <a name="_sub14" href="#_subfunctions" class="code">function pushbutton_preprocess_record_Callback(hObject, eventdata, handles)</a>
+0230 <span class="comment">% hObject    handle to pushbutton_preprocess (see GCBO)</span>
+0231 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0232 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0233 descriptor = getappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'descriptor'</span>);
+0234 cut_parameters = getappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'cut_parameters'</span>);
+0235 reduced_length = cut_parameters.last_valid - cut_parameters.first_valid + 1;
+0236 timevect = (1:reduced_length).';
+0237 datavect = descriptor.data(cut_parameters.first_valid:cut_parameters.last_valid);
+0238 isvalid = zeros(reduced_length,1);
+0239 reduced_timevect = zeros(reduced_length,1);
+0240 reduced_datavect = zeros(reduced_length,1);
+0241 l = 1;
+0242 <span class="keyword">for</span> k = 1:reduced_length
+0243     <span class="keyword">if</span> (datavect(k) &gt;= cut_parameters.lowest_valid) &amp;&amp; (datavect(k) &lt;= cut_parameters.highest_valid)
+0244         isvalid(k) = true;
+0245         reduced_datavect(l) = datavect(k);
+0246         reduced_timevect(l) = timevect(k);
+0247         l = l + 1;
+0248     <span class="keyword">else</span>
+0249         isvalid(k) = false;
+0250     <span class="keyword">end</span>
+0251 <span class="keyword">end</span>
+0252 reduced_timevect = reduced_timevect(1:l-1);
+0253 reduced_datavect = reduced_datavect(1:l-1);
+0254 setappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'reduced_timevect'</span>,reduced_timevect);
+0255 setappdata(get(0,<span class="string">'CurrentFigure'</span>),<span class="string">'reduced_datavect'</span>,reduced_datavect)
+0256 
+0257 axes(handles.axes_preprocessed_measurement_record);
+0258 plot(reduced_timevect,reduced_datavect);
+0259 
+0260 
+0261 <span class="comment">% --- Executes on button press in pushbutton_next.</span>
+0262 <a name="_sub15" href="#_subfunctions" class="code">function pushbutton_next_Callback(hObject, eventdata, handles)</a>
+0263 <span class="comment">% hObject    handle to pushbutton_next (see GCBO)</span>
+0264 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0265 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0266 uiresume;
+0267 
+0268 
+0269 <span class="comment">% --- Executes on button press in pushbutton_previous.</span>
+0270 <a name="_sub16" href="#_subfunctions" class="code">function pushbutton_previous_Callback(hObject, eventdata, handles)</a>
+0271 <span class="comment">% hObject    handle to pushbutton_previous (see GCBO)</span>
+0272 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0273 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0274 close(get(0,<span class="string">'CurrentFigure'</span>));</pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

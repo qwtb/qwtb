@@ -1,0 +1,726 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of CompareLSvsML</title>
+  <meta name="keywords" content="CompareLSvsML">
+  <meta name="description" content="@fn CompareLSvsML">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; CompareLSvsML.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>CompareLSvsML
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>@fn CompareLSvsML</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function CompareLSvsML(dsc,reduced_data,timevect,LS_params,ML_params,estimated_INL) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> @fn CompareLSvsML
+ @brief Compares the results of LS and ML fit, and displays the difference
+        in a comparative window
+ @param dsc The processed measurement descriptor
+ @param reduced_data The data vector after the adjustment of amplitude and
+                     time limits
+ @param timevect Sampling times of the elements of reduced_data
+ @param LS_params Results of LS estimation
+ @param ML_params Results of ML estimation
+ @param estimated_INL The INL estimated using histogram test
+ @return none
+ @author Tam� Virosztek, Budapest University of Technology and Economics,
+         Department of Measurement and Information Systems,
+         Virosztek.Tamas@mit.bme.hu</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="rms.html" class="code" title="function y = rms(x)">rms</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="ProcessDscML5pFit.html" class="code" title="function ProcessDscML5pFit(dsc,reduced_data,timevect,pLS)">ProcessDscML5pFit</a>	@fn ProcessDscML5pFit</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function Plot1Selector_callback(source,eventdata)</a></li><li><a href="#_sub2" class="code">function Plot2Selector_callback(source,eventdata)</a></li><li><a href="#_sub3" class="code">function UpdateDisplay</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function CompareLSvsML(dsc,reduced_data,timevect,LS_params,ML_params,estimated_INL)</a>
+0002 <span class="comment">% @fn CompareLSvsML</span>
+0003 <span class="comment">% @brief Compares the results of LS and ML fit, and displays the difference</span>
+0004 <span class="comment">%        in a comparative window</span>
+0005 <span class="comment">% @param dsc The processed measurement descriptor</span>
+0006 <span class="comment">% @param reduced_data The data vector after the adjustment of amplitude and</span>
+0007 <span class="comment">%                     time limits</span>
+0008 <span class="comment">% @param timevect Sampling times of the elements of reduced_data</span>
+0009 <span class="comment">% @param LS_params Results of LS estimation</span>
+0010 <span class="comment">% @param ML_params Results of ML estimation</span>
+0011 <span class="comment">% @param estimated_INL The INL estimated using histogram test</span>
+0012 <span class="comment">% @return none</span>
+0013 <span class="comment">% @author Tam� Virosztek, Budapest University of Technology and Economics,</span>
+0014 <span class="comment">%         Department of Measurement and Information Systems,</span>
+0015 <span class="comment">%         Virosztek.Tamas@mit.bme.hu</span>
+0016 
+0017 <span class="comment">%'Macros:'</span>
+0018 HISTOGRAM_DENSITY = 50;
+0019 SW_X_AXIS_DENSITY = 500;
+0020 <span class="comment">%State variables:</span>
+0021 domain = <span class="string">'code'</span>; <span class="comment">%State of 'Mode selector': possible values: 'code' or 'signal_parameter'</span>
+0022 plot1_state = 1;
+0023 plot2_state = 1; <span class="comment">%</span>
+0024 
+0025 screen_size = get(0,<span class="string">'ScreenSize'</span>);
+0026 comparison_window = figure(<span class="string">'Name'</span>,<span class="string">'Comparison of ML and LS estimators'</span>,<span class="keyword">...</span>
+0027     <span class="string">'Position'</span>,[screen_size(3)*0.1 screen_size(4)*0.1 screen_size(3)*0.8 screen_size(4)*0.8],<span class="keyword">...</span>
+0028     <span class="string">'NumberTitle'</span>,<span class="string">'off'</span>);
+0029 
+0030 hFrameDivider  = uicontrol(<span class="string">'Style'</span>,<span class="string">'frame'</span>,<span class="keyword">...</span>
+0031     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0032     <span class="string">'Position'</span>,[0.5 0 1e-3 1]);
+0033 
+0034 hTextMLTitle = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0035     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0036     <span class="string">'Position'</span>,[0.1 0.9 0.3 0.04],<span class="keyword">...</span>
+0037     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0038     <span class="string">'String'</span>,<span class="string">'ML parameter estimation'</span>,<span class="keyword">...</span>
+0039     <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>);
+0040 
+0041 hTextLSTitle = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0042     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0043     <span class="string">'Position'</span>,[0.6 0.9 0.3 0.04],<span class="keyword">...</span>
+0044     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0045     <span class="string">'String'</span>,<span class="string">'LS parameter estimation'</span>,<span class="keyword">...</span>
+0046     <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>);
+0047 
+0048 hTextMLParameters = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0049     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0050     <span class="string">'Position'</span>,[0.02 0.8 0.2 0.04],<span class="keyword">...</span>
+0051     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0052     <span class="string">'String'</span>,<span class="string">'Signal Parameter:'</span>,<span class="keyword">...</span>
+0053     <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+0054     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);
+0055 
+0056 hTextMLValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0057     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0058     <span class="string">'Position'</span>,[0.22 0.8 0.1 0.04],<span class="keyword">...</span>
+0059     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0060     <span class="string">'String'</span>,<span class="string">'Value'</span>,<span class="keyword">...</span>
+0061     <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+0062     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0063 
+0064 hTextMLUnit = uicontrol (<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0065     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0066     <span class="string">'Position'</span>,[0.32 0.8 0.1 0.04],<span class="keyword">...</span>
+0067     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0068     <span class="string">'String'</span>,<span class="string">'Unit'</span>,<span class="keyword">...</span>
+0069     <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+0070     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0071 
+0072 hTextLSParameters = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0073     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0074     <span class="string">'Position'</span>,[0.52 0.8 0.2 0.04],<span class="keyword">...</span>
+0075     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0076     <span class="string">'String'</span>,<span class="string">'Signal Parameter:'</span>,<span class="keyword">...</span>
+0077     <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+0078     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);
+0079 
+0080 hTextLSValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0081     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0082     <span class="string">'Position'</span>,[0.72 0.8 0.1 0.04],<span class="keyword">...</span>
+0083     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0084     <span class="string">'String'</span>,<span class="string">'Value'</span>,<span class="keyword">...</span>
+0085     <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+0086     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0087 
+0088 hTextLSUnit = uicontrol (<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0089     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0090     <span class="string">'Position'</span>,[0.82 0.8 0.1 0.04],<span class="keyword">...</span>
+0091     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0092     <span class="string">'String'</span>,<span class="string">'Unit'</span>,<span class="keyword">...</span>
+0093     <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+0094     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0095 
+0096 <span class="comment">%------------</span>
+0097 <span class="comment">%AMPLITUDE</span>
+0098 <span class="comment">%------------</span>
+0099 hTextMLApmlitude = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0100     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0101     <span class="string">'Position'</span>,[0.02 0.775 0.2 0.04],<span class="keyword">...</span>
+0102     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0103     <span class="string">'String'</span>,<span class="string">'Amplitude: '</span>,<span class="keyword">...</span>
+0104     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);
+0105 
+0106 hTextMLAmplitudeValueLSB = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0107     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0108     <span class="string">'Position'</span>,[0.22 0.775 0.1 0.04],<span class="keyword">...</span>
+0109     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0110     <span class="string">'String'</span>,<span class="string">'234'</span>,<span class="keyword">...</span>
+0111     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0112 
+0113 hTextMLAmplitudeUnitLSB = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0114     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0115     <span class="string">'Position'</span>,[0.32 0.775 0.1 0.04],<span class="keyword">...</span>
+0116     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0117     <span class="string">'String'</span>,<span class="string">'LSB'</span>,<span class="keyword">...</span>
+0118     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0119 
+0120 
+0121 
+0122 hTextLSApmlitude = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0123     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0124     <span class="string">'Position'</span>,[0.52 0.775 0.2 0.04],<span class="keyword">...</span>
+0125     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0126     <span class="string">'String'</span>,<span class="string">'Amplitude: '</span>,<span class="keyword">...</span>
+0127     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);
+0128 
+0129 hTextLSAmplitudeValueLSB = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0130     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0131     <span class="string">'Position'</span>,[0.72 0.775 0.1 0.04],<span class="keyword">...</span>
+0132     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0133     <span class="string">'String'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0134     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0135 
+0136 hTextLSAmplitudeUnitLSB = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0137     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0138     <span class="string">'Position'</span>,[0.82 0.775 0.1 0.04],<span class="keyword">...</span>
+0139     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0140     <span class="string">'String'</span>,<span class="string">'LSB'</span>,<span class="keyword">...</span>
+0141     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0142 <span class="comment">%------------</span>
+0143 <span class="comment">%DC</span>
+0144 <span class="comment">%------------</span>
+0145 
+0146 hTextMLDC = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0147     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0148     <span class="string">'Position'</span>,[0.02 0.75 0.2 0.04],<span class="keyword">...</span>
+0149     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0150     <span class="string">'String'</span>,<span class="string">'DC component: '</span>,<span class="keyword">...</span>
+0151     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);
+0152 
+0153 hTextMLDCValueLSB = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0154     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0155     <span class="string">'Position'</span>,[0.22 0.75 0.1 0.04],<span class="keyword">...</span>
+0156     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0157     <span class="string">'String'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0158     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0159 
+0160 hTextMLDCUnitLSB = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0161     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0162     <span class="string">'Position'</span>,[0.32 0.75 0.1 0.04],<span class="keyword">...</span>
+0163     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0164     <span class="string">'String'</span>,<span class="string">'LSB'</span>,<span class="keyword">...</span>
+0165     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0166 
+0167 
+0168 
+0169 hTextLSDC = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0170     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0171     <span class="string">'Position'</span>,[0.52 0.75 0.2 0.04],<span class="keyword">...</span>
+0172     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0173     <span class="string">'String'</span>,<span class="string">'DC component: '</span>,<span class="keyword">...</span>
+0174     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);
+0175 
+0176 hTextLSDCValueLSB = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0177     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0178     <span class="string">'Position'</span>,[0.72 0.75 0.1 0.04],<span class="keyword">...</span>
+0179     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0180     <span class="string">'String'</span>,<span class="string">'234'</span>,<span class="keyword">...</span>
+0181     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0182 
+0183 hTextLSDCUnitLSB = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0184     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0185     <span class="string">'Position'</span>,[0.82 0.75 0.1 0.04],<span class="keyword">...</span>
+0186     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0187     <span class="string">'String'</span>,<span class="string">'LSB'</span>,<span class="keyword">...</span>
+0188     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0189 <span class="comment">%---------</span>
+0190 <span class="comment">%FREQUENCY</span>
+0191 <span class="comment">%---------</span>
+0192 
+0193 hTextMLFrequency = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0194     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0195     <span class="string">'Position'</span>,[0.02 0.725 0.2 0.04],<span class="keyword">...</span>
+0196     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0197     <span class="string">'String'</span>,<span class="string">'Normalized frequency: '</span>,<span class="keyword">...</span>
+0198     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);
+0199 
+0200 hTextMLFrequencyValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0201     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0202     <span class="string">'Position'</span>,[0.22 0.725 0.1 0.04],<span class="keyword">...</span>
+0203     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0204     <span class="string">'String'</span>,<span class="string">'234'</span>,<span class="keyword">...</span>
+0205     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0206 
+0207 hTextMLFrequencyUnit = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0208     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0209     <span class="string">'Position'</span>,[0.32 0.725 0.1 0.04],<span class="keyword">...</span>
+0210     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0211     <span class="string">'String'</span>,<span class="string">'f/fs'</span>,<span class="keyword">...</span>
+0212     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0213 
+0214 hTextLSFrequency = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0215     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0216     <span class="string">'Position'</span>,[0.52 0.725 0.2 0.04],<span class="keyword">...</span>
+0217     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0218     <span class="string">'String'</span>,<span class="string">'Normalized frequency: '</span>,<span class="keyword">...</span>
+0219     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);
+0220 
+0221 hTextLSFrequencyValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0222     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0223     <span class="string">'Position'</span>,[0.72 0.725 0.1 0.04],<span class="keyword">...</span>
+0224     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0225     <span class="string">'String'</span>,<span class="string">'234'</span>,<span class="keyword">...</span>
+0226     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0227 
+0228 hTextLSFrequencyUnit = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0229     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0230     <span class="string">'Position'</span>,[0.82 0.725 0.1 0.04],<span class="keyword">...</span>
+0231     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0232     <span class="string">'String'</span>,<span class="string">'f/fs'</span>,<span class="keyword">...</span>
+0233     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0234 
+0235 
+0236 <span class="comment">%-----------</span>
+0237 <span class="comment">%PHASE</span>
+0238 <span class="comment">%-----------</span>
+0239 
+0240 hTextMLPhase = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0241     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0242     <span class="string">'Position'</span>,[0.02 0.7 0.2 0.04],<span class="keyword">...</span>
+0243     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0244     <span class="string">'String'</span>,<span class="string">'Initial phase: '</span>,<span class="keyword">...</span>
+0245     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);
+0246 
+0247 hTextMLPhaseValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0248     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0249     <span class="string">'Position'</span>,[0.22 0.7 0.1 0.04],<span class="keyword">...</span>
+0250     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0251     <span class="string">'String'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0252     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0253 
+0254 hTextMLPhaseUnit = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0255     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0256     <span class="string">'Position'</span>,[0.32 0.7 0.1 0.04],<span class="keyword">...</span>
+0257     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0258     <span class="string">'String'</span>,<span class="string">'DEG'</span>,<span class="keyword">...</span>
+0259     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0260 
+0261 hTextLSPhase = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0262     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0263     <span class="string">'Position'</span>,[0.52 0.7 0.2 0.04],<span class="keyword">...</span>
+0264     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0265     <span class="string">'String'</span>,<span class="string">'Initial phase: '</span>,<span class="keyword">...</span>
+0266     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);
+0267 
+0268 hTextLSPhaseValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0269     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0270     <span class="string">'Position'</span>,[0.72 0.7 0.1 0.04],<span class="keyword">...</span>
+0271     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0272     <span class="string">'String'</span>,<span class="string">'234'</span>,<span class="keyword">...</span>
+0273     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0274 
+0275 hTextLSPhaseUnit = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0276     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0277     <span class="string">'Position'</span>,[0.82 0.7 0.1 0.04],<span class="keyword">...</span>
+0278     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0279     <span class="string">'String'</span>,<span class="string">'DEG'</span>,<span class="keyword">...</span>
+0280     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0281 <span class="comment">%---------------</span>
+0282 <span class="comment">%AMPLITUDE NORM</span>
+0283 <span class="comment">%---------------</span>
+0284 
+0285 hTextMLAmpNorm = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0286     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0287     <span class="string">'Position'</span>,[0.02 0.675 0.2 0.04],<span class="keyword">...</span>
+0288     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0289     <span class="string">'String'</span>,<span class="string">'Normalized amplitude: '</span>,<span class="keyword">...</span>
+0290     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);
+0291 
+0292 hTextMLAmpNormValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0293     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0294     <span class="string">'Position'</span>,[0.22 0.675 0.1 0.04],<span class="keyword">...</span>
+0295     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0296     <span class="string">'String'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0297     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0298 
+0299 hTextMLAmpNormUnit = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0300     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0301     <span class="string">'Position'</span>,[0.32 0.675 0.1 0.04],<span class="keyword">...</span>
+0302     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0303     <span class="string">'String'</span>,<span class="string">'rel. FS'</span>,<span class="keyword">...</span>
+0304     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0305 
+0306 hTextLSAmpNorm = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0307     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0308     <span class="string">'Position'</span>,[0.52 0.675 0.2 0.04],<span class="keyword">...</span>
+0309     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0310     <span class="string">'String'</span>,<span class="string">'Normalized amplitude: '</span>,<span class="keyword">...</span>
+0311     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);
+0312 
+0313 hTextLSAmpNormValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0314     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0315     <span class="string">'Position'</span>,[0.72 0.675 0.1 0.04],<span class="keyword">...</span>
+0316     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0317     <span class="string">'String'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0318     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0319 
+0320 hTextLSAmpNormUnit = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0321     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0322     <span class="string">'Position'</span>,[0.82 0.675 0.1 0.04],<span class="keyword">...</span>
+0323     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0324     <span class="string">'String'</span>,<span class="string">'rel. FS'</span>,<span class="keyword">...</span>
+0325     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0326 
+0327 
+0328 <span class="comment">%---------------</span>
+0329 <span class="comment">%DC NORM</span>
+0330 <span class="comment">%---------------</span>
+0331 hTextMLDCNorm = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0332     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0333     <span class="string">'Position'</span>,[0.02 0.65 0.2 0.04],<span class="keyword">...</span>
+0334     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0335     <span class="string">'String'</span>,<span class="string">'Normalized DC component: '</span>,<span class="keyword">...</span>
+0336     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);
+0337 
+0338 hTextMLDCNormValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0339     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0340     <span class="string">'Position'</span>,[0.22 0.65 0.1 0.04],<span class="keyword">...</span>
+0341     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0342     <span class="string">'String'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0343     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0344 
+0345 hTextMLDCNormUnit = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0346     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0347     <span class="string">'Position'</span>,[0.32 0.65 0.1 0.04],<span class="keyword">...</span>
+0348     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0349     <span class="string">'String'</span>,<span class="string">'rel. FS'</span>,<span class="keyword">...</span>
+0350     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0351 
+0352 hTextLSDCNorm = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0353     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0354     <span class="string">'Position'</span>,[0.52 0.65 0.2 0.04],<span class="keyword">...</span>
+0355     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0356     <span class="string">'String'</span>,<span class="string">'Normalized DC component: '</span>,<span class="keyword">...</span>
+0357     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);
+0358 
+0359 hTextLSDCNormValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0360     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0361     <span class="string">'Position'</span>,[0.72 0.65 0.1 0.04],<span class="keyword">...</span>
+0362     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0363     <span class="string">'String'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0364     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0365 
+0366 hTextLSDCNormUnit = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0367     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0368     <span class="string">'Position'</span>,[0.82 0.65 0.1 0.04],<span class="keyword">...</span>
+0369     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0370     <span class="string">'String'</span>,<span class="string">'rel. FS'</span>,<span class="keyword">...</span>
+0371     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0372 
+0373 <span class="comment">%---------------</span>
+0374 <span class="comment">%ENOB</span>
+0375 <span class="comment">%----------------</span>
+0376 hTextENOB_ML = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0377     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0378     <span class="string">'Position'</span>,[0.15 0.1 0.15 0.04],<span class="keyword">...</span>
+0379     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0380     <span class="string">'String'</span>,<span class="string">'Effective Number of Bits: '</span>,<span class="keyword">...</span>
+0381     <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+0382     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);
+0383 
+0384 hTextENOBValue_ML = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0385     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0386     <span class="string">'Position'</span>,[0.3 0.1 0.1 0.04],<span class="keyword">...</span>
+0387     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0388     <span class="string">'String'</span>,<span class="string">'NaN'</span>,<span class="keyword">...</span>
+0389     <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+0390     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0391 
+0392 hTextENOB_LS = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0393     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0394     <span class="string">'Position'</span>,[0.65 0.1 0.15 0.04],<span class="keyword">...</span>
+0395     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0396     <span class="string">'String'</span>,<span class="string">'Effective Number of Bits: '</span>,<span class="keyword">...</span>
+0397     <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+0398     <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);
+0399 
+0400 hTextENOBValue_LS = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0401     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0402     <span class="string">'Position'</span>,[0.8 0.1 0.1 0.04],<span class="keyword">...</span>
+0403     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0404     <span class="string">'String'</span>,<span class="string">'NaN'</span>,<span class="keyword">...</span>
+0405     <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>,<span class="keyword">...</span>
+0406     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);
+0407 <span class="comment">%------------</span>
+0408 <span class="comment">%AXES</span>
+0409 <span class="comment">%------------</span>
+0410 
+0411 hAxesMLPlot1 = axes(<span class="string">'Position'</span>,[0.02 0.45 0.46 0.15]);
+0412 hTextTitleMLPlot1 = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0413     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0414     <span class="string">'Position'</span>,[0.2 0.6 0.1 0.04],<span class="keyword">...</span>
+0415     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0416     <span class="string">'String'</span>,<span class="string">'Residuals in linear time'</span>);
+0417 
+0418 
+0419 hAxesLSPlot1 = axes(<span class="string">'Position'</span>,[0.52 0.45 0.46 0.15]);
+0420 hTextTitleLSPlot1 = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0421     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0422     <span class="string">'Position'</span>,[0.7 0.6 0.1 0.04],<span class="keyword">...</span>
+0423     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0424     <span class="string">'String'</span>,<span class="string">'Residuals in linear time'</span>);
+0425 
+0426 hPopupMenuPlot1Selector = uicontrol(<span class="string">'Style'</span>,<span class="string">'popupmenu'</span>,<span class="keyword">...</span>
+0427     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0428     <span class="string">'Position'</span>,[0.38 0.6 0.1 0.04],<span class="keyword">...</span>
+0429     <span class="string">'String'</span>,{<span class="string">'Linear time'</span>,<span class="string">'Mod T plot'</span>},<span class="keyword">...</span>
+0430     <span class="string">'Callback'</span>,@<a href="#_sub1" class="code" title="subfunction Plot1Selector_callback(source,eventdata)">Plot1Selector_callback</a>);
+0431 
+0432 hAxesMLPlot2 = axes (<span class="string">'Position'</span>,[0.02 0.2 0.46 0.15]);
+0433 hTextTitleMLPlot2 = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0434     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0435     <span class="string">'Position'</span>,[0.2 0.35 0.1 0.04],<span class="keyword">...</span>
+0436     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0437     <span class="string">'String'</span>,<span class="string">'Histogram of residuals'</span>);
+0438 
+0439 
+0440 hAxesLSPlot2 = axes (<span class="string">'Position'</span>,[0.52 0.2 0.46 0.15]);
+0441 hTextTitleLSPlot2 = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0442     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0443     <span class="string">'Position'</span>,[0.7 0.35 0.1 0.04],<span class="keyword">...</span>
+0444     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0445     <span class="string">'String'</span>,<span class="string">'Histogram of residuals'</span>);
+0446 
+0447 hPopupMenuPlot2Selector = uicontrol(<span class="string">'Style'</span>,<span class="string">'popupmenu'</span>,<span class="keyword">...</span>
+0448     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0449     <span class="string">'Position'</span>,[0.38 0.35 0.1 0.04],<span class="keyword">...</span>
+0450     <span class="string">'String'</span>,{<span class="string">'Histogram'</span>},<span class="keyword">...</span>
+0451     <span class="string">'Callback'</span>,@<a href="#_sub2" class="code" title="subfunction Plot2Selector_callback(source,eventdata)">Plot2Selector_callback</a>);
+0452 
+0453 <span class="comment">% hPopupMenuDomainSelector = uicontrol('Style','popupmenu',...</span>
+0454 <span class="comment">%     'Units','normalized',...</span>
+0455 <span class="comment">%     'Position',[0.9 0.9 0.1 0.05],...</span>
+0456 <span class="comment">%     'String',{'Code domain','Signal domain'},...</span>
+0457 <span class="comment">%     'Callback',@DomainSelector_callback);</span>
+0458 
+0459 
+0460 
+0461 <span class="comment">%------------------</span>
+0462 <span class="comment">%DISPLAYING RESULTS</span>
+0463 <span class="comment">%------------------</span>
+0464 
+0465 sine_wave_LS = LS_params(1)*cos(LS_params(4)*timevect) + LS_params(2)*sin(LS_params(4)*timevect) + LS_params(3);
+0466 residuals_LS = reduced_data(timevect) - sine_wave_LS;
+0467 
+0468 <span class="comment">%Converting ML parameters from [0,1] range to LSB</span>
+0469 ML_DC_LSB = ML_params(3)*(2^dsc.NoB - 2) + 0.5; <span class="comment">%0 -&gt; 0.5; 1-&gt;2^NoB-1.5</span>
+0470 ML_params_LSB = [ML_params(1:2)*(2^dsc.NoB-2); ML_DC_LSB; ML_params(4)];
+0471 sine_wave_ML = ML_params_LSB(1)*cos(ML_params_LSB(4)*timevect) + ML_params_LSB(2)*sin(ML_params_LSB(4)*timevect) + ML_params_LSB(3);
+0472 residuals_ML = reduced_data(timevect) - sine_wave_ML;
+0473 
+0474 <span class="comment">%Calculating extrema of residuals for axis values</span>
+0475 max_axis_residuals = max([max([residuals_ML;residuals_LS]);abs(min([residuals_ML;residuals_LS]))]);
+0476 min_axis_residuals = (-1)*max_axis_residuals;
+0477 
+0478 <span class="comment">%Converting LS parameters from LSB to range[0,1]</span>
+0479 LS_DC_NORM = (LS_params(3)-0.5)/(2^dsc.NoB - 2); <span class="comment">% 0.5 - &gt; 0; 2^NoB-1.5 -&gt;1</span>
+0480 LS_params_NORM = [LS_params(1:2)/(2^dsc.NoB - 2); LS_DC_NORM; LS_params(4)];
+0481 
+0482 LS_ENOB = dsc.NoB - log2(<a href="rms.html" class="code" title="function y = rms(x)">rms</a>(residuals_LS)*sqrt(12));
+0483 ML_ENOB = dsc.NoB - log2(<a href="rms.html" class="code" title="function y = rms(x)">rms</a>(residuals_ML)*sqrt(12));
+0484 <span class="comment">%Saturating ENOB to the theoretical bit number:</span>
+0485 <span class="keyword">if</span> (LS_ENOB &gt; dsc.NoB)
+0486     LS_ENOB = dsc.NoB;
+0487 <span class="keyword">end</span>
+0488 <span class="keyword">if</span> (ML_ENOB &gt; dsc.NoB)
+0489     ML_ENOB = dsc.NoB;
+0490 <span class="keyword">end</span>
+0491 
+0492 <span class="comment">%Calculating Mod T plot</span>
+0493 ML_TimeModT = zeros(length(residuals_ML),1);
+0494 LS_TimeModT = zeros(length(residuals_LS),1);
+0495 <span class="keyword">for</span> k = 1:length(residuals_ML)
+0496     ML_TimeModT(k) = timevect(k)*ML_params(4) - 2*pi*floor(timevect(k)*ML_params(4)/(2*pi));
+0497 <span class="keyword">end</span>
+0498 <span class="keyword">for</span> k = 1:length(residuals_LS)
+0499     LS_TimeModT(k) = timevect(k)*LS_params(4) - 2*pi*floor(timevect(k)*LS_params(4)/(2*pi));
+0500 <span class="keyword">end</span>
+0501 [ML_TimeModT_sorted,ML_TimeModT_indeces] = sort(ML_TimeModT);
+0502 [LS_TimeModT_sorted,LS_TimeModT_indeces] = sort(LS_TimeModT);
+0503 <span class="comment">%Calculating reference sine wave for mod t plot</span>
+0504 reference_sinewave_ML = (max_axis_residuals - min_axis_residuals)*0.4/sqrt(ML_params(1)^2 + ML_params(2)^2)*(ML_params(1)*cos(ML_TimeModT_sorted) + ML_params(2)*sin(ML_TimeModT_sorted));
+0505 reference_sinewave_LS = (max_axis_residuals - min_axis_residuals)*0.4/sqrt(ML_params(1)^2 + ML_params(2)^2)*(ML_params(1)*cos(ML_TimeModT_sorted) + ML_params(2)*sin(ML_TimeModT_sorted));
+0506 
+0507 <span class="comment">%Setting display:</span>
+0508 axes(hAxesMLPlot1);
+0509 plot(timevect,residuals_ML);
+0510 axis([1,length(reduced_data),min_axis_residuals,max_axis_residuals]);
+0511 axes(hAxesLSPlot1);
+0512 plot(timevect,residuals_LS);
+0513 axis([1,length(reduced_data),min_axis_residuals,max_axis_residuals]);
+0514 
+0515 hist_vect = linspace(min_axis_residuals,max_axis_residuals,HISTOGRAM_DENSITY);
+0516 ML_hist = hist(residuals_ML,hist_vect);
+0517 LS_hist = hist(residuals_LS,hist_vect);
+0518 axes(hAxesMLPlot2);
+0519 hist(residuals_ML,hist_vect);
+0520 axis([min_axis_residuals,max_axis_residuals, 0, max([ML_hist.';LS_hist.'])]);
+0521 axes(hAxesLSPlot2);
+0522 hist(residuals_LS,hist_vect);
+0523 axis([min_axis_residuals,max_axis_residuals,0,max([ML_hist.';LS_hist.'])]);
+0524 
+0525 
+0526 set(hTextMLAmplitudeValueLSB,<span class="string">'String'</span>,sprintf(<span class="string">'%3.2f'</span>,sqrt(ML_params_LSB(1)^2 + ML_params_LSB(2)^2)));
+0527 set(hTextLSAmplitudeValueLSB,<span class="string">'String'</span>,sprintf(<span class="string">'%3.2f'</span>,sqrt(LS_params(1)^2 + LS_params(2)^2)));
+0528 
+0529 set(hTextMLDCValueLSB,<span class="string">'String'</span>,sprintf(<span class="string">'%3.2f'</span>,ML_params_LSB(3)));
+0530 set(hTextLSDCValueLSB,<span class="string">'String'</span>,sprintf(<span class="string">'%3.2f'</span>,LS_params(3)));
+0531 
+0532 set(hTextMLFrequencyValue,<span class="string">'String'</span>,sprintf(<span class="string">'%e'</span>,ML_params_LSB(4)/(2*pi)));
+0533 set(hTextLSFrequencyValue,<span class="string">'String'</span>,sprintf(<span class="string">'%e'</span>,LS_params(4)/(2*pi)));
+0534 
+0535 set(hTextMLPhaseValue,<span class="string">'String'</span>,sprintf(<span class="string">'%3.2f'</span>,(-1)*180/pi*atan2(ML_params(2),ML_params(1))));
+0536 set(hTextLSPhaseValue,<span class="string">'String'</span>,sprintf(<span class="string">'%3.2f'</span>,(-1)*180/pi*atan2(LS_params(2),LS_params(1))));
+0537 
+0538 set(hTextMLAmpNormValue,<span class="string">'String'</span>,sprintf(<span class="string">'%1.4f'</span>,sqrt(ML_params(1)^2 + ML_params(2)^2)));
+0539 set(hTextLSAmpNormValue,<span class="string">'String'</span>,sprintf(<span class="string">'%1.4f'</span>,sqrt(LS_params_NORM(1)^2 + LS_params_NORM(2)^2)));
+0540 
+0541 set(hTextMLDCNormValue,<span class="string">'String'</span>,sprintf(<span class="string">'%1.4f'</span>,ML_params(3)));
+0542 set(hTextLSDCNormValue,<span class="string">'String'</span>,sprintf(<span class="string">'%1.4f'</span>,LS_params_NORM(3)));
+0543 
+0544 set(hTextENOBValue_LS,<span class="string">'String'</span>,sprintf(<span class="string">'%2.2f'</span>,LS_ENOB));
+0545 set(hTextENOBValue_ML,<span class="string">'String'</span>,sprintf(<span class="string">'%2.2f'</span>,ML_ENOB));
+0546 
+0547 <span class="comment">%caluclatind SINAD from ENOB:</span>
+0548 ea_ML = sqrt(ML_params(1)^2 + ML_params(2)^2);
+0549 ea_LS = sqrt(LS_params_NORM(1)^2 + LS_params_NORM(2)^2);
+0550 
+0551 LS_SINAD = 1.76 + 6.02*LS_ENOB + 20*log10(ea_ML / 1);
+0552 ML_SINAD = 1.76 + 6.02*ML_ENOB + 20*log10(ea_LS / 1);
+0553 
+0554 <span class="comment">%%%%%%%%%Adding evaluation result to results cell array:</span>
+0555 <span class="keyword">try</span>
+0556     testresults = evalin(<span class="string">'base'</span>,<span class="string">'adctest_process_results'</span>);
+0557     res_len = size(testresults,1);
+0558     <span class="comment">%Search for existing results block</span>
+0559     existings_index = 0;
+0560     <span class="keyword">for</span> k = 1:res_len        
+0561         <span class="keyword">if</span> strcmpi(dsc.model,testresults{k,1}.DUT.model) <span class="keyword">...</span>
+0562                 &amp;&amp; strcmpi(dsc.serial,testresults{k,1}.DUT.serial)<span class="keyword">...</span>
+0563                 &amp;&amp; (dsc.channel == testresults{k,1}.DUT.channel)<span class="keyword">...</span>
+0564                 &amp;&amp; (dsc.NoB == testresults{k,1}.DUT.NoB)
+0565             existings_index = k;                    
+0566         <span class="keyword">end</span>
+0567     <span class="keyword">end</span>    
+0568     <span class="keyword">if</span> (existings_index ~= 0) <span class="comment">%existing result struct</span>
+0569         <span class="comment">%Adding new results:</span>
+0570         testresults{existings_index,1}.LS.SINAD = LS_SINAD;
+0571         testresults{existings_index,1}.LS.ENOB = LS_ENOB;                        
+0572         testresults{existings_index,1}.ML.SINAD = ML_SINAD;
+0573         testresults{existings_index,1}.ML.ENOB = ML_ENOB;                
+0574     <span class="keyword">else</span> <span class="comment">%new result struct shall be added</span>
+0575         testresults{res_len + 1,1}.DUT.model = dsc.model;
+0576         testresults{res_len + 1,1}.DUT.serial = dsc.serial;
+0577         testresults{res_len + 1,1}.DUT.channel = dsc.channel;
+0578         testresults{res_len + 1,1}.DUT.NoB = dsc.NoB;
+0579         <span class="comment">%Adding new results:</span>
+0580         testresults{res_len + 1,1}.LS.SINAD = LS_SINAD;
+0581         testresults{res_len + 1,1}.LS.ENOB = LS_ENOB;        
+0582         testresults{res_len + 1,1}.ML.SINAD = ML_SINAD;
+0583         testresults{res_len + 1,1}.ML.ENOB = ML_ENOB;                
+0584     <span class="keyword">end</span>
+0585     <span class="comment">%updating adctest_process_results</span>
+0586     assignin (<span class="string">'base'</span>,<span class="string">'adctest_process_results'</span>,testresults);
+0587         
+0588 <span class="keyword">catch</span>
+0589     <span class="comment">%If testresults global variable does not exist:</span>
+0590     testresults = cell(1,1); <span class="comment">%creating new cell array for testresults</span>
+0591     testresults{1,1}.DUT.model = dsc.model;
+0592     testresults{1,1}.DUT.serial = dsc.serial;
+0593     testresults{1,1}.DUT.channel = dsc.channel;
+0594     testresults{1,1}.DUT.NoB = dsc.NoB;
+0595     <span class="comment">%Adding new results:</span>
+0596     testresults{1,1}.LS.SINAD = LS_SINAD;
+0597     testresults{1,1}.LS.ENOB = LS_ENOB;        
+0598     testresults{1,1}.ML.SINAD = ML_SINAD;
+0599     testresults{1,1}.ML.ENOB = ML_ENOB;        
+0600     
+0601     assignin (<span class="string">'base'</span>,<span class="string">'adctest_process_results'</span>,testresults);
+0602 <span class="keyword">end</span>
+0603 <span class="comment">%%%%%%End of adding evaluatin results to cell array%%%%%%%%%%</span>
+0604 
+0605     <a name="_sub1" href="#_subfunctions" class="code">function Plot1Selector_callback(source,eventdata)</a>
+0606         plot1_state = get(source,<span class="string">'Value'</span>);
+0607         <a href="#_sub3" class="code" title="subfunction UpdateDisplay">UpdateDisplay</a>;
+0608     <span class="keyword">end</span>
+0609 
+0610     <a name="_sub2" href="#_subfunctions" class="code">function Plot2Selector_callback(source,eventdata)</a>
+0611         plot2_state = get(source,<span class="string">'Value'</span>);
+0612         <a href="#_sub3" class="code" title="subfunction UpdateDisplay">UpdateDisplay</a>;
+0613     <span class="keyword">end</span>
+0614 
+0615 
+0616     <a name="_sub3" href="#_subfunctions" class="code">function UpdateDisplay</a>
+0617         <span class="keyword">if</span> strcmpi(domain,<span class="string">'code'</span>) <span class="comment">%Code domain</span>
+0618             set(hPopupMenuPlot1Selector,<span class="string">'String'</span>,{<span class="string">'Linear time'</span>,<span class="string">'Mod T plot'</span>});
+0619             set(hPopupMenuPlot2Selector,<span class="string">'String'</span>,{<span class="string">'Histogram'</span>});
+0620             <span class="keyword">if</span> (plot1_state == 1) <span class="comment">%Residuals in linear time</span>
+0621                 set(hTextTitleMLPlot1,<span class="string">'String'</span>,<span class="string">'Residuals in linear time'</span>);
+0622                 set(hTextTitleLSPlot1,<span class="string">'String'</span>,<span class="string">'Residuals in linear time'</span>);
+0623                 axes(hAxesMLPlot1);
+0624                 plot(timevect,residuals_ML);
+0625                 axis([1,length(reduced_data),min_axis_residuals,max_axis_residuals]);
+0626                 axes(hAxesLSPlot1);
+0627                 plot(timevect,residuals_LS);
+0628                 axis([1,length(reduced_data),min_axis_residuals,max_axis_residuals]);
+0629             <span class="keyword">elseif</span> (plot1_state == 2) <span class="comment">%Mod T plot of residuals</span>
+0630                 set(hTextTitleMLPlot1,<span class="string">'String'</span>,<span class="string">'Mod T plot of residuals'</span>);
+0631                 axes(hAxesMLPlot1);
+0632                 plot(ML_TimeModT_sorted,residuals_ML(ML_TimeModT_indeces),<span class="string">'b.'</span>,<span class="string">'MarkerSize'</span>,2); hold on;
+0633                 plot(ML_TimeModT_sorted,reference_sinewave_ML,<span class="string">'r'</span>); hold off;
+0634                 axis([0,2*pi,min_axis_residuals,max_axis_residuals]);
+0635                 set(hTextTitleLSPlot1,<span class="string">'String'</span>,<span class="string">'Mod T plot of residuals'</span>);
+0636                 axes(hAxesLSPlot1);
+0637                 plot(LS_TimeModT_sorted,residuals_LS(LS_TimeModT_indeces),<span class="string">'b.'</span>,<span class="string">'MarkerSize'</span>,2); hold on;
+0638                 plot(ML_TimeModT_sorted,reference_sinewave_LS,<span class="string">'r'</span>); hold off;
+0639                 axis([0,2*pi,min_axis_residuals,max_axis_residuals]);
+0640             <span class="keyword">else</span>
+0641                 error(<span class="string">'plot1_state out of range'</span>);
+0642             <span class="keyword">end</span>
+0643 
+0644             <span class="keyword">if</span> (plot2_state == 1)
+0645                 set(hTextTitleMLPlot2,<span class="string">'String'</span>,<span class="string">'Histogram of residuals'</span>);
+0646                 set(hTextTitleLSPlot2,<span class="string">'String'</span>,<span class="string">'Histogram of residuals'</span>);
+0647                 hist_vect = linspace(min_axis_residuals,max_axis_residuals,HISTOGRAM_DENSITY);
+0648                 ML_hist = hist(residuals_ML,hist_vect);
+0649                 LS_hist = hist(residuals_LS,hist_vect);
+0650                 axes(hAxesMLPlot2);
+0651                 hist(residuals_ML,hist_vect);
+0652                 axis([min_axis_residuals,max_axis_residuals,0,max([ML_hist.';LS_hist.'])]);
+0653                 axes(hAxesLSPlot2);
+0654                 hist(residuals_LS,hist_vect);
+0655                 axis([min_axis_residuals,max_axis_residuals,0,max([ML_hist.';LS_hist.'])]);
+0656             <span class="keyword">else</span>
+0657                 error (<span class="string">'plot2_state out of range'</span>);
+0658             <span class="keyword">end</span>
+0659         <span class="keyword">else</span>
+0660             error (<span class="string">'domain out of range'</span>);
+0661         <span class="keyword">end</span>
+0662     <span class="keyword">end</span>
+0663 
+0664 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

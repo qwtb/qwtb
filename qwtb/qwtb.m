@@ -1,17 +1,20 @@
 function varargout = qwtb(varargin) 
+% QWTB: Q-Wave Toolbox for data processing algorithms
+%   alginfo = QWTB()
+%       Gives informations on available algorithms.
+%   dataout = QWTB('algid', datain, [calcset])
+%       Apply algorithm with id `algid` to input data `datain` with calculation
+%       settings `calcset`.
+%   [] = QWTB('algid', 'example')
+%       Runs example associated with algorithm 'algid'.
+%   [] = QWTB('algid', 'test')
+%       Runs test associated with algorithm 'algid'.
+%   [] = QWTB('algid', 'addpath')
+%   [] = QWTB('algid', 'rempath')
+%       Add or remove algorithm path to a load path.
+
 % 2DO rem all qwtb paths, add own, restore paths?
 % 2DO what if path to alg_ already exist!?
-% QWTB: Q-Wave Toolbox
-%   0 input arguments: 
-%     finds all available algorithms and returns information
-%   2 input arguments: 
-%     algname - id of algorithm to use
-%     datain - data structure
-%     or string - 'test', 'example', 'addpath', 'rempath'
-%   3 input arguments: 
-%     algname - short name of algorithm to use
-%     datain - data structure
-%     calcset - calculation settings structure
 
     % start of qwtb function --------------------------- %<<<1
     % remove old alg_paths because if previous instance of qwtb ends with error,
@@ -70,6 +73,8 @@ function alginfo = get_all_alg_info() %<<<1
     lis = dir([qwtbdir filesep() 'alg_*']);
     % get only directories:
     lis = lis([lis.isdir]);
+    % prepare found algorithm counter:
+    algcnt = 1;
     % for all directories
     for i = 1:size(lis,1)
         % generate full path of current tested algorithm directory:
@@ -78,10 +83,13 @@ function alginfo = get_all_alg_info() %<<<1
             addpath(algdir);
             tmp = alg_info();
             tmp.fullpath = algdir;
-            if check_alginfo(tmp);
-                alginfo(i) = tmp;
+            msg = check_alginfo(tmp);
+            if isempty(msg)
+                alginfo(algcnt) = tmp;
+                algcnt = algcnt + 1;
             else
                 warning(['QWTB: algorithm info returned by alg_info.m in `' algdir '` has incorrect format and is excluded from results'])
+                disp(msg)
             end % if check_alginfo
             rmpath(algdir);
         end
@@ -215,43 +223,72 @@ function run_alg_example(algid) %<<<1
         % run example script in base workspace so user can operate with datain,
         % dataout and calcset:
         disp(['For description of example, please take a look at script `alg_' algid filesep 'alg_example.m`.']);
-        disp('Take a look at variables `datain`, `dataout` and calcset.')
+        disp('Take a look at data input structure `DI`, output data structure `DO` and optionally at calculation settings structure `CS`.')
         evalin('base', 'alg_example');
     end
     path_rem_algdir(algid);
 end
 
-function c = check_alginfo(alginfo) %<<<1
-% check if algorithm info structure complies to the qwtb format
-    c = 1;
-    try
-        c = c & (length(fieldnames(alginfo)) == 12);
-        c = c & isfield(alginfo, 'id');
-        c = c & ischar(alginfo.id);
-        c = c & isfield(alginfo, 'name');
-        c = c & ischar(alginfo.id);
-        c = c & isfield(alginfo, 'desc');
-        c = c & ischar(alginfo.id);
-        c = c & isfield(alginfo, 'citation');
-        c = c & ischar(alginfo.id);
-        c = c & isfield(alginfo, 'remarks');
-        c = c & ischar(alginfo.id);
-        c = c & isfield(alginfo, 'requires');
-        c = c & iscellstr(alginfo.requires);
-        c = c & isfield(alginfo, 'reqdesc');
-        c = c & iscellstr(alginfo.reqdesc);
-        c = c & isequal(size(alginfo.requires), size(alginfo.reqdesc));
-        c = c & isfield(alginfo, 'returns');
-        c = c & iscellstr(alginfo.returns);
-        c = c & isfield(alginfo, 'retdesc');
-        c = c & iscellstr(alginfo.retdesc);
-        c = c & isequal(size(alginfo.requires), size(alginfo.retdesc));
-        c = c & isfield(alginfo, 'providesGUF');
-        c = c & isfield(alginfo, 'providesMCM');
-        c = c & isfield(alginfo, 'fullpath');
-        c = c & ischar(alginfo.fullpath);
-    catch it
-        c = 0;
+function msg = check_alginfo(alginfo) %<<<1
+% returns empty string if algorithm info structure complies to the qwtb format,
+% else returns description of what is wrong
+
+    if ~(length(fieldnames(alginfo)) == 13)
+        msg = 'some fields are missing or redundant';
+    elseif ~isfield(alginfo, 'id');
+        msg = 'missing field `id`';
+    elseif ~ischar(alginfo.id);
+        msg = 'field `id` is not char type';
+    elseif ~isfield(alginfo, 'name');
+        msg = 'missing field `name`';
+    elseif ~ischar(alginfo.name);
+        msg = 'field `name` is not char type';
+    elseif ~isfield(alginfo, 'desc');
+        msg = 'missing field `desc`';
+    elseif ~ischar(alginfo.desc);
+        msg = 'field `desc` is not char type';
+    elseif ~isfield(alginfo, 'citation');
+        msg = 'missing field `citation`';
+    elseif ~ischar(alginfo.citation);
+        msg = 'field `citation` is not char type';
+    elseif ~isfield(alginfo, 'remarks');
+        msg = 'missing field `remarks`';
+    elseif ~ischar(alginfo.remarks);
+        msg = 'field `remarks` is not char type';
+    elseif ~isfield(alginfo, 'license');
+        msg = 'missing field `license`';
+    elseif ~ischar(alginfo.license);
+        msg = 'field `license` is not char type';
+    elseif ~isfield(alginfo, 'requires');
+        msg = 'missing field `requires`';
+    elseif ~iscellstr(alginfo.requires);
+        msg = 'field `requires` is not a cell of strings';
+    elseif ~isfield(alginfo, 'reqdesc');
+        msg = 'missing field `reqdesc`';
+    elseif ~iscellstr(alginfo.reqdesc);
+        msg = 'field `reqdesc` is not a cell of strings';
+    elseif ~isequal(size(alginfo.requires), size(alginfo.reqdesc));
+        msg = 'fields `requires` and `reqdesc` has different dimensions';
+    elseif ~isfield(alginfo, 'returns');
+        msg = 'missing field `returns`';
+    elseif ~iscellstr(alginfo.returns);
+        msg = 'field `returns` is not a cell of strings';
+    elseif ~isfield(alginfo, 'retdesc');
+        msg = 'missing field `retdesc`';
+    elseif ~iscellstr(alginfo.retdesc);
+        msg = 'field `retdesc` is not a cell of strings';
+    elseif ~isequal(size(alginfo.returns), size(alginfo.retdesc));
+        msg = 'fields `returns` and `retdesc` has different dimensions';
+    elseif ~isfield(alginfo, 'providesGUF');
+        msg = 'missing field `providesGUF`';
+    elseif ~isfield(alginfo, 'providesMCM');
+        msg = 'missing field `providesMCM`';
+    elseif ~isfield(alginfo, 'fullpath');
+        msg = 'missing field `fullpath`';
+    elseif ~ischar(alginfo.fullpath);
+        msg = 'field `fullpath` is not char type';
+    else
+        msg = '';
     end
 end % function check_alginfo
 
@@ -381,7 +418,7 @@ function calcset = check_gen_calcset(calcset) %<<<1
             calcset.mcm.repeats = 100;
             calcset.mcm.verbose = 1;
             calcset.mcm.method = 'singlecore';
-            calcset.mcm.procno = 1;
+            calcset.mcm.procno = 0;
             calcset.mcm.tmpdir = '.';
             calcset.mcm.randomize = 1;
         end
@@ -428,7 +465,7 @@ function calcset = check_gen_calcset(calcset) %<<<1
         if calcset.strict
             error('QWTB: field `mcm.procno` is missing in calculation settings structure')
         else
-            calcset.mcm.procno = 1;
+            calcset.mcm.procno = 0;
         end
     end
     tmp = calcset.mcm.procno;
@@ -669,5 +706,201 @@ function r = rand_quant(Q, M) %<<<1
         error(['QWTB: quantity `' Qname '` has too many dimensions']);
     end % if scalar/vector/matrix
 end % function rand_quant
+
+function res = isscalarP(X) %<<<1
+% Return true if X is a scalar in a physics sense. X is scalar if has two dimensions and both
+% dimensions are equal to 1.
+
+    S = size(X);
+    res = (   length(S) == 2   &&   max(S) == min(S)   &&   min(S) == 1   );
+
+end
+
+function res = isvectorP(X) %<<<1
+% Return true if X is a vector in a physics sense. X is vector if has two dimensions, one dimension
+% is equal to one, the other dimension is greater than 1.
+
+    S = size(X);
+    res = (   length(S) == 2   &&   max(S) > min(S)   &&   min(S) == 1   );
+
+end
+
+function res = ismatrixP(X) %<<<1
+% Return true if X is a matrix in a physics sense. X is matrix if has two dimensions and both
+% dimensions are greater than 1.
+
+    S = size(X);
+    res = (   length(S) == 2   &&   max(S) >= min(S)   &&   min(S) > 1   );
+
+end
+
+% XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX %<<<1 general mcm
+function dataout = general_mcm2(alginfo, datain, calcset) %<<<1
+% Applies monte carlo method to an algorithm. It works generally, therefore all
+% nuances of monte carlo method are not assured. All quantities should be
+% already randomized in Q.u.
+
+    method = calcset.mcm.method;
+    M = calcset.mcm.repeats;
+    isOctave = exist('OCTAVE_VERSION') ~= 0;
+
+    % single core code --------------------------- %<<<2
+    if strcmpi(method, 'singlecore') 
+        for MCind = 1:M
+            % following if/if section makes 20 s in total on Core i7 for M = 1e6
+            if calcset.mcm.verbose
+                if rem(MCind, 10000) == 0
+                    disp(['QWTB: general mcm: ' num2str(MCind/1000) 'e3 iterations calculated']);
+                end
+            end
+            % call wrapper 
+            res(MCind) = call_alg(alginfo, datain, calcset, MCind);
+        end
+    % multi core code --------------------------- %<<<2
+    elseif strcmpi(method, 'multicore') 
+        % 2 DO
+        % dve moznosti - cellfun @ call_alg, s tim ze repmat(datain), ale to je
+        % pametove narocne, nebo zkonstruovat unc_to_val, do cell a pustit
+        % cellfun na algoritmus, ale zkonstruovani muze trvat - casove narocne.
+        M = calcset.mcm.repeats;
+        procno = calcset.mcm.procno;
+        if calcset.mcm.procno < 1
+            if isOctave
+                procno = nproc;
+            else
+                % XXX does not work. however it is not relevant because matlab
+                % doesn't know how to limit number of processors in parfor
+                procno = getenv('NUMBER_OF_PROCESSORS')
+            end
+        end % if procno < 1
+        if isOctave
+            % XXX where is rand and call?
+            % 2DO maybe
+            % f = @(in) alg_wrapper(in, calcset);
+            % tmp = {datain};
+            % tmp = repmat(datain, 1, M);
+            % res = parcellfun(f, tmp);
+            res = parcellfun(procno, @call_alg, repmat({alginfo}, 1, M), repmat({datain}, 1, M), repmat({calcset}, 1, M), num2cell([1:M]));
+        else
+            parfor i = 1:M
+                res(i) = call_alg(alginfo, datain, calcset, i);
+            end
+        end
+    % multi station code --------------------------- %<<<2
+    elseif strcmpi(method, 'multistation') 
+        % 2DO
+    else
+        error(['QWTB: unknown settings of calcset.mcm.method: `' method '` '])
+    end
+        
+    % concatenate data into output structure --------------------------- %<<<2
+    % .v is created by mean of outputs
+    % .u is all outputs
+    for i = 1:size(alginfo.returns, 1)
+        % through all quantities:
+        Qname = alginfo.returns{i};
+        rescell = [res.(Qname)];
+        rescell = {rescell.v};
+
+        % check all outputs has the same dimensions:
+        tst = cellfun('ndims', rescell);
+        if ~all(tst == tst(1))
+            error(['QWTB: some outputs `' Qname '.v` of general mcm has different numbers of dimensions'])
+        end  % if not all tst
+        for i = 1:tst(1)
+            % for all dimensions
+            tst2 = cellfun('size', rescell, i);
+            if ~all(tst == tst(1))
+                error(['QWTB: some outputs `' Qname '.v` of general mcm has different sizes'])
+            end
+        end % for all dimensions
+
+        % preparation:
+        if isscalarP(res(1).(Qname).v) == 1
+            % quantity is scalar
+            dataout.(Qname).v = mean([rescell{:}]);
+            dataout.(Qname).u = std([rescell{:}]);
+            dataout.(Qname).r = vertcat(rescell{:});
+            dataout.(Qname).d = nan;
+            dataout.(Qname).c = nan;
+        elseif isvectorP(res(1).(Qname).v)
+            % quantity is vector
+            dataout.(Qname).v = mean(vertcat(rescell{:}));
+            dataout.(Qname).u = std([rescell{:}]);
+            dataout.(Qname).r = vertcat(rescell{:});
+            dataout.(Qname).d = nan;
+            dataout.(Qname).c = nan;
+        elseif ismatrixP(res(1).(Qname).v)
+            % quantity is matrix
+            dataout.(Qname).v = mean(vertcat(rescell{:}), 1);
+            dataout.(Qname).u = std([rescell{:}]);
+            dataout.(Qname).r = vertcat(rescell{:});
+            dataout.(Qname).d = nan;
+            dataout.(Qname).c = nan;
+        else
+            error(['QWTB: output quantity `' Qname '` has too many dimensions']);
+        end
+    end % for concatenate
+end % function
+
+function dataout = call_alg(alginfo, datain, calcset, MCind) %<<<1
+% set quantity values and call algorithm
+
+    % copy uncertainty to values for all required quantities:
+    for i = 1:length(alginfo.requires)
+        % for all quantities
+        Qname = alginfo.requires{i};
+        datain2.(Qname) = unc_to_val(datain.(Qname), MCind, Qname);
+    end % for i
+    % disable calculation of uncertainty:
+    calcset.unc = 'none';
+    % call the algorithm:
+    dataout = alg_wrapper(datain2, calcset);
+
+end % function
+
+function Qout = unc_to_val(Qin, MCind, Qname) %<<<1
+% function copy values from randomized input uncertainty Qin.u to output value
+% Qout.v and sets Qout.u and Qout.d to NaNs. Quantity name Qname is used for
+% error message.
+    if isscalarP(Qin.v)
+        % quantity is scalar
+        Qout.v = Qin.r(MCind);
+        Qout.r = nan.*ones(size(Qin.v));
+        Qout.d = [];
+        Qout.c = [];
+    elseif isvectorP(Qin.v)
+        % quantity is vector
+        Qout.v = Qin.r(MCind, :);
+        Qout.r = nan.*ones(size(Qin.v));
+        Qout.d = [];
+        Qout.c = [];
+    elseif ismatrixP(Qin.v)
+        % quantity is matrix
+        Qout.v = Qin.r(MCind, :, :);
+        gout.r = nan.*ones(size(Qin.v));
+        Qout.d = [];
+        Qout.c = [];
+    else
+        % XXX tohle se musi checkovat taky na startu:!!!
+        error(['QWTB: quantity `' Qname '` has too many dimensions']);
+    end
+%    % tohle by jenom melo presunout .u(i) do .v
+%    if length(Qin.v) == 1
+%        % randomizovat jen kdyz neni randomizovane, a to by mel
+%        % resit nejaky kontrolor nejistot v datain
+%        % XXX
+%        Qout.v = normrnd(Qin.v, Qin.u, [M 1]);
+%    else
+%        for i = 1:length(Qin.v)
+%            % 2DO too slow, mvnrnd has to be used
+%            % 2DO, other distributions
+%            % 2DO, paralelize if no other possibility?
+%            Qout.v(:,i) = normrnd(Qin.v(i), Qin.u(i), [1 1]);
+%        end
+%    end
+end % function
+
+
 
 % vim settings modeline: vim: foldmarker=%<<<,%>>> fdm=marker fen ft=octave textwidth=80 tabstop=4 shiftwidth=4

@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ng_bh3</title>
+  <meta name="keywords" content="ng_bh3">
+  <meta name="description" content="N�yparam�eres frekvenciatartom�ybeli LS szinuszbecsl�">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; ng_bh3.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>ng_bh3
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>N�yparam�eres frekvenciatartom�ybeli LS szinuszbecsl�</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [A,B,C,f,D]=ng_bh3(X,J_init) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> N�yparam�eres frekvenciatartom�ybeli LS szinuszbecsl�
+ [P, D]=ng_bh3(X,J_init)
+ X: szinuszjel Fourier transzform�tj�ak vektora
+ J_init: peri�usok sz��ak kezdeti becsl�e
+ P: a szinuszjel param�ereit tartalmaz�strukt�a, mez�: A, B, C, f
+ Az illesztett N pontos szinuszjel:
+ Fi=2*pi*P.f*(0:N-1)/N; x=P.C+P.A*cos(Fi)+P.B*sin(Fi);
+ D: A Jacobi m�rix inverze (kovarianciasz���hoz)
+ time: illeszt�i id�</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="cov_bh3.html" class="code" title="function C=cov_bh3(A0,A1,A2,bins,N)">cov_bh3</a>	</li><li><a href="g2_bh3.html" class="code" title="function [X,dA,dB,dC,df]=g2_bh3(A,B,C,f,N,bins,w0,w1,w2,limit,sf,p)">g2_bh3</a>	</li><li><a href="poli_bh3.html" class="code" title="function [limit,sf,p] = poli_bh3(N)">poli_bh3</a>	Polinomegy�that�at adja meg melyek seg�s��el kisz��juk az X_sin</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="fdsfit4_bh3.html" class="code" title="function [A,B,C,f,COV,time] = fdsfit4_bh3(xq)">fdsfit4_bh3</a>	FDSFIT4_BH3 Summary of this function goes here</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [A,B,C,f,D]=ng_bh3(X,J_init)</a>
+0002 <span class="comment">% N�yparam�eres frekvenciatartom�ybeli LS szinuszbecsl�</span>
+0003 <span class="comment">% [P, D]=ng_bh3(X,J_init)</span>
+0004 <span class="comment">% X: szinuszjel Fourier transzform�tj�ak vektora</span>
+0005 <span class="comment">% J_init: peri�usok sz��ak kezdeti becsl�e</span>
+0006 <span class="comment">% P: a szinuszjel param�ereit tartalmaz�strukt�a, mez�: A, B, C, f</span>
+0007 <span class="comment">% Az illesztett N pontos szinuszjel:</span>
+0008 <span class="comment">% Fi=2*pi*P.f*(0:N-1)/N; x=P.C+P.A*cos(Fi)+P.B*sin(Fi);</span>
+0009 <span class="comment">% D: A Jacobi m�rix inverze (kovarianciasz���hoz)</span>
+0010 <span class="comment">% time: illeszt�i id�</span>
+0011 
+0012 <span class="comment">% A bemen�jel legyen oszlopvektor</span>
+0013 X = X(:);
+0014 <span class="comment">% A bemen�jel hossza</span>
+0015 Nx=length(X);
+0016 
+0017 <span class="comment">% A 3 tag�Blackman-Harris ablak egy�that�</span>
+0018 A0=+4.243800934609435e-001;
+0019 A1=-4.973406350967378e-001;
+0020 A2=+7.827927144231873e-002;
+0021 
+0022 <span class="comment">% A param�erek kezd�rt�e a becsl�n�</span>
+0023 A=0;
+0024 B=0;
+0025 C=0;
+0026 f=J_init;
+0027 k=round(f);
+0028 
+0029 <span class="comment">% A konvolv��ektor</span>
+0030 cv=0.5*[A2 A1 2*A0 A1 A2];
+0031 
+0032 <span class="comment">% Az illeszt�n� haszn�t binek kiv�aszt�a</span>
+0033 bins=([-2:2, k-2:k+2, Nx-k-2:Nx-k+2]).';
+0034 inds0=(bins&lt;0); <span class="comment">% Azon elemek indexe, amelyek null�� kisebbek</span>
+0035 bins(inds0)=Nx+bins(inds0);
+0036 indsN=(bins&gt;Nx-1); <span class="comment">% Azon elemek indexe, amelyek N-1-n� nagyobbak</span>
+0037 bins(indsN)=-Nx+bins(indsN);
+0038 bins=unique(bins); <span class="comment">% Sorba van rendezve a 0:N-1 k��t, nincs 2 azonos elem.</span>
+0039 
+0040 <span class="comment">% Az illeszt�hez haszn�t m�t jel el�ll��a</span>
+0041 Xbh3_ref=zeros(length(bins),1);
+0042 <span class="keyword">for</span> ii=1:length(bins)
+0043     ind=bins(ii)+1; <span class="comment">% Matlab indexel�</span>
+0044     indices=(ind-2:ind+2);
+0045     indices(indices&lt;1)=Nx+indices(indices&lt;1);
+0046     indices(indices&gt;Nx)=-Nx+indices(indices&gt;Nx);
+0047     Xbh3_ref(ii)=cv*X(indices);
+0048 <span class="keyword">end</span>
+0049 
+0050 
+0051 <span class="comment">% % A m�t jel ablakoz�a, el�ll��a</span>
+0052 <span class="comment">% xbh3=x.*wbh3;</span>
+0053 <span class="comment">% Xbh3=fft(xbh3);</span>
+0054 <span class="comment">%</span>
+0055 
+0056 <span class="comment">%</span>
+0057 
+0058 <span class="comment">%</span>
+0059 <span class="comment">% % Az illeszt�hez haszn�t m�t jel el�ll��a</span>
+0060 <span class="comment">% inds=ismember(0:Nx-1,bins);</span>
+0061 <span class="comment">% Xbh3_ref=Xbh3(inds); % Referenciajel, a hib� ebb� sz�oljuk</span>
+0062 
+0063 <span class="comment">% Kovarianciam�rix meghat�oz�a</span>
+0064 W=<a href="cov_bh3.html" class="code" title="function C=cov_bh3(A0,A1,A2,bins,N)">cov_bh3</a>(A0,A1,A2,bins,Nx);
+0065 O=zeros(size(W));
+0066 K=[<span class="keyword">...</span>
+0067     W, O;
+0068     O, W;
+0069     ];
+0070 invK=pinv(K,0);
+0071 
+0072 <span class="comment">% Seg�polinom el�ll��a</span>
+0073 [limit, sf, p]=<a href="poli_bh3.html" class="code" title="function [limit,sf,p] = poli_bh3(N)">poli_bh3</a>(Nx);
+0074 
+0075 <span class="comment">% Gauss-Newton</span>
+0076 It_szam=10;
+0077 <span class="keyword">for</span> ii=1:It_szam
+0078     [Xbh3_calc, dA, dB, dC, df]=<a href="g2_bh3.html" class="code" title="function [X,dA,dB,dC,df]=g2_bh3(A,B,C,f,N,bins,w0,w1,w2,limit,sf,p)">g2_bh3</a>(A,B,C,f,Nx,bins,A0,A1,A2,limit,sf,p); <span class="comment">% Sz�olt �t� � a deriv�tak</span>
+0079     e=[real(Xbh3_ref-Xbh3_calc); imag(Xbh3_ref-Xbh3_calc)];
+0080     J=[<span class="keyword">...</span>
+0081         real(dA), real(dB), real(dC), real(df);
+0082         imag(dA), imag(dB), imag(dC), imag(df);
+0083         ];
+0084     H=J.'*invK;
+0085     D=pinv(H*J,0);
+0086     dP=D*H*e;
+0087     A=A+dP(1);
+0088     B=B+dP(2);
+0089     C=C+dP(3);
+0090     f=f+dP(4);
+0091 <span class="keyword">end</span>
+0092 <span class="keyword">end</span>
+0093 
+0094 
+0095 
+0096 
+0097 
+0098 
+0099 
+0100 
+0101</pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

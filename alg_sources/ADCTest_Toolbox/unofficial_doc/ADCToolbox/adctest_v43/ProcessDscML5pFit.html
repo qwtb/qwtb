@@ -1,0 +1,563 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of ProcessDscML5pFit</title>
+  <meta name="keywords" content="ProcessDscML5pFit">
+  <meta name="description" content="@fn ProcessDscML5pFit">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; ProcessDscML5pFit.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>ProcessDscML5pFit
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>@fn ProcessDscML5pFit</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function ProcessDscML5pFit(dsc,reduced_data,timevect,pLS) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> @fn ProcessDscML5pFit
+ @brief Processes measurement descriptor using 5-parameter maximum
+        likelihood fit
+ @param dsc The measurement descriptor to process
+ @param reduced_data The data vector after adjusting amplitude and time
+                     limits
+ @param timevect The sampling times of the values in reduced_data
+ @param pLS The result of the LS fit (initial estimators)
+ @return none
+ @author Tam� Virosztek, Budapest University of Technology and Economics,
+         Department of Measurement and Infromation Systems,
+         Virosztek.Tamas@mit.bme.hu</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="CompareLSvsML.html" class="code" title="function CompareLSvsML(dsc,reduced_data,timevect,LS_params,ML_params,estimated_INL)">CompareLSvsML</a>	@fn CompareLSvsML</li><li><a href="EvaluateCF.html" class="code" title="function varargout = EvaluateCF(y,p0,NoB,INL)">EvaluateCF</a>	@fn EvaluateCF</li><li><a href="INL2TransLevels.html" class="code" title="function translevels = INL2TransLevels(INL)">INL2TransLevels</a>	@fn INL2TransLevels</li><li><a href="ProcessHistogramTest.html" class="code" title="function INL = ProcessHistogramTest(dsc,display_settings,varargin)">ProcessHistogramTest</a>	@fn ProcessHistogramtest</li><li><a href="QuantizeSignal.html" class="code" title="function y = QuantizeSignal(x,trans_levels)">QuantizeSignal</a>	@fn QuantizeSignal</li><li><a href="rms.html" class="code" title="function y = rms(x)">rms</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="ProcessDscLS4pFit.html" class="code" title="function ProcessDscLS4pFit(dsc,reason)">ProcessDscLS4pFit</a>	@fn ProcessDscLS4pFit</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function EditMaxIter_callback(source,eventdata)</a></li><li><a href="#_sub2" class="code">function EditMaxFunEvals_callback(source,eventdata)</a></li><li><a href="#_sub3" class="code">function EditTolFun_callback(source,eventdata)</a></li><li><a href="#_sub4" class="code">function StartPauseResume_callback(source,eventdata)</a></li><li><a href="#_sub5" class="code">function Stop_callback(source,eventdata)</a></li><li><a href="#_sub6" class="code">function Reset_callback(source,eventdata)</a></li><li><a href="#_sub7" class="code">function Compare_callback(source,eventdata)</a></li><li><a href="#_sub8" class="code">function RunIterations</a></li><li><a href="#_sub9" class="code">function UpdateDisplay</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function ProcessDscML5pFit(dsc,reduced_data,timevect,pLS)</a>
+0002 <span class="comment">% @fn ProcessDscML5pFit</span>
+0003 <span class="comment">% @brief Processes measurement descriptor using 5-parameter maximum</span>
+0004 <span class="comment">%        likelihood fit</span>
+0005 <span class="comment">% @param dsc The measurement descriptor to process</span>
+0006 <span class="comment">% @param reduced_data The data vector after adjusting amplitude and time</span>
+0007 <span class="comment">%                     limits</span>
+0008 <span class="comment">% @param timevect The sampling times of the values in reduced_data</span>
+0009 <span class="comment">% @param pLS The result of the LS fit (initial estimators)</span>
+0010 <span class="comment">% @return none</span>
+0011 <span class="comment">% @author Tam� Virosztek, Budapest University of Technology and Economics,</span>
+0012 <span class="comment">%         Department of Measurement and Infromation Systems,</span>
+0013 <span class="comment">%         Virosztek.Tamas@mit.bme.hu</span>
+0014 
+0015 screensize = get(0,<span class="string">'ScreenSize'</span>);
+0016 
+0017 <span class="comment">%Default optimization parameters</span>
+0018 MAX_ITER_DEFAULT = 30;
+0019 MAX_FUN_EVALS_DEFAULT = 60;
+0020 TOL_FUN_DEFAULT = 0;
+0021 LAMBDA_ADJUST = 10;
+0022 <span class="comment">%Constant to set length of pauses</span>
+0023 PAUSE_DEFAULT = 0.02; <span class="comment">%[sec]</span>
+0024 
+0025 ml_fit_window = figure (<span class="string">'Name'</span>,<span class="string">'Maximum Likelihood parameter estimation'</span>,<span class="keyword">...</span>
+0026                         <span class="string">'Position'</span>,[screensize(3)*0.25 screensize(4)*0.25 screensize(3)*0.5 screensize(4)*0.5],<span class="keyword">...</span>
+0027                         <span class="string">'NumberTitle'</span>,<span class="string">'off'</span>);
+0028 
+0029 hTextProgressOfEstimation = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0030                                <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0031                                <span class="string">'Position'</span>,[0.1 0.9 0.3 0.05],<span class="keyword">...</span>
+0032                                <span class="string">'String'</span>,<span class="string">'Progress of estimation: '</span>,<span class="keyword">...</span><span class="comment">                               </span>
+0033                                <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0034                                <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>);
+0035 
+0036 hTextCosineCoefficient = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0037                                    <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0038                                    <span class="string">'Position'</span>,[0.05 0.8 0.3 0.04],<span class="keyword">...</span>
+0039                                    <span class="string">'String'</span>,<span class="string">'Cosine coefficient (A): '</span>,<span class="keyword">...</span>
+0040                                    <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0041                                    <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0042                            
+0043 hTextCosineCoefficientValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0044                                    <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0045                                    <span class="string">'Position'</span>,[0.35 0.8 0.1 0.04],<span class="keyword">...</span>
+0046                                    <span class="string">'String'</span>,sprintf (<span class="string">'%1.5f'</span>,0),<span class="keyword">...</span>
+0047                                    <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0048                                    <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0049 
+0050 hTextSineCoefficient = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0051                                    <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0052                                    <span class="string">'Position'</span>,[0.05 0.75 0.3 0.04],<span class="keyword">...</span>
+0053                                    <span class="string">'String'</span>,<span class="string">'Sine coefficient (B): '</span>,<span class="keyword">...</span>
+0054                                    <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0055                                    <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0056 
+0057 hTextSineCoefficientValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0058                                    <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0059                                    <span class="string">'Position'</span>,[0.35 0.75 0.1 0.04],<span class="keyword">...</span>
+0060                                    <span class="string">'String'</span>,sprintf (<span class="string">'%1.5f'</span>,0),<span class="keyword">...</span>
+0061                                    <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0062                                    <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0063 
+0064 hTextDCComponent = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0065                              <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0066                              <span class="string">'Position'</span>,[0.05 0.7 0.3 0.04],<span class="keyword">...</span>
+0067                              <span class="string">'String'</span>,<span class="string">'DC component (C): '</span>,<span class="keyword">...</span>
+0068                              <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0069                              <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0070 
+0071 hTextDCComponentValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0072                                    <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0073                                    <span class="string">'Position'</span>,[0.35 0.7 0.1 0.04],<span class="keyword">...</span>
+0074                                    <span class="string">'String'</span>,sprintf (<span class="string">'%1.5f'</span>,0),<span class="keyword">...</span>
+0075                                    <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0076                                    <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0077 
+0078                          
+0079 hTextNormalizedFrequency = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0080                                   <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0081                                   <span class="string">'Position'</span>,[0.05 0.65 0.25 0.04],<span class="keyword">...</span>
+0082                                   <span class="string">'String'</span>,<span class="string">'Normalized freq. (f/fs): '</span>,<span class="keyword">...</span>
+0083                                   <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0084                                   <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0085                               
+0086 hTextNormalizedFrequencyValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0087                                    <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0088                                    <span class="string">'Position'</span>,[0.3 0.65 0.15 0.04],<span class="keyword">...</span>
+0089                                    <span class="string">'String'</span>,sprintf (<span class="string">'%1.5f'</span>,0),<span class="keyword">...</span>
+0090                                    <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0091                                    <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0092 
+0093                          
+0094 hTextNoiseStd = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0095                           <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0096                           <span class="string">'Position'</span>,[0.05 0.6 0.25 0.04],<span class="keyword">...</span>
+0097                           <span class="string">'String'</span>,<span class="string">'Std. deviation of noise: (sigma)'</span>,<span class="keyword">...</span>
+0098                           <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0099                           <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0100                       
+0101 hTextNoiseStdValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0102                                    <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0103                                    <span class="string">'Position'</span>,[0.3 0.6 0.15 0.04],<span class="keyword">...</span>
+0104                                    <span class="string">'String'</span>,sprintf (<span class="string">'%1.5f'</span>,0),<span class="keyword">...</span>
+0105                                    <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0106                                    <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0107 
+0108 hTextCostFunction = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0109                           <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0110                           <span class="string">'Position'</span>,[0.05 0.55 0.3 0.04],<span class="keyword">...</span>
+0111                           <span class="string">'String'</span>,<span class="string">'Value of ML cost function'</span>,<span class="keyword">...</span>
+0112                           <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0113                           <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0114                           <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>);
+0115                       
+0116 hTextCostFunctionValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0117                                    <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0118                                    <span class="string">'Position'</span>,[0.35 0.55 0.1 0.04],<span class="keyword">...</span>
+0119                                    <span class="string">'String'</span>,<span class="string">'NaN'</span>,<span class="keyword">...</span>
+0120                                    <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0121                                    <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0122                                    <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>);
+0123 
+0124 hTextFurtherInformation = uicontrol (<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0125                                      <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0126                                      <span class="string">'Position'</span>,[0.1 0.45 0.3 0.05],<span class="keyword">...</span>
+0127                                      <span class="string">'String'</span>,<span class="string">'Further Information'</span>,<span class="keyword">...</span>
+0128                                      <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0129                                      <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>);
+0130                                  
+0131 hTextLambda = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0132                           <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0133                           <span class="string">'Position'</span>,[0.05 0.4 0.2 0.04],<span class="keyword">...</span>
+0134                           <span class="string">'String'</span>,<span class="string">'Lambda: '</span>,<span class="keyword">...</span>
+0135                           <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0136                           <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0137 
+0138 hTextLambdaValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0139                                    <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0140                                    <span class="string">'Position'</span>,[0.25 0.4 0.2 0.04],<span class="keyword">...</span>
+0141                                    <span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,0),<span class="keyword">...</span>
+0142                                    <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0143                                    <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0144 
+0145 hTextIterationCounter = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0146                           <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0147                           <span class="string">'Position'</span>,[0.05 0.35 0.3 0.04],<span class="keyword">...</span>
+0148                           <span class="string">'String'</span>,<span class="string">'Iteration counter: '</span>,<span class="keyword">...</span>
+0149                           <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0150                           <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0151 
+0152 hTextIterationCounterValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0153                                    <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0154                                    <span class="string">'Position'</span>,[0.35 0.35 0.1 0.04],<span class="keyword">...</span>
+0155                                    <span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,0),<span class="keyword">...</span>
+0156                                    <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0157                                    <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);                               
+0158 
+0159 hTextFunEvalsCounter = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0160                           <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0161                           <span class="string">'Position'</span>,[0.05 0.3 0.3 0.04],<span class="keyword">...</span>
+0162                           <span class="string">'String'</span>,<span class="string">'Function evaluation counter: '</span>,<span class="keyword">...</span>
+0163                           <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0164                           <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0165 
+0166 hTextFunEvalsCounterValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0167                                    <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0168                                    <span class="string">'Position'</span>,[0.35 0.3 0.1 0.04],<span class="keyword">...</span>
+0169                                    <span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,0),<span class="keyword">...</span>
+0170                                    <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>,<span class="keyword">...</span>
+0171                                    <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0172 
+0173                                
+0174 hTextAdvancedSettings = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0175                                  <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0176                                  <span class="string">'Position'</span>,[0.6 0.9 0.3 0.05],<span class="keyword">...</span>
+0177                                  <span class="string">'String'</span>,<span class="string">'Advanced settings'</span>,<span class="keyword">...</span>
+0178                                  <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0179                                  <span class="string">'FontWeight'</span>,<span class="string">'bold'</span>);
+0180                              
+0181 hTextMaxIter = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0182                          <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0183                          <span class="string">'Position'</span>,[0.55 0.8 0.3 0.04],<span class="keyword">...</span>
+0184                          <span class="string">'String'</span>,<span class="string">'Max. number of iterations: '</span>,<span class="keyword">...</span>
+0185                          <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span>
+0186                          <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0187 
+0188 hEditMaxIter = uicontrol(<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0189                          <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0190                          <span class="string">'Position'</span>, [0.85 0.8 0.1 0.05],<span class="keyword">...</span>
+0191                          <span class="string">'String'</span>,<span class="string">'Default'</span>,<span class="keyword">...</span>
+0192                          <span class="string">'Callback'</span>,@<a href="#_sub1" class="code" title="subfunction EditMaxIter_callback(source,eventdata)">EditMaxIter_callback</a>);
+0193 
+0194 hTextMaxFunEvals = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0195                              <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0196                              <span class="string">'Position'</span>,[0.55 0.75 0.3 0.04],<span class="keyword">...</span>
+0197                              <span class="string">'String'</span>,<span class="string">'Max. number of cost function evaluations: '</span>,<span class="keyword">...</span>
+0198                              <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span><span class="comment">                             </span>
+0199                              <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0200 
+0201 hEditMaxFunEvals = uicontrol(<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0202                              <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0203                              <span class="string">'Position'</span>, [0.85 0.75 0.1 0.05],<span class="keyword">...</span>
+0204                              <span class="string">'String'</span>,<span class="string">'Default'</span>,<span class="keyword">...</span>
+0205                              <span class="string">'Callback'</span>,@<a href="#_sub2" class="code" title="subfunction EditMaxFunEvals_callback(source,eventdata)">EditMaxFunEvals_callback</a>);
+0206                          
+0207 hTextTolFun = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0208                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0209                         <span class="string">'Position'</span>,[0.55 0.7 0.3 0.04],<span class="keyword">...</span>
+0210                         <span class="string">'String'</span>,<span class="string">'Termination tolerance on cost function: '</span>,<span class="keyword">...</span>
+0211                         <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>,<span class="keyword">...</span><span class="comment">                             </span>
+0212                         <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0213                         
+0214 hEditTolFun = uicontrol(<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0215                         <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0216                         <span class="string">'Position'</span>, [0.85 0.7 0.1 0.05],<span class="keyword">...</span>
+0217                         <span class="string">'String'</span>,<span class="string">'Default'</span>,<span class="keyword">...</span>
+0218                         <span class="string">'Callback'</span>,@<a href="#_sub3" class="code" title="subfunction EditTolFun_callback(source,eventdata)">EditTolFun_callback</a>);
+0219                     
+0220 
+0221 hPushButtonStartPauseResume = uicontrol (<span class="string">'Style'</span>,<span class="string">'pushbutton'</span>,<span class="keyword">...</span>
+0222                                  <span class="string">'String'</span>,<span class="string">'Start iteration'</span>,<span class="keyword">...</span>
+0223                                  <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0224                                  <span class="string">'Position'</span>,[0.65 0.4 0.2 0.08],<span class="keyword">...</span>
+0225                                  <span class="string">'Callback'</span>,@<a href="#_sub4" class="code" title="subfunction StartPauseResume_callback(source,eventdata)">StartPauseResume_callback</a>);
+0226                          
+0227 hPushButtonStop = uicontrol (<span class="string">'Style'</span>,<span class="string">'pushbutton'</span>,<span class="keyword">...</span>
+0228                                  <span class="string">'String'</span>,<span class="string">'Stop iteration'</span>,<span class="keyword">...</span>
+0229                                  <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0230                                  <span class="string">'Position'</span>,[0.65 0.3 0.2 0.08],<span class="keyword">...</span>
+0231                                  <span class="string">'Callback'</span>,@<a href="#_sub5" class="code" title="subfunction Stop_callback(source,eventdata)">Stop_callback</a>);
+0232                              
+0233 hPushButtonReset = uicontrol (<span class="string">'Style'</span>,<span class="string">'pushbutton'</span>,<span class="keyword">...</span>
+0234                               <span class="string">'String'</span>,<span class="string">'Reset'</span>,<span class="keyword">...</span>
+0235                               <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0236                               <span class="string">'Position'</span>,[0.65 0.2 0.2 0.08],<span class="keyword">...</span>
+0237                               <span class="string">'Callback'</span>,@<a href="#_sub6" class="code" title="subfunction Reset_callback(source,eventdata)">Reset_callback</a>);
+0238 
+0239 hPushButtonCompare = uicontrol(<span class="string">'Style'</span>,<span class="string">'pushbutton'</span>,<span class="keyword">...</span>
+0240                                <span class="string">'String'</span>,<span class="string">'Compare ML vs LS'</span>,<span class="keyword">...</span>
+0241                                <span class="string">'Units'</span>,<span class="string">'Normalized'</span>,<span class="keyword">...</span>
+0242                                <span class="string">'Position'</span>,[0.65 0.1 0.2 0.08],<span class="keyword">...</span>
+0243                                <span class="string">'Callback'</span>,@<a href="#_sub7" class="code" title="subfunction Compare_callback(source,eventdata)">Compare_callback</a>);                          
+0244 
+0245 hTextInfoLine = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0246                           <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0247                           <span class="string">'Position'</span>,[0.1 0.02 0.8 0.05],<span class="keyword">...</span>
+0248                           <span class="string">'String'</span>,<span class="string">'Optimization status: '</span>,<span class="keyword">...</span>
+0249                           <span class="string">'BackgroundColor'</span>,<span class="string">'Green'</span>);       
+0250                       
+0251 <span class="comment">%Setting &quot;global&quot; optimization variables:</span>
+0252 p = ones(5,1)*NaN;
+0253 CF = NaN; PML = NaN; 
+0254 grad = ones(5,1)*NaN;
+0255 hess = ones(5)*NaN;
+0256 l = 0;
+0257 INL = zeros(1,2^dsc.NoB-1);
+0258 optim_status = <span class="string">''</span>;
+0259 termination_reason = <span class="string">''</span>;
+0260 <span class="keyword">if</span> ~isempty(find(reduced_data ~= round(reduced_data),1));
+0261     set(hTextInfoLine,<span class="string">'String'</span>,<span class="string">'Error: incorrect measurement data'</span>);
+0262     set(hTextInfoLine,<span class="string">'BackgroundColor'</span>,<span class="string">'Red'</span>);
+0263 <span class="keyword">end</span>
+0264 
+0265 options.MaxIter = MAX_ITER_DEFAULT;
+0266 options.MaxFunEvals = MAX_FUN_EVALS_DEFAULT;
+0267 options.TolFun = TOL_FUN_DEFAULT;
+0268 
+0269 iteration_counter = 0;
+0270 evaluation_counter = 0;
+0271                      
+0272 <span class="comment">%Getting initial estimators:</span>
+0273 optim_status = <span class="string">'Initializing'</span>;
+0274 <a href="#_sub9" class="code" title="subfunction UpdateDisplay">UpdateDisplay</a>;
+0275 M = length(reduced_data);
+0276 p(1:2) = pLS(1:2)/(2^dsc.NoB-2);
+0277 p(3) = (pLS(3) - 0.5)*1/(2^dsc.NoB - 2); <span class="comment">%0.5-&gt;0 2^NoB-1.5-&gt; 1</span>
+0278 p(4) = pLS(4);
+0279 pure_sinewave = p(1)*cos(((1:M).')*p(4)) + p(2)*sin(((1:M).')*p(4)) + p(3);
+0280 
+0281 <span class="comment">%Calculating INL:</span>
+0282 display_settings.summary_win = 1; <span class="comment">%Summary is displayed</span>
+0283 display_settings.results_win = 0; <span class="comment">%Results are suppressed</span>
+0284 display_settings.warning_dialog = 1; <span class="comment">%Warning dialogs will be displayed</span>
+0285 INL = <a href="ProcessHistogramTest.html" class="code" title="function INL = ProcessHistogramTest(dsc,display_settings,varargin)">ProcessHistogramTest</a>(dsc,display_settings);
+0286 
+0287 <span class="comment">%Treating unestimated transition levels: INL linearly reaches 0</span>
+0288 lowest_estimated = find(~isnan(INL),1,<span class="string">'first'</span>);
+0289 highest_estimated = find(~isnan(INL),1,<span class="string">'last'</span>);
+0290 INL = [linspace(0,INL(lowest_estimated),lowest_estimated).';INL(lowest_estimated+1:highest_estimated-1);linspace(INL(highest_estimated),0,length(INL)-highest_estimated+1).'];
+0291 trans_levels = <a href="INL2TransLevels.html" class="code" title="function translevels = INL2TransLevels(INL)">INL2TransLevels</a>(INL);
+0292 
+0293 <span class="comment">%Calculating initial estimator of noise</span>
+0294 <span class="comment">%To get initial noise estimator, 10000 samples of quantized pure sinewave</span>
+0295 <span class="comment">%are enough</span>
+0296 <span class="keyword">if</span> (length(pure_sinewave) &gt; 1e4)
+0297     quantized_sinewave = <a href="QuantizeSignal.html" class="code" title="function y = QuantizeSignal(x,trans_levels)">QuantizeSignal</a>(pure_sinewave(1:1e4),trans_levels) + 1;
+0298 <span class="keyword">else</span>
+0299     quantized_sinewave = <a href="QuantizeSignal.html" class="code" title="function y = QuantizeSignal(x,trans_levels)">QuantizeSignal</a>(pure_sinewave,trans_levels) + 1;
+0300 <span class="keyword">end</span>
+0301 p(5) = <a href="rms.html" class="code" title="function y = rms(x)">rms</a>(quantized_sinewave - reduced_data(1:length(quantized_sinewave)))/(2^dsc.NoB-2);
+0302 <span class="comment">%Adjusting initial noise variance estimator: in case of arbitrary low noise</span>
+0303 <span class="comment">%a higher initial estimator is required to be able to perform computations</span>
+0304 <span class="keyword">if</span> (p(5) &lt; eps)
+0305     p(5) = 0.1/(2^dsc.NoB-2); <span class="comment">%0.1 LSB</span>
+0306 <span class="keyword">end</span>
+0307 optim_status = <span class="string">'Initialized'</span>;
+0308 <a href="#_sub9" class="code" title="subfunction UpdateDisplay">UpdateDisplay</a>;
+0309 
+0310     <a name="_sub1" href="#_subfunctions" class="code">function EditMaxIter_callback(source,eventdata)</a>
+0311         <span class="keyword">if</span> strcmpi(get(source,<span class="string">'String'</span>),<span class="string">'Default'</span>)
+0312             options.MaxIter = MAX_ITER_DEFAULT;
+0313         <span class="keyword">else</span>
+0314             options.MaxIter = str2double(get(source,<span class="string">'String'</span>));
+0315         <span class="keyword">end</span>
+0316     <span class="keyword">end</span>
+0317 
+0318     <a name="_sub2" href="#_subfunctions" class="code">function EditMaxFunEvals_callback(source,eventdata)</a>
+0319         <span class="keyword">if</span> strcmpi(get(source,<span class="string">'String'</span>),<span class="string">'Default'</span>)
+0320             options.MaxFunEvals = MAX_FUN_EVALS_DEFAULT;
+0321         <span class="keyword">else</span>
+0322             options.MaxFunEvals = str2double(get(source,<span class="string">'String'</span>));
+0323         <span class="keyword">end</span>
+0324     <span class="keyword">end</span>
+0325 
+0326     <a name="_sub3" href="#_subfunctions" class="code">function EditTolFun_callback(source,eventdata)</a>
+0327         <span class="keyword">if</span> strcmpi(get(source,<span class="string">'String'</span>),<span class="string">'Default'</span>)
+0328             options.TolFun = TOL_FUN_DEFAULT;
+0329         <span class="keyword">else</span>
+0330             options.TolFun = str2double(get(source,<span class="string">'String'</span>));
+0331         <span class="keyword">end</span>
+0332     <span class="keyword">end</span>
+0333 
+0334     <a name="_sub4" href="#_subfunctions" class="code">function StartPauseResume_callback(source,eventdata)</a>
+0335         <span class="keyword">if</span> strcmpi(optim_status,<span class="string">'Initialized'</span>) <span class="comment">%Start iteration</span>
+0336             optim_status = <span class="string">'Running'</span>;
+0337             <a href="#_sub9" class="code" title="subfunction UpdateDisplay">UpdateDisplay</a>;
+0338             [PML,CF,grad,hess] = <a href="EvaluateCF.html" class="code" title="function varargout = EvaluateCF(y,p0,NoB,INL)">EvaluateCF</a>(reduced_data,p,dsc.NoB,INL);
+0339             evaluation_counter = evaluation_counter + 1;
+0340             <a href="#_sub9" class="code" title="subfunction UpdateDisplay">UpdateDisplay</a>;
+0341             l = max(abs(eig(hess))); <span class="comment">%initial lambda is the greatest eigenvalue of the Hess matrix</span>
+0342             iteration_counter = 0;
+0343             <a href="#_sub8" class="code" title="subfunction RunIterations ">RunIterations</a>;            
+0344         <span class="keyword">elseif</span> strcmpi(optim_status,<span class="string">'Running'</span>) <span class="comment">%Pause iteration</span>
+0345             optim_status = <span class="string">'Paused'</span>;
+0346             <a href="#_sub9" class="code" title="subfunction UpdateDisplay">UpdateDisplay</a>;
+0347         <span class="keyword">elseif</span> strcmpi(optim_status,<span class="string">'Paused'</span>) <span class="comment">% Resume iteration</span>
+0348             optim_status = <span class="string">'Running'</span>;
+0349             <a href="#_sub9" class="code" title="subfunction UpdateDisplay">UpdateDisplay</a>;
+0350             <a href="#_sub8" class="code" title="subfunction RunIterations ">RunIterations</a>;
+0351         <span class="keyword">end</span>
+0352     <span class="keyword">end</span>
+0353 
+0354     <a name="_sub5" href="#_subfunctions" class="code">function Stop_callback(source,eventdata)</a>
+0355         optim_status = <span class="string">'Terminated'</span>;
+0356         termination_reason = <span class="string">'User'</span>;
+0357         <a href="#_sub9" class="code" title="subfunction UpdateDisplay">UpdateDisplay</a>;
+0358     <span class="keyword">end</span>
+0359 
+0360     <a name="_sub6" href="#_subfunctions" class="code">function Reset_callback(source,eventdata)</a>
+0361         <span class="comment">%Getting initial estimators:</span>
+0362         p(1:2) = pLS(1:2)/(2^dsc.NoB-2);
+0363         p(3) = (pLS(3) - 0.5)*1/(2^dsc.NoB - 2); <span class="comment">%0.5-&gt;0 2^NoB-1.5-&gt; 1</span>
+0364         p(4) = pLS(4);
+0365         pure_sinewave = p(1)*cos(((1:M).')*p(4)) + p(2)*sin(((1:M).')*p(4)) + p(3);
+0366 
+0367         <span class="comment">%Calculating initial estimator of noise</span>
+0368         <span class="comment">%To get initial noise estimator, 10000 samples of quantized pure sinewave</span>
+0369         <span class="comment">%are enough</span>
+0370         <span class="keyword">if</span> (length(pure_sinewave) &gt; 1e4)
+0371             quantized_sinewave = <a href="QuantizeSignal.html" class="code" title="function y = QuantizeSignal(x,trans_levels)">QuantizeSignal</a>(pure_sinewave(1:1e4),trans_levels) + 1;
+0372         <span class="keyword">else</span>
+0373             quantized_sinewave = <a href="QuantizeSignal.html" class="code" title="function y = QuantizeSignal(x,trans_levels)">QuantizeSignal</a>(pure_sinewave,trans_levels) + 1;
+0374         <span class="keyword">end</span>
+0375         p(5) = <a href="rms.html" class="code" title="function y = rms(x)">rms</a>(quantized_sinewave - reduced_data(1:length(quantized_sinewave)))/(2^dsc.NoB-2);
+0376         <span class="comment">%Adjusting initial noise variance estimator: in case of arbitrary low noise</span>
+0377         <span class="comment">%a higher initial estimator is required to be able to perform computations</span>
+0378         <span class="keyword">if</span> (p(5) &lt; eps)
+0379             p(5) = 0.1/(2^dsc.NoB-2); <span class="comment">%0.1 LSB</span>
+0380         <span class="keyword">end</span>
+0381         termination_reason = <span class="string">''</span>;
+0382         iteration_counter = 0;
+0383         evaluation_counter = 0;
+0384         CF = NaN;
+0385         optim_status = <span class="string">'Initialized'</span>;
+0386         
+0387         set(hPushButtonStartPauseResume,<span class="string">'String'</span>,<span class="string">'Start iteration'</span>);
+0388         set(hPushButtonStartPauseResume,<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0389         <a href="#_sub9" class="code" title="subfunction UpdateDisplay">UpdateDisplay</a>;
+0390     <span class="keyword">end</span>
+0391 
+0392     <a name="_sub7" href="#_subfunctions" class="code">function Compare_callback(source,eventdata)</a>
+0393         <a href="CompareLSvsML.html" class="code" title="function CompareLSvsML(dsc,reduced_data,timevect,LS_params,ML_params,estimated_INL)">CompareLSvsML</a>(dsc,reduced_data,timevect,pLS,p,INL);
+0394     <span class="keyword">end</span>
+0395 
+0396     <a name="_sub8" href="#_subfunctions" class="code">function RunIterations </a><span class="comment">%Core of iterations</span>
+0397              <span class="keyword">while</span> strcmpi(optim_status,<span class="string">'Running'</span>)
+0398                 p_next = p - inv(hess + l*eye(5))*grad;
+0399                 <span class="keyword">while</span> (p_next(5) &lt; 0)
+0400                     l  = l*LAMBDA_ADJUST;
+0401                     p_next = p - inv(hess + l *eye(5))*grad;
+0402                 <span class="keyword">end</span>
+0403                 [PML_next,CF_next] = <a href="EvaluateCF.html" class="code" title="function varargout = EvaluateCF(y,p0,NoB,INL)">EvaluateCF</a>(reduced_data,p_next,dsc.NoB,INL);
+0404                 evaluation_counter = evaluation_counter + 1;
+0405                 <a href="#_sub9" class="code" title="subfunction UpdateDisplay">UpdateDisplay</a>;                
+0406                 <span class="keyword">while</span> (CF_next &gt; CF)
+0407                     l = l*LAMBDA_ADJUST;
+0408                     p_next = p - inv(hess + l*eye(5))*grad;
+0409                     <span class="keyword">while</span> (p_next(5) &lt; 0)
+0410                         l  = l*LAMBDA_ADJUST;
+0411                         p_next = p - inv(hess + l *eye(5))*grad;
+0412                     <span class="keyword">end</span>
+0413                     [PML_next,CF_next] = <a href="EvaluateCF.html" class="code" title="function varargout = EvaluateCF(y,p0,NoB,INL)">EvaluateCF</a>(reduced_data,p_next,dsc.NoB,INL);
+0414                     evaluation_counter = evaluation_counter + 1;
+0415                     <a href="#_sub9" class="code" title="subfunction UpdateDisplay">UpdateDisplay</a>;                    
+0416                 <span class="keyword">end</span>
+0417                 [PML_next,CF_next,grad_next,hess_next] = <a href="EvaluateCF.html" class="code" title="function varargout = EvaluateCF(y,p0,NoB,INL)">EvaluateCF</a>(reduced_data,p_next,dsc.NoB,INL);
+0418                 evaluation_counter = evaluation_counter + 1;
+0419                 <a href="#_sub9" class="code" title="subfunction UpdateDisplay">UpdateDisplay</a>;                
+0420                 l = l*(1/LAMBDA_ADJUST);
+0421                 <span class="comment">%Checking termination conditions</span>
+0422                 <span class="keyword">if</span> (iteration_counter == options.MaxIter - 1)
+0423                     termination_reason = <span class="string">'MaxIter'</span>;
+0424                     optim_status = <span class="string">'Terminated'</span>;
+0425                 <span class="keyword">elseif</span> (evaluation_counter &gt; options.MaxFunEvals)
+0426                     termination_reason = <span class="string">'MaxFunEvals'</span>;
+0427                     optim_status = <span class="string">'Terminated'</span>;
+0428                 <span class="keyword">elseif</span> (abs(CF - CF_next) &lt; options.TolFun)
+0429                     termination_reason = <span class="string">'TolFun'</span>;
+0430                     optim_status = <span class="string">'Terminated'</span>;
+0431                 <span class="keyword">end</span>
+0432                 p = p_next;
+0433                 CF = CF_next;
+0434                 PML = PML_next;
+0435                 grad = grad_next;
+0436                 hess = hess_next;
+0437                 iteration_counter = iteration_counter + 1;
+0438                 <a href="#_sub9" class="code" title="subfunction UpdateDisplay">UpdateDisplay</a>;                
+0439             <span class="keyword">end</span>
+0440     <span class="keyword">end</span>
+0441 
+0442     <a name="_sub9" href="#_subfunctions" class="code">function UpdateDisplay</a>
+0443         set(hTextCosineCoefficientValue,<span class="string">'String'</span>,sprintf(<span class="string">'%1.5f'</span>,p(1)));
+0444         set(hTextSineCoefficientValue,<span class="string">'String'</span>,sprintf(<span class="string">'%1.5f'</span>,p(2)));
+0445         set(hTextDCComponentValue,<span class="string">'String'</span>,sprintf(<span class="string">'%1.5f'</span>,p(3)));
+0446         set(hTextNormalizedFrequencyValue,<span class="string">'String'</span>,sprintf(<span class="string">'%1.3e'</span>,p(4)/(2*pi))); <span class="comment">%f/fs is displayed</span>
+0447         set(hTextNoiseStdValue,<span class="string">'String'</span>,sprintf(<span class="string">'%1.3e'</span>,p(5)));
+0448         set(hTextCostFunctionValue,<span class="string">'String'</span>,sprintf(<span class="string">'%1.3e'</span>,CF));
+0449         set(hTextLambdaValue,<span class="string">'String'</span>,sprintf(<span class="string">'%1.3e'</span>,l));
+0450         set(hTextIterationCounterValue,<span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,iteration_counter));
+0451         set(hTextFunEvalsCounterValue,<span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,evaluation_counter));
+0452         set(hEditMaxIter,<span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,options.MaxIter));
+0453         set(hEditMaxFunEvals,<span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,options.MaxFunEvals));
+0454         set(hEditTolFun,<span class="string">'String'</span>,sprintf(<span class="string">'%1.3e'</span>,options.TolFun));
+0455         <span class="keyword">if</span> (strcmpi(optim_status,<span class="string">'Initializing'</span>))
+0456             set(hTextInfoLine,<span class="string">'String'</span>,<span class="string">'Calculating initial parameter estimators using 4 parameter LS fit'</span>);
+0457             set(hTextInfoLine,<span class="string">'BackgroundColor'</span>,<span class="string">'Green'</span>);
+0458         <span class="keyword">elseif</span> (strcmpi(optim_status,<span class="string">'Initialized'</span>))
+0459             set(hTextInfoLine,<span class="string">'String'</span>,<span class="string">'Initial estimators calculated using 4 parameter LS fit'</span>);
+0460             set(hTextInfoLine,<span class="string">'BackgroundColor'</span>,<span class="string">'Green'</span>);
+0461             set(hPushButtonStartPauseResume,<span class="string">'String'</span>,<span class="string">'Start iteration'</span>,<span class="keyword">...</span>
+0462                                             <span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0463             set(hPushButtonStop,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0464             set(hPushButtonReset,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0465         <span class="keyword">elseif</span> (strcmpi(optim_status,<span class="string">'Running'</span>))
+0466             set(hTextInfoLine,<span class="string">'String'</span>,<span class="string">'Performing iterations...'</span>);
+0467             set(hTextInfoLine,<span class="string">'BackgroundColor'</span>,<span class="string">'Green'</span>);
+0468             set(hPushButtonStartPauseResume,<span class="string">'String'</span>,<span class="string">'Pause iteration'</span>,<span class="keyword">...</span>
+0469                                             <span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0470             set(hPushButtonStop,<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0471             set(hPushButtonReset,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0472         <span class="keyword">elseif</span> (strcmpi(optim_status,<span class="string">'Paused'</span>))
+0473             set(hTextInfoLine,<span class="string">'String'</span>,<span class="string">'Iteration paused'</span>);
+0474             set(hTextInfoLine,<span class="string">'BackgroundColor'</span>,<span class="string">'Green'</span>);
+0475             set(hPushButtonStartPauseResume,<span class="string">'String'</span>,<span class="string">'Resume iteration'</span>,<span class="keyword">...</span>
+0476                                             <span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0477             set(hPushButtonStop,<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0478             set(hPushButtonReset,<span class="string">'Enable'</span>,<span class="string">'on'</span>);                                        
+0479         <span class="keyword">elseif</span> (strcmpi(optim_status,<span class="string">'Terminated'</span>))
+0480             set(hPushButtonStartPauseResume,<span class="string">'String'</span>,<span class="string">'Start iteration'</span>,<span class="keyword">...</span>
+0481                                             <span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0482             set(hPushButtonStop,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0483             set(hPushButtonReset,<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0484             <span class="keyword">if</span> (strcmpi(termination_reason,<span class="string">'MaxIter'</span>))
+0485                 set(hTextInfoLine,<span class="string">'String'</span>,<span class="string">'Iteration terminated: reached maximum number of iterations'</span>);
+0486                 set(hTextInfoLine,<span class="string">'BackgroundColor'</span>,<span class="string">'Green'</span>);
+0487             <span class="keyword">elseif</span> (strcmpi(termination_reason,<span class="string">'MaxFunEvals'</span>))
+0488                 set(hTextInfoLine,<span class="string">'String'</span>,<span class="string">'Iteration terminated: reached maximum number of cost function evaluations'</span>);
+0489                 set(hTextInfoLine,<span class="string">'BackgroundColor'</span>,<span class="string">'Green'</span>);
+0490             <span class="keyword">elseif</span> (strcmpi(termination_reason,<span class="string">'TolFun'</span>))
+0491                 set(hTextInfoLine,<span class="string">'String'</span>,<span class="string">'Iteration terminated: cost function changes less than specified tolerance'</span>);
+0492                 set(hTextInfoLine,<span class="string">'BackgroundColor'</span>,<span class="string">'Green'</span>);
+0493             <span class="keyword">elseif</span> (strcmpi(termination_reason,<span class="string">'User'</span>))
+0494                 set(hTextInfoLine,<span class="string">'String'</span>,<span class="string">'Iteration terminated by user'</span>);
+0495                 set(hTextInfoLine,<span class="string">'BackgroundColor'</span>,<span class="string">'Green'</span>);
+0496             <span class="keyword">end</span>
+0497         <span class="keyword">end</span>
+0498         <span class="keyword">if</span> (iteration_counter ~= 0)
+0499             set (ml_fit_window,<span class="string">'Name'</span>,sprintf(<span class="string">'Maximum Likelihood Parameter Estimation: step %d of %d'</span>,iteration_counter,options.MaxIter));
+0500         <span class="keyword">end</span>
+0501         pause(PAUSE_DEFAULT);
+0502     <span class="keyword">end</span>
+0503 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

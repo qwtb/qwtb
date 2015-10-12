@@ -1,0 +1,423 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of Estimate4pLSGaussNewton</title>
+  <meta name="keywords" content="Estimate4pLSGaussNewton">
+  <meta name="description" content="@fn Estimate4pLSGaussNewton">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; Estimate4pLSGaussNewton.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>Estimate4pLSGaussNewton
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>@fn Estimate4pLSGaussNewton</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function P = Estimate4pLSGaussNewton(x) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> @fn Estimate4pLSGaussNewton
+ @brief Performs four parameter sine wave fit in least squares sense using
+ Gauss-Newton steps in iterations
+ @param x The sampled (and quantized) sine wave
+ @return P struct contains the four parameters of the sine wave
+           P.A cosine coefficient
+           P.B sine coefficient
+           P.C DC component
+           P.f frequency normalized to the sampling frequency (f/fs)
+ @author Vilmos P�fi and Tam� Virosztek, Budapest University of Technology and Economics,
+         Department of Measurement and Information Systems,
+         Virosztek.Tamas@mit.bme.hu</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function K=CreateCovMatrix(Abh3,bins,Nx)</a></li><li><a href="#_sub2" class="code">function Xbh3=g2bh3(P,Nx,bins,limit,sf,p,Abh3)</a></li><li><a href="#_sub3" class="code">function X_rect=g1(A,B,C,f,N,bins,limit,sf,p)</a></li><li><a href="#_sub4" class="code">function f=freq(x)</a></li><li><a href="#_sub5" class="code">function [limit,sf,p] = polinom(N)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function P = Estimate4pLSGaussNewton(x)</a>
+0002 
+0003 <span class="comment">% @fn Estimate4pLSGaussNewton</span>
+0004 <span class="comment">% @brief Performs four parameter sine wave fit in least squares sense using</span>
+0005 <span class="comment">% Gauss-Newton steps in iterations</span>
+0006 <span class="comment">% @param x The sampled (and quantized) sine wave</span>
+0007 <span class="comment">% @return P struct contains the four parameters of the sine wave</span>
+0008 <span class="comment">%           P.A cosine coefficient</span>
+0009 <span class="comment">%           P.B sine coefficient</span>
+0010 <span class="comment">%           P.C DC component</span>
+0011 <span class="comment">%           P.f frequency normalized to the sampling frequency (f/fs)</span>
+0012 <span class="comment">% @author Vilmos P�fi and Tam� Virosztek, Budapest University of Technology and Economics,</span>
+0013 <span class="comment">%         Department of Measurement and Information Systems,</span>
+0014 <span class="comment">%         Virosztek.Tamas@mit.bme.hu</span>
+0015 
+0016 
+0017 <span class="comment">% A bemen�jel legyen oszlopvektor</span>
+0018 <span class="comment">% if (isrow(x))</span>
+0019 <span class="comment">%     x=x.';</span>
+0020 <span class="comment">% end;</span>
+0021 
+0022 x = x(:);
+0023 
+0024 <span class="comment">% A bemen�jel hossza</span>
+0025 Nx=length(x);
+0026 n=transpose(0:Nx-1);
+0027 
+0028 <span class="comment">% A 3 tag�Blackman-Harris ablak egy�that�</span>
+0029 Abh3.A0=+4.243800934609435e-001;
+0030 Abh3.A1=-4.973406350967378e-001;
+0031 Abh3.A2=+7.827927144231873e-002;
+0032 
+0033 <span class="comment">% Az ablak az id�artom�yban</span>
+0034 wbh3=<span class="keyword">...</span>
+0035     Abh3.A0+<span class="keyword">...</span>
+0036     Abh3.A1*cos(2*pi*n/Nx)+<span class="keyword">...</span>
+0037     Abh3.A2*cos(4*pi*n/Nx);
+0038 
+0039 <span class="comment">% A m�t jel ablakoz�a, el�ll��a</span>
+0040 xbh3=x.*wbh3;
+0041 Xbh3teljes.X=fft(xbh3);
+0042 Xbh3teljes.bin=(0:Nx-1).';
+0043 
+0044 <span class="comment">% A param�erek kezd�rt�e a becsl�n�</span>
+0045 P.A=0;
+0046 P.B=0;
+0047 P.C=0;
+0048 P.f=<a href="#_sub4" class="code" title="subfunction f=freq(x)">freq</a>(x);
+0049 k=round(P.f);
+0050 
+0051 <span class="comment">% Az illeszt�n� haszn�t binek kiv�aszt�a</span>
+0052 bins=([-2:2, k-2:k+2, Nx-k-2:Nx-k+2]).';
+0053 inds0=(bins&lt;0); <span class="comment">% Azon elemek indexe, amelyek null�� kisebbek</span>
+0054 bins(inds0)=Nx+bins(inds0);
+0055 indsN=(bins&gt;Nx-1); <span class="comment">% Azon elemek indexe, amelyek N-1-n� nagyobbak</span>
+0056 bins(indsN)=-Nx+bins(indsN);
+0057 bins=unique(bins); <span class="comment">% Sorba van rendezve a 0:N-1 k��t, nincs 2 azonos elem.</span>
+0058 
+0059 <span class="comment">% Az illeszt�hez haszn�t m�t jel el�ll��a</span>
+0060 Xbh3m.bin=bins;
+0061 inds=ismember(Xbh3teljes.bin, Xbh3m.bin);
+0062 Xbh3m.X=Xbh3teljes.X(inds); <span class="comment">% DC, k, N-k k��i pontok</span>
+0063 
+0064 <span class="comment">% Kovariancam�rix</span>
+0065 K=<a href="#_sub1" class="code" title="subfunction K=CreateCovMatrix(Abh3,bins,Nx)">CreateCovMatrix</a>(Abh3,bins,Nx);
+0066 
+0067 <span class="comment">% A polinomilleszt�hez haszn�t adatok el�ll��a</span>
+0068 [limit,sf,p]=<a href="#_sub5" class="code" title="subfunction [limit,sf,p] = polinom(N)">polinom</a>(Nx);
+0069 
+0070 <span class="comment">% A Gauss-Newton illeszt�</span>
+0071 It_szam=10;
+0072 <span class="keyword">for</span> ii=1:It_szam
+0073     Xbh3=<a href="#_sub2" class="code" title="subfunction Xbh3=g2bh3(P,Nx,bins,limit,sf,p,Abh3)">g2bh3</a>(P,Nx,bins,limit,sf,p,Abh3);
+0074     e=Xbh3m.X-Xbh3.X;
+0075     J=[Xbh3.dA, Xbh3.dB, Xbh3.dC, Xbh3.df];
+0076     dP=pinv(real(J'*pinv(K)*J))*real(J'*pinv(K)*e);
+0077     P.A=P.A+dP(1);
+0078     P.B=P.B+dP(2);
+0079     P.C=P.C+dP(3);
+0080     P.f=P.f+dP(4);
+0081 <span class="keyword">end</span>
+0082 
+0083 <span class="comment">%peri�usb� f/fs:</span>
+0084 P.f = P.f/Nx;
+0085 <span class="comment">%Szinusz el?jel korrekci�a</span>
+0086 P.B = (-1)*P.B;
+0087 
+0088 <span class="comment">%F�iskorrekci�</span>
+0089 est_amp = sqrt(P.A^2 + P.B^2);
+0090 est_phase = atan2(P.B,P.A);
+0091 est_phase = est_phase + 2*pi*P.f; <span class="comment">%1 mint�yival korrig�juk a f�ist: (0..N-1)*Ts helyett (1..N)*Ts</span>
+0092 P.A = est_amp*cos(est_phase);
+0093 P.B = est_amp*sin(est_phase);
+0094 <span class="keyword">end</span>
+0095 
+0096 <span class="comment">%FUNCTIONS called in &quot;main&quot;</span>
+0097 
+0098 <a name="_sub1" href="#_subfunctions" class="code">function K=CreateCovMatrix(Abh3,bins,Nx)</a>
+0099 Mb=length(bins);
+0100 K=zeros(Mb);
+0101 pp=[<span class="keyword">...</span>
+0102     Abh3.A2/2;
+0103     Abh3.A1/2;
+0104     Abh3.A0;
+0105     Abh3.A1/2;
+0106     Abh3.A2/2;
+0107     ];
+0108 c0=pp.'*pp;
+0109 c1=pp(1:4).'*pp(2:5);
+0110 c2=pp(1:3).'*pp(3:5);
+0111 c3=pp(1:2).'*pp(4:5);
+0112 c4=pp(1)*pp(5);
+0113 <span class="keyword">for</span> ii=1:Mb
+0114     <span class="keyword">for</span> jj=1:Mb
+0115         d=abs(bins(ii)-bins(jj)); <span class="comment">% d lehet [0,1,2,...,N-1]</span>
+0116         <span class="keyword">if</span> (d&gt;Nx/2)
+0117             d=abs(d-Nx); <span class="comment">% Ha a t�ols� pl. N-k, az val��an k!</span>
+0118         <span class="keyword">end</span>
+0119         <span class="keyword">switch</span>(d)
+0120             <span class="keyword">case</span> 0
+0121                 K(ii,jj)=c0;
+0122             <span class="keyword">case</span> 1
+0123                 K(ii,jj)=c1;
+0124             <span class="keyword">case</span> 2
+0125                 K(ii,jj)=c2;
+0126             <span class="keyword">case</span> 3
+0127                 K(ii,jj)=c3;
+0128             <span class="keyword">case</span> 4
+0129                 K(ii,jj)=c4;
+0130             <span class="keyword">otherwise</span>
+0131                 K(ii,jj)=0;
+0132         <span class="keyword">end</span>
+0133     <span class="keyword">end</span>
+0134 <span class="keyword">end</span>
+0135 <span class="keyword">end</span>
+0136 
+0137 <a name="_sub2" href="#_subfunctions" class="code">function Xbh3=g2bh3(P,Nx,bins,limit,sf,p,Abh3)</a>
+0138 
+0139 <span class="comment">% if (isrow(bins))</span>
+0140 <span class="comment">%     bins=bin.';</span>
+0141 <span class="comment">% end</span>
+0142 
+0143 bins = bins(:);
+0144 
+0145 Mb=length(bins);
+0146 Xbh3.bin=bins;
+0147 Xbh3.X=zeros(Mb,1);
+0148 Xbh3.dA=zeros(Mb,1);
+0149 Xbh3.dB=zeros(Mb,1);
+0150 Xbh3.dC=zeros(Mb,1);
+0151 Xbh3.df=zeros(Mb,1);
+0152 
+0153 a=[
+0154     Abh3.A2/2;
+0155     Abh3.A1/2;
+0156     Abh3.A0;
+0157     Abh3.A1/2;
+0158     Abh3.A2/2;
+0159     ];
+0160 
+0161 rect_bins=unique([<span class="keyword">...</span>
+0162     -2+bins;
+0163     -1+bins;
+0164     bins;
+0165     1+bins;
+0166     2+bins;
+0167     ]);
+0168 
+0169 X_rect=<a href="#_sub3" class="code" title="subfunction X_rect=g1(A,B,C,f,N,bins,limit,sf,p)">g1</a>(P.A,P.B,P.C,P.f,Nx,rect_bins,limit,sf,p);
+0170 
+0171 <span class="keyword">for</span> ii=1:Mb
+0172     m=Xbh3.bin(ii);
+0173     rect_inds=ismember(X_rect.bin, (m-2:m+2).');
+0174     Xbh3.X(ii)=a.'*X_rect.X(rect_inds);
+0175     Xbh3.dA(ii)=a.'*X_rect.dA(rect_inds);
+0176     Xbh3.dB(ii)=a.'*X_rect.dB(rect_inds);
+0177     Xbh3.dC(ii)=a.'*X_rect.dC(rect_inds);
+0178     Xbh3.df(ii)=a.'*X_rect.df(rect_inds);
+0179 <span class="keyword">end</span>
+0180 <span class="keyword">end</span>
+0181 
+0182 <a name="_sub3" href="#_subfunctions" class="code">function X_rect=g1(A,B,C,f,N,bins,limit,sf,p)</a>
+0183 
+0184 <span class="comment">% Seg�v�toz�</span>
+0185 M=length(bins);
+0186 X_sin=zeros(M,1);
+0187 X_dc=zeros(M,1);
+0188 <span class="comment">% Visszat��i �t� strukt��a</span>
+0189 X_rect.bin=bins;
+0190 X_rect.X=zeros(M,1);
+0191 X_rect.dA=zeros(M,1);
+0192 X_rect.dB=zeros(M,1);
+0193 X_rect.dC=zeros(M,1);
+0194 X_rect.df=zeros(M,1);
+0195 <span class="comment">% A spektrum kisz���a az adott bineken</span>
+0196 <span class="keyword">for</span> ii=1:M
+0197     m=bins(ii);
+0198     <span class="keyword">if</span> (rem(m,N)==0)
+0199         X_dc(ii)=C*N;
+0200         X_rect.dC(ii)=N;
+0201     <span class="keyword">end</span>;
+0202     f1=fix(f);
+0203     f2=f-f1;
+0204     d1=(m-f)/N;
+0205     d2=(m+f)/N;
+0206     e1=((-1)^(m+f1))*exp(1i*(f2+d1)*pi);
+0207     e2=((-1)^(m+f1))*exp(1i*(-f2+d2)*pi);
+0208     <span class="comment">%e1=exp(1i*(f2+d1)*pi);</span>
+0209     <span class="comment">%e2=exp(1i*(-f2+d2)*pi);</span>
+0210     de1_df=((-1)^(m+f1))*1i*pi*(N-1)/N*e1;
+0211     de2_df=((-1)^(m+f1))*(-1i)*pi*(N-1)/N*e2;
+0212     <span class="comment">%de1_df=1i*pi*(N-1)/N*e1;</span>
+0213     <span class="comment">%de2_df=-1i*pi*(N-1)/N*e2;</span>
+0214     b1=(A+1i*B)/2;
+0215     b2=(A-1i*B)/2;
+0216     n1=sin((d1)*pi);
+0217     <span class="keyword">if</span> (abs(n1)&gt;=limit)
+0218         sz1=((-1)^(m+f1))*sin(-f2*pi);
+0219         <span class="comment">%sz1=sin(-f2*pi);</span>
+0220         dsz1_df=-pi*cos(f2*pi);
+0221         dn1_df=-pi/N*cos((d1)*pi);
+0222         sqr_n1=(1-cos(2*pi*d1))/2;
+0223         r1=sz1/n1;
+0224         dr1_df=(dsz1_df*n1-dn1_df*sz1)/sqr_n1;
+0225     <span class="keyword">else</span>
+0226         <span class="comment">% if (d1&lt;1/2)</span>
+0227         <span class="comment">% if (abs(d1)&lt;1/2)</span>
+0228         <span class="keyword">if</span> (abs(rem(round(d1),2))&lt;1/2)
+0229             <span class="comment">% w01=d1*pi;</span>
+0230             w01=(d1-round(d1))*pi;
+0231             w1=sf*w01;
+0232             r1=((-1)^(m+f1))*polyval(p(end:-1:1),w1);
+0233             q=polyder(p(end:-1:1));
+0234             dr1_df=((-1)^(m+f1))*polyval(q,w1);
+0235         <span class="keyword">else</span> <span class="comment">% d1&gt;1/2</span>
+0236             w01=(d1-round(d1))*pi;
+0237             w1=sf*w01;
+0238             r1=-((-1)^(m+f1))*polyval(p(end:-1:1),w1);
+0239             q=polyder(p(end:-1:1));
+0240             dr1_df=-((-1)^(m+f1))*polyval(q,w1);
+0241         <span class="keyword">end</span>;
+0242     <span class="keyword">end</span>;
+0243 
+0244     n2=sin((d2)*pi);
+0245     <span class="keyword">if</span> (abs(n2)&gt;=limit)
+0246         sz2=((-1)^(m+f1))*sin(f2*pi);
+0247         <span class="comment">%sz2=sin(f2*pi);</span>
+0248         dsz2_df=pi*cos(f2*pi);
+0249         dn2_df=pi/N*cos((d2)*pi);
+0250         sqr_n2=(1-cos(2*pi*d2))/2;
+0251         r2=sz2/n2;
+0252         dr2_df=(dsz2_df*n2-dn2_df*sz2)/sqr_n2;
+0253     <span class="keyword">else</span>
+0254         <span class="comment">% if (d2&lt;1/2)</span>
+0255         <span class="comment">% if (abs(d2)&lt;1/2)</span>
+0256         <span class="keyword">if</span> (abs(rem(round(d2),2))&lt;1/2)
+0257             <span class="comment">% w02=d2*pi;</span>
+0258             w02=(d2-round(d2))*pi;
+0259             w2=sf*w02;
+0260             r2=((-1)^(m+f1))*polyval(p(end:-1:1),w2);
+0261             q=polyder(p(end:-1:1));
+0262             dr2_df=((-1)^(m+f1))*polyval(q,w2);
+0263         <span class="keyword">else</span> <span class="comment">% d2&gt;1/2</span>
+0264             w02=(d2-round(d2))*pi;
+0265             w2=sf*w02;
+0266             r2=-((-1)^(m+f1))*polyval(p(end:-1:1),w2);
+0267             q=polyder(p(end:-1:1));
+0268             dr2_df=-((-1)^(m+f1))*polyval(q,w2);
+0269         <span class="keyword">end</span>;
+0270     <span class="keyword">end</span>;
+0271     X_sin(ii)=e1*b1*r1+e2*b2*r2;
+0272     X_rect.X(ii)=X_sin(ii)+X_dc(ii);
+0273     X_rect.dA(ii)=e1/2*r1+e2/2*r2;
+0274     X_rect.dB(ii)=1i*e1/2*r1-1i*e2/2*r2;
+0275     X_rect.df(ii)=de1_df*b1*r1+e1*b1*dr1_df+de2_df*b2*r2+e2*b2*dr2_df;
+0276 <span class="keyword">end</span>
+0277 <span class="keyword">end</span>
+0278 
+0279 <a name="_sub4" href="#_subfunctions" class="code">function f=freq(x)</a>
+0280 
+0281 X=fft(x);
+0282 Xa=abs(X);
+0283 N=length(X);
+0284 [val, ind]=max(Xa(2:round(N/2)));
+0285 <span class="comment">% Itt a k�etkez�t�t�ik. A max() fv. argumentum�an olyan vektor van,</span>
+0286 <span class="comment">% melynek az els�elem� elhagyjuk. Az ind az � vektor maximum elem�ek</span>
+0287 <span class="comment">% index� adja vissza. Ez viszont eggyel kisebb lesz, mint a t�yleges Xa</span>
+0288 <span class="comment">% vektor maximum elem�ek indexe, mivel az � vektor 1. eleme az eredeti Xa</span>
+0289 <span class="comment">% 2. eleme, ..., az � vektor n. eleme az eredeti Xa vektor (n+1). eleme.</span>
+0290 <span class="comment">% Ezt figyelembe kell venn�k, amikor Xa vektorban jel�j� ki a maxim�is</span>
+0291 <span class="comment">% elemet � annak szomsz�j�. Feltessz�, hogy van legal�b egy</span>
+0292 <span class="comment">% peri�usunk a szinuszb�, azaz f0&gt;=1, � betartjuk a mintav�eli t�elt.</span>
+0293 <span class="comment">% f0=1 eset� Xa-ban a szinusz a k=2</span>
+0294 <span class="comment">% ponton lenne, az �, csonkolt vektorban ez az 1. pontra ker� � (hisz a</span>
+0295 <span class="comment">% DC-t dobtuk el), ez�t az ind==1 felt�elt vizsg�juk. Tov�b�ii az ind</span>
+0296 <span class="comment">% �t�� fogja felvenni, mivel Xa k. elem�ez az f=k-1 frekvencia</span>
+0297 <span class="comment">% tartozik, a csonkolt vektor eset� teh� a k. elemhez a f=k frekvencia</span>
+0298 <span class="comment">% fog tartozni.</span>
+0299 <span class="keyword">if</span> (ind==1) <span class="comment">% Enn� kisebb nem lehet a feltev� szerint (legal�b 1 per.)</span>
+0300     ii=ind;
+0301     jj=ii+1; <span class="comment">% Musz� jobb oldali szomsz�ot v�asztani, mert a bal oldalin �het a DC (j=0).</span>
+0302 <span class="keyword">else</span>
+0303     ii=ind;
+0304     <span class="keyword">if</span> (Xa(ind-1)&lt;Xa(ind+1))
+0305         jj=ii+1; <span class="comment">% A jobb oldali szomsz� nagyobb, mint a bal oldali.</span>
+0306     <span class="keyword">else</span>
+0307         jj=ii-1; <span class="comment">% Ford�va. Legkisebb felvehet��t� a j=1, ami j� ott nem lehet DC.</span>
+0308     <span class="keyword">end</span>;
+0309 <span class="keyword">end</span>;
+0310 Ui=real(X(ii+1)); <span class="comment">% Maximum</span>
+0311 Vi=imag(X(ii+1)); <span class="comment">% Maximum</span>
+0312 Uj=real(X(jj+1)); <span class="comment">% Szomsz�</span>
+0313 Vj=imag(X(jj+1)); <span class="comment">% Szomsz�</span>
+0314 n=2*pi/N;
+0315 Kopt=(sin(n*ii*(Vj-Vi))+cos(n*ii*(Uj-Ui)))/(Uj-Ui);
+0316 Z2=Vj*((Kopt-cos(n*jj))/sin(n*jj))+Uj;
+0317 Z1=Vi*((Kopt-cos(n*ii))/sin(n*ii))+Ui;
+0318 lambda=1/n*acos((Z2*cos(n*(ii+1))-Z1*cos(n*ii))/(Z2-Z1));
+0319 f=lambda;
+0320 <span class="keyword">if</span> (f&gt;N/2)
+0321     f=N-f;
+0322 <span class="keyword">end</span>;
+0323 <span class="keyword">end</span>
+0324 
+0325 <a name="_sub5" href="#_subfunctions" class="code">function [limit,sf,p] = polinom(N)</a>
+0326 <span class="comment">% Polinomegy�that�at adja meg melyek seg�s��el kisz��juk az X_sin</span>
+0327 <span class="comment">% f�gv�yban tal�hat�sin(Nx)/sin(x) h�yadost ha x z�ushoz tart.</span>
+0328 
+0329 <span class="comment">% Polinom</span>
+0330 start=-2^-23;
+0331 step=2^-30;
+0332 stop=2^-23;
+0333 limit=sin(stop);
+0334 x=start:step:stop;
+0335 M=length(x); <span class="comment">% Legyen p�atlan, azaz start=-1*stop, � step oszt�a mindkett�ek</span>
+0336 y=ones(1,M);
+0337 center=(M+1)/2;
+0338 <span class="keyword">for</span> ii=1:center-1
+0339     y(ii)=sin(N*x(ii))/sin(x(ii));
+0340 <span class="keyword">end</span>;
+0341 y(center)=N;
+0342 <span class="keyword">for</span> ii=center+1:M
+0343     y(ii)=sin(N*x(ii))/sin(x(ii));
+0344 <span class="keyword">end</span>;
+0345 
+0346 <span class="comment">% 1. m�szer</span>
+0347 sf=(M/norm(x,12)^12)^(1/12);
+0348 x2=sf*x;
+0349 s2=sum(x2.^2); s4=sum(x2.^4); s6=sum(x2.^6); s8=sum(x2.^8); s10=sum(x2.^10); s12=sum(x2.^12);
+0350 U=[
+0351     M 0 s2 0 s4 0 s6;
+0352     0 s2 0 s4 0 s6 0;
+0353     s2 0 s4 0 s6 0 s8;
+0354     0 s4 0 s6 0 s8 0;
+0355     s4 0 s6 0 s8 0 s10;
+0356     0 s6 0 s8 0 s10 0;
+0357     s6 0 s8 0 s10 0 s12;
+0358     ];
+0359 z=[sum(y); 0; sum((x2.^2)*y.'); 0; sum((x2.^4)*y.'); 0; sum((x2.^6)*y.');];
+0360 p=U\z;
+0361 <span class="keyword">end</span>
+0362 
+0363</pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of LoadDscFromXML</title>
+  <meta name="keywords" content="LoadDscFromXML">
+  <meta name="description" content="@fn LoadDscFromXML">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; LoadDscFromXML.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>LoadDscFromXML
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>@fn LoadDscFromXML</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [new_dsc,success,error_msg,warnings] = LoadDscFromXML(filename) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> @fn LoadDscFromXML
+ @brief Loads measurement descriptor from XML file
+ @param filename The name of the XML file
+ @return new_dsc The descriptor read from the file on disk
+ @return success 1 if load succeeded, 0 otherwise
+ @return error_msg Indicates the type of error (if appeared)
+ @return warnings Cell array to collect warnings (if appeared)
+ @author Tam� Virosztek, Budapest University of Technology and Economics,
+         Department of Measurement and Infromation Systems,
+         Virosztek.Tamas@mit.bme.hu</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="adctest.html" class="code" title="function adctest">adctest</a>	@fn adctest</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [new_dsc,success,error_msg,warnings] = LoadDscFromXML(filename)</a>
+0002 <span class="comment">% @fn LoadDscFromXML</span>
+0003 <span class="comment">% @brief Loads measurement descriptor from XML file</span>
+0004 <span class="comment">% @param filename The name of the XML file</span>
+0005 <span class="comment">% @return new_dsc The descriptor read from the file on disk</span>
+0006 <span class="comment">% @return success 1 if load succeeded, 0 otherwise</span>
+0007 <span class="comment">% @return error_msg Indicates the type of error (if appeared)</span>
+0008 <span class="comment">% @return warnings Cell array to collect warnings (if appeared)</span>
+0009 <span class="comment">% @author Tam� Virosztek, Budapest University of Technology and Economics,</span>
+0010 <span class="comment">%         Department of Measurement and Infromation Systems,</span>
+0011 <span class="comment">%         Virosztek.Tamas@mit.bme.hu</span>
+0012 
+0013 <span class="comment">%Setting default return values:</span>
+0014 success = 1;
+0015 error_msg = <span class="string">''</span>;
+0016 warnings = {<span class="string">'Warnings:'</span>};
+0017 new_dsc.name = <span class="string">'Invalid name'</span>;
+0018 new_dsc.comment = {<span class="string">'Invalid comment'</span>;<span class="string">'in two lines'</span>};
+0019 new_dsc.model = <span class="string">'Invalid model'</span>;
+0020 new_dsc.serial = <span class="string">'Invalid serial'</span>;
+0021 new_dsc.channel = NaN;
+0022 new_dsc.NoB = NaN;
+0023 new_dsc.data = NaN;
+0024 
+0025 
+0026 <span class="keyword">try</span>
+0027     document = xmlread(filename); <span class="comment">%Reads Document Object Model Node from XML file</span>
+0028 <span class="keyword">catch</span>
+0029     success = 0;
+0030     error_msg = <span class="string">'Unable to read XML file'</span>;
+0031     <span class="keyword">return</span>;
+0032 <span class="keyword">end</span>
+0033 
+0034 <span class="comment">%Reading field 'Name'</span>
+0035 temp = document.getElementsByTagName(<span class="string">'Name'</span>);
+0036 <span class="keyword">if</span> (temp.getLength &gt; 0)
+0037     new_dsc.name = char(temp.item(0).getFirstChild.getData);
+0038 <span class="keyword">else</span>
+0039     success = 0;
+0040     error_msg = <span class="string">'Mandatory field &quot;Name&quot; not found'</span>;
+0041     <span class="keyword">return</span>;
+0042 <span class="keyword">end</span>
+0043 
+0044 <span class="comment">%Reading comment lines:</span>
+0045 <span class="comment">%&lt;Comment&gt;</span>
+0046 <span class="comment">%    &lt;c&gt;&lt;/c&gt;</span>
+0047 <span class="comment">%    &lt;c&gt;&lt;/c&gt;</span>
+0048 <span class="comment">%&lt;/Comment&gt;</span>
+0049 temp = document.getElementsByTagName(<span class="string">'c'</span>);
+0050 <span class="keyword">try</span>
+0051     new_dsc.comment = cell(temp.getLength,1);
+0052     <span class="keyword">for</span> k = 0:temp.getLength-1
+0053         new_dsc.comment{k+1,1} = char(temp.item(k).getFirstChild.getData);
+0054     <span class="keyword">end</span>
+0055 <span class="keyword">catch</span>
+0056     warnings = {warnings <span class="string">'Field &quot;Comment&quot; not found'</span>};
+0057 <span class="keyword">end</span>
+0058 
+0059 <span class="comment">%Reading field 'Model'</span>
+0060 temp = document.getElementsByTagName(<span class="string">'Model'</span>);
+0061 <span class="keyword">if</span> (temp.getLength &gt; 0)
+0062     new_dsc.model = char(temp.item(0).getFirstChild.getData);
+0063 <span class="keyword">else</span>
+0064     warnings = {warnings <span class="string">'Field &quot;Model&quot; not found'</span>};
+0065 <span class="keyword">end</span>
+0066 
+0067 <span class="comment">%Reading field 'Serial'</span>
+0068 temp = document.getElementsByTagName(<span class="string">'Serial'</span>);
+0069 <span class="keyword">if</span> (temp.getLength &gt; 0)
+0070     new_dsc.serial = char(temp.item(0).getFirstChild.getData);
+0071 <span class="keyword">else</span>
+0072     warnings = {warnings <span class="string">'Field &quot;Serial&quot; not found'</span>};
+0073 <span class="keyword">end</span>
+0074 
+0075 <span class="comment">%Reading field 'Channel'</span>
+0076 temp = document.getElementsByTagName(<span class="string">'Channel'</span>);
+0077 <span class="keyword">if</span> (temp.getLength &gt; 0)
+0078     new_dsc.channel = str2double(char(temp.item(0).getFirstChild.getData));
+0079 <span class="keyword">else</span>
+0080     warnings = {warnings <span class="string">'Field &quot;Channel&quot; not found'</span>};
+0081 <span class="keyword">end</span>
+0082 
+0083 <span class="comment">%Reading field 'Bit_number'</span>
+0084 temp = document.getElementsByTagName(<span class="string">'Bit_number'</span>);
+0085 <span class="keyword">if</span> (temp.getLength &gt; 0)
+0086     new_dsc.NoB = str2double(char(temp.item(0).getFirstChild.getData));
+0087 <span class="keyword">else</span>
+0088     success = 0;
+0089     error_msg = <span class="string">'Mandatory field &quot;Bit_number&quot; not found'</span>;
+0090     <span class="keyword">return</span>;
+0091 <span class="keyword">end</span>
+0092 
+0093 <span class="comment">%Reading data vector</span>
+0094 temp = document.getElementsByTagName(<span class="string">'s'</span>);
+0095 <span class="keyword">if</span> (temp.getLength &gt; 0)
+0096     new_dsc.data = zeros(temp.getLength,1);
+0097     <span class="keyword">for</span> k = 0:temp.getLength-1
+0098         new_dsc.data(k+1,1) = str2double(char(temp.item(k).getFirstChild.getData));
+0099     <span class="keyword">end</span>
+0100 <span class="keyword">else</span>
+0101     success = 0;
+0102     error_msg = <span class="string">'Mandatory field &quot;Data&quot; not found'</span>;
+0103     <span class="keyword">return</span>;
+0104 <span class="keyword">end</span>
+0105 
+0106 <span class="comment">%Reading parameters in case of simulated measurement</span>
+0107 temp = document.getElementsByTagName(<span class="string">'Simulation'</span>);
+0108 <span class="keyword">if</span> (strcmpi(<span class="string">'Yes'</span>,char(temp.item(0).getFirstChild.getData))) <span class="comment">%Parameters are described in the XML</span>
+0109     
+0110     new_dsc.simulation = 1;
+0111     
+0112     temp = document.getElementsByTagName(<span class="string">'Parameter_A'</span>);
+0113     new_dsc.parameters.A = str2double(char(temp.item(0).getFirstChild.getData));
+0114     
+0115     temp = document.getElementsByTagName(<span class="string">'Parameter_B'</span>);
+0116     new_dsc.parameters.B = str2double(char(temp.item(0).getFirstChild.getData));
+0117     
+0118     temp = document.getElementsByTagName(<span class="string">'Parameter_C'</span>);
+0119     new_dsc.parameters.C = str2double(char(temp.item(0).getFirstChild.getData));
+0120 
+0121     temp = document.getElementsByTagName(<span class="string">'Parameter_Theta'</span>);
+0122     new_dsc.parameters.theta = str2double(char(temp.item(0).getFirstChild.getData));
+0123 
+0124     temp = document.getElementsByTagName(<span class="string">'Parameter_Sigma'</span>);
+0125     new_dsc.parameters.sigma = str2double(char(temp.item(0).getFirstChild.getData));
+0126     
+0127     temp = document.getElementsByTagName(<span class="string">'INL'</span>);
+0128     new_dsc.parameters.INL = zeros(1,temp.getLength);
+0129     <span class="keyword">for</span> k = 0:temp.getLength - 1 
+0130         new_dsc.parameters.INL(k+1) = str2double(char(temp.item(k).getFirstChild.getData));
+0131     <span class="keyword">end</span>
+0132 <span class="keyword">else</span>
+0133     new_dsc.simulation = 0;
+0134 <span class="keyword">end</span>
+0135 
+0136 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

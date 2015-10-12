@@ -1,0 +1,561 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of adctest</title>
+  <meta name="keywords" content="adctest">
+  <meta name="description" content="@fn adctest">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; adctest.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>adctest
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>@fn adctest</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function adctest </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> @fn adctest
+ @brief Main function of the ADC Test 4.3. Implements the Main Window of
+        the GUI and the callbacks
+ @param none
+ @return none
+ @author Tam� Virosztek, Budapest University of Technology and Economics,
+         Department of Measurement and Information Systems,
+         Virosztek.Tamas@mit.bme.hu</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="CreateNewDsc.html" class="code" title="function [new_dsc,success] = CreateNewDsc">CreateNewDsc</a>	@fn CreateNewDsc</li><li><a href="DisplayWarnings.html" class="code" title="function DisplayWarnings(warnings)">DisplayWarnings</a>	@fn DisplayWarnings</li><li><a href="EditDsc.html" class="code" title="function [temp_dsc,success] = EditDsc(old_dsc)">EditDsc</a>	@fn EditDsc</li><li><a href="LoadDscFromXML.html" class="code" title="function [new_dsc,success,error_msg,warnings] = LoadDscFromXML(filename)">LoadDscFromXML</a>	@fn LoadDscFromXML</li><li><a href="ProcessDscLS4pFit.html" class="code" title="function ProcessDscLS4pFit(dsc,reason)">ProcessDscLS4pFit</a>	@fn ProcessDscLS4pFit</li><li><a href="ProcessFFTTest.html" class="code" title="function ProcessFFTTest(dsc)">ProcessFFTTest</a>	</li><li><a href="ProcessHistogramTest.html" class="code" title="function INL = ProcessHistogramTest(dsc,display_settings,varargin)">ProcessHistogramTest</a>	@fn ProcessHistogramtest</li><li><a href="SaveDscToXML.html" class="code" title="function [success,error_msg] = SaveDscToXML(dsc,filename)">SaveDscToXML</a>	@fn SaveDscToXML</li><li><a href="step_1.html" class="code" title="function varargout = step_1(varargin)">step_1</a>	STEP_1 M-file for step_1.fig</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function HelpGettingStarted_callback(source,eventdata)</a></li><li><a href="#_sub2" class="code">function HelpUsersManual_callback(source,eventdata)</a></li><li><a href="#_sub3" class="code">function HelpAbout_callback(source,eventdata)</a></li><li><a href="#_sub4" class="code">function Import_callback(source,eventdata)</a></li><li><a href="#_sub5" class="code">function Export_callback(source,eventdata)</a></li><li><a href="#_sub6" class="code">function Load_callback(source,eventdata)</a></li><li><a href="#_sub7" class="code">function Save_callback(source,eventdata)</a></li><li><a href="#_sub8" class="code">function Delete_callback(source,eventdata)</a></li><li><a href="#_sub9" class="code">function New_callback(source,eventdata)</a></li><li><a href="#_sub10" class="code">function Edit_callback(source,eventdata)</a></li><li><a href="#_sub11" class="code">function Quit_callback(source,eventdata)</a></li><li><a href="#_sub12" class="code">function ClassifyAndProcess_callback(source,eventdata)</a></li><li><a href="#_sub13" class="code">function ProcessLS4p_callback(source,eventdata)</a></li><li><a href="#_sub14" class="code">function ProcessMLFit_callback(source,eventdata)</a></li><li><a href="#_sub15" class="code">function ProcessHistogramTest_callback(source,eventdata)</a></li><li><a href="#_sub16" class="code">function ProcessFFTTest_callback(source,eventdata)</a></li><li><a href="#_sub17" class="code">function DescriptorSelector_callback(source,eventdata)</a></li><li><a href="#_sub18" class="code">function UpdateDisplay</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function adctest</a>
+0002 <span class="comment">% @fn adctest</span>
+0003 <span class="comment">% @brief Main function of the ADC Test 4.3. Implements the Main Window of</span>
+0004 <span class="comment">%        the GUI and the callbacks</span>
+0005 <span class="comment">% @param none</span>
+0006 <span class="comment">% @return none</span>
+0007 <span class="comment">% @author Tam� Virosztek, Budapest University of Technology and Economics,</span>
+0008 <span class="comment">%         Department of Measurement and Information Systems,</span>
+0009 <span class="comment">%         Virosztek.Tamas@mit.bme.hu</span>
+0010 
+0011 <span class="comment">%Looking for multiple versions of adctest on path</span>
+0012 adctest_on_path = which(<span class="string">'adctest'</span>,<span class="string">'-all'</span>);
+0013 <span class="keyword">if</span> (max(size(adctest_on_path)) &gt; 1)
+0014     wdlg = warndlg({<span class="string">'Found multiple versions of ADCTest toolbox on MATLAB path.'</span>;<span class="keyword">...</span>
+0015              <span class="string">'Please check you are running the latest version.'</span>},<span class="keyword">...</span>
+0016              <span class="string">'Multiple versions of ADCTest toolbox on path'</span>);
+0017     uiwait(wdlg);
+0018 <span class="keyword">end</span>
+0019 
+0020 clc;
+0021 screensize = get(0,<span class="string">'ScreenSize'</span>);
+0022 
+0023 main_window = figure(<span class="string">'Visible'</span>,<span class="string">'on'</span>,<span class="keyword">...</span>
+0024                      <span class="string">'Position'</span>, [screensize(3)*0.25 screensize(4)*0.25 screensize(3)*0.5 screensize(4)*0.5]',<span class="keyword">...</span>
+0025                      <span class="string">'Name'</span>,<span class="string">'ADCTest 4.3 Main Window'</span>,<span class="keyword">...</span>
+0026                      <span class="string">'NumberTitle'</span>,<span class="string">'off'</span>);
+0027 
+0028 hFrameDesciptorSelector = uicontrol(<span class="string">'Style'</span>,<span class="string">'frame'</span>,<span class="keyword">...</span>
+0029                                     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0030                                     <span class="string">'Position'</span>,[0.05 0.85 0.7 0.1],<span class="keyword">...</span>
+0031                                     <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0032                                 
+0033 hTextFrameDescriptorSelector = uicontrol (<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0034                                          <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0035                                          <span class="string">'Position'</span>,[0.3 0.93 0.2 0.04],<span class="keyword">...</span>
+0036                                          <span class="string">'backgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0037                                          <span class="string">'String'</span>,<span class="string">'Descriptor selector'</span>);
+0038 
+0039 hFrameMeasuerementInformation = uicontrol (<span class="string">'Style'</span>,<span class="string">'frame'</span>,<span class="keyword">...</span>
+0040                                       <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0041                                       <span class="string">'Position'</span>,[0.05 0.3 0.7 0.5],<span class="keyword">...</span>
+0042                                       <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0043 
+0044 hTextFrameMeasurementInformation = uicontrol (<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0045                                          <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0046                                          <span class="string">'Position'</span>,[0.3 0.78 0.2 0.04],<span class="keyword">...</span>
+0047                                          <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0048                                          <span class="string">'String'</span>,<span class="string">'Measuerement information'</span>);
+0049 
+0050 hFrameProcessPossibilities = uicontrol (<span class="string">'Style'</span>,<span class="string">'frame'</span>,<span class="keyword">...</span>
+0051                                        <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0052                                        <span class="string">'Position'</span>,[0.05 0.1 0.7 0.15],<span class="keyword">...</span>
+0053                                        <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0054 
+0055 hTextFrameProcessingPossibilities = uicontrol(<span class="string">'Style'</span>,<span class="string">'tex'</span>,<span class="keyword">...</span>
+0056                                            <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0057                                            <span class="string">'Position'</span>,[0.3 0.23 0.2 0.04],<span class="keyword">...</span>
+0058                                            <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0059                                            <span class="string">'String'</span>,<span class="string">'Processing possibilities'</span>);
+0060 
+0061 hFrameOptions = uicontrol(<span class="string">'Style'</span>,<span class="string">'frame'</span>,<span class="keyword">...</span>
+0062                           <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0063                           <span class="string">'Position'</span>,[0.8 0.1 0.15 0.85],<span class="keyword">...</span>
+0064                           <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8]);
+0065 
+0066 hTextFrameOptions = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0067                               <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0068                               <span class="string">'Position'</span>,[ 0.83 0.93 0.09 0.04],<span class="keyword">...</span>
+0069                               <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0070                               <span class="string">'String'</span>,<span class="string">'Options'</span>);
+0071                           
+0072 
+0073 hTextMeasInfoComment = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0074                                  <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0075                                  <span class="string">'Position'</span>,[0.3 0.71 0.2 0.04],<span class="keyword">...</span>
+0076                                  <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0077                                  <span class="string">'String'</span>,<span class="string">'Description: '</span>);
+0078                              
+0079 hEditMeasInfoComment = uicontrol (<span class="string">'Style'</span>,<span class="string">'edit'</span>,<span class="keyword">...</span>
+0080                                   <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0081                                   <span class="string">'Position'</span>,[0.07 0.41 0.66 0.3],<span class="keyword">...</span>
+0082                                   <span class="string">'Min'</span>,1,<span class="keyword">...</span>
+0083                                   <span class="string">'Max'</span>,100,<span class="keyword">...</span>
+0084                                   <span class="string">'String'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0085                                   <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);
+0086 
+0087 hTextMeasInfoModel = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0088                                <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0089                                <span class="string">'Position'</span>,[0.07 0.36 0.1 0.04],<span class="keyword">...</span>
+0090                                <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0091                                <span class="string">'String'</span>,<span class="string">'Model: '</span>,<span class="keyword">...</span>
+0092                                <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);                       
+0093 
+0094 hTextMeasInfoSerial = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0095                                 <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0096                                 <span class="string">'Position'</span>,[0.07 0.31 0.1 0.04],<span class="keyword">...</span>
+0097                                 <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0098                                 <span class="string">'String'</span>,<span class="string">'Serial #: '</span>,<span class="keyword">...</span>
+0099                                 <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);                       
+0100 
+0101 hTextMeasInfoChannel = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0102                                 <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0103                                 <span class="string">'Position'</span>,[0.45 0.36 0.1 0.04],<span class="keyword">...</span>
+0104                                 <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0105                                 <span class="string">'String'</span>,<span class="string">'Channel #: '</span>,<span class="keyword">...</span>
+0106                                 <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);                       
+0107 
+0108 hTextMeasInfoNoB = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0109                              <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0110                              <span class="string">'Position'</span>,[0.45 0.31 0.1 0.04],<span class="keyword">...</span>
+0111                              <span class="string">'BackgroundColor'</span>,[0.8 0.8 0.8],<span class="keyword">...</span>
+0112                              <span class="string">'String'</span>,<span class="string">'Bits: '</span>,<span class="keyword">...</span>
+0113                              <span class="string">'HorizontalAlignment'</span>,<span class="string">'left'</span>);                       
+0114                             
+0115 hTextMeasInfoModelValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0116                                     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0117                                     <span class="string">'Position'</span>,[0.2 0.36 0.15 0.04],<span class="keyword">...</span>
+0118                                     <span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>,<span class="keyword">...</span>
+0119                                     <span class="string">'String'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0120                                     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);                       
+0121                             
+0122 hTextMeasInfoSerialValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0123                                     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0124                                     <span class="string">'Position'</span>,[0.2 0.31 0.15 0.04],<span class="keyword">...</span>
+0125                                     <span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>,<span class="keyword">...</span>
+0126                                     <span class="string">'String'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0127                                     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);                       
+0128 
+0129 hTextMeasInfoChannelValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0130                                     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0131                                     <span class="string">'Position'</span>,[0.58 0.36 0.15 0.04],<span class="keyword">...</span>
+0132                                     <span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>,<span class="keyword">...</span>
+0133                                     <span class="string">'String'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0134                                     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);                       
+0135 
+0136 hTextMeasInfoNoBValue = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0137                                     <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0138                                     <span class="string">'Position'</span>,[0.58 0.31 0.15 0.04],<span class="keyword">...</span>
+0139                                     <span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>,<span class="keyword">...</span>
+0140                                     <span class="string">'String'</span>,<span class="string">''</span>,<span class="keyword">...</span>
+0141                                     <span class="string">'HorizontalAlignment'</span>,<span class="string">'right'</span>);                       
+0142 
+0143 hPushButtonQuit = uicontrol(<span class="string">'Style'</span>,<span class="string">'pushbutton'</span>,<span class="keyword">...</span>
+0144                             <span class="string">'String'</span>,<span class="string">'Quit'</span>,<span class="keyword">...</span>
+0145                             <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0146                             <span class="string">'Position'</span>,[0.81 0.84 0.13 0.08],<span class="keyword">...</span>
+0147                             <span class="string">'Callback'</span>,@<a href="#_sub11" class="code" title="subfunction Quit_callback(source,eventdata)">Quit_callback</a>);   
+0148 
+0149 hPushButtonImport = uicontrol(<span class="string">'Style'</span>,<span class="string">'pushbutton'</span>,<span class="keyword">...</span>
+0150                               <span class="string">'String'</span>,<span class="string">'Import'</span>,<span class="keyword">...</span>
+0151                               <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0152                               <span class="string">'Position'</span>,[0.81 0.72 0.13 0.08],<span class="keyword">...</span>
+0153                               <span class="string">'Callback'</span>,@<a href="#_sub4" class="code" title="subfunction Import_callback(source,eventdata)">Import_callback</a>);   
+0154                         
+0155 hPushButtonExport = uicontrol(<span class="string">'Style'</span>,<span class="string">'pushbutton'</span>,<span class="keyword">...</span>
+0156                               <span class="string">'String'</span>,<span class="string">'Export'</span>,<span class="keyword">...</span>
+0157                               <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0158                               <span class="string">'Position'</span>,[0.81 0.62 0.13 0.08],<span class="keyword">...</span>
+0159                               <span class="string">'Callback'</span>,@<a href="#_sub5" class="code" title="subfunction Export_callback(source,eventdata)">Export_callback</a>);   
+0160                           
+0161 hPushButtonLoad = uicontrol(<span class="string">'Style'</span>,<span class="string">'pushbutton'</span>,<span class="keyword">...</span>
+0162                             <span class="string">'String'</span>,<span class="string">'Load'</span>,<span class="keyword">...</span>
+0163                             <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0164                             <span class="string">'Position'</span>,[0.81 0.52 0.13 0.08],<span class="keyword">...</span>
+0165                             <span class="string">'Callback'</span>,@<a href="#_sub6" class="code" title="subfunction Load_callback(source,eventdata)">Load_callback</a>);
+0166                         
+0167 hPushButtonSave = uicontrol(<span class="string">'Style'</span>,<span class="string">'pushbutton'</span>,<span class="keyword">...</span>
+0168                             <span class="string">'String'</span>,<span class="string">'Save'</span>,<span class="keyword">...</span>
+0169                             <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0170                             <span class="string">'Position'</span>,[0.81 0.42 0.13 0.08],<span class="keyword">...</span>
+0171                             <span class="string">'Callback'</span>,@<a href="#_sub7" class="code" title="subfunction Save_callback(source,eventdata)">Save_callback</a>);
+0172                         
+0173 hPushButtonDelete = uicontrol(<span class="string">'Style'</span>,<span class="string">'pushbutton'</span>,<span class="keyword">...</span>
+0174                               <span class="string">'String'</span>,<span class="string">'Delete'</span>,<span class="keyword">...</span>
+0175                               <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0176                               <span class="string">'Position'</span>,[0.81 0.32 0.13 0.08],<span class="keyword">...</span>
+0177                               <span class="string">'Callback'</span>,@<a href="#_sub8" class="code" title="subfunction Delete_callback(source,eventdata)">Delete_callback</a>);
+0178                           
+0179 hPushButtonNew = uicontrol(<span class="string">'Style'</span>,<span class="string">'pushbutton'</span>,<span class="keyword">...</span>
+0180                            <span class="string">'String'</span>,<span class="string">'New'</span>,<span class="keyword">...</span>
+0181                            <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0182                            <span class="string">'Position'</span>,[0.81 0.22 0.13 0.08],<span class="keyword">...</span>
+0183                            <span class="string">'Callback'</span>,@<a href="#_sub9" class="code" title="subfunction New_callback(source,eventdata)">New_callback</a>);
+0184                        
+0185 hPushButtonEdit = uicontrol(<span class="string">'Style'</span>,<span class="string">'pushbutton'</span>,<span class="keyword">...</span>
+0186                            <span class="string">'String'</span>,<span class="string">'Edit'</span>,<span class="keyword">...</span>
+0187                            <span class="string">'Enable'</span>,<span class="string">'off'</span>,<span class="keyword">...</span>
+0188                            <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0189                            <span class="string">'Position'</span>,[0.81 0.12 0.13 0.08],<span class="keyword">...</span>
+0190                            <span class="string">'Callback'</span>,@<a href="#_sub10" class="code" title="subfunction Edit_callback(source,eventdata)">Edit_callback</a>);
+0191 
+0192 hPushButtonClassifyAndProcess = uicontrol(<span class="string">'Style'</span>,<span class="string">'pushbutton'</span>,<span class="keyword">...</span>
+0193                                 <span class="string">'String'</span>,<span class="string">'Classify and process measurement record'</span>,<span class="keyword">...</span>
+0194                                 <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0195                                 <span class="string">'Position'</span>,[0.1 0.12 0.6 0.1],<span class="keyword">...</span>
+0196                                 <span class="string">'Callback'</span>,@<a href="#_sub12" class="code" title="subfunction ClassifyAndProcess_callback(source,eventdata)">ClassifyAndProcess_callback</a>);
+0197 <span class="comment">%%%%%%%OBSOLETE PUSHBUTTONS</span>
+0198 <span class="comment">% hPushButtonLS4p = uicontrol('Style','pushbutton',...</span>
+0199 <span class="comment">%                                 'String','LS fit',...</span>
+0200 <span class="comment">%                                 'Units','normalized',...</span>
+0201 <span class="comment">%                                 'Position',[0.07 0.12 0.15 0.1],...</span>
+0202 <span class="comment">%                                 'Callback',@ProcessLS4p_callback);</span>
+0203 <span class="comment">%</span>
+0204 <span class="comment">% hPushButtonMLFit = uicontrol('Style','pushbutton',...</span>
+0205 <span class="comment">%                              'String','ML fit',...</span>
+0206 <span class="comment">%                              'Units','normalized',...</span>
+0207 <span class="comment">%                              'Position',[0.24 0.12 0.15 0.1],...</span>
+0208 <span class="comment">%                              'Callback',@ProcessMLFit_callback);</span>
+0209 <span class="comment">%</span>
+0210 <span class="comment">% hPushButtonHistogramTest = uicontrol('Style','pushbutton',...</span>
+0211 <span class="comment">%                                      'String','Histogram test',...</span>
+0212 <span class="comment">%                                      'Units','normalized',...</span>
+0213 <span class="comment">%                                      'Position',[0.41 0.12 0.15 0.1],...</span>
+0214 <span class="comment">%                                      'Callback',@ProcessHistogramTest_callback);</span>
+0215 <span class="comment">%</span>
+0216 <span class="comment">% hPushButtonFFTTest = uicontrol('Style','pushbutton',...</span>
+0217 <span class="comment">%                                      'String','FFT test',...</span>
+0218 <span class="comment">%                                      'Units','normalized',...</span>
+0219 <span class="comment">%                                      'Position',[0.58 0.12 0.15 0.1],...</span>
+0220 <span class="comment">%                                      'Callback',@ProcessFFTTest_callback);</span>
+0221 <span class="comment">%%%%%%%%%%%%END OF OBSOLETE PUSHBUTONS</span>
+0222                          
+0223 hDescriptorSelector = uicontrol(<span class="string">'Style'</span>,<span class="string">'popup'</span>,<span class="keyword">...</span>
+0224                          <span class="string">'String'</span>,{<span class="string">'No descriptor loaded'</span>},<span class="keyword">...</span>
+0225                          <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0226                          <span class="string">'Position'</span>,[0.1 0.82 0.6 0.1],<span class="keyword">...</span>
+0227                          <span class="string">'Callback'</span>,@<a href="#_sub17" class="code" title="subfunction DescriptorSelector_callback(source,eventdata)">DescriptorSelector_callback</a>);          
+0228 
+0229 hTextInfo = uicontrol(<span class="string">'Style'</span>,<span class="string">'text'</span>,<span class="keyword">...</span>
+0230                       <span class="string">'String'</span>,<span class="string">'Initialized'</span>,<span class="keyword">...</span>
+0231                       <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="keyword">...</span>
+0232                       <span class="string">'Position'</span>,[0 0.00 1 0.05],<span class="keyword">...</span>
+0233                       <span class="string">'BackgroundColor'</span>,<span class="string">'green'</span>);
+0234                   
+0235 <span class="comment">%Defining HELP menu</span>
+0236 hMenuADCTestHelp = uimenu(main_window,<span class="string">'Label'</span>,<span class="string">'ADCTest Help'</span>);
+0237 uimenu(hMenuADCTestHelp,<span class="string">'Label'</span>,<span class="string">'Getting started'</span>,<span class="string">'Callback'</span>,@<a href="#_sub1" class="code" title="subfunction HelpGettingStarted_callback(source,eventdata)">HelpGettingStarted_callback</a>);
+0238 uimenu(hMenuADCTestHelp,<span class="string">'Label'</span>,<span class="string">'User''s manual (PDF)'</span>,<span class="string">'Callback'</span>,@<a href="#_sub2" class="code" title="subfunction HelpUsersManual_callback(source,eventdata)">HelpUsersManual_callback</a>);
+0239 uimenu(hMenuADCTestHelp,<span class="string">'Label'</span>,<span class="string">'About'</span>,<span class="string">'Callback'</span>,@<a href="#_sub3" class="code" title="subfunction HelpAbout_callback(source,eventdata)">HelpAbout_callback</a>);
+0240 
+0241 descriptors = cell(0);
+0242 index = 0;
+0243 <a href="#_sub18" class="code" title="subfunction UpdateDisplay">UpdateDisplay</a>;
+0244 
+0245     <a name="_sub1" href="#_subfunctions" class="code">function HelpGettingStarted_callback(source,eventdata)</a>
+0246         helpdlg({<span class="string">'To get familiar with the toolbox: '</span>;<span class="keyword">...</span>
+0247                  <span class="string">'- Load an example measurement descriptor using the pushbutton &quot;Load&quot;.'</span>;<span class="keyword">...</span>
+0248                  <span class="string">'- Process it via LS fit, ML fit, histogram test, or FFT test using the pushbuttons &quot;LS fit&quot;, &quot;ML fit&quot;, &quot;Histogram test&quot; and &quot;FFT test&quot; respectively.'</span>;<span class="keyword">...</span>
+0249                  <span class="string">''</span>;<span class="keyword">...</span>
+0250                  <span class="string">'You can also'</span>;<span class="keyword">...</span>
+0251                  <span class="string">'- Create a new measurement descriptor using the pushbutton &quot;New&quot;, and import measurement results from workspace.'</span>;<span class="keyword">...</span>
+0252                  <span class="string">'- Create a new measurement descriptor using the pushbutton &quot;New&quot;, and assemble a simulated measurement.'</span>;<span class="keyword">...</span>
+0253                  <span class="string">'- Edit existing descriptors using the &quot;Edit&quot; pushutton.'</span>;<span class="keyword">...</span>
+0254                  <span class="string">'- Save descriptors to XML files using the &quot;Save&quot; pushbutton.'</span>;<span class="keyword">...</span>
+0255                  <span class="string">'- Import entire measurement descriptors from workspace using the &quot;Import&quot; pushbutton.'</span>;<span class="keyword">...</span>
+0256                  <span class="string">'- Export entire measurement descriptors to workspace using the &quot;Export&quot; pushbutton.'</span>},<span class="keyword">...</span><span class="comment">                 </span>
+0257                  <span class="string">'Getting started with ADCTest toolbox'</span>);
+0258     <span class="keyword">end</span>
+0259 
+0260     <a name="_sub2" href="#_subfunctions" class="code">function HelpUsersManual_callback(source,eventdata)</a>
+0261         pdf_location = fullfile(fileparts(which(<span class="string">'adctest.m'</span>)),<span class="string">'usersman'</span>,<span class="string">'usersman.pdf'</span>);
+0262         open(pdf_location);
+0263     <span class="keyword">end</span>
+0264 
+0265     <a name="_sub3" href="#_subfunctions" class="code">function HelpAbout_callback(source,eventdata)</a>
+0266         helpdlg({<span class="string">'ADC Test Data Evaluation program for MATLAB'</span>;<span class="keyword">...</span>
+0267                 <span class="string">''</span>;<span class="keyword">...</span>
+0268                 <span class="string">'Version 4.3'</span>;<span class="keyword">...</span>
+0269                 <span class="string">''</span>;<span class="keyword">...</span>
+0270                 <span class="string">'Budapest University of Technology and Economics'</span>;<span class="keyword">...</span>
+0271                 <span class="string">''</span>;<span class="keyword">...</span><span class="comment">                </span>
+0272                 <span class="string">'Department of Measurement and Information Systems'</span>;<span class="keyword">...</span>
+0273                 <span class="string">''</span>;<span class="keyword">...</span><span class="comment">                </span>
+0274                 <span class="string">'http://www.mit.bme.hu/projects/adctest'</span>;<span class="keyword">...</span>
+0275                 <span class="string">''</span>;<span class="keyword">...</span><span class="comment">                </span>
+0276                 <span class="string">'virosztek@mit.bme.hu'</span>},<span class="keyword">...</span>
+0277                 <span class="string">'About ADCTest toolbox'</span>);
+0278     <span class="keyword">end</span>
+0279 
+0280     <a name="_sub4" href="#_subfunctions" class="code">function Import_callback(source,eventdata)</a>
+0281         wsp_variable = inputdlg(<span class="string">'Enter workspace variable name'</span>,<span class="string">'Import'</span>,1,{<span class="string">'descriptors'</span>});
+0282         <span class="keyword">if</span> (~isempty(wsp_variable{1}))
+0283             <span class="keyword">try</span>
+0284                 descriptors = evalin(<span class="string">'base'</span>,wsp_variable{1});
+0285                 index = length(descriptors);
+0286                 <a href="#_sub18" class="code" title="subfunction UpdateDisplay">UpdateDisplay</a>;
+0287             <span class="keyword">catch</span>
+0288                 set(hTextInfo,<span class="string">'String'</span>,<span class="string">'Given variable is missing'</span>);
+0289                 set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Red'</span>);                
+0290             <span class="keyword">end</span>
+0291             set(hTextInfo,<span class="string">'String'</span>,<span class="string">'Descriptors have been imported successfully'</span>);
+0292             set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Green'</span>);
+0293         <span class="keyword">else</span>
+0294             set(hTextInfo,<span class="string">'String'</span>,<span class="string">'No variable given'</span>);
+0295             set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Red'</span>);            
+0296         <span class="keyword">end</span>
+0297     <span class="keyword">end</span>
+0298 
+0299     <a name="_sub5" href="#_subfunctions" class="code">function Export_callback(source,eventdata)</a>
+0300         wsp_variable = inputdlg(<span class="string">'Enter workspace variable name'</span>,<span class="string">'Export'</span>,1,{<span class="string">'descriptors'</span>});
+0301         <span class="keyword">if</span> (~isempty(wsp_variable{1}))
+0302             <span class="keyword">try</span>
+0303                 assignin (<span class="string">'base'</span>,wsp_variable{1},descriptors);
+0304             <span class="keyword">catch</span>
+0305                 set(hTextInfo,<span class="string">'String'</span>,<span class="string">'Given variable is missing'</span>);
+0306                 set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Red'</span>);                
+0307             <span class="keyword">end</span>
+0308             set(hTextInfo,<span class="string">'String'</span>,<span class="string">'Descriptors have been exported successfully'</span>);
+0309             set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Green'</span>);
+0310         <span class="keyword">else</span>
+0311             set(hTextInfo,<span class="string">'String'</span>,<span class="string">'No variable given'</span>);
+0312             set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Red'</span>);
+0313         <span class="keyword">end</span>
+0314     <span class="keyword">end</span>
+0315 
+0316     <a name="_sub6" href="#_subfunctions" class="code">function Load_callback(source,eventdata)</a>
+0317         set(hTextInfo,<span class="string">'String'</span>,<span class="string">'Loading descriptor...'</span>);
+0318         set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Green'</span>);
+0319         dscpath = fullfile(fileparts(which(<span class="string">'adctest.m'</span>)),<span class="string">'examples'</span>);
+0320         [filename,path] = uigetfile([dscpath,filesep,<span class="string">'.xml'</span>],<span class="string">'Select Descriptor'</span>);
+0321         <span class="keyword">if</span> (ischar(filename) &amp;&amp; ischar(path))
+0322             [new_dsc,success,error_msg,warnings] = <a href="LoadDscFromXML.html" class="code" title="function [new_dsc,success,error_msg,warnings] = LoadDscFromXML(filename)">LoadDscFromXML</a>(fullfile(path,filename));
+0323             <span class="keyword">if</span> (success)
+0324                 oldlength = length(descriptors);
+0325                 descriptors{oldlength+1,1} = new_dsc;
+0326                 index = length(descriptors);
+0327                 <a href="#_sub18" class="code" title="subfunction UpdateDisplay">UpdateDisplay</a>;
+0328                 <span class="keyword">if</span> (max(size(warnings)) &gt; 1)
+0329                     <a href="DisplayWarnings.html" class="code" title="function DisplayWarnings(warnings)">DisplayWarnings</a>(warnings);
+0330                 <span class="keyword">end</span>
+0331                 set(hTextInfo,<span class="string">'String'</span>,<span class="string">'Descriptor has been loaded successfully'</span>);
+0332                 set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Green'</span>);
+0333             <span class="keyword">else</span>
+0334                 set(hTextInfo,<span class="string">'String'</span>,strcat(<span class="string">'Unable to import XML: '</span>,error_msg));
+0335                 set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Red'</span>);
+0336             <span class="keyword">end</span>
+0337         <span class="keyword">else</span>
+0338             set(hTextInfo,<span class="string">'String'</span>,<span class="string">'Loading descriptor has been cancelled'</span>);
+0339             set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Yellow'</span>);
+0340         <span class="keyword">end</span>     
+0341     <span class="keyword">end</span>
+0342 
+0343     <a name="_sub7" href="#_subfunctions" class="code">function Save_callback(source,eventdata)</a>
+0344         set(hTextInfo,<span class="string">'String'</span>,<span class="string">'Saving descriptor...'</span>);
+0345         set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Green'</span>);
+0346         [filename,path] = uiputfile(sprintf(<span class="string">'%s.xml'</span>,descriptors{index}.name),<span class="string">'Save descriptor'</span>);
+0347         <span class="keyword">if</span> (ischar(filename) &amp;&amp; ischar(path))
+0348             [success,error_msg] = <a href="SaveDscToXML.html" class="code" title="function [success,error_msg] = SaveDscToXML(dsc,filename)">SaveDscToXML</a>(descriptors{index},fullfile(path,filename));
+0349             <span class="keyword">if</span> (success)
+0350                 set(hTextInfo,<span class="string">'String'</span>,<span class="string">'Descriptor has been saved successfully'</span>);
+0351                 set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Green'</span>);                
+0352             <span class="keyword">else</span>
+0353                 set(hTextInfo,<span class="string">'String'</span>,strcat(<span class="string">'Unable to save descriptor: '</span>,error_msg));
+0354                 set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Red'</span>);                
+0355             <span class="keyword">end</span>
+0356         <span class="keyword">else</span>
+0357             set(hTextInfo,<span class="string">'String'</span>,<span class="string">'Saving descriptor has been cancelled'</span>);
+0358             set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Yellow'</span>);            
+0359         <span class="keyword">end</span>
+0360     <span class="keyword">end</span>
+0361 
+0362     <a name="_sub8" href="#_subfunctions" class="code">function Delete_callback(source,eventdata)</a>
+0363         oldlength = length(descriptors);
+0364         oldname = descriptors{index}.name;
+0365         temp_dscs = cell(oldlength-1,1);
+0366         <span class="keyword">for</span> k = 1:index-1
+0367             temp_dscs{k} = descriptors{k};
+0368         <span class="keyword">end</span>
+0369         <span class="keyword">for</span> k = index:oldlength-1
+0370             temp_dscs{k} = descriptors{k+1};
+0371         <span class="keyword">end</span>
+0372         descriptors = temp_dscs;
+0373         <span class="keyword">if</span> (index &gt; length(descriptors))
+0374             index = length(descriptors);
+0375         <span class="keyword">end</span>
+0376         <a href="#_sub18" class="code" title="subfunction UpdateDisplay">UpdateDisplay</a>;
+0377         set(hTextInfo,<span class="string">'String'</span>,sprintf(<span class="string">'Descriptor &quot;%s&quot; has been deleted'</span>,oldname));
+0378         set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Green'</span>);
+0379     <span class="keyword">end</span>
+0380 
+0381     <a name="_sub9" href="#_subfunctions" class="code">function New_callback(source,eventdata)</a>
+0382         oldlength = length(descriptors);
+0383         [new_dsc,success] = <a href="CreateNewDsc.html" class="code" title="function [new_dsc,success] = CreateNewDsc">CreateNewDsc</a>;
+0384         <span class="keyword">if</span> (success)
+0385             descriptors{oldlength+1,1} = new_dsc;
+0386             index = length(descriptors);
+0387             <a href="#_sub18" class="code" title="subfunction UpdateDisplay">UpdateDisplay</a>;
+0388             set(hTextInfo,<span class="string">'String'</span>,<span class="string">'New descriptor has been added successfully'</span>);
+0389             set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Green'</span>);
+0390         <span class="keyword">else</span>
+0391             set(hTextInfo,<span class="string">'String'</span>,<span class="string">'Adding new descriptor has been cancelled'</span>);
+0392             set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Yellow'</span>);
+0393         <span class="keyword">end</span>
+0394     <span class="keyword">end</span>
+0395 
+0396     <a name="_sub10" href="#_subfunctions" class="code">function Edit_callback(source,eventdata)</a>
+0397         [temp_dsc,success] = <a href="EditDsc.html" class="code" title="function [temp_dsc,success] = EditDsc(old_dsc)">EditDsc</a>(descriptors{index});
+0398         <span class="keyword">if</span> (success)
+0399             descriptors{index} = temp_dsc;
+0400             <a href="#_sub18" class="code" title="subfunction UpdateDisplay">UpdateDisplay</a>;
+0401             set(hTextInfo,<span class="string">'String'</span>,<span class="string">'Descriptor has been edited succesfully'</span>);
+0402             set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Green'</span>);
+0403         <span class="keyword">else</span>
+0404             set(hTextInfo,<span class="string">'String'</span>,<span class="string">'Editing descriptor has been cancelled'</span>)
+0405             set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Yellow'</span>);
+0406         <span class="keyword">end</span>
+0407     <span class="keyword">end</span>
+0408     
+0409     <a name="_sub11" href="#_subfunctions" class="code">function Quit_callback(source,eventdata)</a>
+0410         confirm_reply = questdlg(<span class="string">'Are you sure you want to quit?'</span>,<span class="string">''</span>,<span class="string">'Yes'</span>,<span class="string">'No'</span>,<span class="string">'No'</span>);
+0411         <span class="keyword">if</span> strcmpi(<span class="string">'Yes'</span>,confirm_reply)
+0412             close(main_window);
+0413         <span class="keyword">end</span>
+0414     <span class="keyword">end</span>
+0415 
+0416     <a name="_sub12" href="#_subfunctions" class="code">function ClassifyAndProcess_callback(source,eventdata)</a>
+0417         info_line_string = get(hTextInfo,<span class="string">'String'</span>);
+0418         set(hTextInfo,<span class="string">'String'</span>,<span class="string">'Processing descriptor...'</span>);
+0419         set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Green'</span>);                
+0420         <a href="step_1.html" class="code" title="function varargout = step_1(varargin)">step_1</a>(descriptors{index});
+0421         set(hTextInfo,<span class="string">'String'</span>,info_line_string);
+0422         set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Green'</span>);                        
+0423         
+0424     <span class="keyword">end</span>
+0425 
+0426     <a name="_sub13" href="#_subfunctions" class="code">function ProcessLS4p_callback(source,eventdata)</a>
+0427         info_line_string = get(hTextInfo,<span class="string">'String'</span>);
+0428         set(hTextInfo,<span class="string">'String'</span>,<span class="string">'Processing descriptor for LS fit...'</span>);
+0429         set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Green'</span>);                
+0430         <a href="ProcessDscLS4pFit.html" class="code" title="function ProcessDscLS4pFit(dsc,reason)">ProcessDscLS4pFit</a>(descriptors{index},<span class="string">'LS4p_only'</span>);
+0431         set(hTextInfo,<span class="string">'String'</span>,info_line_string);
+0432         set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Green'</span>);                        
+0433     <span class="keyword">end</span>
+0434 
+0435     <a name="_sub14" href="#_subfunctions" class="code">function ProcessMLFit_callback(source,eventdata)</a>
+0436         info_line_string = get(hTextInfo,<span class="string">'String'</span>);
+0437         set(hTextInfo,<span class="string">'String'</span>,<span class="string">'Processing descriptor for ML fit...'</span>);
+0438         set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Green'</span>);        
+0439         <a href="ProcessDscLS4pFit.html" class="code" title="function ProcessDscLS4pFit(dsc,reason)">ProcessDscLS4pFit</a>(descriptors{index},<span class="string">'ML_fit'</span>);
+0440         set(hTextInfo,<span class="string">'String'</span>,info_line_string);
+0441         set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Green'</span>);                
+0442     <span class="keyword">end</span>
+0443 
+0444     <a name="_sub15" href="#_subfunctions" class="code">function ProcessHistogramTest_callback(source,eventdata)</a>
+0445         info_line_string = get(hTextInfo,<span class="string">'String'</span>);
+0446         set(hTextInfo,<span class="string">'String'</span>,<span class="string">'Processing histogram test...'</span>);
+0447         set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Green'</span>);
+0448         <span class="comment">%Setting windows to be displayed</span>
+0449         display_settings.results_win = 1;
+0450         display_settings.summary_win = 1;
+0451         display_settings.warning_dialog = 1;        
+0452         <a href="ProcessHistogramTest.html" class="code" title="function INL = ProcessHistogramTest(dsc,display_settings,varargin)">ProcessHistogramTest</a>(descriptors{index},display_settings);
+0453         set(hTextInfo,<span class="string">'String'</span>,info_line_string);
+0454         set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Green'</span>);        
+0455     <span class="keyword">end</span>
+0456 
+0457     <a name="_sub16" href="#_subfunctions" class="code">function ProcessFFTTest_callback(source,eventdata)</a>
+0458         info_line_string = get(hTextInfo,<span class="string">'String'</span>);
+0459         set(hTextInfo,<span class="string">'String'</span>,<span class="string">'Processing FFT test...'</span>);
+0460         set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Green'</span>);        
+0461         <a href="ProcessFFTTest.html" class="code" title="function ProcessFFTTest(dsc)">ProcessFFTTest</a>(descriptors{index});
+0462         set(hTextInfo,<span class="string">'String'</span>,info_line_string);
+0463         set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Green'</span>);                
+0464     <span class="keyword">end</span>
+0465         
+0466     <a name="_sub17" href="#_subfunctions" class="code">function DescriptorSelector_callback(source,eventdata)</a>
+0467         index = get(source,<span class="string">'Value'</span>);
+0468         set(hTextInfo,<span class="string">'String'</span>,sprintf(<span class="string">'Descriptor &quot;%s&quot; has been selected'</span>,descriptors{index}.name));
+0469         set(hTextInfo,<span class="string">'BackgroundColor'</span>,<span class="string">'Green'</span>);
+0470         <a href="#_sub18" class="code" title="subfunction UpdateDisplay">UpdateDisplay</a>;
+0471     <span class="keyword">end</span>
+0472 
+0473     <a name="_sub18" href="#_subfunctions" class="code">function UpdateDisplay</a>
+0474         <span class="keyword">if</span> ~(isempty(descriptors))
+0475             names = cell(length(descriptors),1);
+0476             <span class="keyword">for</span> k = 1:length(descriptors)
+0477                 names{k} = descriptors{k}.name;
+0478             <span class="keyword">end</span>
+0479             set(hDescriptorSelector,<span class="string">'String'</span>,names);
+0480             set(hDescriptorSelector,<span class="string">'Value'</span>,index);
+0481             set(hPushButtonEdit,<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0482             set(hPushButtonSave,<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0483             set(hPushButtonDelete,<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0484             set(hTextMeasInfoModelValue,<span class="string">'String'</span>,descriptors{index}.model);            
+0485             set(hTextMeasInfoSerialValue,<span class="string">'String'</span>,descriptors{index}.serial);
+0486             set(hTextMeasInfoChannelValue,<span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,descriptors{index}.channel));
+0487             set(hTextMeasInfoNoBValue,<span class="string">'String'</span>,sprintf(<span class="string">'%d'</span>,descriptors{index}.NoB));
+0488             set(hEditMeasInfoComment,<span class="string">'String'</span>,descriptors{index}.comment);
+0489             set(hPushButtonClassifyAndProcess,<span class="string">'Enable'</span>,<span class="string">'on'</span>);
+0490         <span class="keyword">else</span>
+0491             set(hDescriptorSelector,<span class="string">'String'</span>,{<span class="string">'No descriptor loaded'</span>});
+0492             set(hDescriptorSelector,<span class="string">'Value'</span>,1);
+0493             set(hPushButtonEdit,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0494             set(hPushButtonSave,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0495             set(hPushButtonDelete,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0496             set(hTextMeasInfoModelValue,<span class="string">'String'</span>,<span class="string">''</span>);
+0497             set(hTextMeasInfoSerialValue,<span class="string">'String'</span>,<span class="string">''</span>);
+0498             set(hTextMeasInfoChannelValue,<span class="string">'String'</span>,<span class="string">''</span>);            
+0499             set(hTextMeasInfoNoBValue,<span class="string">'String'</span>,<span class="string">''</span>);
+0500             set(hEditMeasInfoComment,<span class="string">'String'</span>,{<span class="string">'No descriptor loaded yet. Please load or create one.'</span>});
+0501             set(hPushButtonClassifyAndProcess,<span class="string">'Enable'</span>,<span class="string">'off'</span>);
+0502         <span class="keyword">end</span>
+0503     <span class="keyword">end</span>
+0504 
+0505 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

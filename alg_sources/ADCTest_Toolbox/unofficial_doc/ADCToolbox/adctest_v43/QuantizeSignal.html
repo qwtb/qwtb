@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of QuantizeSignal</title>
+  <meta name="keywords" content="QuantizeSignal">
+  <meta name="description" content="@fn QuantizeSignal">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; QuantizeSignal.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>QuantizeSignal
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>@fn QuantizeSignal</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function y = QuantizeSignal(x,trans_levels) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> @fn QuantizeSignal
+ @brief Quantizes a sampled, unquantized signal: a vector of &quot;real&quot;
+        numbers to a vector of integers
+ @param x The unquantized signal
+ @param trans_levels The transition levels used in quantization
+ @return y The quantized signal
+ @author Tam� Virosztek, Budapest University of Technology and Economics,
+         Department of Measurement and Infromation Systems,
+         Virosztek.Tamas@mit.bme.hu</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="Consistence.html" class="code" title="">Consistence</a>	</li><li><a href="ProcessDscML5pFit.html" class="code" title="function ProcessDscML5pFit(dsc,reduced_data,timevect,pLS)">ProcessDscML5pFit</a>	@fn ProcessDscML5pFit</li><li><a href="SimulateMeasurement.html" class="code" title="function [datavect,parameters,success] = SimulateMeasurement(NoB)">SimulateMeasurement</a>	@fn SimulateMeesurement</li><li><a href="scanning.html" class="code" title="">scanning</a>	Script to evaluate ML cost function</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function y = QuantizeSignal(x,trans_levels)</a>
+0002 <span class="comment">% @fn QuantizeSignal</span>
+0003 <span class="comment">% @brief Quantizes a sampled, unquantized signal: a vector of &quot;real&quot;</span>
+0004 <span class="comment">%        numbers to a vector of integers</span>
+0005 <span class="comment">% @param x The unquantized signal</span>
+0006 <span class="comment">% @param trans_levels The transition levels used in quantization</span>
+0007 <span class="comment">% @return y The quantized signal</span>
+0008 <span class="comment">% @author Tam� Virosztek, Budapest University of Technology and Economics,</span>
+0009 <span class="comment">%         Department of Measurement and Infromation Systems,</span>
+0010 <span class="comment">%         Virosztek.Tamas@mit.bme.hu</span>
+0011 
+0012 
+0013 y = zeros(length(x),1);
+0014 
+0015 <span class="keyword">for</span> k = 1:length(x)
+0016     <span class="keyword">if</span> (x(k) &lt;= trans_levels(1))
+0017         y(k) = 0;
+0018     <span class="keyword">elseif</span> (x(k) &gt; trans_levels(end))
+0019         y(k) = length(trans_levels);
+0020     <span class="keyword">else</span>
+0021         <span class="keyword">for</span> l = 1:length(trans_levels) - 1
+0022             <span class="keyword">if</span> (x(k) &gt;  trans_levels(l)) &amp;&amp; (x(k) &lt;= trans_levels(l+1))
+0023                 y(k) = l;
+0024                 <span class="keyword">break</span>;
+0025             <span class="keyword">end</span>
+0026         <span class="keyword">end</span>
+0027     <span class="keyword">end</span>
+0028 <span class="keyword">end</span>
+0029 
+0030 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

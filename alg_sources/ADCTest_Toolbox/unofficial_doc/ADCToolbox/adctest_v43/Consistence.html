@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of Consistence</title>
+  <meta name="keywords" content="Consistence">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; Consistence.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>Consistence
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="INL2TransLevels.html" class="code" title="function translevels = INL2TransLevels(INL)">INL2TransLevels</a>	@fn INL2TransLevels</li><li><a href="QuantizeSignal.html" class="code" title="function y = QuantizeSignal(x,trans_levels)">QuantizeSignal</a>	@fn QuantizeSignal</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 elements = 8;
+0002 NoSs = [1000;2000;4000;8000;16000;32000;64000;128000];
+0003 INL = 1.5*hann(255) + 4*sin(2*pi*1/254*(0:254).') + 0.5*rand(255,1)- 0.25;
+0004 T = <a href="INL2TransLevels.html" class="code" title="function translevels = INL2TransLevels(INL)">INL2TransLevels</a>(INL);
+0005 A = 0.52*cos(78);
+0006 B = 0.52*sin(78);
+0007 C = 0.497;
+0008 thetas = 2*pi*1./NoSs;
+0009 
+0010 sinewaves = zeros(max(NoSs),elements);
+0011 <span class="keyword">for</span> k = 1:elements
+0012     sinewaves(1:NoSs(k),k) = A*cos(thetas(k)*(1:NoSs(k)).') + B*sin(thetas(k)*(1:NoSs(k)).') + C*ones(NoSs(k),1);
+0013 <span class="keyword">end</span>
+0014 
+0015 quantized_sinewaves = cell(elements,1);
+0016 timevects = cell(elements,1);
+0017 
+0018 <span class="keyword">for</span> k = 1:elements
+0019     quantized_sinewaves{k,1} = <a href="QuantizeSignal.html" class="code" title="function y = QuantizeSignal(x,trans_levels)">QuantizeSignal</a>(sinewaves(1:NoSs(k),k),T);
+0020 <span class="keyword">end</span>
+0021 
+0022 <span class="keyword">for</span> k = 1:elements
+0023     ti = 1;
+0024     <span class="keyword">for</span> l = 1:NoSs(k)
+0025         <span class="keyword">if</span> (quantized_sinewaves{k,1}(l) &gt; 0) &amp;&amp; (quantized_sinewaves{k,1}(l) &lt; 255)
+0026             timevects{k,1}(ti) = l;
+0027             ti = ti + 1;
+0028         <span class="keyword">end</span>
+0029     <span class="keyword">end</span>
+0030 <span class="keyword">end</span>
+0031 
+0032 datavects = cell(elements,1);
+0033 <span class="keyword">for</span> k = 1:elements
+0034     timevects{k,1} = timevects{k,1}.';
+0035     datavects{k,1} = quantized_sinewaves{k,1}(timevects{k,1});
+0036 <span class="keyword">end</span>
+0037 
+0038 descriptors = cell(elements,1);
+0039 <span class="keyword">for</span> k = 1:elements
+0040     descriptors{k,1}.data = quantized_sinewaves{k,1};
+0041     descriptors{k,1}.NoB = 8;
+0042     descriptors{k,1}.name = sprintf(<span class="string">'s%d_meas'</span>,NoSs(k));
+0043     descriptors{k,1}.comment = {<span class="string">''</span>;<span class="string">''</span>};
+0044     descriptors{k,1}.model = <span class="string">'R2007b'</span>;
+0045     descriptors{k,1}.serial = <span class="string">'N/A'</span>;
+0046     descriptors{k,1}.channel = 1;
+0047 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

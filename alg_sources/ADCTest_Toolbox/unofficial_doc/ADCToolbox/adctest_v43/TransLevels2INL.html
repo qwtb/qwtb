@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of TransLevels2INL</title>
+  <meta name="keywords" content="TransLevels2INL">
+  <meta name="description" content="@fn TransLevels2INL">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">adctest_v43</a> &gt; TransLevels2INL.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for adctest_v43&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>TransLevels2INL
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>@fn TransLevels2INL</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function INL = TransLevels2INL(translevels) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> @fn TransLevels2INL
+ @brief Calculates INL vector using the transition levels
+ @param translevels Vector of transition levels
+ @return INL Vector of the calculated INL
+ @author Tam� Virosztek, Budapest University of Technology and Economics,
+         Department of Measurement and Information Systems,
+         Virosztek.Tamas@mit.bme.hu</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function INL = TransLevels2INL(translevels)</a>
+0002 <span class="comment">% @fn TransLevels2INL</span>
+0003 <span class="comment">% @brief Calculates INL vector using the transition levels</span>
+0004 <span class="comment">% @param translevels Vector of transition levels</span>
+0005 <span class="comment">% @return INL Vector of the calculated INL</span>
+0006 <span class="comment">% @author Tam� Virosztek, Budapest University of Technology and Economics,</span>
+0007 <span class="comment">%         Department of Measurement and Information Systems,</span>
+0008 <span class="comment">%         Virosztek.Tamas@mit.bme.hu</span>
+0009 
+0010 <span class="comment">%Calculates INL vector using the values of the transition levels</span>
+0011 INL = zeros(1,length(translevels));
+0012 Q = (translevels(end)-translevels(1))/(length(translevels)-1); <span class="comment">% Q = V/(2^B-2)</span>
+0013 INL(1) = 0; INL(end) = 0;
+0014 <span class="keyword">for</span> k = 2:length(INL)-1
+0015     INL(k) = (translevels(k) - (translevels(1) + (k-1)*Q))/Q;
+0016 <span class="keyword">end</span>
+0017 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Tue 12-May-2015 14:18:23 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>
