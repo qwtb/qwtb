@@ -1,0 +1,586 @@
+
+% This LaTeX was auto-generated from an M-file by MATLAB.
+% To make changes, update the M-file and republish this document.
+
+%%% \documentclass{article}
+%%% \usepackage{graphicx}
+%%% \usepackage{color}
+
+%%% \sloppy
+%%% \definecolor{lightgray}{gray}{0.5}
+\setlength{\parindent}{0pt}
+
+%%% \begin{document}
+
+    
+    
+\subsection*{Example of the QWTB use}
+
+\begin{par}
+Data are simulated, QWTB is used with different algorithms.
+\end{par} \vspace{1em}
+
+\subsubsection*{Contents}
+
+\begin{itemize}
+\setlength{\itemsep}{-1ex}
+   \item Generate ideal data
+   \item Apply three algorithms
+   \item Compare results for ideal signal
+   \item Noisy signal
+   \item Compare results for noisy signal
+   \item Non-coherent signal
+   \item Compare results for non-coherent signal
+   \item Harmonically distorted signal.
+   \item Compare results for harmonically distorted signal.
+   \item Harmonically distorted, noisy, non-coherent signal.
+   \item Compare results for harmonically distorted, noisy, non-coherent signal.
+\end{itemize}
+
+
+\subsubsection*{Generate ideal data}
+
+\begin{par}
+Sample data are generated, representing 1 second of sine waveform of nominal frequency \lstinline{fnom} 1000 Hz, nominal amplitude \lstinline{Anom} 1 V and nominal phase \lstinline{phnom} 1 rad. Data are sampled at sampling frequency \lstinline{fsnom} 10 kHz, perfectly synchronized, no noise.
+\end{par} \vspace{1em}
+\begin{lstlisting}[style=mcode]
+Anom = 1; fnom = 1000; phnom = 1; fsnom = 10e4;
+timestamps = [0:1/fsnom:0.1-1/fsnom];
+ideal_wave = Anom*sin(2*pi*fnom*timestamps + phnom);
+\end{lstlisting}
+\begin{par}
+To use QWTB, data are put into two quantities: \lstinline{t} and \lstinline{y}. Both quantities are put into data in structure \lstinline{DI}.
+\end{par} \vspace{1em}
+\begin{lstlisting}[style=mcode]
+DI = [];
+DI.t.v = timestamps;
+DI.y.v = ideal_wave;
+\end{lstlisting}
+
+
+\subsubsection*{Apply three algorithms}
+
+\begin{par}
+QWTB will be used to apply three algorithms to determine frequency and amplitude: \lstinline{SP-FFT}, \lstinline{PSFE} and \lstinline{FPSWF}. Results are in data out structure \lstinline{DOxxx}. Algorithm \lstinline{FPSWF} requires an estimate, select it to 0.1\% different from nominal frequency. \lstinline{SP-FFT} requires sampling frequency.
+\end{par} \vspace{1em}
+\begin{lstlisting}[style=mcode]
+DI.f.v = fnom.*1.001;
+DI.fs.v = fsnom;
+DOspfft = qwtb('SP-FFT', DI);
+DOpsfe = qwtb('PSFE', DI);
+DOfpswf = qwtb('FPSWF', DI);
+\end{lstlisting}
+
+        \begin{lstlisting}[style=output]
+QWTB: no uncertainty calculation
+QWTB: no uncertainty calculation
+QWTB: no uncertainty calculation
+Fitting started
+
+Local minimum found.
+
+Optimization completed because the size of the gradient is less than
+the default value of the function tolerance.
+
+
+
+Fitting finished
+\end{lstlisting} \color{black}
+    
+
+\subsubsection*{Compare results for ideal signal}
+
+\begin{par}
+Calculate relative errors in ppm for all algorithm to know which one is best. \lstinline{SP-FFT} returns whole spectrum, so only the largest amplitude peak is interesting. One can see for the ideal case all errors are very small.
+\end{par} \vspace{1em}
+\begin{lstlisting}[style=mcode]
+disp('SP-FFT errors (ppm):')
+[tmp, ind] = max(DOspfft.A.v);
+ferr  = (DOspfft.f.v(ind) - fnom)/fnom .* 1e6
+Aerr  = (DOspfft.A.v(ind) - Anom)/Anom .* 1e6
+pherr = (DOspfft.ph.v(ind) - phnom)/phnom .* 1e6
+
+disp('PSFE errors (ppm):')
+ferr  = (DOpsfe.f.v - fnom)/fnom .* 1e6
+Aerr  = (DOpsfe.A.v - Anom)/Anom .* 1e6
+pherr = (DOpsfe.ph.v - phnom)/phnom .* 1e6
+
+disp('FPSWF errors (ppm):')
+ferr  = (DOfpswf.f.v - fnom)/fnom .* 1e6
+Aerr  = (DOfpswf.A.v - Anom)/Anom .* 1e6
+pherr = (DOfpswf.ph.v - phnom)/phnom .* 1e6
+\end{lstlisting}
+
+        \begin{lstlisting}[style=output]
+SP-FFT errors (ppm):
+
+ferr =
+
+     0
+
+
+Aerr =
+
+     0
+
+
+pherr =
+
+  -1.5708e+06
+
+PSFE errors (ppm):
+
+ferr =
+
+  -2.2737e-10
+
+
+Aerr =
+
+   4.8850e-09
+
+
+pherr =
+
+   2.3093e-08
+
+FPSWF errors (ppm):
+
+ferr =
+
+  -3.4106e-10
+
+
+Aerr =
+
+  -4.0479e-07
+
+
+pherr =
+
+   3.7526e-08
+
+\end{lstlisting} \color{black}
+    
+
+\subsubsection*{Noisy signal}
+
+\begin{par}
+To simulate real measurement, noise is added with normal distribution and standard deviation \lstinline{sigma} of 100 microvolt. Algorithms are again applied.
+\end{par} \vspace{1em}
+\begin{lstlisting}[style=mcode]
+sigma = 100e-6;
+DI.y.v = ideal_wave + normrnd(0, 100e-6, size(ideal_wave));
+DOspfft = qwtb('SP-FFT', DI);
+DOpsfe = qwtb('PSFE', DI);
+DOfpswf = qwtb('FPSWF', DI);
+\end{lstlisting}
+
+        \begin{lstlisting}[style=output]
+QWTB: no uncertainty calculation
+QWTB: no uncertainty calculation
+QWTB: no uncertainty calculation
+Fitting started
+
+Local minimum found.
+
+Optimization completed because the size of the gradient is less than
+the default value of the function tolerance.
+
+
+
+Fitting finished
+\end{lstlisting} \color{black}
+    
+
+\subsubsection*{Compare results for noisy signal}
+
+\begin{par}
+Again relative errors are compared. One can see amplitude and phase errors increased to several ppm, however frequency is still determined quite good by all three algorithms. FFT is not affected by noise at all.
+\end{par} \vspace{1em}
+\begin{lstlisting}[style=mcode]
+disp('SP-FFT errors (ppm):')
+[tmp, ind] = max(DOspfft.A.v);
+ferr  = (DOspfft.f.v(ind) - fnom)/fnom .* 1e6
+Aerr  = (DOspfft.A.v(ind) - Anom)/Anom .* 1e6
+pherr = (DOspfft.ph.v(ind) - phnom)/phnom .* 1e6
+
+disp('PSFE errors:')
+ferr  = (DOpsfe.f.v - fnom)/fnom .* 1e6
+Aerr  = (DOpsfe.A.v - Anom)/Anom .* 1e6
+pherr = (DOpsfe.ph.v - phnom)/phnom .* 1e6
+
+disp('FPSWF errors:')
+ferr  = (DOfpswf.f.v - fnom)/fnom .* 1e6
+Aerr  = (DOfpswf.A.v - Anom)/Anom .* 1e6
+pherr = (DOfpswf.ph.v - phnom)/phnom .* 1e6
+\end{lstlisting}
+
+        \begin{lstlisting}[style=output]
+SP-FFT errors (ppm):
+
+ferr =
+
+     0
+
+
+Aerr =
+
+   -0.8795
+
+
+pherr =
+
+  -1.5708e+06
+
+PSFE errors:
+
+ferr =
+
+   -0.0035
+
+
+Aerr =
+
+   -0.9103
+
+
+pherr =
+
+    3.0107
+
+FPSWF errors:
+
+ferr =
+
+   -0.0087
+
+
+Aerr =
+
+   -0.8780
+
+
+pherr =
+
+    4.4147
+
+\end{lstlisting} \color{black}
+    
+
+\subsubsection*{Non-coherent signal}
+
+\begin{par}
+In real measurement coherent measurement does not exist. So in next test the frequency of the signal differs by 20 ppm:
+\end{par} \vspace{1em}
+\begin{lstlisting}[style=mcode]
+fnc = fnom*(1 + 20e-6);
+noncoh_wave = Anom*sin(2*pi*fnc*timestamps + phnom);
+DI.y.v = noncoh_wave;
+DOspfft = qwtb('SP-FFT', DI);
+DOpsfe = qwtb('PSFE', DI);
+DOfpswf = qwtb('FPSWF', DI);
+\end{lstlisting}
+
+        \begin{lstlisting}[style=output]
+QWTB: no uncertainty calculation
+QWTB: no uncertainty calculation
+QWTB: no uncertainty calculation
+Fitting started
+
+Local minimum found.
+
+Optimization completed because the size of the gradient is less than
+the default value of the function tolerance.
+
+
+
+Fitting finished
+\end{lstlisting} \color{black}
+    
+
+\subsubsection*{Compare results for non-coherent signal}
+
+\begin{par}
+Comparison of relative errors. Results of PSFE or FPSWF are correct, however FFT is affected by non-coherent signal considerably.
+\end{par} \vspace{1em}
+\begin{lstlisting}[style=mcode]
+disp('SP-FFT errors (ppm):')
+[tmp, ind] = max(DOspfft.A.v);
+ferr  = (DOspfft.f.v(ind) - fnc)/fnc .* 1e6
+Aerr  = (DOspfft.A.v(ind) - Anom)/Anom .* 1e6
+pherr = (DOspfft.ph.v(ind) - phnom)/phnom .* 1e6
+
+disp('PSFE errors:')
+ferr  = (DOpsfe.f.v - fnc)/fnc .* 1e6
+Aerr  = (DOpsfe.A.v - Anom)/Anom .* 1e6
+pherr = (DOpsfe.ph.v - phnom)/phnom .* 1e6
+
+disp('FPSWF errors:')
+ferr  = (DOfpswf.f.v - fnc)/fnc .* 1e6
+Aerr  = (DOfpswf.A.v - Anom)/Anom .* 1e6
+pherr = (DOfpswf.ph.v - phnom)/phnom .* 1e6
+\end{lstlisting}
+
+        \begin{lstlisting}[style=output]
+SP-FFT errors (ppm):
+
+ferr =
+
+  -19.9996
+
+
+Aerr =
+
+   -2.8780
+
+
+pherr =
+
+  -1.5645e+06
+
+PSFE errors:
+
+ferr =
+
+  -1.1368e-10
+
+
+Aerr =
+
+   3.8924e-07
+
+
+pherr =
+
+   3.3073e-04
+
+FPSWF errors:
+
+ferr =
+
+  -1.1368e-10
+
+
+Aerr =
+
+  -3.2951e-07
+
+
+pherr =
+
+   1.4655e-08
+
+\end{lstlisting} \color{black}
+    
+
+\subsubsection*{Harmonically distorted signal.}
+
+\begin{par}
+In other cases a harmonic distortion can appear. Suppose a signal with second order harmonic of 10\% amplitude as the main signal.
+\end{par} \vspace{1em}
+\begin{lstlisting}[style=mcode]
+hadist_wave = Anom*sin(2*pi*fnom*timestamps + phnom) + 0.1*Anom*sin(2*pi*fnom*2*timestamps + 2);
+DI.y.v = hadist_wave;
+DOspfft = qwtb('SP-FFT', DI);
+DOpsfe = qwtb('PSFE', DI);
+DOfpswf = qwtb('FPSWF', DI);
+\end{lstlisting}
+
+        \begin{lstlisting}[style=output]
+QWTB: no uncertainty calculation
+QWTB: no uncertainty calculation
+QWTB: no uncertainty calculation
+Fitting started
+
+Local minimum possible.
+
+lsqnonlin stopped because the final change in the sum of squares relative to 
+its initial value is less than the default value of the function tolerance.
+
+
+
+Fitting finished
+\end{lstlisting} \color{black}
+    
+
+\subsubsection*{Compare results for harmonically distorted signal.}
+
+\begin{par}
+Comparison of relative errors. PSFE or FPSWF are not affected by harmonic distortion, however FPSWF is not suitable.
+\end{par} \vspace{1em}
+\begin{lstlisting}[style=mcode]
+disp('SP-FFT errors (ppm):')
+[tmp, ind] = max(DOspfft.A.v);
+ferr  = (DOspfft.f.v(ind) - fnom)/fnom .* 1e6
+Aerr  = (DOspfft.A.v(ind) - Anom)/Anom .* 1e6
+pherr = (DOspfft.ph.v(ind) - phnom)/phnom .* 1e6
+
+disp('PSFE errors:')
+ferr  = (DOpsfe.f.v - fnom)/fnom .* 1e6
+Aerr  = (DOpsfe.A.v - Anom)/Anom .* 1e6
+pherr = (DOpsfe.ph.v - phnom)/phnom .* 1e6
+
+disp('FPSWF errors:')
+ferr  = (DOfpswf.f.v - fnom)/fnom .* 1e6
+Aerr  = (DOfpswf.A.v - Anom)/Anom .* 1e6
+pherr = (DOfpswf.ph.v - phnom)/phnom .* 1e6
+\end{lstlisting}
+
+        \begin{lstlisting}[style=output]
+SP-FFT errors (ppm):
+
+ferr =
+
+     0
+
+
+Aerr =
+
+     0
+
+
+pherr =
+
+  -1.5708e+06
+
+PSFE errors:
+
+ferr =
+
+  -2.2737e-10
+
+
+Aerr =
+
+   6.7212e-04
+
+
+pherr =
+
+    0.5311
+
+FPSWF errors:
+
+ferr =
+
+   -0.7356
+
+
+Aerr =
+
+    0.1407
+
+
+pherr =
+
+  231.4552
+
+\end{lstlisting} \color{black}
+    
+
+\subsubsection*{Harmonically distorted, noisy, non-coherent signal.}
+
+\begin{par}
+In final test all distortions are put in a waveform and results are compared.
+\end{par} \vspace{1em}
+\begin{lstlisting}[style=mcode]
+err_wave = Anom*sin(2*pi*fnc*timestamps + phnom) + 0.1*Anom*sin(2*pi*fnc*2*timestamps + 2) + normrnd(0, 100e-6, size(ideal_wave));
+DI.y.v = err_wave;
+DOspfft = qwtb('SP-FFT', DI);
+DOpsfe = qwtb('PSFE', DI);
+DOfpswf = qwtb('FPSWF', DI);
+\end{lstlisting}
+
+        \begin{lstlisting}[style=output]
+QWTB: no uncertainty calculation
+QWTB: no uncertainty calculation
+QWTB: no uncertainty calculation
+Fitting started
+
+Local minimum possible.
+
+lsqnonlin stopped because the final change in the sum of squares relative to 
+its initial value is less than the default value of the function tolerance.
+
+
+
+Fitting finished
+\end{lstlisting} \color{black}
+    
+
+\subsubsection*{Compare results for harmonically distorted, noisy, non-coherent signal.}
+
+\begin{lstlisting}[style=mcode]
+disp('SP-FFT errors (ppm):')
+[tmp, ind] = max(DOspfft.A.v);
+ferr  = (DOspfft.f.v(ind) - fnc)/fnc .* 1e6
+Aerr  = (DOspfft.A.v(ind) - Anom)/Anom .* 1e6
+pherr = (DOspfft.ph.v(ind) - phnom)/phnom .* 1e6
+
+disp('PSFE errors:')
+ferr  = (DOpsfe.f.v - fnc)/fnc .* 1e6
+Aerr  = (DOpsfe.A.v - Anom)/Anom .* 1e6
+pherr = (DOpsfe.ph.v - phnom)/phnom .* 1e6
+
+disp('FPSWF errors:')
+ferr  = (DOfpswf.f.v - fnc)/fnc .* 1e6
+Aerr  = (DOfpswf.A.v - Anom)/Anom .* 1e6
+pherr = (DOfpswf.ph.v - phnom)/phnom .* 1e6
+\end{lstlisting}
+
+        \begin{lstlisting}[style=output]
+SP-FFT errors (ppm):
+
+ferr =
+
+  -19.9996
+
+
+Aerr =
+
+   -1.2583
+
+
+pherr =
+
+  -1.5645e+06
+
+PSFE errors:
+
+ferr =
+
+    0.0111
+
+
+Aerr =
+
+    1.1518
+
+
+pherr =
+
+   -3.2602
+
+FPSWF errors:
+
+ferr =
+
+   -0.7098
+
+
+Aerr =
+
+    1.2924
+
+
+pherr =
+
+  222.5868
+
+\end{lstlisting} \color{black}
+    
+
+
+%%% \end{document}
+    

@@ -4,7 +4,7 @@ function alginfo = alg_info() %<<<1
 % See also qwtb
 
 alginfo.id = 'SP-FFT';
-alginfo.name = 'Signal spectrum by means of Fast Fourier Transorm';
+alginfo.name = 'Spectrum by means of Fast Fourier Transform';
 alginfo.desc = 'Calculates frequency and phase spectrum by means of Fast Fourier Transform algorithm. Result is normalized.';
 alginfo.citation = '';
 alginfo.remarks = '';
