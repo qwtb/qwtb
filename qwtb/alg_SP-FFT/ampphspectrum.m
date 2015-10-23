@@ -9,7 +9,8 @@ function [f, amp, ph] = ampphspectrum(y,fs)
 % amplitudes and phases:
 % 
 % fr=1; fs=50;
-% x=[0:1/fs:1/fr](1:end-1);
+% x=[0:1/fs:1/fr];
+% x = x(1:end-1);
 % y=sin(2*pi*fr*x+1)+0.5*sin(2*pi*8*fr*x+2)+0.3*sin(2*pi*15.5*fr*x+3);
 % [f,amp,ph]=ampphspectrum(y,fs);
 % 
@@ -29,62 +30,29 @@ function [f, amp, ph] = ampphspectrum(y,fs)
 
         % ---- DFT ----
         % number of samples:
-        len_Y = length(y);
-        % frequency axis vector:
-        f = fs/2*linspace(0,1,len_Y/2+1);
+        N = length(y);
+        % calculate frequency spacing
+        df = fs / N;
+        % calculate unshifted frequency vector
+        f = [0:(N - 1)]*df;
+        % move all frequencies that are greater than fs/2 to the negative side of the axis
+        f(f >= fs / 2) = f(f >= fs / 2) - fs;
         % fft calculation:
         Y = fft(y);
-        % get only positive values:         
-        Y=Y(1:length(Y)/2+1);
+        % now, Y and f are aligned with one another; if you want frequencies in strictly
+        % increasing order, fftshift() them
+        Y = fftshift(Y);
+        f = fftshift(f);
+        % select negative frequencies part of results:
+        Y = Y(1:find(f == 0));
+        f = f(1:find(f == 0));
+        % change sort order and make neg. freq. positive:
+        f = abs(f(end:-1:1));
+        Y = Y(end:-1:1);
         % power values normalized:
-        amp = 2* abs(Y)/length(y);
+        amp = 2 * abs(Y) / N;
         % calculate phases:
-        % 2DO atan2 should go here:
-        %ph=phaseRI(Y);
-        ph=angle(Y);
-
-end
-
-% function calculates phases:
-function [phase]=phaseRI(c,p)
-
-        % ---- check input values ----
-        if (nargin > 2 || nargin <1)
-                print_usage ();
-        end
-
-        if (~isnumeric(c))
-                print_usage ();
-        end
-
-        if (~isvector(c))
-                print_usage
-        end
-
-        if (nargin == 1)
-                p=eps;
-        end
-
-        %rounding - because after division you never get zero even if it is essentially zero
-        arcgtp = abs(real(c))>p;
-        re_Y = real(c).*arcgtp;
-        % to remove possible negative zeros:
-        re_Y = re_Y + 0;
-
-        aicgtp=abs(imag(c))>p;
-        im_Y = imag(c).*aicgtp;
-        % to remove possible negative zeros:
-        im_Y = im_Y + 0;
-
-        % detecting quadrant:
-        q1 = im_Y<0 & re_Y<0;
-        q2 = im_Y<0 & re_Y>=0;
-        q3 = im_Y>=0 & re_Y<0;
-        q4 = im_Y>=0 & re_Y>=0;
-
-        % phase in radiants:
-        phase = atan( -re_Y./im_Y ).*q1 + atan( -re_Y./im_Y ).*q2 + ( atan( -re_Y./im_Y ) - pi ).*q3 + ( atan( -re_Y./im_Y ) + pi ).*q4;
-
+        ph = angle(Y);
 end
 
 % vim settings line: vim: foldmarker=%{{{,%}}} fdm=marker fen ft=octave
