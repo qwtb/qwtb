@@ -15,28 +15,6 @@
 		<Property Name="server.vi.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="specify.custom.address" Type="Bool">false</Property>
 		<Item Name="qwtb_lvlib" Type="Folder">
-			<Item Name="Call Algorithm.vi" Type="VI" URL="../qwtb_lvlib/Call Algorithm.vi"/>
-			<Item Name="Clear temporary variables.vi" Type="VI" URL="../qwtb_lvlib/Clear temporary variables.vi"/>
-			<Item Name="Get All Algorithms Info.vi" Type="VI" URL="../qwtb_lvlib/Get All Algorithms Info.vi"/>
-			<Item Name="Get Quantity.vi" Type="VI" URL="../qwtb_lvlib/Get Quantity.vi"/>
-			<Item Name="Set MCM Calculation Settings.vi" Type="VI" URL="../qwtb_lvlib/Set MCM Calculation Settings.vi"/>
-			<Item Name="Set Calculation Settings.vi" Type="VI" URL="../qwtb_lvlib/Set Calculation Settings.vi"/>
-			<Item Name="Set QWTB Path.vi" Type="VI" URL="../qwtb_lvlib/Set QWTB Path.vi"/>
-			<Item Name="Set DOF Settings.vi" Type="VI" URL="../qwtb_lvlib/Set DOF Settings.vi"/>
-			<Item Name="Set Cor Settings.vi" Type="VI" URL="../qwtb_lvlib/Set Cor Settings.vi"/>
-			<Item Name="Set Data Call Alg Get Data.vi" Type="VI" URL="../qwtb_lvlib/Set Data Call Alg Get Data.vi"/>
-			<Item Name="Set Quantity.vi" Type="VI" URL="../qwtb_lvlib/Set Quantity.vi"/>
-			<Item Name="Get 1 Algorithm Info.vi" Type="VI" URL="../qwtb_lvlib/Get 1 Algorithm Info.vi"/>
-			<Item Name="VI Tree.vi" Type="VI" URL="../qwtb_lvlib/VI Tree.vi"/>
-			<Item Name="TD DOF Calculation Settings.ctl" Type="VI" URL="../qwtb_lvlib/TD DOF Calculation Settings.ctl"/>
-			<Item Name="TD Algorithm Information.ctl" Type="VI" URL="../qwtb_lvlib/TD Algorithm Information.ctl"/>
-			<Item Name="TD Calculation Settings.ctl" Type="VI" URL="../qwtb_lvlib/TD Calculation Settings.ctl"/>
-			<Item Name="TD Correlation Calculation Settings.ctl" Type="VI" URL="../qwtb_lvlib/TD Correlation Calculation Settings.ctl"/>
-			<Item Name="TD MCM Calculation Method.ctl" Type="VI" URL="../qwtb_lvlib/TD MCM Calculation Method.ctl"/>
-			<Item Name="TD MCM Calculation Settings.ctl" Type="VI" URL="../qwtb_lvlib/TD MCM Calculation Settings.ctl"/>
-			<Item Name="TD Backend Engine.ctl" Type="VI" URL="../qwtb_lvlib/TD Backend Engine.ctl"/>
-			<Item Name="TD Quantity.ctl" Type="VI" URL="../qwtb_lvlib/TD Quantity.ctl"/>
-			<Item Name="TD Uncertainty Calculation Method.ctl" Type="VI" URL="../qwtb_lvlib/TD Uncertainty Calculation Method.ctl"/>
 			<Item Name="QWTBLVLib.lvlib" Type="Library" URL="../qwtb_lvlib/QWTBLVLib.lvlib"/>
 		</Item>
 		<Item Name="compare two string arrays.vi" Type="VI" URL="../compare two string arrays.vi"/>
