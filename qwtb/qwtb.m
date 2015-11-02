@@ -15,6 +15,7 @@ function varargout = qwtb(varargin)
 
 % 2DO rem all qwtb paths, add own, restore paths?
 % 2DO what if path to alg_ already exist!?
+% 2DO 'algid', 'info'
 
     % start of qwtb function --------------------------- %<<<1
     % remove old alg_paths because if previous instance of qwtb ends with error,
@@ -510,7 +511,7 @@ function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
         Qname = alginfo.requires{i};
         % check for quantity: %<<<2
         if ~(isfield(datain, Qname))
-                error(['QWTB: quantity `' Qname '` required but missing in input data structure'])
+                error(['QWTB: quantity `' Qname '` required but missing in input data structure. Quantity description is: `' alginfo.reqdesc{i} '`'])
         end
 
         % check for quantity components: %<<<2
