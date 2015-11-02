@@ -796,7 +796,7 @@ function dataout = general_mcm2(alginfo, datain, calcset) %<<<1
     % concatenate data into output structure --------------------------- %<<<2
     % .v is created by mean of outputs
     % .u is all outputs
-    for i = 1:size(alginfo.returns, 1)
+    for i = 1:size(alginfo.returns, 2)
         % through all quantities:
         Qname = alginfo.returns{i};
         rescell = [res.(Qname)];
@@ -807,9 +807,9 @@ function dataout = general_mcm2(alginfo, datain, calcset) %<<<1
         if ~all(tst == tst(1))
             error(['QWTB: some outputs `' Qname '.v` of general mcm has different numbers of dimensions'])
         end  % if not all tst
-        for i = 1:tst(1)
+        for j = 1:tst(1)
             % for all dimensions
-            tst2 = cellfun('size', rescell, i);
+            tst2 = cellfun('size', rescell, j);
             if ~all(tst == tst(1))
                 error(['QWTB: some outputs `' Qname '.v` of general mcm has different sizes'])
             end
