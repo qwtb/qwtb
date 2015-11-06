@@ -154,5 +154,12 @@ for i = 1:length(algsids)
     qwtb(algsids{i}, 'test')
 end % for all algorithms
 
+disp(['------ TEST GROUP ' num2str(tg) ': test for existence of algorithms licenses ------------']) % ------------------ %<<<1
+tg = tg + 1;
+
+for i = 1:length(algsids)
+    disp(['test of algorithm: ' algsids{i}]);
+    qwtb(algsids{i}, 'license')
+end % for all algorithms
 disp(['------ ALL ' num2str(tg) ' GROUPS OF TESTS OK! ------------']) %<<<1
 % vim settings modeline: vim: foldmarker=%<<<,%>>> fdm=marker fen ft=octave textwidth=80 tabstop=4 shiftwidth=4

@@ -243,6 +243,14 @@ To remove path, use:
 
 Adding or removing path should be required only in special cases, such as debugging etc.
 
+\subsection{Displaying license of an algorithm} %<<<3 ------------------------------------
+To display a license of an algorithm, following syntax is used:
+\begin{lstlisting}
+[] = qwtb('algid', 'license')
+\end{lstlisting}
+For details on licensing, see chapter~\ref{ch-license}.
+
+
 \chapter{Detailed description of the toolbox} %<<<1 ------------------------------
 \section{Algorithm directory structure implementation} %<<<2 ------------------------------
 Every algorithm is placed in a directory of following name:
@@ -577,11 +585,23 @@ Structure sets handling of Monte Carlo calculation of uncertainties. Structure h
         'mcm' (Monte Carlo) to prevent large memory usage.
 \end{tightdesc}
 
-\section{How uncertainty calculation works}
+\section{How uncertainty calculation works} %<<<2 ----------------------------------------
 %2DO
 
-\section{How to add a new algorithm}
+\section{How to add a new algorithm} %<<<2 ----------------------------------------
 %2DO
+
+\chapter{Licensing} %<<<1 ----------------------------------------
+\label{ch-license}
+Every algorithm has its own license. License of every algorithm is placed in the directory of the
+algorithm in a file named {\tt LICENSE.txt}. Type of the license is included in the algorithm information structure, see
+chapter \ref{structalginfo}. The license of an algorithm can be displayed by following syntax:
+\begin{lstlisting}
+[] = qwtb('algid', 'license')
+\end{lstlisting}
+
+The license of the toolbox itself is MIT License, please see file {\tt LICENSE.txt} in the directory
+containing script {\tt qwtb.m}.
 
 % Bibliography %<<<1 ------------------------------
 %%\bibliographystyle{ieeetr}
@@ -600,6 +620,7 @@ dataout = qwtb('algid', datain, calcset)
 [] = qwtb('algid', 'test')
 [] = qwtb('algid', 'addpath')
 [] = qwtb('algid', 'rempath')
+[] = qwtb('algid', 'license')
 \end{lstlisting}
 
 \vskip-1.5em
