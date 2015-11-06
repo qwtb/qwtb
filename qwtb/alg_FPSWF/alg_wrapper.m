@@ -8,7 +8,7 @@ function dataout = alg_wrapper(datain, calcset)
 % function [A, f, ph, O] = FPSWF(t, y, estf, verbose);
 t = datain.t.v;
 y = datain.y.v;
-estf = datain.f.v;
+estf = datain.fest.v;
 verbose = calcset.verbose;
 
 % Call algorithm ---------------------------  %<<<1

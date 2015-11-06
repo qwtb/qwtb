@@ -15,7 +15,7 @@ DI.t.v = [0:1/1e4:1-1/1e4];
 DI.y.v = Anom*sin(2*pi*fnom*DI.t.v + phnom) + Onom;
 %%
 % Lets make an estimate of frequency 0.2 percent higher than nominal value:
-DI.f.v = 100.2;
+DI.fest.v = 100.2;
 
 %% Call algorithm
 % Use QWTB to apply algorithm |FPSWF| to data |DI|.

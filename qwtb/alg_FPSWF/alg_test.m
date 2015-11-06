@@ -9,7 +9,7 @@ Anom = 2; fnom = 100; phnom = 1; Onom = 0.2;
 DI.t.v = [0:1/1e4:1-1/1e4];
 DI.y.v = Anom*sin(2*pi*fnom*DI.t.v + phnom) + Onom;
 % estimate of frequency 
-DI.f.v = 100.2;
+DI.fest.v = 100.2;
 
 % Call algorithm
 DO = qwtb('FPSWF', DI);
