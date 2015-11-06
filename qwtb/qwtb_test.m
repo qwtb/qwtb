@@ -154,6 +154,15 @@ for i = 1:length(algsids)
     qwtb(algsids{i}, 'test')
 end % for all algorithms
 
+disp(['------ TEST GROUP ' num2str(tg) ': test getting algorithm info one by one ------------']) % ------------------ %<<<1
+tg = tg + 1;
+
+for i = 1:length(algsids)
+    disp(['test of algorithm: ' algsids{i}]);
+    qwtb(algsids{i}, 'info')
+end % for all algorithms
+
+
 disp(['------ TEST GROUP ' num2str(tg) ': test for existence of algorithms licenses ------------']) % ------------------ %<<<1
 tg = tg + 1;
 

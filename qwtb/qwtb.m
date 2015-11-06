@@ -17,8 +17,6 @@ function varargout = qwtb(varargin)
 
 % 2DO rem all qwtb paths, add own, restore paths?
 % 2DO what if path to alg_ already exist!?
-% 2DO 'algid', 'info'
-% 2DO 'algid', 'license' - show license of particular algorithm
 
     % start of qwtb function --------------------------- %<<<1
     % remove old alg_paths because if previous instance of qwtb ends with error,
@@ -37,16 +35,25 @@ function varargout = qwtb(varargin)
         % check second argument for control string:
         if ischar(varargin{2});
             if strcmpi(varargin{2}, 'test')
+                % run test of the algorithm
                 run_alg_test(algid);
             elseif strcmpi(varargin{2}, 'example')
+                % run example of the algorithm in user space
                 run_alg_example(algid);
             elseif strcmpi(varargin{2}, 'addpath')
+                % add algorithm path to path()
                 path_add_algdir(algid);
             elseif strcmpi(varargin{2}, 'rempath')
+                % remove algorithm path from path()
                 path_rem_algdir(algid);
+            elseif strcmpi(varargin{2}, 'info')
+                % returns info on the algorithm
+                varargout{1} = get_one_alg_info(algid);
             elseif strcmpi(varargin{2}, 'license')
+                % show license of the algorithm
                 show_license(algid);
             else
+                % unknown qwtb call
                 error('QWTB: second argument must be either `test`, `example`, `doc` or structure with input data');
             end % if strcmpi
         else
@@ -69,14 +76,25 @@ function varargout = qwtb(varargin)
 
 end % end qwtb function
 
+% -------------------------------- path related functions %<<<1
+function pth = qwtbdirpath() %<<<1
+% returns full path to the directory with qwtb script
+    % get full path to this (qwtb.m) script:
+    [pth, ~, ~] = fileparts(mfilename('fullpath'));
+
+end % function qwtbdirpath
+
+function pth = algpath(algid) %<<<1
+% returns full path to the algorithm directory
+    pth = [qwtbdirpath filesep() 'alg_' algid];
+end % function algpath
+
 function alginfo = get_all_alg_info() %<<<1
 % checks for directories with algorithms and returns info on all available
 % algorithms
 
-    % get full path to this (qwtb.m) script:
-    [qwtbdir, ~, ~] = fileparts(mfilename('fullpath'));
     % get directory listings:
-    lis = dir([qwtbdir filesep() 'alg_*']);
+    lis = dir([qwtbdirpath filesep() 'alg_*']);
     % get only directories:
     lis = lis([lis.isdir]);
     % prepare found algorithm counter:
@@ -84,7 +102,7 @@ function alginfo = get_all_alg_info() %<<<1
     % for all directories
     for i = 1:size(lis,1)
         % generate full path of current tested algorithm directory:
-        algdir = [qwtbdir filesep() lis(i).name];
+        algdir = [qwtbdirpath filesep() lis(i).name];
         if is_alg_dir(algdir)
             addpath(algdir);
             tmp = alg_info();
@@ -102,35 +120,47 @@ function alginfo = get_all_alg_info() %<<<1
     end
 end % function get_all_alg_info
 
-function res = is_alg_dir(algpath) %<<<1
-% checks if directory in algpath is directory with algorithm, i.e. path exists
+function res = get_one_alg_info(algid) %<<<1
+% return info structure of one algorithm
+        path_add_algdir(algid);
+        tmp = alg_info();
+        tmp.fullpath = algpath(algid);
+        msg = check_alginfo(tmp);
+        if isempty(msg)
+            res = tmp;
+        else
+            warning(['QWTB: algorithm info returned by alg_info.m in `' algdir '` has incorrect format'])
+            disp(msg)
+        end % if check_alginfo
+        path_rem_algdir(algid);
+end % function get_one_alg_info
+
+
+function res = is_alg_dir(pth) %<<<1
+% checks if directory in pth is directory with algorithm, i.e. path exists
 % and contains scripts alg_info and alg_wrapper
 % returns boolean
 
-    res = exist(algpath,'dir') == 7;
-    res = res && (exist([algpath '/alg_info.m'], 'file') == 2);
-    res = res && (exist([algpath '/alg_wrapper.m'], 'file') == 2);
+    res = exist(pth,'dir') == 7;
+    res = res && (exist([pth '/alg_info.m'], 'file') == 2);
+    res = res && (exist([pth '/alg_wrapper.m'], 'file') == 2);
 
 end % function is_alg_dir
 
 function path_add_algdir(algid) %<<<1
 % checks and adds path of algorithm to load path
-    % get full path to this (qwtb.m) script:
-    [qwtbdir, ~, ~] = fileparts(mfilename('fullpath'));
-    algdir = [qwtbdir filesep() 'alg_' algid];
     % check directory is algorithm directory:
-    if ~is_alg_dir(algdir)
+    if ~is_alg_dir(algpath(algid))
             error(['QWTB: algorithm `' algid '` not found'])
     end
     % add wrapper to a load path:
-    addpath(algdir);
+    addpath(algpath(algid));
 end % path_add_algdir
 
 function path_rem_algdir(algid) %<<<1
 % removes path of algorithm from load path
     % get full path to this (qwtb.m) script:
-    [qwtbdir, ~, ~] = fileparts(mfilename('fullpath'));
-    algdir = [qwtbdir filesep() 'alg_' algid];
+    algdir = algpath(algid);
     % pathsep is added because algdir could be only part of name of other
     % algdir, and path returns path without pathsep at the end, thus if algdir
     % would be last path, it would not be found
@@ -143,16 +173,14 @@ function path_rem_all_algdirs() %<<<1
 % removes all alg directories from paths. if qwtb ends with error, it could left
 % some alg directory in the path
 
-    % get full path to this (qwtb.m) script:
-    [qwtbdir, ~, ~] = fileparts(mfilename('fullpath'));
     % get directory listings:
-    lis = dir([qwtbdir filesep() 'alg_*']);
+    lis = dir([qwtbdirpath filesep() 'alg_*']);
     % get only directories:
     lis = lis([lis.isdir]);
     % for all directories
     for i = 1:size(lis,1)
         % generate full path of current tested algorithm directory:
-        algdir = [qwtbdir filesep() lis(i).name];
+        algdir = [qwtbdirpath filesep() lis(i).name];
         if is_alg_dir(algdir)
             % pathsep is added because algdir could be only part of name of other
             % algdir, and path returns path without pathsep at the end, thus if algdir
@@ -165,6 +193,7 @@ function path_rem_all_algdirs() %<<<1
 end % path_rem_all_algdirs
 
 
+% -------------------------------- algorithm related functions %<<<1
 function [dataout, calcset] = check_and_run_alg(algid, datain, calcset) %<<<1
 % checks data, settings and calls wrapper
 
@@ -198,7 +227,7 @@ function [dataout, calcset] = check_and_run_alg(algid, datain, calcset) %<<<1
         if calcset.verbose 
             disp('QWTB: general mcm uncertainty calculation')
         end
-        dataout = general_mcm2(alginfo, datain, calcset);
+        dataout = general_mcm(alginfo, datain, calcset);
     else
         % unknown settings of calcset.unc or algorithm:
         error(['QWTB: unknown settings of calcset.unc: `' calcset.unc '` or algorithm info structure concerning uncertainty calculation'])
@@ -238,7 +267,7 @@ end % run_alg_example function
 function show_license(algid) %<<<1
 % Display license of specified algorithm.
     % construct path to the license file:
-    licfilpath = ['alg_' algid filesep 'LICENSE.txt'];
+    licfilpath = [algpath(algid) filesep 'LICENSE.txt'];
     % test for license file:
     if ~exist(licfilpath, 'file')
         error(['QWTB: license file `' licfilpath '` for algorithm `' algid '` does not exist!'])
@@ -310,6 +339,7 @@ function msg = check_alginfo(alginfo) %<<<1
     end
 end % function check_alginfo
 
+% -------------------------------- structures related functions %<<<1
 function calcset = get_standard_calcset() %<<<1
 % creates a standard calculation settings
     calcset.strict = 0;
@@ -752,8 +782,8 @@ function res = ismatrixP(X) %<<<1
 
 end
 
-% XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX %<<<1 general mcm
-function dataout = general_mcm2(alginfo, datain, calcset) %<<<1
+% -------------------------------- general mcm functions %<<<1
+function dataout = general_mcm(alginfo, datain, calcset) %<<<1
 % Applies monte carlo method to an algorithm. It works generally, therefore all
 % nuances of monte carlo method are not assured. All quantities should be
 % already randomized in Q.u.
