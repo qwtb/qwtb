@@ -253,6 +253,7 @@ For details on licensing, see chapter~\ref{ch-license}.
 
 \chapter{Detailed description of the toolbox} %<<<1 ------------------------------
 \section{Algorithm directory structure implementation} %<<<2 ------------------------------
+\label{diralg}
 Every algorithm is placed in a directory of following name:
 \begin{center}
         {\tt alg\_X}
@@ -590,6 +591,129 @@ Structure sets handling of Monte Carlo calculation of uncertainties. Structure h
 
 \section{How to add a new algorithm} %<<<2 ----------------------------------------
 %2DO
+To add a new algorithm, several steps have to be done.
+
+\begin{enumerate}
+        \item Select an algorithm ID. Usually it is an acronym or abbreviation of the new algorithm name.
+
+        \item Create a directory named {\tt alg\_SOMEID}, where {\tt SOMEID} is a selected ID. For a
+        directory structure, see~\ref{diralg}.
+
+        \item Put all files required by the algorithm (i.e. scripts, libraries) into the directory
+        {\tt alg\_SOMEID/}.
+
+        \item Create a file {\tt alg\_SOMEID/alg\_info.m}. An example of such file follows.
+        \begin{lstlisting}
+        function info = alg_info() %<<<1
+        % Part of QWTB. Info script for algorithm SOMEALG.
+        %
+        % See also qwtb
+
+        info.id = 'SOMEID';
+        info.name = 'SOMEALG';
+        info.desc = 'SOMEID is an super mega hyper algorithm for calculation of the ultimate answer to everything.';
+        info.citation = 'Some nifty paper in some super journal.';
+        info.remarks = 'Very simple implementation';
+        info.license = 'MIT License';
+        info.requires = {'a', 'b'};
+        info.reqdesc = {'some input', 'some more important input'};
+        info.returns = {'x', 'y', 'z'};
+        info.retdesc = {'some output', 'some more important output', 'other output};
+        info.providesGUF = 1;
+        info.providesMCM = 0;
+        \end{lstlisting}
+
+        \item Create a wrapper for the algorithm in a file {\tt alg\_SOMEID/alg\_wrapper.m}, see~\ref{filealgwrapper}. An example of simple wrapper
+        file follows.
+        \begin{lstlisting}
+        function dataout = alg_wrapper(datain, calcset)
+        % Part of QWTB. Wrapper script for algorithm SOMEALG.
+        %
+        % See also qwtb
+
+        % Format input data --------------------------- %<<<1
+        % SOMEALG definition is:
+        % function [x, y, z] = SOMEALG(a, b);
+        a = datain.a.v;
+        b = datain.b.v;
+
+        % Call algorithm ---------------------------  %<<<1
+        [x, y, z] = SOMEALG(a, b);
+
+        % Format output data:  --------------------------- %<<<1
+        dataout.x.v = x;
+        dataout.y.v = y;
+        dataout.z.v = z;
+
+        end % function
+        \end{lstlisting}
+
+        \item Put a license of the algorithm into the file {\tt alg\_SOMEID/LICENSE.txt}.
+
+        \item Create a testing script {\tt alg\_SOMEID/alg\_test.m}. This is optional, however
+        recomended. An example follows.
+        \begin{lstlisting}
+        function alg_test(calcset) %<<<1
+        % Part of QWTB. Test script for algorithm SOMEALG
+        %
+        % See also qwtb
+
+        % Generate sample data --------------------------- %<<<1
+        DI = [];
+        U = 1; V = 2;
+        DI.a.v = [U:V];
+        DI.b.v = U/V;
+
+        % Call algorithm
+        DO = qwtb('SOMEID', DI);
+
+        % Check results --------------------------- %<<<1
+        assert((DO.x.v > U.*(1-1e6)) & (DO.x.v < U.*(1+1e6)));
+        assert((DO.y.v > V.*(1-1e6)) & (DO.y.v < V.*(1+1e6)));
+        assert((DO.z.v > sqrt(U).*(1-1e6)) & (DO.z.v < sqrt(U).*(1+1e6)));
+
+        end % function
+        \end{lstlisting}
+
+        \item Create an example script {\tt alg\_SOMEID/alg\_example.m}. This is optional, however
+        recomended. An example follows.
+        \begin{lstlisting}
+        %% SOMEALGNAME
+        % Example for algorithm SOMEID.
+        %
+        % SOMEID is an super mega hyper algorithm for calculation of the ultimate answer to
+        % everything.
+        %
+
+        %% Generate sample data
+        % Two quantities are prepared: |a| and |b|, representing something and something even more
+        % important.
+        DI = [];
+        U = 1; V = 2;
+        DI.a.v = [U:V];
+        DI.b.v = U/V;
+
+        %% Call algorithm
+        % Use QWTB to apply algorithm |SOMEID| to data |DI|.
+        CS.verbose = 1;
+        DO = qwtb('SOMEID', DI, CS);
+
+        %% Display results
+        % Results is the very answer.
+        x = DO.x.v
+        y = DO.y.v
+        z = DO.z.v
+        %%
+        % Errors of estimation in parts per milion:
+        xerrppm = (DO.x.v - U)/U .* 1e6
+        yerrppm = (DO.y.v - V)/V .* 1e6
+        zerrppm = (DO.z.v - sqrt(U)/sqrt(U) .* 1e6
+        \end{lstlisting}
+
+        \item Check and test everything. Send your contribution to qwtb authors. Ask them to
+        generate a new documentation. Celebrate.
+
+\end{enumerate}
 
 \chapter{Licensing} %<<<1 ----------------------------------------
 \label{ch-license}
