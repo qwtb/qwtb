@@ -1,0 +1,10 @@
+*.swp
+qwtb_doc/*.aux
+qwtb_doc/*.bbl
+qwtb_doc/*.bcf
+qwtb_doc/*.blg
+qwtb_doc/*.log
+qwtb_doc/*.out
+qwtb_doc/*.run.xml
+qwtb_doc/*.toc
+
