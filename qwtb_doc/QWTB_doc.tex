@@ -204,7 +204,7 @@ third output argument:
 Algorithm can have implemented an example of the use. This can be run by following syntax:
 
 \begin{lstlisting}
-[] = qwtb('algid', 'example')
+qwtb('algid', 'example')
 \end{lstlisting}
 
 The algorithm is selected by first input argument \lstinline{algid}. It is a string with
@@ -217,7 +217,7 @@ After finish user can review input and output data or resulted figures if any.
 Algorithm can have implemented a self test. This can be run by following syntax:
 
 \begin{lstlisting}
-[] = qwtb('algid', 'test')
+qwtb('algid', 'test')
 \end{lstlisting}
 
 The algorithm is selected by first input argument \lstinline{algid}. It is a string with
@@ -232,13 +232,13 @@ Algorithms are stored in different directories, which are not in \mgo load path.
 with selected path to \mgo load path, following syntax is used:
 
 \begin{lstlisting}
-[] = qwtb('algid', 'addpath')
+qwtb('algid', 'addpath')
 \end{lstlisting}
 
 To remove path, use:
 
 \begin{lstlisting}
-[] = qwtb('algid', 'rempath')
+qwtb('algid', 'rempath')
 \end{lstlisting}
 
 Adding or removing path should be required only in special cases, such as debugging etc.
@@ -246,7 +246,7 @@ Adding or removing path should be required only in special cases, such as debugg
 \subsection{Displaying license of an algorithm} %<<<3 ------------------------------------
 To display a license of an algorithm, following syntax is used:
 \begin{lstlisting}
-[] = qwtb('algid', 'license')
+license = qwtb('algid', 'license')
 \end{lstlisting}
 For details on licensing, see chapter~\ref{ch-license}.
 
@@ -312,7 +312,7 @@ algorithm as part of the toolbox.
 File contains a function with following definition:
 
 \begin{lstlisting}
-function [] = alg_test(calcset)
+function alg_test(calcset)
 \end{lstlisting}
 
 Test should generate sample data, run algorithm and check results by a function \lstinline{assert}.
@@ -365,10 +365,10 @@ String. Basic description of the algorithm.
 String. A reference to the paper, book or other literature with full description of the algorithm.
 
 \subsection{\textsf{.remarks}} %<<<3 ------------------------------
-String. Remarks, license or others related to the algorithm.
+String. Remarks or others related to the algorithm.
 
 \subsection{\textsf{.license}} %<<<3 ------------------------------
-String. License of the algorithm. This is not license of the toolbox!
+String. License of the algorithm. This is not license of the toolbox but of the algorithm!
 
 \subsection{\textsf{.requires}} %<<<3 ------------------------------
 Cell array of strings. Names of quantities required by the algorithm.
@@ -721,7 +721,7 @@ Every algorithm has its own license. License of every algorithm is placed in the
 algorithm in a file named {\tt LICENSE.txt}. Type of the license is included in the algorithm information structure, see
 chapter \ref{structalginfo}. The license of an algorithm can be displayed by following syntax:
 \begin{lstlisting}
-[] = qwtb('algid', 'license')
+license = qwtb('algid', 'license')
 \end{lstlisting}
 
 The license of the toolbox itself is MIT License, please see file {\tt LICENSE.txt} in the directory
@@ -735,16 +735,16 @@ containing script {\tt qwtb.m}.
 \newpage
 {\small \textbf{Toolbox use:}\\[-1.5em]
 \begin{lstlisting}[basicstyle=\small]
-alginfo = qwtb()
-dataout = qwtb('algid', datain)
+                   alginfo = qwtb()
+                   dataout = qwtb('algid', datain)
 [dataout, datain, calcset] = qwtb('algid', datain)
-dataout = qwtb('algid', datain, calcset)
+                   dataout = qwtb('algid', datain, calcset)
 [dataout, datain, calcset] = qwtb('algid', datain, calcset)
-[] = qwtb('algid', 'example')
-[] = qwtb('algid', 'test')
-[] = qwtb('algid', 'addpath')
-[] = qwtb('algid', 'rempath')
-[] = qwtb('algid', 'license')
+                             qwtb('algid', 'example')
+                             qwtb('algid', 'test')
+                             qwtb('algid', 'addpath')
+                             qwtb('algid', 'rempath')
+                   license = qwtb('algid', 'license')
 \end{lstlisting}
 
 \vskip-1.5em

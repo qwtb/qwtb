@@ -151,7 +151,7 @@ tg = tg + 1;
 
 for i = 1:length(algsids)
     disp(['test of algorithm: ' algsids{i}]);
-    qwtb(algsids{i}, 'test')
+    qwtb(algsids{i}, 'test');
 end % for all algorithms
 
 disp(['------ TEST GROUP ' num2str(tg) ': test getting algorithm info one by one ------------']) % ------------------ %<<<1
@@ -159,7 +159,7 @@ tg = tg + 1;
 
 for i = 1:length(algsids)
     disp(['test of algorithm: ' algsids{i}]);
-    qwtb(algsids{i}, 'info')
+    qwtb(algsids{i}, 'info');
 end % for all algorithms
 
 
@@ -168,7 +168,7 @@ tg = tg + 1;
 
 for i = 1:length(algsids)
     disp(['test of algorithm: ' algsids{i}]);
-    qwtb(algsids{i}, 'license')
+    qwtb(algsids{i}, 'license');
 end % for all algorithms
 disp(['------ ALL ' num2str(tg) ' GROUPS OF TESTS OK! ------------']) %<<<1
 % vim settings modeline: vim: foldmarker=%<<<,%>>> fdm=marker fen ft=octave textwidth=80 tabstop=4 shiftwidth=4

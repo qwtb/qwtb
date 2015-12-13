@@ -12,6 +12,8 @@ function varargout = qwtb(varargin)
 %   [] = QWTB('algid', 'addpath')
 %   [] = QWTB('algid', 'rempath')
 %       Add or remove algorithm path to a load path.
+%   [license] = QWTB('algid', 'license')
+%       Returns license of the algorithm.
 
 % Copyright (c) 2015 by Martin Šíra
 
@@ -51,7 +53,7 @@ function varargout = qwtb(varargin)
                 varargout{1} = get_one_alg_info(algid);
             elseif strcmpi(varargin{2}, 'license')
                 % show license of the algorithm
-                show_license(algid);
+                varargout{1} = show_license(algid);
             else
                 % unknown qwtb call
                 error('QWTB: second argument must be either `test`, `example`, `doc` or structure with input data');
@@ -264,7 +266,7 @@ function run_alg_example(algid) %<<<1
     path_rem_algdir(algid);
 end % run_alg_example function
 
-function show_license(algid) %<<<1
+function [license]= show_license(algid) %<<<1
 % Display license of specified algorithm.
     % construct path to the license file:
     licfilpath = [algpath(algid) filesep 'LICENSE.txt'];
@@ -272,7 +274,7 @@ function show_license(algid) %<<<1
     if ~exist(licfilpath, 'file')
         error(['QWTB: license file `' licfilpath '` for algorithm `' algid '` does not exist!'])
     else
-        fileread(licfilpath)
+        license = fileread(licfilpath);
     end
 end % show_license function
 
