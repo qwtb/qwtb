@@ -1,3 +1,4 @@
+![QWTB logo](qwtb_doc/logo/qwtb_logo.png?raw=true "QWTB logo")
 # Quantum Wave Tool Box (QWTB)
 
 QWTB is a toolbox for evaluation of sampled data. QWTB consist of data processing algorithms from
