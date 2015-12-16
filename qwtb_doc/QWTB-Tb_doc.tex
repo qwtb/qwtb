@@ -1,20 +1,20 @@
 \documentclass[12pt,a4paper,oneside]{report} %<<<1 ------------------------------
-% fonty, kodovani:
-\usepackage[utf8]{inputenc}             % soubor je v utf8:
-\usepackage{cmap}                       % preklad kodovani aby pdfko bylo kopirovatelne se spravnymi cs znaky, musi byt vhodny font, viz dalsi 2 radky
-\usepackage[T1]{fontenc}                % viz ^
-\usepackage{tgtermes}                   % kvalitni font times, ktery je v pdf kopirovatelny i s cs znaky viz ^^
-\usepackage{textcomp}                   % spravne stojate mikro pro SI prefix, pouziti: \textmu, ve vzorci: $\hbox{\textmu}$
-\usepackage{slantsc}                   % spravne stojate mikro pro SI prefix, pouziti: \textmu, ve vzorci: $\hbox{\textmu}$
+% fonts, encoding:
+\usepackage[utf8]{inputenc}             % file is in utf8:
+\usepackage{cmap}                       % pdf is created with correct special characters, requires proper font, see next two lines
+\usepackage[T1]{fontenc}                % see higher line
+\usepackage{tgtermes}                   % high quality times font
+\usepackage{textcomp}                   % proper micro sign for SI, use: \textmu, in equation: $\hbox{\textmu}$
+\usepackage{slantsc}                   % proper micro sign for SI, use: \textmu, in equation: $\hbox{\textmu}$
 \usepackage{calc}                   % provides \widthof
 \usepackage{enumitem}                   % provides \begin{description} with settings []
-\usepackage{color}                   % provides colour text
+\usepackage{color}                   % provides coloured text
 % obrazky:
-\usepackage{graphicx}                   % vlozeni obrazku
-\usepackage{grffile}                    % umoznuje mezery v nazvech souboru obrazku
+\usepackage{graphicx}                   % to insert pictures
+\usepackage{grffile}                    % enables spaces in picture file names
 \grffilesetup{ multidot=false, babel=false, encoding, inputencoding=utf8, filenameencoding=utf8, space=true}
-\newcommand*{\FILEDOT}{.}                   % pokud obrazek v souboru s teckou (napr. aaa.bbb.pdf), pak si TeX mysli ze to uz je pripona, musi % se tecka obejit timhle: \includegraphics{aaa\FILEDOT bbb.eps}
-% ostatni:
+\newcommand*{\FILEDOT}{.}                   % if picture file name containt dot (e.g. aaa.bbb.pdf), then TeX considers rest as filename extension, so dot must be written as follows: \includegraphics{aaa\FILEDOT bbb.eps}
+% rest:
 \usepackage[pdftex,
             unicode,
             pdfauthor={Q-Wave consorcium},
@@ -22,17 +22,16 @@
             pdfkeywords={algorithm, data procesing, sampling, toolbox},
             pdfproducer={Latex with hyperref},
             pdfcreator={pdflatex}]{hyperref}
-%\usepackage[a4paper]{geometry}          % zajisti A4
-%\geometry{verbose,lmargin=2.5cm,rmargin=2.5cm,tmargin=2.5cm,bmargin=2.5cm}      % nastaveni okraju
-\usepackage{url}                        % moznost parametru url v bibtexu
-%\usepackage{setspace} \doublespacing   % dvojite radkovani, pokud 1.5 pak \onehalfspace
-\usepackage{xspace}
-\usepackage{amsmath}                    % 
-\usepackage{color}
+%\usepackage[a4paper]{geometry}          % ensure A4
+%\geometry{verbose,lmargin=2.5cm,rmargin=2.5cm,tmargin=2.5cm,bmargin=2.5cm}      % margins settings
+\usepackage{url}                        % enables \url in bibtex
+%\usepackage{setspace} \doublespacing   % double line spacing, for 1.5 set \onehalfspace
+\usepackage{xspace}                     % proper automatic spacing after user defined commands
+\usepackage{amsmath}                    % better equations
 
 % lstlisting settings %<<<1 ----------------------------------------------------
-\usepackage{listings}
-\input{code_highlight_settings.tex}
+\usepackage{listings}                   % for source code formatting
+\input{code_highlight_settings.tex}     % user defined code formatting
 
 % bibliography settings %<<<1 ----------------------------------------------------
 \usepackage[english]{babel} % main language of the document must be last
@@ -59,7 +58,7 @@
 %    {\endlist}
 %    {\item}
 
-% zkratky %<<<1 ----------------------------------------------------
+% shorts: %<<<1 ----------------------------------------------------
 
 \def\Alg{{\sc Algorithm}\xspace}
 \def\Algs{{\sc Algorithms}\xspace}
@@ -75,48 +74,50 @@
 \def\labview{{\sc LabVIEW}\xspace}
 \def\mgo{\matlab/\octave\xspace}
         
-\begin{document} % dalsi nastaveni dokumentu --------------------------------------------%<<<1
-% jak rozdelit specialni slova, napr.: au-to-ma-ti-za-ce
-\hyphenation{Frame-work OpenOffice SourceForge Windows vstu-pních pra-vdě-po-do-bno-stní roz-dě-le-ní me-ze pra-vdě-po-do-bnost pra-vdě-po-do-bnos-tí
-pse-u-do-ná-hod-ná pse-u-do-ná-hod-ných kan-ce-lář-ských ro-vno-měr-né}
-%\def\thesection{\Roman{section}}       % redefinovani stylu cislovani sekce
-\renewcommand\floatpagefraction{.9} \renewcommand\topfraction{.9} \renewcommand\bottomfraction{.9} \renewcommand\textfraction{.1} \setcounter{totalnumber}{50} \setcounter{topnumber}{50} \setcounter{bottomnumber}{50} % pokud moc obrazku, tak zmeni nastaveni podilu textu/floatu:
-\renewcommand{\labelitemi}{--}          % oddelovac itemu
-\setlength{\unitlength}{1mm}            % standartni delka v prostredi picture
+\begin{document} % other document settings --------------------------------------------%<<<1
+% how to devide special words, e.g. auto-mation
+\hyphenation{Frame-work OpenOffice SourceForge Windows}
+%\def\thesection{\Roman{section}}       % redefines numbering style of sections
+\renewcommand\floatpagefraction{.9} \renewcommand\topfraction{.9} \renewcommand\bottomfraction{.9} \renewcommand\textfraction{.1} \setcounter{totalnumber}{50} \setcounter{topnumber}{50} \setcounter{bottomnumber}{50} % if too many pictures, change text/float fraction
+\renewcommand{\labelitemi}{--}          % item sepparator
+\setlength{\unitlength}{1mm}            % default length in picture environment
 
-
+% tight description environment:
 \newenvironment{tightdesc}{\begin{description}[itemsep=0pt]} 
                               {\end{description}}
 
-\title{Quantum Wave ToolBox documentation}
+% names of sections:
+\def\infosection{Description}
+\def\examplesection{Example}
+% remove "chapter" from chapter heading:
+\renewcommand{\chaptername}{}
+
+\title{Quantum Wave ToolBox: Toolbox description}
 \author{Q-Wave consorcium}
 
-% prvni strana ----------------------------------------------------------------------- %<<<1 ------------------------------
+% first page ----------------------------------------------------------------------- %<<<1 ------------------------------
 \thispagestyle{empty}
 \begin{center}
-\includegraphics[width=0.3\textwidth]{sources/qwlogo.jpg}
-\hfill
-\includegraphics[width=0.3\textwidth]{sources/eurametlogo.jpg}
-
-        \vspace{8em}
+        \vspace*{10em}
         {\huge
         \includegraphics[width=0.3\textwidth]{logo/qwtb_logo.png}
 
         \vspace{0.5em}
         Quantum Wave ToolBox\\
-        documentation}\\
+
+        \vspace{1.5em}
+        Toolbox description}\\
 
         \vfill
-        {\Huge \color{red}{BETA version}}
+        {\Large \color{red}{QWTB version 0.1}}
 
-        \vfill
-        {\Large Q-Wave consortium}\\
-        \today
-        
-        \bigskip
-        contact: \texttt{msira@cmi.cz}
+        \vspace{1em}
+        {\Large \url{https://qwtb.github.io/qwtb/}}
+        %\vfill
+        %\includegraphics[width=0.3\textwidth]{sources/qwlogo.jpg}
+        %\hfill
+        %\includegraphics[width=0.3\textwidth]{sources/eurametlogo.jpg}
 
-        \vfill
 \end{center}
 \newpage
 
@@ -798,418 +799,6 @@ containing script {\tt qwtb.m}.
 
 \chapter{Long example of QWTB use} %<<<1 ----------------------------------
 \input{qwtb_examples_published/qwtb_example_2.tex}
-
-\chapter{INL -- Integral Non-Linearity of ADC} %<<<1 ------------------------------
-\def\infosection{Info file data}
-\def\examplesection{Example}
-% included files are automatically generated by info_all_algs.m script and by Matlab publish
-% function and converted by bash script betterpublish.
-\section*{\infosection} %<<<2 -------------------
-\input{alg_examples_published/info_INL.tex}
-\section*{\examplesection} %<<<2 ------------------------
-\input{alg_examples_published/doc_INL.tex}
-
-\chapter{PSFE -- Phase Sensitive Frequency Estimator} %<<<1 ------------------------------
-% included files are automatically generated by info_all_algs.m script and by Matlab publish
-% function and converted by bash script betterpublish.
-\section*{\infosection} %<<<2 -------------------
-\input{alg_examples_published/info_PSFE.tex}
-\section*{\examplesection} %<<<2 ------------------------
-\input{alg_examples_published/doc_PSFE.tex}
-
-\chapter{FPSWF -- Four Parameter Sine Wave Fitting} %<<<1 ------------------------------
-% included files are automatically generated by info_all_algs.m script and by Matlab publish
-% function and converted by bash script betterpublish.
-\section*{\infosection} %<<<2 -------------------
-\input{alg_examples_published/info_FPSWF.tex}
-\section*{\examplesection} %<<<2 ------------------------
-\input{alg_examples_published/doc_FPSWF.tex}
-
-\chapter{SP-FFT -- Spectrum by means of Fast Fourier Transform} %<<<1 ------------------------------
-% included files are automatically generated by info_all_algs.m script and by Matlab publish
-% function and converted by bash script betterpublish.
-\section*{\infosection} %<<<2 -------------------
-\input{alg_examples_published/info_SP-FFT.tex}
-\section*{\examplesection} %<<<2 ------------------------
-\input{alg_examples_published/doc_SP-FFT.tex}
-
-
-
-% from DELIVERABLE %<<<1 
-% \section{Introduction} %<<<2 ------------------------------
-% The following report is on the plan for software in preparation. The software should serve as
-% a~\Tb for evaluation of digital or quantum generators errors. The goal is:
-% 
-% {\small \it
-% \dots is to develop a software toolbox for the evaluation of quantum source and metrology
-% grade ADCs errors and their related measurement uncertainties. \dots It will be prepared to serve as
-% an uncertainty calculator for actual sampled data, as well as a stand-alone analysis tool to study
-% errors and related uncertainties as a function of various signal and sampling parameters (e.g.
-% signal frequency, noise level, signal distortions, timing errors). Multiple uncertainty estimation
-% methods will be used, such as GUM Framework and Monte Carlo Method. The toolbox will be based on the
-% Matlab software and the source code will be open, thus accessible for anyone interested in the
-% field. The toolbox will be prepared with intuitive graphical user interface while its internal
-% algorithms will be based on results from Tasks 4.1, 4.2 and 4.3.
-% }
-% 
-% The questions are:
-% \begin{itemize}
-%         \item What \Tb should do?
-%         \item What \Tb should contain?
-% \end{itemize}
-% 
-% \section{Toolbox properties} %<<<2 ------------------------------
-% A general calculation process is following: A \Mea produces \Da. A~\Qua is calculated
-% from input \Da by an \Alg. 
-% 
-% \begin{center}
-%         \includegraphics{sources/general model.pdf}
-% \end{center}
-% 
-% Let consider following:
-% \begin{itemize}
-%         \item Already considered \Algs are from very different sources,
-%         \item one can not know which \Algs will be required in the future,
-%         \item unified application interface is required by users,
-%         \item graphical user interface is required by users,
-%         \item for \Algs presented by an already developed source code it is a good common practice
-%         not to change the source code of the \Alg,
-% \end{itemize}
-% The reason for unified interface is the princip of the \Tb itself. It should serve as easy to use
-% system for several \Algs. If the user will be required to learn how to use every particular \Alg,
-% there is no reason to develop any \Tb.
-% 
-% The reason for not changing the source code of the particular \Alg is following. Suppose particular
-% \Alg is changed in such a way it will fit the \Tb. In the case an author develops a new version of
-% the \Alg, one would have to change the source code again to fit it for the \Tb.
-% 
-% From this consideration and the
-% goal one can deduce following requirements for the \Tb:
-% 
-% \begin{itemize}
-%         \item Toolbox must be extensible and be able to include new \Algs.
-%         \item \Alg must be able to input \Da in a format standardized for the whole \Tb.
-%         \item \Alg must be able to output \Da in format standardized for the whole \Tb.
-%         \item For every \Alg a sample \Da generator must be included to validate the \Alg
-%         and the \Tb.
-% \end{itemize}
-% 
-% The result is one need a \Wr for every \Alg used in the \Tb. Such a \Wr would
-% reformat input \Da to the format required by the particular \Alg, and reformat an output. Thanks
-% to this \Wr, any \Alg can be used with the \Tb without the need to change any other
-% part of the \Tb.
-% 
-% The standardized format of \Da will help to form a unified application interface and will ease the
-% use of the \Tb.
-% 
-% 
-% The ideal situation is when uncertainty is calculated by the \Alg. Unfortunately it is often
-% missing. Uncertainties can be calculated mostly by two methods: either by use of GUM Uncertainty
-% Framework (GUF)~\cite{JCGM1995}, or by Monte Carlo Method (MCM)~\cite{JCGM2008}. The calculation of
-% uncertainty by GUF can be done only in the scope of the \Alg itself. Therefore this method will be used only if \Alg
-% provides it. The calculation of uncertainty by MCM can be provided by the \Wr, or by the \Tb itself
-% by randomizing inputs. However this is not the most efficient way, so in the case \Alg provides
-% calculation of uncertainty by MCM, it should be preferred.
-% 
-% \subsubsection{Toolbox scheme}  %<<<2 ------------------------------
-% The basic scheme of the \Tb is following:
-% \begin{center}
-%         \includegraphics{sources/data flow model.pdf}
-% \end{center}
-% 
-% To ease implementation of \Algs into the \Tb without any need for recompiling or source
-% code editing, following is proposed. Every \Alg will be stored in a single directory. 
-% For every \Alg a two scripts will be provided. First script will return following informations about the
-% \Alg:
-% \begin{itemize}
-%         \item Name,
-%         \item description,
-%         \item required input quantities,
-%         \item provided output quantities,
-%         \item others, see section~\ref{Sinfodesc}.
-% \end{itemize}
-% 
-% Second script will be the \Wr itself. It will:
-% \begin{itemize}
-%         \item Convert \Da structure to the format required by the \Alg,
-%         \item call the script,
-%         \item convert output of the \Alg to the \Da structure.
-% \end{itemize}
-% 
-% The \Tb will be controlled by main script, which will:
-% \begin{itemize}
-%         \item Find all \Algs an return informations,
-%         \item call a wrapper of a required \Alg and return data.
-% \end{itemize}
-% 
-% \section{Data format} %<<<2 ------------------------------
-% The aim of this \Tb are ADCs. This gives rise to the required structure of \Da.
-% 
-% \subsection{Quantity format} %<<<2 ------------------------------
-% Every \Qua will be a structure with 3 fields:
-% \begin{description}[leftmargin=!, labelwidth=\widthof{\texttt{some}}]
-%         \item[\texttt{.v}] Value of the \Qua.
-%         \item[\texttt{.u}] Standard uncertainty of the \Qua.
-%         \item[\texttt{.d}] Degree of freedom of the \Qua.
-% \end{description}
-% A value can be scalar or row vector. An uncertainty can be a scalar, or column vector in the case of
-% MCM, or a matrix. The same applies for degree of freedom.
-% 
-% \subsubsection*{Examples:}
-% 
-% Scalar value, scalar uncertainty with degree of freedom for GUF:
-% \begin{eqnarray*}
-%         \text{\texttt{.v}:} &(v)\\
-%         \text{\texttt{.u}:} &(u)\\
-%         \text{\texttt{.d}:} &(d)\\
-% \end{eqnarray*}
-% 
-% Scalar value, uncertainty as a result from MCM ($d$ has no real sense now):
-% \begin{eqnarray*}
-%         \text{\texttt{.v}:} &(v)\\
-%         \text{\texttt{.u}:} &\begin{pmatrix}
-%                 u_1 \\
-%                 u_2 \\
-%                 \vdots\\
-%                 u_n \\
-%         \end{pmatrix}\\
-%         \text{\texttt{.d}:} &(d)\\
-% \end{eqnarray*}
-% 
-% 
-% Vector value, uncertainty with degree of freedom for GUF:
-% \begin{equation*}
-% \begin{array}{ccccc}
-%         \text{\texttt{.v}:} &(v_1, & v_2, & \dots, & v_k) \\
-%         \text{\texttt{.u}:} &(u_1, & u_2, & \dots, & u_k) \\
-%         \text{\texttt{.d}:} &(d_1, & d_2, & \dots, & d_k) \\
-% \end{array}
-% \end{equation*}
-% 
-% Vector value, uncertainty as a result from MCM ($d$ has no real sense now):
-% \begin{equation*}
-% \begin{array}{c@{}c@{}c@{}c@{}c}
-%         \text{\texttt{.v}:\ } &(v_1, & v_2, & \dots, & v_k) \\
-%         \text{\texttt{.u}:\ } &\left(\begin{array}{c}
-%                u_{11}\\
-%                u_{21}\\
-%                \vdots\\
-%                u_{n1}
-%         \end{array}\right),
-%         &
-%         \left(\begin{array}{c}
-%                u_{12}\\
-%                u_{22}\\
-%                \vdots\\
-%                u_{n2}
-%         \end{array}\right),
-%         &
-%         \dots,
-%         &
-%         \left(\begin{array}{c}
-%                u_{1k}\\
-%                u_{2k}\\
-%                \vdots\\
-%                u_{nk}
-%         \end{array}\right)\\
-%         \text{\texttt{.d}:\ } &(d_1, & d_2, & \dots, & d_k) \\
-% \end{array}
-% \end{equation*}
-% 
-% \subsection{Data format} %<<<2 ------------------------------
-% A \Da will be contained in a variable of structure type, each field of the structure will be a \Qua.
-% Following \Quas are considered:
-% \begin{description}[leftmargin=!, labelwidth=\widthof{\texttt{somequantity}}]
-%         \item[\texttt{.t}] Time series of sampled data.
-%         \item[\texttt{.y}] Value series of sampled data.
-%         \item[\texttt{.bits}] Nominal bit resolution.
-%         \item[\texttt{\dots}] Others will be added during development of the \Tb itself.
-% \end{description}
-% 
-% The same format will be used for input data and output data.
-% 
-% \subsection{Algorithms informations format} %<<<2 ------------------------------
-% \label{Sinfodesc}
-% Informations about \Alg format returned by script \texttt{alg\_info.m}:
-% \begin{description}[leftmargin=!, labelwidth=\widthof{\texttt{somequantity}}]
-%         \item[\texttt{.shortname}] Short name of \Alg.
-%         \item[\texttt{.longname}] Full name of \Alg.
-%         \item[\texttt{.desc}] Description of \Alg.
-%         \item[\texttt{.citation}] Citation of an article or web page with the \Alg.
-%         \item[\texttt{.remarks}] Any remarks.
-%         \item[\texttt{.requires}] Array of strings of required fields in \Da.
-%         \item[\texttt{.returns}] Array of strings of returned fields in \Da.
-%         \item[\texttt{.providesGUF}] Uncertainty is calculated by \Alg or \Wr by means of GUM
-%         Uncertainty Framework.
-%         \item[\texttt{.providesMCM}] Uncertainty is calculated by \Alg or \Wr by means of Monte
-%         Carlo Method.
-%         \item[\texttt{.path}] Uncertainty is calculated by \Alg or \Wr by means of Monte
-% \end{description}
-% 
-% %% \subsubsection*{Example}:
-% %% % put into lstlistings!:
-% %% 
-% %% \begin{verbatim}
-% %% info=qwtb('get_algs')
-% %% 
-% %% ans =
-% %% 
-% %%   scalar structure containing the fields:
-% %% 
-% %%     shortname = tst1
-% %%     longname = Test
-% %%     desc = calculates maximum value of the measured record
-% %%     citation = see Deliverable D4.4.1
-% %%     remarks = do not use, purpose of this is only for testing of the QWTB
-% %%     requires = 
-% %%     {
-% %%       [1,1] = t
-% %%       [1,2] = y
-% %%     }
-% %%     returns = 
-% %%     {
-% %%       [1,1] = max
-% %%     }
-% %%     providesGUF =  1
-% %%     providesMMC =  1
-% %%     path = alg_tst1
-% %% \end{verbatim}
-% 
-% 
-% \section{Toolbox file structure} %<<<2 ------------------------------
-% The \Tb will compose of one main script \texttt{qwtb.m} and multiple \Wrs. Each \Alg
-% will be placed separately in a subdirectory named \texttt{alg\_X}, where \texttt{X} is a short name of an \Alg.
-% Following structure shows a listing of files and directory structures for two example \Algs with short
-% names X and Y.
-% \begin{center}
-%         \includegraphics{sources/files.pdf}
-% \end{center}
-% 
-% \section{Graphical User Interface} %<<<2 ------------------------------
-% 
-% The Graphical User Interface (GUI) will be developed in \labview. It will serve as an interface for
-% \matlab scripts.
-% 
-% There are two possibilities to interface \labview and \matlab:
-% \begin{itemize}
-%         \item LabVIEW MathScript RT Module,
-%         \item MATLAB script node.
-% \end{itemize}
-% 
-% The module requires a license and do not require installed \matlab on the working computer. However
-% all scripts have to be loaded into the \labview source code, thus decreasing flexibility of
-% compiling new versions of the GUI and it cause problems when using other \matlab software packages.
-% 
-% The script node calls \matlab directly and requires installation of \matlab on the working computer.
-% This eases the compilation. As long as the \Da format is not changed, there is no need to change the
-% GUI. The other advantage is any change in an~\Alg is directly propagated into the GUI. Therefore this
-% method is favorable for the development of the GUI.
-% 
-% GUI should be able to:
-% \begin{itemize}
-%         \item show list of available \Algs,
-%         \item show informations about \Algs,
-%         \item send \Da into the \Tb,
-%         \item read \Da from the \Tb,
-%         \item report any errors or requirements reported by \Tb.
-% \end{itemize}
-% 
-% A simple mockup of the GUI is:
-% \begin{center}
-%         \includegraphics[width=0.7\textwidth]{sources/gui-moqups.png}
-% \end{center}
-% 
-% 
-% \section{Algorithms} %<<<2 ------------------------------
-% For now, following \Algs are available and considered for implementation.
-% 
-% %\subsection{ADCTest Toolbox} %<<<2 ------------------------------
-% %ADCTest Toolbox~\cite{virosztek_adctest_2014} is a \matlab toolbox with graphical user interface: a collection of functions
-% %which can be executed in \matlab environment. This toolbox provides the implementation of
-% %the following algorithms used in ADC testing.
-% %
-% %\begin{itemize}
-% %        \item Four parameter sine wave fitting method described in standard IEEE-1241
-% %        \item Maximum likelihood estimation of signal and ADC parameters (with sinusoidal excitation signal)
-% %        \item Histogram test using sinusoidal excitation signal
-% %        \item FFT test
-% %\end{itemize}
-% 
-% \subsection{4PSWF} %<<<2 ------------------------------
-% Four parameter sine wave fitting method to calculate amplitude, frequency and phase of signal
-% sampled by ADC~\cite{Sira2014}
-% 
-% \subsection{ENOB} %<<<2 ------------------------------
-% Effective number of bits of ADC tested by a sinewave input according the~\cite{IEEEInstrumentationandMeasurementSociety2008}
-%  Algorithm is available as part of ADCTest Toolbox\cite{Virosztek2014}.
-% 
-% \subsection{SINAD} %<<<2 ------------------------------
-% Signal-to-noise and distortion ratio of ADC tested by a sinewave input according the~\cite{IEEEInstrumentationandMeasurementSociety2008}
-%  Algorithm is available as part of ADCTest Toolbox\cite{Virosztek2014}.
-% 
-% \subsection{SFDR} %<<<2 ------------------------------
-% Spurious free dynamic range of ADC tested by a sinewave input according the~\cite{IEEEInstrumentationandMeasurementSociety2008}
-%  Algorithm is available as part of ADCTest Toolbox\cite{Virosztek2014}.
-% 
-% \subsection{INL} %<<<2 ------------------------------
-% Integral non-linearity of ADC tested by a sinewave input according the~\cite{IEEEInstrumentationandMeasurementSociety2008}
-%  Algorithm is available as part of ADCTest Toolbox\cite{Virosztek2014}.
-% 
-% 
-% \subsection{PSFE} %<<<2 ------------------------------
-% Phase Sensitive Frequency Estimator~\cite{Lapuh2015}
-% is algorithm to calculate frequency of sinusoidal signal with harmonic distortion.
-% 
-% \subsection{Allan deviations} %<<<2 ------------------------------
-% Allan deviation~\cite{Allan1966} is useful for stability, noise and drift evaluation. Available are algorithms for
-% following:
-% \begin{itemize}
-%         \item Allan deviation ADEV~\cite{HopcroftAllan},
-%         \item modified Allan deviation MADEV~\cite{HopcroftAllanMod},
-%         \item overlapped Allan deviation OADEV~\cite{HopcroftAllanOver}.
-% \end{itemize}
-% 
-% \subsection{FFT, iFFT} %<<<2 ------------------------------
-% Method to transfer from time domain to frequency domain and back~\cite{Humphreys2015}. The calculation of uncertainties
-% by means of MCM is especially optimized for slower computers.
-% 
-% \subsection{CCC} %<<<2 ------------------------------
-% Calibration Curves Computing~\cite{Malengo2013} is an algorithm developed during NEW04 EMPIR project for oridnary and
-% weighted polynomial regression with correct uncertainty calculation by means of GUF method.
-% 
-% \subsection{THD} %<<<2 ------------------------------
-% Calculation of Total Harmonic Distortion~\cite{Maslan2014a}.
-% 
-% %\subsection{MHFE} %<<<2 ------------------------------
-% %Multi Harmonic Frequency Estimator is an algorithm to calculate frequency spectra by fitting
-% %methods, and is suitable for non-coherent sampling. The source code is not available, but should be
-% %implemented because of high quality of this method.
-% 
-% \subsection{Uncertainties} %<<<2 ------------------------------
-% Following table lists uncertainty calculations provided by \Algs.
-% \begin{table}[h]
-% \begin{tabular}{lcc}
-% \hline
-% short name of & provides & provides \\
-% \Alg & GUF & MMC \\
-% \hline
-% 4PSWF & - & yes \\
-% ENOB & - & - \\
-% SINAD & - & - \\
-% SFDR & - & - \\
-% INL & - & - \\
-% PSFE & - & - \\
-% ADEV & yes & - \\
-% MADEV & yes & - \\
-% OADEV & yes & - \\
-% FFT & - & yes \\
-% iFFT & - & yes \\
-% CCC & yes & - \\
-% THD & - & yes \\
-% %MHFE & - & - \\
-% \hline
-% \end{tabular}
-% \end{table}
 
 \end{document}
 
