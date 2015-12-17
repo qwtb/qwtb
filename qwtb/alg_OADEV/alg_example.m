@@ -26,9 +26,9 @@ DO = qwtb('OADEV', DI);
 %% Display results
 % Log log figure is the best to see allan deviation results:
 figure; hold on
-loglog(DO.tau.v, DO.adev.v, '-b')
-loglog(DO.tau.v, DO.adev.v + DO.adev.u, '-k')
-loglog(DO.tau.v, DO.adev.v - DO.adev.u, '-k')
+loglog(DO.tau.v, DO.oadev.v, '-b')
+loglog(DO.tau.v, DO.oadev.v + DO.oadev.u, '-k')
+loglog(DO.tau.v, DO.oadev.v - DO.oadev.u, '-k')
 xlabel('\tau (sec)');
 ylabel('\sigma_y(\tau)');
 title(['period = ' num2str(DI.fs.v)]);
