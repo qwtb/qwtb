@@ -32,6 +32,8 @@ instr = regexprep(instr, '\\section(.*)', '\\subsection$1', 'dotexceptnewline');
 % change texttt{http...} to hyperref package link:
 %sed -i 's/\\begin{verbatim}http:\(.*\)\\end{verbatim}/\\url{http:\1}/' "$origf"
 instr = regexprep(instr, '\\begin{verbatim}http:(.*)\\end{verbatim}', '\\url{http:$1}', 'dotexceptnewline');
+% email adresses etc. are also enclosed by verbatim, but has no new line inside:
+instr = regexprep(instr, '\\begin{verbatim}([^\n]*)\\end{verbatim}', '\\verb"$1"', 'dotexceptnewline');
 
 % change \end{verbatim} to \end{lstlisting}
 %sed -i 's/\\end{verbatim}/\\end{lstlisting}/' "$origf"
