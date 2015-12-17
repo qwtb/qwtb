@@ -1,0 +1,21 @@
+\begin{tightdesc}
+\item [\textsf{.id}] --- MADEV
+\item [\textsf{.name}] --- Modified Allan Deviation
+\item [\textsf{.desc}] --- Compute the modified Allan deviation for a set of time-domain frequency data.
+\item [\textsf{.citation}] --- W. J. Riley, "The Calculation of Time Domain Frequency Stability". Implementation: M. A. Hopcroft, mhopeng@gmail.com, Matlab Central.
+\item [\textsf{.remarks}] --- If tau is empty array, tau values are automatically generated. Tau values must be divisible by 1/fs. Invalid values are ignored. For tau values really used in the calculation see the output. Using sigma as uncertainty is probably not correct.
+\item [\textsf{.license}] --- BSD License
+\item [\textsf{.requires}] \rule{0em}{0em}
+\begin{tightdesc}
+\item [\textsf{y}] --- sampled values
+\item [\textsf{fs}] --- sampling frequency
+\item [\textsf{tau}] --- observation time
+\end{tightdesc}
+\item [\textsf{.returns}] \rule{0em}{0em}
+\begin{tightdesc}
+\item [\textsf{madev}] --- modified Allan deviation
+\item [\textsf{tau}] --- observation time of result values
+\end{tightdesc}
+\item [\textsf{.providesGUF}] --- yes
+\item [\textsf{.providesMCM}] ---  no
+\end{tightdesc}
