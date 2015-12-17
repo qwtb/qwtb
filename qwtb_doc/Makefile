@@ -25,7 +25,6 @@ clean:
 
 draft:
 	pdflatex $(INPUTSOURCE).tex
-	pdflatex QWTB-Alg_doc.tex
 
 bib:
 	biber $(INPUTSOURCE)
