@@ -82,7 +82,7 @@ end % end qwtb function
 function pth = qwtbdirpath() %<<<1
 % returns full path to the directory with qwtb script
     % get full path to this (qwtb.m) script:
-    [pth, ~, ~] = fileparts(mfilename('fullpath'));
+    pth = fileparts(mfilename('fullpath'));
 
 end % function qwtbdirpath
 
