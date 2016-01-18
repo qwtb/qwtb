@@ -9,19 +9,20 @@ infos = qwtb();
 
 for i = 1:length(infos)
     disp(['algorithm ' infos(i).id]);
-    fid = fopen(['../alg_examples_published/info_' infos(i).id '.tex'], 'w')
+    fid = fopen(['../alg_examples_published/info_' infos(i).id '.tex'], 'w');
     fprintf(fid, '\\begin{tightdesc}\n');
     fprintf(fid, '\\item [\\textsf{.id}] --- %s\n', infos(i).id);
     fprintf(fid, '\\item [\\textsf{.name}] --- %s\n', infos(i).name);
     fprintf(fid, '\\item [\\textsf{.desc}] --- %s\n', infos(i).desc);
     tmp = infos(i).citation;
     % match urls:
-    [S, E, TE, M, T, NM, SP] = regexp (tmp, 'http://\S+');
+    [S, E, TE, M, T, NM, SP] = regexp (tmp, 'https?://\S+');
     if ~isempty(M)
-        disp('not empty')
+        tmp = [];
         for j = 1:length(M)
-            tmp = [SP{j, 1} '\url{' strrep(M{1},'&','\&') '}' SP{j, 2}];
+            tmp = [tmp SP{j} '\url{' strrep(M{j},'&','\&') '}'];
         end
+        tmp = [tmp SP{j+1}];
     end
     fprintf(fid, '\\item [\\textsf{.citation}] --- %s\n', tmp);
     fprintf(fid, '\\item [\\textsf{.remarks}] --- %s\n', infos(i).remarks);
