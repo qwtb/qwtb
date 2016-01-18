@@ -1,0 +1,1581 @@
+<!DOCTYPE html PUBLIC "-//SoftQuad Software//DTD HoTMetaL PRO 6.0::19990601::extensions to HTML 4.0//EN" "hmpro6.dtd">
+<html><head>
+	 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"> 
+	 <title>paper1.htm</title> 
+  <style>[href^="http://www.amazon.co.uk/exec/obidos/external-search?"]
+{display:none !important;}</style></head> 
+  <body style="tab-interval:.5in" vlink="blue" bgcolor="white" lang="EN-US" link="blue"> 
+	 <div> 
+		<p align="center"><a name="TOP"></a><b><span><font size="+2" color="#FF0000">THE CALCULATION OF TIME DOMAIN FREQUENCY STABILITY</font></span></b>
+		  <br> <b><a href="mailto:bill@wriley.com">W.J. Riley</a>, Hamilton Technical
+		  Services</b></p> 
+		<div align="center"> <hr align="center" size="3" width="100%"> </div> 
+		<p><a name="ABSTRACT"></a><b><span style="color:#000099">ABSTRACT</span></b> </p> 
+		<p>This paper describes a test suite to check the accuracy of frequency
+		  stability analysis software. It contains the values of several common
+		  statistics and frequency stability measures for two data sets, a small one
+		  suitable for manual entry, and a larger one produced by a portable
+		  pseudo-random number generator. The paper also discusses related issues such as
+		  data gaps and outliers, conversions, drift removal, numerical precision,
+		  plotting and simulation. It is a revised version of two papers [<a href="#REF_20">20</a>, <a href="#REF_21">21</a>] presented at the IEEE
+		  International Frequency Control Symposium. </p> 
+		<div align="center"> 
+		  <table border="0" cellpadding="0" cellspacing="3"> 
+			 <tbody><tr> 
+				<td style="background:silver;padding:.05in .05in .05in .05in"> 
+				  <p align="center"><a href="http://www.wriley.com/index.htm">Back To Home</a></p></td> 
+			 </tr> 
+		  </tbody></table> </div> 
+		<p><a name="CONTENTS"></a><b><span style="color:#000099">CONTENTS</span></b> </p> 
+		<p>Click on the following links to go to the corresponding sections of
+		  this paper. </p> 
+		<table border="0" cellpadding="0" cellspacing="5"> 
+		  <tbody><tr> 
+			 <td> 
+				<p><a href="#ABSTRACT">Abstract</a></p> </td> 
+			 <td> 
+				<p>&nbsp;</p> </td> 
+			 <td> 
+				<p>&nbsp;</p> </td> 
+			 <td> 
+				<p><a href="#ERROR_BARS">Error Bars</a></p> </td> 
+		  </tr> 
+		  <tr> 
+			 <td> 
+				<p><a href="#CONTENTS">Contents</a></p> </td> 
+			 <td> 
+				<p>&nbsp;</p> </td> 
+			 <td> 
+				<p>&nbsp;</p> </td> 
+			 <td> 
+				<p><a href="#NOISE_MODELING">Noise Modeling</a></p> </td> 
+		  </tr> 
+		  <tr> 
+			 <td> 
+				<p><a href="#INTRODUCTION">Introduction</a></p> </td> 
+			 <td> 
+				<p>&nbsp;</p> </td> 
+			 <td> 
+				<p>&nbsp;</p> </td> 
+			 <td> 
+				<p><a href="#SIMULATED_CLOCK_NOISE">Simulated Clock Noise</a></p>
+				</td> 
+		  </tr> 
+		  <tr> 
+			 <td> 
+				<p><a href="#DATA_TYPES_AND_TERMINOLOGY">Data Types and
+				  Terminology</a></p> </td> 
+			 <td> 
+				<p>&nbsp;</p> </td> 
+			 <td> 
+				<p>&nbsp;</p> </td> 
+			 <td> 
+				<p><a href="#VALIDATION_METHODS">Validation Methods</a></p> </td> 
+		  </tr> 
+		  <tr> 
+			 <td> 
+				<p><a href="#DATA_PREPROCESSING">Data Preprocessing</a></p> </td> 
+			 <td> 
+				<p>&nbsp;</p> </td> 
+			 <td> 
+				<p>&nbsp;</p> </td> 
+			 <td> 
+				<p><a href="#CONCLUSIONS">Conclusions</a></p> </td> 
+		  </tr> 
+		  <tr> 
+			 <td> 
+				<p><a href="#FREQUENCY_STABILITY_MEASURES">Frequency Stability
+				  Measures</a></p> </td> 
+			 <td> 
+				<p>&nbsp;</p> </td> 
+			 <td> 
+				<p>&nbsp;</p> </td> 
+			 <td> 
+				<p><a href="#ACKNOWLEDGEMENTS">Acknowledgments</a></p> </td> 
+		  </tr> 
+		  <tr> 
+			 <td> 
+				<p><a href="#TEST_DATA">Test Data</a></p> </td> 
+			 <td> 
+				<p>&nbsp;</p> </td> 
+			 <td> 
+				<p>&nbsp;</p> </td> 
+			 <td> 
+				<p><a href="#REFERENCES">References</a></p> </td> 
+		  </tr> 
+		  <tr> 
+			 <td> 
+				<p><a href="#RESULTS">Results</a></p> </td> 
+			 <td> 
+				<p>&nbsp;</p> </td> 
+			 <td> 
+				<p>&nbsp;</p> </td> 
+			 <td> 
+				<p><a href="#Table_I">Table I</a></p> </td> 
+		  </tr> 
+		  <tr> 
+			 <td> 
+				<p><a href="#GAPS,_JUMPS_and_OUTLIERS">Gaps, Jumps and
+				  Outliers</a></p> </td> 
+			 <td> 
+				<p>&nbsp;</p> </td> 
+			 <td> 
+				<p>&nbsp;</p> </td> 
+			 <td> 
+				<p><a href="#Table_II">Table II</a></p> </td> 
+		  </tr> 
+		  <tr> 
+			 <td> 
+				<p><a href="#DATA%20ARRAYS">Data Arrays</a></p> </td> 
+			 <td> 
+				<p>&nbsp;</p> </td> 
+			 <td> 
+				<p>&nbsp;</p> </td> 
+			 <td> 
+				<p><a href="#Table_III">Table III</a></p> </td> 
+		  </tr> 
+		  <tr> 
+			 <td> 
+				<p><a href="http://www.wriley.com/paper1ht.htm#NUMERICAL_PRECISION">Numerical
+				  Precision</a></p> </td> 
+			 <td> 
+				<p>&nbsp;</p> </td> 
+			 <td> 
+				<p>&nbsp;</p> </td> 
+			 <td> 
+				<p><a href="#Table_IV">Table IV</a></p> </td> 
+		  </tr> 
+		  <tr> 
+			 <td> 
+				<p><a href="#DATA_PLOTTING">Data Plotting</a></p> </td> 
+			 <td> 
+				<p>&nbsp;</p> </td> 
+			 <td> 
+				<p>&nbsp;</p> </td> 
+			 <td> 
+				<p>&nbsp;</p> </td> 
+		  </tr> 
+		</tbody></table> 
+		<p align="center"></p> 
+		<p></p> 
+		<div align="center"> 
+		  <table style="mso-cellspacing:1.8pt;
+ mso-padding-alt:.05in .05in .05in .05in" border="0" cellpadding="0" cellspacing="3"> 
+			 <tbody><tr> 
+				<td style="background:silver;padding:.05in .05in .05in .05in"> 
+				  <p align="center"><a href="#TOP">Back To Top</a></p> </td> 
+			 </tr> 
+		  </tbody></table> </div> 
+		<p></p> 
+		<p><b><span style="color:#000099">INTRODUCTION</span></b> </p> 
+		<p>Specialized calculations are necessary to express the results of time
+		  domain frequency stability measurements [<a href="#REF_1">1</a>,
+		  <a href="#REF_2">2</a>, <a href="#REF_3">3</a>]. A common example is the Allan
+		  variance for a set of fractional frequency data. Such calculations are
+		  generally performed by a computer, for which a custom program may need to be
+		  written and debugged. Each generation of computer hardware and operating system
+		  usually requires an update of the software, which must then be validated before
+		  use. A suite of test data, for which correct values of common frequency
+		  stability measures are known, can be a valuable tool for checking the accuracy
+		  of frequency stability analysis software. </p> 
+		<div align="center"> 
+		  <table style="mso-cellspacing:1.8pt;
+ mso-padding-alt:.05in .05in .05in .05in" border="0" cellpadding="0" cellspacing="3"> 
+			 <tbody><tr> 
+				<td style="background:silver;padding:.05in .05in .05in .05in"> 
+				  <p align="center"><a href="#CONTENTS">Back to Contents</a></p>
+				  </td> 
+			 </tr> 
+		  </tbody></table> </div> 
+		<p><a name="DATA_TYPES_AND_TERMINOLOGY"></a><b><span style="color:navy">DATA TYPES AND TERMINOLOGY</span></b> </p> 
+		<p><span style="color:black">The time domain stability of a frequency
+		  source can be measured by either phase or frequency data. The former is
+		  normally expressed as x(t)=</span><span style="font-family:Symbol;color:black">f(t)/2pn<sub>0</sub>,
+		  </span><span style="color:black">where </span><span style="font-family:Symbol;
+color:black">n</span><sub><span style="color:black">0</span></sub><span style="color:black"> is the nominal frequency. This quantity has units of time,
+		  but is generally called "phase" to avoid confusion with the independent time
+		  variable, t. Frequency is normally expressed as fractional frequency,
+		  y(t)=[</span><span style="font-family:Symbol;color:black">n</span><span style="color:black">(t)-</span><span style="font-family:Symbol;color:black">n</span><span style="color:black">0]/</span><span style="font-family:Symbol;color:black">n</span><sub><span style="color:black">0</span></sub><span style="color:black">=x'(t), which is
+		  dimensionless. When making stability measurements, it is preferable to take
+		  phase data, since it is the more fundamental quantity. The terms "frequency
+		  standard" and "clock" are often used interchangeably. A frequency source may be
+		  called a clock even though it does not contain any actual clock hardware,
+		  especially if it is used for timing purposes. The term "oscillator" is best
+		  used for an active source like a crystal oscillator rather than a passive
+		  device such as a cesium beam tube or rubidium gas cell frequency
+		  reference.</span> </p> 
+		<div align="center"> 
+		  <table style="mso-cellspacing:1.8pt;
+ mso-padding-alt:.05in .05in .05in .05in" border="0" cellpadding="0" cellspacing="3"> 
+			 <tbody><tr> 
+				<td style="background:silver;padding:.05in .05in .05in .05in"> 
+				  <p align="center"><a href="#CONTENTS">Back to Contents</a></p>
+				  </td> 
+			 </tr> 
+		  </tbody></table> </div> 
+		<p><a name="DATA_PREPROCESSING"></a><b><span style="color:#000099">DATA
+		  PREPROCESSING</span></b> </p> 
+		<p>Preprocessing of the measurement data is often necessary before
+		  performing the actual analysis, which may require data averaging, or removal of
+		  outliers, frequency offset and drift [<a href="#REF_4">4</a>]. </p> 
+		<p>Phase data can be modified for a longer averaging time by simply
+		  removing the intermediate points. This is accomplished for frequency data by
+		  calculating the average of each group of points. </p> 
+		<p>Frequency offset may be removed from phase data by subtracting a line
+		  determined by the average of the first differences, or by a least-squares
+		  linear fit. An offset may be removed from frequency data by normalizing it to
+		  have an average value of zero. </p> 
+		<p>Frequency drift may be removed from the phase data by a least-squares
+		  or 3-point quadratic fit [<a href="#REF_5">5</a>], or by subtracting the
+		  average of the second differences. Frequency drift may be removed from
+		  frequency data by subtracting a least-squares linear fit, by subtracting a line
+		  determined by the first-differences of the frequency data or by calculating the
+		  drift from the difference between the two halves of the data. The latter,
+		  called here the bisection drift, is equivalent to the 3-point fit to the phase
+		  data. </p> 
+		<p>Other, more specialized, methods of drift removal may also be used.
+		  For example, the frequency data may be fit to a particular model such as the
+		  log function of MIL-PRF-55310 [<a href="#REF_6">6</a>]. The latter is
+		  particularly useful to describe the stabilization of a frequency source. In
+		  general, the objective is to remove as much of the deterministic behavior as
+		  possible, obtaining random residuals for subsequent noise analysis. </p> 
+		<p>Phase data may be converted to frequency data by calculating the first
+		  differences of the phase data and dividing by the measurement interval or
+		  averaging time. Frequency data may be converted to phase data by piecewise
+		  integration, using the averaging time as the integration interval. Any gaps in
+		  the frequency data must be filled to obtain a continuous phase record. </p> 
+		<div align="center"> 
+		  <table style="mso-cellspacing:1.8pt;
+ mso-padding-alt:.05in .05in .05in .05in" border="0" cellpadding="0" cellspacing="3"> 
+			 <tbody><tr> 
+				<td style="background:silver;padding:.05in .05in .05in .05in"> 
+				  <p align="center"><a href="#CONTENTS">Back to Contents</a></p>
+				  </td> 
+			 </tr> 
+		  </tbody></table> </div> 
+		<p><a name="FREQUENCY_STABILITY_MEASURES"></a><b><span style="color:#000099">FREQUENCY STABILITY MEASURES</span></b> </p> 
+		<p>The most common time-domain measures of frequency stability are as
+		  follows: </p> 
+		<ul type="disc"> 
+		  <li style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l2 level1 lfo3;tab-stops:list .5in">The normal Allan variance,
+			 <span style="font-family:Symbol">s</span><sup>2</sup><sub>y</sub>(<span style="font-family:Symbol">t</span>), AVAR [<a href="#REF_7">7</a>]</li> 
+		  <li style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l2 level1 lfo3;tab-stops:list .5in">The normal Allan variance
+			 calculated from fully-overlapping samples, <span style="font-family:Symbol">s</span><sup>2</sup><sub>y</sub>(<span style="font-family:Symbol">t</span>), AVAR [<a href="#REF_8">8</a>]</li> 
+		  <li style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l2 level1 lfo3;tab-stops:list .5in">The modified Allan variance,
+			 Mod <span style="font-family:Symbol">s</span><sup>2</sup><sub>y</sub>(<span style="font-family:Symbol">t</span>), MVAR [<a href="#REF_9">9</a>]</li> 
+		  <li style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l2 level1 lfo3;tab-stops:list .5in">The time variance,
+			 <span style="font-family:Symbol">s</span><sup>2</sup><sub>x</sub>(<span style="font-family:Symbol">t</span>), TVAR [<a href="#REF_10">10</a>,
+			 <a href="#REF%2011">11</a>]</li> 
+		  <li style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l2 level1 lfo3;tab-stops:list .5in">The Hadamard variance, H<span style="font-family:Symbol">s</span><sup>2</sup><sub>y</sub>(<span style="font-family:Symbol">t</span>), HVAR [<a href="#REF_27">27</a>]</li> 
+		  <li style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l2 level1 lfo3;tab-stops:list .5in">The total variance,
+			 <span style="font-family:Symbol">s</span><sup>2</sup><sub>total</sub>(<span style="font-family:Symbol">t</span>), TOTVAR [<a href="#REF_22">22</a>]</li> 
+		  <li style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l2 level1 lfo3;tab-stops:list .5in">The modified total variance,
+			 Mod <span style="font-family:Symbol">s</span><sup>2</sup><sub>total</sub>(<span style="font-family:Symbol">t</span>), MTOTVAR [<a href="#REF_28">28</a>]</li> 
+		  <li style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l2 level1 lfo3;tab-stops:list .5in">The time total variance,
+			 <span style="font-family:Symbol">s</span><sup>2</sup><sub>x</sub>(<span style="font-family:Symbol">t</span>), TTOTVAR [<a href="#REF_29">29</a>]</li> 
+		  <li style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l2 level1 lfo3;tab-stops:list .5in">The Hadamard total variance,
+			 HTOTVAR [<a href="#REF_30">30</a>]</li> 
+		</ul> 
+		<p>where the variances are functions of the averaging time,
+		  <span style="font-family:Symbol">t</span>. These quantities are not affected
+		  (except possibly for reasons of numerical precision) by the nominal frequency
+		  offset. They are (except for the Hadamard family) usually calculated after
+		  removal of frequency drift, and are normally expressed as their square roots,
+		  or deviations, ADEV, MDEV, TDEV, HDEV, TOTDEV, MTOTDEV, TTOTDEV and HTOTDEV.
+		  Each can be calculated from either phase or frequency data, which give the same
+		  result. </p> 
+		<p>These calculations are reasonably fast on a modern computer with a
+		  math coprocessor, except, perhaps, for the total statistics. For a data set of
+		  several thousand points, the normal Allan variance calculation is practically
+		  instantaneous, and the overlapping Allan and total variance calculations take a
+		  second. Calculation of the modified total variance from phase data may take
+		  several seconds, while its calculation from frequency data requires a
+		  triply-nested loop that can take a minute. Faster algorithms than the obvious
+		  ones are available [<a href="#REF_12">12</a>, <a href="#REF_13">13</a>,
+		  <a href="#REF_21">21</a>, <a href="#REF_30">30</a>], particularly if the data
+		  has no gaps. A complete stability run is commonly done over a range of
+		  averaging times by doubling the <span style="font-family:Symbol">t</span> at
+		  each successive analysis point for which there is sufficient data, although
+		  results at all <span style="font-family:Symbol">t</span> values can provide
+		  valuable insight into periodic interference.</p> 
+		<div align="center"> 
+		  <table style="mso-cellspacing:1.8pt;
+ mso-padding-alt:.05in .05in .05in .05in" border="0" cellpadding="0" cellspacing="3"> 
+			 <tbody><tr> 
+				<td style="background:silver;padding:.05in .05in .05in .05in"> 
+				  <p align="center"><a href="#CONTENTS">Back to Contents</a></p>
+				  </td> 
+			 </tr> 
+		  </tbody></table> </div> 
+		<p><a name="TEST_DATA"></a><b><span style="color:#000099">TEST
+		  DATA</span></b> </p> 
+		<p>A "classic'' suite of frequency stability test data is the set of nine
+		  3-digit numbers from Annex 8.E of NBS Monograph 140 [<a href="#REF_14">14</a>]
+		  shown in <a href="#Table_I">Table I</a>. Those numbers were used as an early
+		  example of an Allan variance calculation. This frequency data is also
+		  normalized to zero mean by subtracting the average value, and then integrated
+		  to obtain phase values. A listing of the properties of this data set is shown
+		  in <a href="#Table_II">Table II</a>. While nine data points are not sufficient
+		  to calculate large frequency averages, they are, nevertheless, a very useful
+		  starting point to verify frequency stability calculations since a small data
+		  set can easily be entered and analyzed manually. A small data set is also an
+		  advantage for detecting "off-by-one'' errors. </p> 
+		<p>The larger frequency data test suite used here consists of 1000
+		  pseudo-random frequency data points. It is produced by the following prime
+		  modulus linear congruential random number generator [<a href="#REF_15">15</a>]:
+		  </p> 
+		<p>n<sub>i+1</sub> = 16807 n<sub>i</sub> Mod 2147483647 </p> 
+		<p>This expression produces a series of pseudo-random integers ranging in
+		  value from 0 to 2147483646 (the prime modulus, 2<sup>31</sup>-1, avoids a
+		  collapse to zero). When started with the seed n<sub>0</sub> = 1234567890, it
+		  produces the sequence n<sub>1</sub> = 395529916, n<sub>2</sub> = 1209410747,
+		  n<sub>3</sub> = 633705974, etc. These numbers may be divided by 2147483647 to
+		  obtain a set of normalized floating-point test data ranging from 0 to 1. Thus
+		  the normalized value of n<sub>0</sub> is 0.5748904732. A spreadsheet program is
+		  a convenient and reasonably universal way to generate this data. The frequency
+		  data set may be converted to phase data by assuming an averaging time of 1,
+		  yielding a set of 1001 phase data points. Similarly, frequency offset and/or
+		  drift terms may be added to the data. These conversions can also be done by a
+		  spreadsheet program. </p> 
+		<p>The values of this data set will be uniformly distributed between 0
+		  and 1. While a data set with a normal (Gaussian) distribution would be more
+		  realistic, and could be produced by summing a number of independent uniformly
+		  distributed data sets, or by the Box-Muller method [<a href="#REF_24">24</a>],
+		  this simpler data set is adequate for software validation. </p> 
+		<div align="center"> 
+		  <table style="mso-cellspacing:1.8pt;
+ mso-padding-alt:.05in .05in .05in .05in" border="0" cellpadding="0" cellspacing="3"> 
+			 <tbody><tr> 
+				<td style="background:silver;padding:.05in .05in .05in .05in"> 
+				  <p align="center"><a href="#CONTENTS">Back to Contents</a></p>
+				  </td> 
+			 </tr> 
+		  </tbody></table> </div> 
+		<p><a name="RESULTS"></a><b><span style="color:#000099">RESULTS</span></b> </p> 
+		<p>The statistics for the 1000-point test suite are shown in
+		  <a href="#Table_III">Table III</a>. These values, reported to 7 significant
+		  figures, were obtained using IEEE 754 64-bit double-precision (15-digit)
+		  floating point arithmetic. While this reported precision is unwarranted for
+		  actual stability measures, it is useful for software validation. The
+		  theoretical expected value for the mean of a random variable uniformly
+		  distributed over the interval (0,1) is 0.5, and is independent of the averaging
+		  factor. The linear slope (per data interval) and the intercept are calculated
+		  as a least-squares linear regression fit. The standard deviation is that for
+		  the sample (not the population). The theoretical expected value for the
+		  standard deviation is 1/<span style="font-family:Symbol">Ö</span>12 =
+		  0.2886751. The normal Allan deviation, <span style="font-family:Symbol">s</span><sub>y</sub>(<span style="font-family:Symbol">t</span> ), is calculated for the full data set
+		  without averaging (<span style="font-family:Symbol">t</span> =
+		  <span style="font-family:Symbol">t</span><sub>0</sub>) using adjacent
+		  differences. For white frequency noise, it is equal to the standard deviation.
+		  The modified Allan deviation, Mod <span style="font-family:Symbol">s</span><sub>y</sub>(<span style="font-family:Symbol">t</span> ), is, by definition, equal to the normal
+		  Allan deviation for an averaging time equal to that of the basic data. The
+		  overlapping Allan deviation, calculated using fully-overlapping samples (every
+		  available difference at a certain averaging time) is also equal to the normal
+		  Allan deviation for <span style="font-family:Symbol">t</span> =
+		  <span style="font-family:Symbol">t</span><sub>0</sub>. The time deviation,
+		  <span style="font-family:Symbol">s</span><sub>x</sub>(<span style="font-family:Symbol">t</span> ) is simply the modified Allan deviation
+		  multiplied by <span style="font-family:
+Symbol">t</span>/<span style="font-family:Symbol">Ö</span>3. The total
+		  variance uses a reflection method [<a href="#REF_22">22</a>] that significantly
+		  improves the confidence of the stability estimate at long averaging times. It
+		  has the same expected value as the Allan variance for white and flicker PM
+		  noise and white FM noise. Bias corrections of the form 1-c<span style="font-family:Symbol">t/(T-t), </span>where T is the record length, need
+		  to be applied for flicker and random walk FM noise, where c = 0.240 and 0.375
+		  respectively [<a href="#REF_23">23</a>]. </p> 
+		<div align="center"> 
+		  <table style="mso-cellspacing:1.8pt;
+ mso-padding-alt:.05in .05in .05in .05in" border="0" cellpadding="0" cellspacing="3"> 
+			 <tbody><tr> 
+				<td style="background:silver;padding:.05in .05in .05in .05in"> 
+				  <p align="center"><a href="#CONTENTS">Back to Contents</a></p>
+				  </td> 
+			 </tr> 
+		  </tbody></table> </div> 
+		<p><a name="GAPS,_JUMPS_and_OUTLIERS"></a><b><span style="color:#000099">GAPS, JUMPS and OUTLIERS</span></b> </p> 
+		<p>It is not uncommon to have gaps and outliers in a set of raw frequency
+		  stability data. Missing or erroneous data may occur due to power outages,
+		  equipment malfunctions and interference. For long-term tests, it may not be
+		  possible or practical to repeat the run, or otherwise avoid such bad data
+		  points. Usually the reason for the gap or outlier is known. It is particularly
+		  important to explain all phase discontinuities. Plotting the data will often
+		  show the bad points, which may have to be removed before analysis to obtain
+		  meaningful results. </p> 
+		<p>A simple, yet effective, technique for finding outliers is to compare
+		  each frequency data point y<sub>i</sub> with the median value, m, of the data
+		  set plus or minus some multiple of the absolute median deviation (MAD): </p> 
+		<p>MAD = Median { | y<sub>i </sub>- m | / 0.6745} </p> 
+		<p>where m = Median { y<sub>i</sub> }, and the factor 0.6745 makes the
+		  MAD equal to the standard deviation for normally distributed data [<a href="#REF_16">16</a>]. These median statistics are more robust because they
+		  are insensitive to the size of the outliers. Outlier detection is normally
+		  applied only to frequency data. </p> 
+		<p>More elaborate techniques exist for the recognition of outliers in
+		  marginal cases [<a href="#REF_16">16</a>, <a href="#REF_17">17</a>]. A
+		  particularly effective means is statistical comparison of each data point
+		  against an optimum predictor based on an appropriate noise model. </p> 
+		<p>Often a bad data point is replaced with a gap. The gaps should be kept
+		  in the record because they serve as "place-keepers'' in time, and because
+		  "truth-in-packaging'' may require them to be identified. A value of zero is
+		  often used as an obvious and unique way to indicate a gap, especially in
+		  fractional frequency data, where a value of zero almost never appears. It is
+		  also an easy value to test for. However, a value of zero does occur at the
+		  beginning and end of a set of normalized phase data, so while a zero is
+		  suitable to indicate an embedded gap in phase data, it is not unique as the
+		  first or last point. </p> 
+		<p>A fractional frequency value of zero can occur when two adjacent phase
+		  values are the same (as might happen with limited-precision short-term phase
+		  data for a noisy source having a small frequency offset). Treating this case as
+		  a frequency gap is reasonable, but it can cause problems in calculations using
+		  the phase data. </p> 
+		<p>Stability analysis algorithms can be modified to handle gaps. Two
+		  sample variances can simply be formed for the available pairs, taking into
+		  account the actual number of analysis points. Averages can be formed where
+		  there is at least one point within the group. Otherwise a gap is inserted into
+		  the averaged data. Phase-frequency conversions can also be written to handle
+		  gaps. In a plot, missing data is best shown as a gap without a line connecting
+		  the adjacent points. </p> 
+		<p>Optionally, a gap may be replaced by an interpolated value. While this
+		  may be desirable in some cases, it masks the existence of the missing data, and
+		  creates a fictitious value. Filling in gaps has the advantage, however, that
+		  the plotting method and stability analysis calculations do not have to have
+		  provisions to handle gaps. Gap filling is also necessary when performing a
+		  frequency to phase conversion to preserve phase continuity. </p> 
+		<p>A phase jump, <span style="font-family:Symbol">D</span>x, corresponds
+		  to a frequency spike of y=<span style="font-family:Symbol">D</span>x/<span style="font-family:Symbol">t. </span>Such an event will have a
+		  <span style="font-family:Symbol">t</span><sup>-1/2</sup> stability
+		  characteristic, and thus appear as white FM noise at a level of
+		  <span style="font-family:Symbol">s</span><sup>2</sup><sub>y</sub>(<span style="font-family:Symbol">t</span>)=<span style="font-family:Symbol">D</span>x<sup>2</sup>/<span style="font-family:Symbol">t</span>(T-<span style="font-family:Symbol">t</span>) where T is the record length and
+		  T&gt;&gt;<span style="font-family:Symbol">t [<a href="#REF_26">26</a>]</span>.
+		  It is often indicative of a problem in the clock, transmission path or
+		  measurement system and should be investigated. This also shows the importance
+		  of visual inspection of the phase record. </p> 
+		<p>Frequency jumps can also be a problem for stability analysis.
+		  Intuitively, a frequency jump is an indication that the statistics of the
+		  device being measured are not stationary. It may be necessary to divide the
+		  record into two portions before and after the jump and analyze them separately.
+		  A jump may be defined and recognized by moving a sliding window through the
+		  frequency data, looking for a change in the average value between the first and
+		  last halves of the window. The change can be judged in relation to the scatter
+		  of the data. </p> 
+		<div align="center"> 
+		  <table style="mso-cellspacing:1.8pt;
+ mso-padding-alt:.05in .05in .05in .05in" border="0" cellpadding="0" cellspacing="3"> 
+			 <tbody><tr> 
+				<td style="background:silver;padding:.05in .05in .05in .05in"> 
+				  <p align="center"><a href="#CONTENTS">Back to Contents</a></p>
+				  </td> 
+			 </tr> 
+		  </tbody></table> </div> 
+		<p><a name="DATA_ARRAYS"></a><b><span style="color:#000099">DATA
+		  ARRAYS</span></b> </p> 
+		<p>A one column vector is all that is required for a phase or frequency
+		  data array. Because the data points are equally spaced, no time tags are
+		  necessary. While time tagging may be needed for archival storage of clock
+		  measurements, a vector of extracted gap-filled data is sufficient for analysis.
+		  </p> 
+		<div align="center"> 
+		  <table style="mso-cellspacing:1.8pt;
+ mso-padding-alt:.05in .05in .05in .05in" border="0" cellpadding="0" cellspacing="3"> 
+			 <tbody><tr> 
+				<td style="background:silver;padding:.05in .05in .05in .05in"> 
+				  <p align="center"><a href="#CONTENTS">Back to Contents</a></p>
+				  </td> 
+			 </tr> 
+		  </tbody></table> </div> 
+		<p><a name="NUMERICAL_PRECISION"></a><b><span style="color:
+#000099">NUMERICAL PRECISION</span></b> </p> 
+		<p>There are relatively few numerical precision issues relating to the
+		  analysis of frequency stability data. One obvious case, however, is phase data
+		  for a highly stable frequency source having a relatively large frequency
+		  offset. The raw phase data will be essentially a straight line (representing
+		  the frequency offset), and the instability information is contained in the
+		  small deviations from the line. A large number of digits must be used unless
+		  the frequency offset is removed by subtracting a linear term from the raw phase
+		  data. Similar considerations apply to the quadratic phase term (linear
+		  frequency drift). </p> 
+		<p>Many frequency stability measures involve averages of first or second
+		  differences. Thus, while their numerical precision obviously depends upon the
+		  variable digits of the data set, there is little error propagation in forming
+		  the summary statistics. </p> 
+		<div align="center"> 
+		  <table style="mso-cellspacing:1.8pt;
+ mso-padding-alt:.05in .05in .05in .05in" border="0" cellpadding="0" cellspacing="3"> 
+			 <tbody><tr> 
+				<td style="background:silver;padding:.05in .05in .05in .05in"> 
+				  <p align="center"><a href="#CONTENTS">Back to Contents</a></p>
+				  </td> 
+			 </tr> 
+		  </tbody></table> </div> 
+		<p><a name="DATA_PLOTTING"></a><b><span style="color:#000099">DATA
+		  PLOTTING</span></b> </p> 
+		<p>Data plotting is often the most important step in the analysis of
+		  frequency stability. Visual inspection can provide vital insight into the
+		  results, and is an important "preprocessor'' before numerical analysis. A plot
+		  also shows much about the validity of a curve fit. </p> 
+		<p>Phase data is generally plotted as line segments connecting the data
+		  points. This presentation properly conveys the integral nature of the phase
+		  data. Frequency data is often plotted the same way, simply because that is the
+		  way plotting is usually done. But a better presentation is a flat horizontal
+		  line between the frequency data points. This shows the averaging time
+		  associated with the frequency measurement, and mimics the analog record from a
+		  frequency counter. As the density of the data points increases, there is
+		  essentially no difference between the two plotting methods. In a plot, missing
+		  data should be shown as a gap without a line connecting the adjacent points.
+		  </p> 
+		<p>Stability plots generally take the form of graphs of log
+		  <span style="font-family:Symbol">s</span> versus log
+		  <span style="font-family:Symbol">t</span>, often with error bars to shown the
+		  precision of the results. The slope of the <span style="font-family:Symbol">s</span><sub>y</sub>(<span style="font-family:Symbol">t</span>) characteristic depends on the type of
+		  noise. It is customary to show points at octave increments of
+		  <span style="font-family:Symbol">t</span>. These are equally spaced on the log
+		  scale, and are the result of successive averaging by a factor of two. Such a
+		  run usually ends when there are too few analysis points (say &lt; 7) for
+		  reasonable confidence. A run for all possible <span style="font-family:Symbol">t</span> values, while slow, can provide valuable
+		  information since it is, in effect, a form of spectral analysis that can show
+		  power-law spectra and periodic instabilities such as environmental effects.
+		  </p> 
+		<div align="center"> 
+		  <table style="mso-cellspacing:1.8pt;
+ mso-padding-alt:.05in .05in .05in .05in" border="0" cellpadding="0" cellspacing="3"> 
+			 <tbody><tr> 
+				<td style="background:silver;padding:.05in .05in .05in .05in"> 
+				  <p align="center"><a href="#CONTENTS">Back to Contents</a></p>
+				  </td> 
+			 </tr> 
+		  </tbody></table> </div> 
+		<p><a name="ERROR_BARS"></a><b><span style="color:#000099">ERROR
+		  BARS</span></b> </p> 
+		<p>Several approaches exist for the setting of error bars on a stability
+		  plot to indicate the precision of the results. A rough approximation to a
+		  standard 1-sigma confidence interval can obtained by simply dividing the point
+		  value by the square root of the number of analysis points. This approximation
+		  degenerates for a small number of degrees of freedom. More exact single and
+		  double-sided confidence intervals can be determined by the noise and variance
+		  type [<a href="#REF_2">2</a>, <a href="#REF_8">8</a>, <a href="#REF_18">18</a>,
+		  <a href="#REF_23">23</a>, <a href="#REF_25">25</a>], as shown in
+		  <a href="#Table_IV">Table IV</a>. </p> 
+		<div align="center"> 
+		  <table style="mso-cellspacing:1.8pt;
+ mso-padding-alt:.05in .05in .05in .05in" border="0" cellpadding="0" cellspacing="3"> 
+			 <tbody><tr> 
+				<td style="background:silver;padding:.05in .05in .05in .05in"> 
+				  <p align="center"><a href="#CONTENTS">Back to Contents</a></p>
+				  </td> 
+			 </tr> 
+		  </tbody></table> </div> 
+		<p><a name="NOISE_MODELING"></a><b><span style="color:#000099">NOISE
+		  MODELING</span></b> </p> 
+		<p>It is often desirable to have a means of identifying the type of noise
+		  that is being analyzed, and to be able to fit it to a power law noise model.
+		  Noise recognition can generally be accomplished by using the B1 bias function
+		  (the ratio of the standard variance to the Allan variance) and the R(n) ratio
+		  function (the ratio of the modified Allan variance to the normal Allan
+		  variance) [<a href="#REF_30">30</a>]. These functions can be calculated by the
+		  methods described in Reference [<a href="#REF_1">1</a>]. Power law noise can be
+		  modeled over a range of averaging times by fitting a line to the results of an
+		  Allan deviation stability analysis on a log <span style="font-family:Symbol">s</span> versus log <span style="font-family:Symbol">t </span>plot. </p> 
+		<div align="center"> 
+		  <table style="mso-cellspacing:1.8pt;
+ mso-padding-alt:.05in .05in .05in .05in" border="0" cellpadding="0" cellspacing="3"> 
+			 <tbody><tr> 
+				<td style="background:silver;padding:.05in .05in .05in .05in"> 
+				  <p align="center"><a href="#CONTENTS">Back to Contents</a></p>
+				  </td> 
+			 </tr> 
+		  </tbody></table> </div> 
+		<p><a name="SIMULATED_CLOCK_NOISE"></a><b><span style="color:#000099">SIMULATED CLOCK NOISE</span></b> </p> 
+		<p>It is valuable to have a means of generating simulated power law clock
+		  noise having the desired noise type (white phase, flicker phase, white
+		  frequency, flicker frequency and random walk frequency), Allan deviation,
+		  frequency offset and frequency drift. This can serve as an additional means to
+		  validate stability analysis software, particularly for checking numerical
+		  precision and noise recognition and modeling. An excellent method for power-law
+		  noise generation is described in Reference <a href="#REF_19">19</a>. This
+		  reference also provides very useful analysis insights. </p> 
+		<p>Another way to simulate white FM noise is to take advantage of the
+		  fact that the Allan deviation of a frequency record having large spike (a phase
+		  step) has a <span style="font-family:Symbol">t</span><sup>-1/2</sup>
+		  characteristic [<a href="#REF_26">26</a>].&nbsp; Thus adding a single large
+		  (say 10<sup>6</sup>) central outlier to the same 1000-point
+		  <span style="font-family:Symbol">t</span>=1 test suite discussed above will
+		  give a data set with <span style="font-family:
+Symbol">s</span><sub>y</sub>(<span style="font-family:Symbol">t</span>)=[(106)2/(1000-1)]1/2 = 3.16386e4 [<a href="http://www.wriley.com/spike.gif">See plot</a>]. </p> 
+		<div align="center"> 
+		  <table style="mso-cellspacing:1.8pt;
+ mso-padding-alt:.05in .05in .05in .05in" border="0" cellpadding="0" cellspacing="3"> 
+			 <tbody><tr> 
+				<td style="background:silver;padding:.05in .05in .05in .05in"> 
+				  <p align="center"><a href="#CONTENTS">Back to Contents</a></p>
+				  </td> 
+			 </tr> 
+		  </tbody></table> </div> 
+		<p><a name="VALIDATION_METHODS"></a><b><span style="color:#000099">VALIDATION METHODS</span></b> </p> 
+		<p>Several methods are available to validate frequency stability analysis
+		  software: </p> 
+		<ul type="disc"> 
+		  <li style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo6;tab-stops:list .5in"><u>Manual Analysis:</u> The
+			 results obtained by manual analysis of small data sets (such as NBS Monograph
+			 140 Annex 8.E) can be compared with the new program output. This is always good
+			 to do to get a "feel'' for the process.</li> 
+		  <li style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo6;tab-stops:list .5in"><u>Published Results: </u>The
+			 results of a published analysis can be compared with the new program output.
+			 Such data is included in this paper.</li> 
+		  <li style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo6;tab-stops:list .5in"><u>Other Programs: </u>The
+			 results obtained from other specialized stability analysis programs (such as
+			 that from a previous generation computer or operating system) can be compared
+			 with the new program output.</li> 
+		  <li style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo6;tab-stops:list .5in"><u>General Programs:</u> The
+			 results obtained from industry standard, general purpose mathematical and
+			 spreadsheet programs (such as MathCAD and Excel) can be compared with the new
+			 program output.</li> 
+		  <li style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo6;tab-stops:list .5in"><u>Consistency Checks:</u>
+			 The new program should be verified for internal consistency, such as producing
+			 the same stability results from phase and frequency data. The standard and
+			 normal Allan variances should be approximately equal for white FM noise. The
+			 normal and modified Allan variances and total variance should be identical for
+			 an averaging factor of 1. For other averaging factors, the modified Allan
+			 variance should be approximately one-half the normal Allan variance for white
+			 FM noise and <span style="font-family:
+     Symbol">t </span>&gt;&gt; <span style="font-family:Symbol">t</span><sub>0</sub>. The normal and overlapping
+			 Allan variances and total variance should be approximately equal. The
+			 overlapping method and total variance provide better confidence of the
+			 stability estimates. The various methods of drift removal should yield similar
+			 results.</li> 
+		  <li style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo6;tab-stops:list .5in"><u>Simulated Data:
+			 </u>Simulated clock data can also serve as a useful cross check. Known values
+			 of frequency offset and drift can be inserted, analyzed and removed. Known
+			 values of power law noise can be generated, analyzed, plotted and modeled.</li>
+		  
+		</ul> 
+		<div align="center"> 
+		  <table style="mso-cellspacing:1.8pt;
+ mso-padding-alt:.05in .05in .05in .05in" border="0" cellpadding="0" cellspacing="3"> 
+			 <tbody><tr> 
+				<td style="background:silver;padding:.05in .05in .05in .05in"> 
+				  <p align="center"><a href="#CONTENTS">Back to Contents</a></p>
+				  </td> 
+			 </tr> 
+		  </tbody></table> </div> 
+		<p><a name="CONCLUSIONS"></a><b><span style="color:#000099">CONCLUSIONS</span></b> </p> 
+		<p>There is a continuing need to validate the custom software used to
+		  analyze time domain frequency stability. The suite of test data presented here,
+		  along with the other suggestions made, can help assure that correct results are
+		  obtained. </p> 
+		<div align="center"> 
+		  <table style="mso-cellspacing:1.8pt;
+ mso-padding-alt:.05in .05in .05in .05in" border="0" cellpadding="0" cellspacing="3"> 
+			 <tbody><tr> 
+				<td style="background:silver;padding:.05in .05in .05in .05in"> 
+				  <p align="center"><a href="#CONTENTS">Back to Contents</a></p>
+				  </td> 
+			 </tr> 
+		  </tbody></table> </div> 
+		<p><a name="ACKNOWLEDGEMENTS"></a><b><span style="color:#000099">ACKNOWLEDGMENTS</span></b> </p> 
+		<p>The author thanks Messrs. D.W. Allan, L.S. Cutler, S.R. Stein and F.L.
+		  Walls for their help in checking the results presented here. Any remaining
+		  errors are my responsibility alone. </p> 
+		<div align="center"> 
+		  <table style="mso-cellspacing:1.8pt;
+ mso-padding-alt:.05in .05in .05in .05in" border="0" cellpadding="0" cellspacing="3"> 
+			 <tbody><tr> 
+				<td style="background:silver;padding:.05in .05in .05in .05in"> 
+				  <p align="center"><a href="#CONTENTS">Back to Contents</a></p>
+				  </td> 
+			 </tr> 
+		  </tbody></table> </div> 
+		<p><a name="REFERENCES"></a><b><span style="color:#000099">REFERENCES</span></b> </p> 
+		<ol> 
+		  <li><a name="REF_1"></a>D.B Sullivan, D.W Allan, D.A. Howe and F.L.
+			 Walls (Editors), Characterization of Clocks and Oscillators, <i>NIST Technical
+			 Note 1337</i>, U.S Department of Commerce, National Institute of Standards and
+			 Technology, March 1990.</li> 
+		  <li><a name="REF_2"></a>S.R. Stein, "Frequency and Time - Their
+			 Measurement and Characterization'', Chapter 12, pp.191-416, <i><a href="http://www.amazon.com/exec/obidos/ISBN=0122806026/4640-0012228-206586">Precision
+			 Frequency Control</a></i>, Vol. 2, Edited by E.A. Gerber and A. Ballato,
+			 Academic Press, New York, 1985.</li> 
+		  <li><a name="REF_3"></a>"<a href="http://standards.ieee.org/catalog/drafts.html">IEEE Standard Definitions
+			 of Physical Quantities for Fundamental Frequency and Time Metrology</a>'',
+			 <i>IEEE Std. 1139-1988</i>.</li> 
+		  <li><a name="REF_4"></a>J.A. Barnes, "The Measurement of Linear
+			 Frequency Drift in Oscillators'', <i>Proc. 15th Annu. PTTI Meeting</i>, pp.
+			 551-582, Dec. 1983.</li> 
+		  <li><a name="REF_5"></a>M.A. Weiss and C. Hackman, "Confidence on the
+			 Three-Point Estimator of Frequency Drift'', <i>Proc. 24th Annu. PTTI
+			 Meeting</i>, pp. 451-460, Dec. 1992.</li> 
+		  <li><a name="REF_6"></a><a href="http://www.dscc.dla.mil/Programs/MilSpec/ListDocs.asp?BasicDoc=MIL-PRF-55310">MIL-PRF-55310</a>,
+			 Oscillators, Crystal, General Specification For.</li> 
+		  <li><a name="REF_7"></a>D.W. Allan, "The Statistics of Atomic Frequency
+			 Standards'', <i>Proc. IEEE</i>, Vol. 54, No. 2, pp. 221-230, Feb. 1966.</li> 
+		  <li><a name="REF_8"></a>D.A. Howe, D.W. Allan and J.A. Barnes, "<a href="http://www.ieee-uffc.org/archive/fc/proceed/1981/proceed/s8110669.pdf">Properties
+			 of Signal Sources and Measurement Methods</a>'', <i>Proc. 35th Annu. Symp. on
+			 Freq. Contrl.</i>, pp. 1-47, May 1981.</li> 
+		  <li><a name="REF_9"></a>D.W. Allan and J.A. Barnes, "<a href="http://www.ieee-uffc.org/archive/fc/proceed/1981/proceed/s8110470.pdf">A
+			 Modified Allan Variance with Increased Oscillator Characterization
+			 Ability'</a>', <i>Proc. 35th Annu. Symp. on Freq. Contrl.</i>, pp. 470-474, May
+			 1981.</li> 
+		  <li><a name="REF_10"></a>D.W. Allan, D.D. Davis, J. Levine, M.A. Weiss,
+			 N. Hironaka, and D. Okayama, "<a href="http://www.ieee-uffc.org/archive/fc/proceed/1990/proceed/s9010107.pdf">New
+			 Inexpensive Frequency Calibration Service From NIST''</a>, <i>Proc. 44th Annu.
+			 Symp. on Freq. Contrl.</i>, pp. 107-116, June 1990.</li> 
+		  <li><a name="REF_11"></a>D.W. Allan, M.A. Weiss and J.L. Jespersen, "<a href="http://www.ieee-uffc.org/archive/fc/proceed/1991/proceed/s9110667.pdf">A
+			 Frequency-Domain View of Time-Domain Characterization of Clocks and Time and
+			 Frequency Distribution Systems</a>'', <i>Proc. 45th Annu. Symp. on Freq.
+			 Contrl.</i>, pp. 667-678, May 1991.</li> 
+		  <li><a name="REF_12"></a>D.W. Allan, "Time and Frequency Metrology:
+			 Current Status and Future Considerations'', <i>Proc. 5th European Freq. and
+			 Time Forum</i>, pp. 1-9, March 1991.</li> 
+		  <li><a name="REF_13"></a>C.A. Greenhall, "<a href="http://www.ieee-uffc.org/archive/fc/proceed/1992/proceed/s9210262.pdf">A
+			 Shortcut for Computing the Modified Allan Variance</a>'', <i>Proc. 1992 IEEE
+			 Freq. Contrl. Symp.</i>, pp. 262-264, May 1992.</li> 
+		  <li><a name="REF_14"></a>B.E. Blair (Editor), Time and Frequency:
+			 Theory and Fundamentals, <i>NBS Monograph 140</i>, Annex 8.E, p. 181, May
+			 1974.</li> 
+		  <li><a name="REF_15"></a>S.K. Park and K.W. Miller, "<a href="http://www.acm.org/pubs/citations/journals/cacm/1988-31-10/p1192-park/">Random
+			 Number Generators: Good Ones are Hard to Find</a>'', <i>Comm. ACM</i>, Vol. 31,
+			 No. 10, pp. 1192-1201, Oct. 1988.</li> 
+		  <li><a name="REF_16"></a>D.B. Percival, "Use of Robust Statistical
+			 Techniques in Time Scale Formation'', <i>Preliminary Report</i>, U.S. Naval
+			 Observatory Contract No. N70092-82-M-0579, 1982.</li> 
+		  <li><a name="REF_17"></a>Gernot M.R. Winkler, "<a href="http://www.wriley.com/ROBSTAT.htm">Introduction to Robust Statistics and
+			 Data Filtering</a>'', <i>Tutorial at 1993 IEEE Freq. Contrl. Symp.</i>,
+			 Sessions 3D and 4D, June 1, 1993.</li> 
+		  <li><a name="REF_18"></a>C.A. Greenhall, "Recipes for Degrees of
+			 Freedom of Frequency Stability Estimators'', <i>IEEE Trans. Instrum. Meas.</i>,
+			 Vol. 40, No. 6, pp. 994-999, Dec. 1991.</li> 
+		  <li><a name="REF_19"></a>N.J. Kasdin and T. Walter, "<a href="http://www.ieee-uffc.org/archive/fc/proceed/1992/proceed/s9210274.pdf">Discrete
+			 Simulation of Power Law Noise</a>'', <i>Proc. 1992 IEEE Freq. Contrl.
+			 Symp.</i>, pp. 274-283, May 1992.</li> 
+		  <li><a name="REF_20"></a>W.J. Riley, "<a href="http://www.ieee-uffc.org/archive/fc/proceed/1995/proceed/s9510360.pdf">A
+			 Test Suite for the Calculation of Time Domain Frequency Stability</a>, <i>Proc.
+			 1995 IEEE Freq. Contrl. Symp.</i>, pp. 360-366, June 1995.</li> 
+		  <li><a name="REF_21"></a>W.J. Riley, "<a href="http://www.ieee-uffc.org/archive/fc/proceed/1996/proceed/s9610880.pdf">Addendum
+			 to a Test Suite for the Calculation of Time Domain Frequency Stability</a>,
+			 <i>Proc. 1996 IEEE Freq. Contrl. Symp.</i>, pp. 880-882, June 1996.</li> 
+		  <li><a name="REF_22"></a>D.A. Howe, "Methods of Improving the
+			 Estimation of Long-Term Frequency Variance", <i>Proc. 11th European Freq. and
+			 Time Forum</i>, pp. 91-99, March 1997.</li> 
+		  <li><a name="REF_23"></a>C.A. Greenhall (private communication).</li> 
+		  <li><a name="REF_24"></a>W.H. Press, B.P. Flannery, S.A. Teukolsky and
+			 W.T. Vetterling, <i><a href="http://lib-www.lanl.gov/numerical/bookcpdf.html">Numerical Recipes in
+			 C</a></i>, Cambridge Univ. Press, Cambridge, U.K., 1988, pp.216-217.<a name="REF_25"></a><span style="font-size:10.0pt"></span></li> 
+		  <li>M.A. Weiss and C.A. Greenhall, "A Simple Algorithm for
+			 Approximating Confidence on the Modified Allan Variance and the Time Variance",
+			 <i>Proc. 28th Annu. PTTI Meeting</i>, pp. 215-224, Dec. 1996.<span style="font-size:10.0pt"></span></li> 
+		  <li><a name="REF_26"></a>C.A. Greenhall, "<a href="http://tmo.jpl.nasa.gov/tmo/progress_report/42-88/88Z.PDF">Frequency
+			 Stability Review</a>", Telecommunications and Data Acquisition Progress Report
+			 42-88, Oct-Dec 1986, Jet Propulsion Laboratory, Pasadena, CA, pp. 200-212, Feb.
+			 1987.<span style="font-size:10.0pt"></span></li> 
+		  <li><a name="REF_27"></a>S.T. Hutsell, "Relating the Hadamard Variance
+			 to MCS Kalman Filter Clock Estimation", <i style="mso-bidi-font-style:
+normal">Proc. 27th PTTI Meeting</i>, pp. 291-302, Dec. 1995.<span style="font-size:10.0pt"></span></li> 
+		  <li><a name="REF_28"></a>D.A. Howe and F. Vernotte, "<a href="http://tycho.usno.navy.mil/ptti/ptti99/PTTI_1999_267.PDF">Generalization
+			 of the Total Variance Approach to the Modified Allan Variance</a>",
+			 <i style="mso-bidi-font-style:normal">Proc. 31th PTTI Meeting</i>, pp.267-276,
+			 Dec. 1999.<span style="font-size:10.0pt"></span></li> 
+		  <li><a name="REF_29"></a><span style="color:black">M.A. Weiss and D.A.
+			 Howe, “<a href="http://www.ieee-uffc.org/archive/fc/proceed/1998/proceed/s9810192.pdf">Total
+			 TDEV</a>”, </span><i style="mso-bidi-font-style:normal">Proc. 1998 IEEE
+			 Int. Freq. Cont. Symp</i>., pp. 192-198, June 1998.<span style="font-size:10.0pt"></span></li> 
+		  <li><a name="REF_30"></a>D. Howe, et al., “<a href="http://www.wriley.com/TotHvar-PTTI-00.pdf">A Total Estimator of the
+			 Hadamard Function Used For GPS Operations</a>”, <i>Proc. 32<sup>nd</sup>
+			 PTTI Meeting</i>, Nov. 2000, (to be published).<span style="font-size:10.0pt"></span></li> 
+		</ol> 
+		<div align="center"> 
+		  <table style="mso-cellspacing:1.8pt;
+ mso-padding-alt:.05in .05in .05in .05in" border="0" cellpadding="0" cellspacing="3"> 
+			 <tbody><tr> 
+				<td style="background:silver;padding:.05in .05in .05in .05in"> 
+				  <p align="center"><a href="#CONTENTS">Back to Contents</a></p>
+				  </td> 
+			 </tr> 
+		  </tbody></table> </div> 
+		<p><a name="TABLES"></a><b><span style="color:navy">TABLES</span></b>
+		  <br> </p> 
+		<table style="mso-cellspacing:1.5pt;
+ mso-padding-alt:0in 0in 0in 0in" bgcolor="#FFFFCC" border="1" cellpadding="0" cellspacing="3"> 
+		  <tbody><tr> 
+			 <td colspan="4" style="border:none;padding:.75pt .75pt .75pt .75pt"> 
+				<p style="text-align:center;vertical-align:top" align="center"><font size="-1"><font color="#FF0000"><b><span>Table I</span></b></font><a name="Table_I"></a></font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td colspan="4" style="padding:.75pt .75pt .75pt .75pt"> 
+				<p align="center"><font size="-1"><b><span style="color:black">NBS
+				  Monograph 140, Annex 8.E Test Data</span></b></font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" align="CENTER"> 
+				<p><b><font size="-1">Point #</font></b></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" align="CENTER"> 
+				<p><b><font size="-1">Frequency</font></b></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" align="CENTER"> 
+				<p><b><font size="-1">Normalized Frequency</font></b></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" align="CENTER"> 
+				<p><b><font size="-1">Phase (<span style="font-family:Symbol">t</span> =1)</font></b></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">1</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">892</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">103.11111</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">0.00000</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">2</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">809</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">20.11111</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">103.11111</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">3</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">823</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">34.11111</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">123.22222</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">4</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">798</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">9.11111</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">157.33333</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">5</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">671</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">-117.88889</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">166.44444</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">6</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">644</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">-144.88889</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">48.55555</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">7</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">883</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">94.11111</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">-96.33333</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">8</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">903</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">114.11111</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">-2.22222</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">9</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">677</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">-111.88889</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">111.88889</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">10</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">&nbsp;</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">&nbsp;</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">0.00000</font></p></td> 
+		  </tr> 
+		</tbody></table> 
+		<p align="center"><span style="display:none;mso-hide:all"></span></p> 
+		<div align="center"> 
+		  <table style="mso-cellspacing:1.8pt;
+ mso-padding-alt:.05in .05in .05in .05in" border="0" cellpadding="0" cellspacing="3"> 
+			 <tbody><tr> 
+				<td style="background:silver;padding:.05in .05in .05in .05in"> 
+				  <p align="center"><a href="#CONTENTS">Back to Contents</a></p>
+				  </td> 
+			 </tr> 
+		  </tbody></table> </div> 
+		<p><span style="display:none;mso-hide:all"></span></p> 
+		<table style="mso-cellspacing:1.5pt;
+ mso-padding-alt:0in 0in 0in 0in" bgcolor="#FFFFCC" border="1" cellpadding="0" cellspacing="3"> 
+		  <tbody><tr> 
+			 <td colspan="3" style="border:none;padding:.75pt .75pt .75pt .75pt" width="369"> 
+				<p style="text-align:center;vertical-align:top" align="center"><font size="-1"><b><span style="color:navy"><font color="#FF0000">Table II</font></span></b><a name="Table_II"></a></font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td colspan="3" style="padding:.75pt .75pt .75pt .75pt" width="369"> 
+				<p align="center"><font size="-1"><b><span style="color:black">NBS
+				  Monograph 140, Annex 8.E Test Data Statistics [<a href="http://www.wriley.com/nbs.dat">Download</a>]</span></b></font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" align="CENTER" width="202"> 
+				<p><b><font size="-1">Averaging Factor</font></b></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" align="CENTER" width="91"> 
+				<p><b><font size="-1">1</font></b></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" align="CENTER"> 
+				<p><b><font size="-1">2</font></b></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" width="202"> 
+				<p><font size="-1"># Data Points</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" width="91"> 
+				<p><font size="-1">9</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">4</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" width="202"> 
+				<p><font size="-1">Maximum</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" width="91"> 
+				<p><font size="-1">903</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">893.0</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" width="202"> 
+				<p><font size="-1">Minimum</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" width="91"> 
+				<p><font size="-1">644</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">657.5</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" width="202"> 
+				<p><font size="-1">Average</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" width="91"><font size="-1"> </font> 
+				<p><font size="-1">788.8889</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">802.875</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" width="202"> 
+				<p><font size="-1">Median</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" width="91"> 
+				<p><font size="-1">809</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">830.5</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" width="202"> 
+				<p><font size="-1">Linear Slope</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" width="91"> 
+				<p><font size="-1">- 10.20000</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">-2.55</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" width="202"> 
+				<p><font size="-1">Intercept</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" width="91"> 
+				<p><font size="-1">839.8889</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">809.25</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" width="202"> 
+				<p><font size="-1">Standard Deviation [1]</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" width="91"> 
+				<p><font size="-1">100.9770</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">102.6039</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" width="202"> 
+				<p><font size="-1">Normal Allan Deviation</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" width="91"> 
+				<p><font size="-1">91.22945</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">115.8082</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" width="202"> 
+				<p><font size="-1">Overlapping Allan Deviation</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" width="91"> 
+				<p><font size="-1">91.22945</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">85.95287</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" width="202"> 
+				<p><font size="-1">Modified Allan Deviation</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" width="91"> 
+				<p><font size="-1">91.22945</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">74.78849</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" width="202"> 
+				<p><font size="-1">Total Deviation</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" width="91"> 
+				<p><font size="-1">91.22945</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">98.31100</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" width="202"> 
+				<p><font size="-1">Hadamard Deviation</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" width="91"> 
+				<p><font size="-1">70.80608</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">116.7980</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" width="202"> 
+				<p><font size="-1">Time Deviation</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt" width="91"> 
+				<p><font size="-1">52.67135</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">86.35831</font></p></td> 
+		  </tr> 
+		</tbody></table> 
+		<p><font size="-1">Table II Notes: <br>[1] Sample (not population)
+		  standard deviation. </font></p> 
+		<div align="center"> 
+		  <table style="mso-cellspacing:1.8pt;
+ mso-padding-alt:.05in .05in .05in .05in" border="0" cellpadding="0" cellspacing="3"> 
+			 <tbody><tr> 
+				<td style="background:silver;padding:.05in .05in .05in .05in"> 
+				  <p align="center"><a href="#CONTENTS">Back to Contents</a></p>
+				  </td> 
+			 </tr> 
+		  </tbody></table> </div> 
+		<p><span style="display:none;mso-hide:all"></span></p> 
+		<table style="mso-cellspacing:1.5pt;
+ mso-padding-alt:0in 0in 0in 0in" bgcolor="#FFFFCC" border="1" cellpadding="0" cellspacing="3"> 
+		  <tbody><tr> 
+			 <td colspan="5" style="border:none;padding:.75pt .75pt .75pt .75pt"> 
+				<p style="text-align:center;vertical-align:top" align="center"><font size="-1"><font color="#FF0000"><b><span>Table III</span></b></font><a name="Table_III"></a></font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td colspan="5" style="padding:.75pt .75pt .75pt .75pt"> 
+				<p align="center"><font size="-1"><b>1000-Point Frequency Data Set
+				  [<a href="http://www.wriley.com/tst_suit.dat">Download</a>]</b></font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td colspan="2"> 
+				<p><font size="-1">Averaging Factor (m)</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">1</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">10</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">100</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td colspan="2"> 
+				<p><font size="-1"># Data Points</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">1000</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">100</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">10</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td colspan="2"> 
+				<p><font size="-1">Maximum</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">9.957453e-01</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">7.003371e-01</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">5.489368e-01</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td colspan="2"> 
+				<p><font size="-1">Minimum</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">1.371760e-03</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">2.545924e-01</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">4.533354e-01</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td colspan="2"> 
+				<p><font size="-1">Average [1]</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">4.897745e-01</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">4.897745e-01</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">4.897745e-01</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td colspan="2"> 
+				<p><font size="-1">Median</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">4.798849e-01</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">5.047888e-01</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">4.807261e-01</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td colspan="2"> 
+				<p><font size="-1">Linear Slope [2,3]</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">6.490910e-06</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">5.979804e-05</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">1.056376e-03</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td colspan="2"> 
+				<p><font size="-1">Intercept [3]</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">4.865258e-01</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">4.867547e-01</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">4.839644e-01</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td colspan="2"> 
+				<p><font size="-1">Bisection Slope [2]</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">-6.104214e-06</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">-6.104214e-05</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">-6.104214e-04</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td colspan="2"> 
+				<p><font size="-1">1st Difference Slope [2]</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">1.517561e-04</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">9.648320e-04</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">1.011791e-03</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">Log Fit [2,4]</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">a</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">5.577220e-03</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">5.248477e-03</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">7.138988e-03</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">y(t)=a ln (bt+1)+c</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">b</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">9.737500e-01</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">4.594973e+00</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">1.420429e+02</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1"></font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">c</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">4.570469e-01</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">4.631172e-01</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">4.442759e-01</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">y'(t)=ab/(bt+1)</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">Slope at end</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">5.571498e-06</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">5.237080e-05</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">7.133666e-04</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td colspan="2"> 
+				<p><font size="-1">Standard Deviation [5]</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">2.884664e-01</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">9.296352e-02</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">3.206657e-02</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td colspan="2"> 
+				<p><font size="-1">Normal Allan Deviation [6]</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">2.922319e-01</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">9.965736e-02</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">3.897804e-02</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td colspan="2"> 
+				<p><font size="-1">Overlapping Allan Deviation [8]</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">2.922319e-01</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">9.159953e-02</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">3.241343e-02</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td colspan="2"> 
+				<p><font size="-1">Modified Allan Deviation [7,8]</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">2.922319e-01</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">6.172376e-02</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">2.170921e-02</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td colspan="2"> 
+				<p><font size="-1">Time Deviation [8]</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">1.687202e-01</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">3.563623e-01</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">1.253382e-00</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td colspan="2"> 
+				<p><font size="-1">Hadamard Deviation</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">2.943883e-01</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">1.052754e-01</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">3.910860e-02</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td colspan="2"> 
+				<p><font size="-1">Overlapping Hadamard Dev.</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">2.943883e-01</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">9.581083e-02</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">3.237638e-02</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td colspan="2"> 
+				<p><font size="-1">Total Deviation [9]</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">2.922319e-01</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">9.134743e-02</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">3.406530e-02</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td colspan="2"> 
+				<p><font size="-1">Modified Total Deviation</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">2.418528e-01</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">6.499161e-02</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">2.287774e-02</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td colspan="2"> 
+				<p><font size="-1">Time Total Deviation</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">1.396338e-01</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">3.752293e-01</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">1.320847e+00</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td colspan="2"> 
+				<p><font size="-1">Hadamard Total Deviation [10]</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">2.943883e-01</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">9.614787e-02</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">3.058103e-02</font></p></td> 
+		  </tr> 
+		</tbody></table> 
+		<p><font size="-1">Table III Notes: <br>[1] Expected value = 0.5. <br>
+		  [2] All slopes are per interval. <br>[3] Least-squares linear fit. <br>[4]
+		  Exact results will depend on iterative algorithm used. Data not suited to log
+		  fit. <br>[5] Sample (not population) standard deviation. Expected value = 1/12
+		  = 0.2886751. <br>[6] Expected value equal to standard deviation for white FM
+		  noise. <br>[7] Equal to normal Allan deviation for averaging factor = 1. <br>
+		  [8] Calculated with listed averaging factors from the basic tau=1 data set.
+		  <br>[9] Calculated using doubly reflected TOTVAR method.</font></p><font size="-1"> </font> 
+		<p><font size="-1">[10] Hadamard total deviation equal to overlapping
+		  Hadamard deviation at m=1.</font></p> 
+		<div align="center"> 
+		  <table style="mso-cellspacing:1.8pt;
+ mso-padding-alt:.05in .05in .05in .05in" border="0" cellpadding="0" cellspacing="3"> 
+			 <tbody><tr> 
+				<td style="background:silver;padding:.05in .05in .05in .05in"> 
+				  <p align="center"><a href="#CONTENTS">Back to Contents</a></p>
+				  </td> 
+			 </tr> 
+		  </tbody></table> </div> 
+		<p><span style="display:none;mso-hide:all"></span></p> 
+		<table style="mso-cellspacing:1.5pt;
+ mso-padding-alt:0in 0in 0in 0in" bgcolor="#FFFFCC" border="1" cellpadding="0" cellspacing="3"> 
+		  <tbody><tr> 
+			 <td colspan="8" style="border:none;padding:.75pt .75pt .75pt .75pt"> 
+				<p style="text-align:center;vertical-align:top" align="center"><font size="-1"><b><span style="color:navy"><font color="#FF0000">Table IV</font></span></b><a name="Table_IV"></a></font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td colspan="8" style="padding:.75pt .75pt .75pt .75pt"> 
+				<p align="center"><font size="-1"><b><span style="color:black">Error Bars for n=1000 Point Data Set with Averaging
+				  Factor=10</span></b></font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td colspan="3" style="padding:.75pt .75pt .75pt .75pt" align="CENTER"> 
+				<p><b><font size="-1">Allan Deviation</font></b></p></td> 
+			 <td colspan="2" style="padding:.75pt .75pt .75pt .75pt" align="CENTER"> 
+				<p><b><font size="-1">Noise</font></b></p></td> 
+			 <td colspan="3" style="padding:.75pt .75pt .75pt .75pt" align="CENTER"> 
+				<p><b><font size="-1">Confidence Interval</font></b></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">Type</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">#</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">Value</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">Ratio</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">Type</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">Value</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1"><span style="font-family:Symbol">C</span><sup>2</sup></font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">Remarks</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">Normal</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">99</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">9.965736e-02</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">B1= 0.870</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">W FM [1]</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">CI = 8.713870e-03 [2,3]</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1"></font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1"><span style="font-family:Symbol">+/-</span>1<span style="font-family:Symbol">s
+				  </span>error bars</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">Overlapping</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">981</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">9.159953e-02</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1"></font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">W FM</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">Max <span style="font-family:Symbol">s</span><sub>y</sub>(<span style="font-family:Symbol">t</span>) = 1.014923e-01</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">119.07</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">+95% CI</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1"></font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1"></font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1"></font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1"></font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1"># <span style="font-family:Symbol">C</span><sup>2</sup>df =</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">Max <span style="font-family:Symbol">s</span><sub>y</sub>(<span style="font-family:Symbol">t</span>) = 1.035201e-01</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">114.45</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">+/<span style="font-family:Symbol">-</span>95%
+				  CI</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1"></font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1"></font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1"></font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1"></font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">146.177</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">Min <span style="font-family:Symbol">s</span><sub>y</sub>(<span style="font-family:Symbol">t</span>) = 8.223942e-02</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">181.34</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1"></font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">Modified [4]</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">972</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">6.172376e-02</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">R(n) = 0.384</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">W FM [5]</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1"></font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1"></font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1"></font></p></td> 
+		  </tr> 
+		</tbody></table> 
+		<p><font size="-1">Table IV Notes: <br>[1] Theoretical B1=1.000 for W FM
+		  noise and 0.667 for F and W PM noise. <br>[2] Simple, noise-independent CI
+		  estimate = <span style="font-family:Symbol">s</span><sub>y</sub>(<span style="font-family:Symbol">t</span>)/<span style="font-family:Symbol">Ö</span>N = 1.001594e-02. <br>[3] This CI
+		  includes <span style="font-family:Symbol">k<sub>a</sub></span>factor that
+		  depends on noise type: </font></p> 
+		<table style="mso-cellspacing:1.5pt;
+ mso-padding-alt:0in 0in 0in 0in" border="1" cellpadding="0" cellspacing="3"> 
+		  <tbody><tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p align="center"><font size="-1">Noise</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p align="center"><font size="-1"><span style="font-family:Symbol">a</span></font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p align="center"><font size="-1"><span style="font-family:Symbol">k<sub>a</sub></span></font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">W PM</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">2</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">0.99</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">F PM</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">1</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">0.99</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">W FM</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">0</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">0.87</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">F FM</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">-1</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">0.77</font></p></td> 
+		  </tr> 
+		  <tr> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">RW FM</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">-2</font></p></td> 
+			 <td style="padding:.75pt .75pt .75pt .75pt"> 
+				<p><font size="-1">0.75</font></p></td> 
+		  </tr> 
+		</tbody></table> 
+		<p><font size="-1">[4] BW factor =2 <span style="font-family:Symbol">p</span> f <sub>h</sub>
+		  <span style="font-family:Symbol">t</span><sub>0 </sub>=10. Applies only to F PM
+		  noise. <br>[5] Theoretical R(n) for W FM noise = 0.500 and 0.262 for F PM
+		  noise. </font></p> 
+		<div align="center"> 
+		  <table style="mso-cellspacing:1.8pt;
+ mso-padding-alt:.05in .05in .05in .05in" border="0" cellpadding="0" cellspacing="3"> 
+			 <tbody><tr> 
+				<td style="background:silver;padding:.05in .05in .05in .05in"> 
+				  <p align="center"><a href="#CONTENTS">Back to Contents</a></p>
+				  </td> 
+				<td style="background:silver;padding:.05in .05in .05in .05in"> 
+				  <p align="center"><a href="#TOP">Back To Top</a></p> </td> 
+				<td style="background:silver;padding:.05in .05in .05in .05in"> 
+				  <p align="center"><a href="http://www.wriley.com/index.htm">Back To Home</a></p> </td> 
+			 </tr> 
+		  </tbody></table> </div> 
+		<p><span style="font-size:10.0pt">Last Revised: 07/03/02</span> </p>
+		</div> 
+
+</body></html>
