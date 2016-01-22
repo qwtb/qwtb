@@ -1,5 +1,5 @@
 function dataout = alg_wrapper(datain, calcset)
-% Part of QWTB. Wrapper script for algorithm INL.
+% Part of QWTB. Wrapper script for algorithm INL-DNL.
 %
 % See also qwtb
 
@@ -7,7 +7,7 @@ function dataout = alg_wrapper(datain, calcset)
 % INL definition is:
 % function INL = ProcessHistogramTest(dsc,display_settings,varargin)
 dsc.data = datain.codes.v;
-dsc.NoB = datain.bits.v;
+dsc.NoB = datain.bitres.v;
 
 % some data required by algorithm but not affecting result:
 dsc.name = 'tst';
@@ -24,11 +24,13 @@ display_settings.warning_dialog = 0;
 
 % Call algorithm ---------------------------  %<<<1
 INL = ProcessHistogramTest(dsc,display_settings);
+DNL = diff(INL);
 
 % Format output data:  --------------------------- %<<<1
 % INL definition is:
 % function INL = ProcessHistogramTest(dsc,display_settings,varargin)
 dataout.INL.v = INL;
+dataout.DNL.v = DNL;
 
 end % function
 
