@@ -1,0 +1,19 @@
+\begin{tightdesc}
+\item [\textsf{.id}] --- INL-DNL
+\item [\textsf{.name}] --- Integral and Differential Non-Linearity of ADC
+\item [\textsf{.desc}] --- Calculates Integral and Differential Non-Linearity of an ADC. The histogram of measured data is used to calculate INL and DNL estimators. ADC has to sample a pure sine wave. To estimate all transition levels the amplitude of the sine wave should overdrive the full range of the ADC by at least 120%. If not so, non estimated transition levels will be assumed to be 0 and the results may be less accurate. As an input ADC codes are required.
+\item [\textsf{.citation}] --- Estimators are based on Tamás Virosztek, MATLAB-based ADC testing with sinusoidal excitation signal (in Hungar- ian), B.Sc. Thesis, 2011. Implementation: Virosztek, T., Pálfi V., Renczes B., Kollár I., Balogh L., Sárhegyi A., Márkus J., Bilau Z. T., ADCTest project site: \url{http://www.mit.bme.hu/projects/adctest} 2000-2014
+\item [\textsf{.remarks}] --- Based on the ADCTest Toolbox v4.3, November 25, 2014.
+\item [\textsf{.license}] --- UNKNOWN
+\item [\textsf{.requires}] \rule{0em}{0em}
+\begin{tightdesc}
+\item [\textsf{bitres}] --- Bit resolution of the ADC
+\item [\textsf{codes}] --- Sampled values represented as ADC codes (not converted to voltage)
+\end{tightdesc}
+\item [\textsf{.returns}] \rule{0em}{0em}
+\begin{tightdesc}
+\item [\textsf{DNL}] --- Differential Non-Linearity
+\end{tightdesc}
+\item [\textsf{.providesGUF}] --- no
+\item [\textsf{.providesMCM}] ---  no
+\end{tightdesc}

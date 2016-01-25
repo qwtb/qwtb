@@ -1,6 +1,9 @@
 %% script makes latex file for all algorithms info
 
 clear all
+% remove all files in publishscripts directory (it should be this directory, the
+% complicated path is a safety):
+delete('../alg_examples_published/*')
 
 % path to qwtb:
 addpath('../../qwtb');
