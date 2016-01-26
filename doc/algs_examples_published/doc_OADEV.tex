@@ -14,13 +14,13 @@
 
     
     
-\subsection*{Allan Deviation}
+\subsection*{Allan Overlapping Deviation}
 
 \begin{par}
-Example for algorithm ADEV.
+Example for algorithm OADEV.
 \end{par} \vspace{1em}
 \begin{par}
-ADEV is an algorithm to compute the Allan deviation for a set of time-domain frequency data.
+OADEV is an algorithm to compute the overlapping Allan deviation for a set of time-domain frequency data.
 \end{par} \vspace{1em}
 \begin{par}
 See also W. J. Riley, "The Calculation of Time Domain Frequency Stability". Implementation: M. A. Hopcroft, \verb"mhopeng@gmail.com", Matlab Central.'
@@ -57,10 +57,10 @@ DI.tau.v = [];
 \subsubsection*{Call algorithm}
 
 \begin{par}
-Use QWTB to apply algorithm \lstinline{ADEV} to data \lstinline{DI}.
+Use QWTB to apply algorithm \lstinline{OADEV} to data \lstinline{DI}.
 \end{par} \vspace{1em}
 \begin{lstlisting}[style=mcode]
-DO = qwtb('ADEV', DI);
+DO = qwtb('OADEV', DI);
 \end{lstlisting}
 
         \begin{lstlisting}[style=output]
@@ -75,9 +75,9 @@ Log log figure is the best to see allan deviation results:
 \end{par} \vspace{1em}
 \begin{lstlisting}[style=mcode]
 figure; hold on
-loglog(DO.tau.v, DO.adev.v, '-b')
-loglog(DO.tau.v, DO.adev.v + DO.adev.u, '-k')
-loglog(DO.tau.v, DO.adev.v - DO.adev.u, '-k')
+loglog(DO.tau.v, DO.oadev.v, '-b')
+loglog(DO.tau.v, DO.oadev.v + DO.oadev.u, '-k')
+loglog(DO.tau.v, DO.oadev.v - DO.oadev.u, '-k')
 xlabel('\tau (sec)');
 ylabel('\sigma_y(\tau)');
 title(['period = ' num2str(DI.fs.v)]);
@@ -85,7 +85,7 @@ grid('on'); hold off
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=0.7\textwidth]{alg_examples_published/ADEV_alg_example_01.pdf}
+\includegraphics[width=0.7\textwidth]{algs_examples_published/OADEV_alg_example_01.pdf}
 \end{center}
 
 

@@ -1,10 +1,13 @@
-%% script runs `publish` of all algorithms
+%% script runs matlab command `publish` on all algorithms examples
 % properly works only in Matlab, GNU Octave has some errors (4.0)
-% requires epstopdf
-
+% requires epstopdf, therefore probably only matlab in linux can do this
 clear all
-% remove old figures:
-system('rm *.eps')
+
+imgprefix = 'algs_examples_published/';
+dirprefix = ['../' imgprefix];
+
+% remove all files in target directory:
+delete([dirprefix '*'])
 
 % path to qwtb:
 addpath('../../qwtb');
@@ -14,35 +17,37 @@ algs = qwtb();
 PAAalgsids = {algs.id};
 
 for PAAi = 1:length(PAAalgsids)
-    % for every algorithm
+    % for every algorithm:
     disp(['publish on algorithm: ' PAAalgsids{PAAi}]);
-    % addpath of algorithm
+    % addpath of algorithm:
     qwtb(PAAalgsids{PAAi}, 'addpath');
-    % run publish on example
+    % run publish on example:
     publish('alg_example', 'format', 'latex', 'outputDir', '.');
 
-    % reformat matlab latex output
-    PAAstr = betterpublish(fileread('alg_example.tex'), ['alg_examples_published/' PAAalgsids{PAAi}]);
+    % reformat matlab latex output:
+    PAAstr = betterpublish(fileread('alg_example.tex'), [imgprefix PAAalgsids{PAAi}]);
+    % open latex file:
     PAAfid = fopen('alg_example.tex', 'w');
     fprintf(PAAfid, '%s', PAAstr);
     fclose(PAAfid);
-    movefile('alg_example.tex', ['../alg_examples_published/doc_' PAAalgsids{PAAi} '.tex']);
+    % rename output latex file by algorithm id:
+    movefile('alg_example.tex', [dirprefix 'doc_' PAAalgsids{PAAi} '.tex']);
 
     % remove old path:
     qwtb(PAAalgsids{PAAi}, 'rempath');
 
-    % image files:
+    % convert image files to pdf:
     PAAeps = dir('*.eps');
     PAAeps = {PAAeps.name};
     for PAAj = 1:length(PAAeps)
         system(['epstopdf ' PAAeps{PAAj}]);
         delete([PAAeps{PAAj}]);
     end
-    % image files:
+    % rename image files:
     PAApdf = dir('*.pdf');
     PAApdf = {PAApdf.name};
     for PAAj = 1:length(PAApdf)
-        movefile(PAApdf{PAAj}, ['../alg_examples_published/' PAAalgsids{PAAi} '_' PAApdf{PAAj}]);
+        movefile(PAApdf{PAAj}, [dirprefix PAAalgsids{PAAi} '_' PAApdf{PAAj}]);
     end
 end % for all algorithms
 

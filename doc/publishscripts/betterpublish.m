@@ -1,6 +1,10 @@
+%% reformats output of matlab publish command to a better result optimized for
+% QWTB documentation. It is called by publish_all_algs.m and
+% publish_all_examples.m.
+
 function outstr = betterpublish(instr, imgprefix)
-% reformats output of matlab publish to a better result optimized for QWTB
-% documentation
+% the order of following commands IS important. It uses a set of regular
+% expression substitutes.
 
 % comment headings
 %sed -i 's/\(\\documentclass{article}\)$/%%% \1/' "$origf"

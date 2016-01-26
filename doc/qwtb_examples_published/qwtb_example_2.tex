@@ -64,7 +64,7 @@ DI.y.v = ideal_wave;
 QWTB will be used to apply three algorithms to determine frequency and amplitude: \lstinline{SP-FFT}, \lstinline{PSFE} and \lstinline{FPSWF}. Results are in data out structure \lstinline{DOxxx}. Algorithm \lstinline{FPSWF} requires an estimate, select it to 0.1\% different from nominal frequency. \lstinline{SP-FFT} requires sampling frequency.
 \end{par} \vspace{1em}
 \begin{lstlisting}[style=mcode]
-DI.f.v = fnom.*1.001;
+DI.fest.v = fnom.*1.001;
 DI.fs.v = fsnom;
 DOspfft = qwtb('SP-FFT', DI);
 DOpsfe = qwtb('PSFE', DI);
@@ -226,44 +226,44 @@ ferr =
 
 Aerr =
 
-    0.4267
+    1.1850
 
 
 pherr =
 
-  -4.2920e+05
+  -4.2921e+05
 
 PSFE errors:
 
 ferr =
 
-    0.0084
+   -0.0092
 
 
 Aerr =
 
-    0.4251
+    1.2753
 
 
 pherr =
 
-   -4.2581
+    4.7572
 
 FPSWF errors:
 
 ferr =
 
-    0.0103
+   -0.0067
 
 
 Aerr =
 
-    0.4249
+    1.1862
 
 
 pherr =
 
-   -4.7325
+    3.8007
 
 \end{lstlisting} \color{black}
     
@@ -539,7 +539,7 @@ ferr =
 
 Aerr =
 
-    0.5539
+    0.3891
 
 
 pherr =
@@ -550,33 +550,33 @@ PSFE errors:
 
 ferr =
 
-    0.0094
+   -0.0088
 
 
 Aerr =
 
-    2.7791
+    3.3181
 
 
 pherr =
 
-   -1.0151
+    5.5998
 
 FPSWF errors:
 
 ferr =
 
-   -0.7082
+   -0.7230
 
 
 Aerr =
 
-    3.1053
+    2.9338
 
 
 pherr =
 
-  224.3897
+  229.8478
 
 \end{lstlisting} \color{black}
     

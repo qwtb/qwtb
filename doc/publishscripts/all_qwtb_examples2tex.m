@@ -1,10 +1,13 @@
-%% script runs `publish` of all examples
+%% script runs matlab command `publish` on all qwtb examples
 % properly works only in Matlab, GNU Octave has some errors (4.0)
-% requires epstopdf
-
+% requires epstopdf, therefore probably only matlab in linux can do this
 clear all
-% remove old figures:
-system('rm *.eps');
+
+imgprefix = 'qwtb_examples_published/';
+dirprefix = ['../' imgprefix];
+
+% remove all files in target directory:
+delete([dirprefix '*'])
 
 % path to qwtb:
 addpath('../../qwtb');
@@ -13,17 +16,19 @@ addpath('../../qwtb');
 PAEfn = {'qwtb_example_1', 'qwtb_example_2'};
 
 for PAEi = 1:length(PAEfn)
+    % for all examples
     % latex file:
     PAEcfn = [PAEfn{PAEi} '.tex']
     % run publish on example
     publish(PAEfn{PAEi}, 'format', 'latex', 'outputDir', '.');
 
     % reformat matlab latex output
-    PAEstr = betterpublish(fileread(PAEcfn), 'qwtb_examples_published/');
+    %%%%%%% XXX PAEstr = betterpublish(fileread(PAEcfn), 'qwtb_examples_published/');
+    PAEstr = betterpublish(fileread(PAEcfn), imgprefix);
     PAEfid = fopen(PAEcfn, 'w');
     fprintf(PAEfid, '%s', PAEstr);
     fclose(PAEfid);
-    movefile(PAEcfn, ['../qwtb_examples_published/' PAEcfn]);
+    movefile(PAEcfn, [dirprefix PAEcfn]);
 
     % image files:
     PAEeps = dir('*.eps');
@@ -36,10 +41,9 @@ for PAEi = 1:length(PAEfn)
     PAEpdf = dir('*.pdf');
     PAEpdf = {PAEpdf.name};
     for PAEj = 1:length(PAEpdf)
-        movefile(PAEpdf{PAEj}, ['../qwtb_examples_published/' PAEpdf{PAEj}]);
+        movefile(PAEpdf{PAEj}, [dirprefix PAEpdf{PAEj}]);
     end
-end
-
+end % for all examples
 
 close all
 
