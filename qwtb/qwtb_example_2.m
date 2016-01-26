@@ -21,7 +21,7 @@ DI.y.v = ideal_wave;
 % amplitude: |SP-FFT|, |PSFE| and |FPSWF|. Results are in data out structure
 % |DOxxx|. Algorithm |FPSWF| requires an estimate, select it to 0.1% different
 % from nominal frequency. |SP-FFT| requires sampling frequency.
-DI.f.v = fnom.*1.001;
+DI.fest.v = fnom.*1.001;
 DI.fs.v = fsnom;
 DOspfft = qwtb('SP-FFT', DI);
 DOpsfe = qwtb('PSFE', DI);
