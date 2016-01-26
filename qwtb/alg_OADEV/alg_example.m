@@ -10,8 +10,8 @@ DI = [];
 %!demo
 %ysin=2.*sin(2.*pi.*1/300.*[1:1:1e3]);
 %! [x y s errors]=adev(1, ysin, 1, 'best averaging time is 300 s, i.e. cca one sine period');
-% A random numbers with normal probability distribution function will be geneated into data input |DI.y.v|.
-DI.y.v = normrnd(1.5,3,1,1e3);
+% A random numbers with normal probability distribution function will be generated into data input |DI.y.v|.
+DI.y.v = 1.5 + 3.*randn(1, 1e3);
 % Next a drift is added:
 DI.y.v = DI.y.v + [1:1:1e3]./100;
 % Lets suppose a sampling frequency is 1 Hz:

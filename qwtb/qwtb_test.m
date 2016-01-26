@@ -1,4 +1,5 @@
 % test of qwtb functions
+% XXX missing tests for matrix input quantities
 clear all
 tg = 1;
 
@@ -33,10 +34,12 @@ u = 0.1;
 
 DI.x.v = x;
 DI.x.u = x.*0 + u;
+% XXX normrnd must be removed in future if these lines will be used:
 %DI.t.r = normrnd( repmat(t, M, 1), repmat(u, size(repmat(t, M, 1))) );
 
 DI.y.v = y;
 DI.y.u = y.*0 + u;
+% XXX normrnd must be removed in future if these lines will be used:
 %DI.y.r = normrnd( repmat(y, M, 1), repmat(u, size(repmat(y, M, 1))) );
 
 % test for results for algorithm testGM: %<<<2

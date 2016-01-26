@@ -25,7 +25,7 @@ DI.t.v = [0:1/1e4:1-1/1e4];
 DI.y.v = Anom*sin(2*pi*fnom*DI.t.v + phnom);
 %%
 % Add noise:
-DI.y.v = DI.y.v + normrnd(0, 1e-3, size(DI.y.v));
+DI.y.v = DI.y.v + 1e-3.*randn(size(DI.y.v));
 
 %% Call algorithm
 % Use QWTB to apply algorithm |PSFE| to data |DI|.

@@ -741,16 +741,22 @@ function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
 end % function check_gen_datain
 
 function r = rand_quant(Q, M) %<<<1
-% generates randomize quantity Q 
+% generates randomize quantity Q
     if isscalarP(Q.u)
-        r = normrnd(Q.v, Q.u, M, 1);
+        r = Q.v + Q.u.*randn(M, 1);
     elseif isvectorP(Q.u)
-        r = normrnd(repmat(Q.v, M, 1), repmat(Q.u, M, 1));
+        % normrnd is not used to prevent need of matlab statistical toolbox:
+        tmpv = repmat(Q.v, M, 1);
+        tmpu = repmat(Q.u, M, 1);
+        r = tmpv + tmpu.*randn(size(tmpu));
         % XXX but this generates 2 large matrices, and one large output. maybe
         % mvnrnd with zero covariancies would be more memory efficient?
         % 2 DO correlations - mvnrnd
     elseif ismatrixP(Q.u)
-        r = normrnd(repmat(Q.v, 1, 1, M), repmat(Q.u, 1, 1, M));
+        % normrnd is not used to prevent need of matlab statistical toolbox:
+        tmpv = repmat(Q.v, [1, 1, M]);
+        tmpu = repmat(Q.u, [1, 1, M]);
+        r = tmpv + tmpu.*randn(size(tmpu));
         % 2 DO correlations - mvnrnd
     else
         error(['QWTB: quantity `' Qname '` has too many dimensions']);
@@ -940,17 +946,17 @@ function Qout = unc_to_val(Qin, MCind, Qname) %<<<1
 %        % randomizovat jen kdyz neni randomizovane, a to by mel
 %        % resit nejaky kontrolor nejistot v datain
 %        % XXX
+%           % normrnd nemuze byt, protoze v zakladnim matlabu neni!
 %        Qout.v = normrnd(Qin.v, Qin.u, [M 1]);
 %    else
 %        for i = 1:length(Qin.v)
 %            % 2DO too slow, mvnrnd has to be used
 %            % 2DO, other distributions
 %            % 2DO, paralelize if no other possibility?
+%           % normrnd nemuze byt, protoze v zakladnim matlabu neni!
 %            Qout.v(:,i) = normrnd(Qin.v(i), Qin.u(i), [1 1]);
 %        end
 %    end
 end % function
-
-
 
 % vim settings modeline: vim: foldmarker=%<<<,%>>> fdm=marker fen ft=octave textwidth=80 tabstop=4 shiftwidth=4

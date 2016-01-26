@@ -13,7 +13,7 @@ DI.t.v = [0:1/fsnom:0.5];
 DI.y.v = Anom*sin(2*pi*fnom*DI.t.v + phnom);
 %%
 % Add noise of standard deviation 1 mV:
-DI.y.v = DI.y.v + normrnd(0, 1e-3, size(DI.y.v));
+DI.y.v = DI.y.v + 1e-3.*randn(size(DI.y.v));
 
 %% Analyzing data
 % To get a frequency spectrum, algorithm |SP-FFT| can be used. This algorithm

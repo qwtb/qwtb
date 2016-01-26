@@ -1,4 +1,5 @@
 function info = alg_info() %<<<1
+% XXX add it takes up to 5 harmonics? does it?
 % Part of QWTB. Info script for algorithm SFDR.
 %
 % See also qwtb

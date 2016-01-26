@@ -51,7 +51,7 @@ pherr = (DOfpswf.ph.v - phnom)/phnom .* 1e6
 % To simulate real measurement, noise is added with normal distribution and
 % standard deviation |sigma| of 100 microvolt. Algorithms are again applied.
 sigma = 100e-6;
-DI.y.v = ideal_wave + normrnd(0, 100e-6, size(ideal_wave));
+DI.y.v = ideal_wave + 100e-6.*randn(size(ideal_wave));
 DOspfft = qwtb('SP-FFT', DI);
 DOpsfe = qwtb('PSFE', DI);
 DOfpswf = qwtb('FPSWF', DI);
@@ -135,7 +135,7 @@ pherr = (DOfpswf.ph.v - phnom)/phnom .* 1e6
 
 %% Harmonically distorted, noisy, non-coherent signal.
 % In final test all distortions are put in a waveform and results are compared.
-err_wave = Anom*sin(2*pi*fnc*timestamps + phnom) + 0.1*Anom*sin(2*pi*fnc*2*timestamps + 2) + normrnd(0, 100e-6, size(ideal_wave));
+err_wave = Anom*sin(2*pi*fnc*timestamps + phnom) + 0.1*Anom*sin(2*pi*fnc*2*timestamps + 2) + 100e-6.*randn(size(ideal_wave));
 DI.y.v = err_wave;
 DOspfft = qwtb('SP-FFT', DI);
 DOpsfe = qwtb('PSFE', DI);

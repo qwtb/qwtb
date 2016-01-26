@@ -28,10 +28,10 @@ elseif strcmpi(calcset.unc, 'mcm')
     M = calcset.mcm.repeats;
     [tmp2, tmp] = find(maxval == datain.y.v);
     tmp = tmp(1);
-    maxunc = normrnd(maxval, datain.y.u(tmp), 1, M, 1);
+    maxunc = maxval + datain.y.u(tmp).*randn(1, M, 1);
     [tmp2, tmp] = find(minval == datain.y.v);
     tmp = tmp(1);
-    minunc = normrnd(minval, datain.y.u(tmp), 1, M, 1);
+    minunc = minval + datain.y.u(tmp).*randn(1, M, 1);
 else
     error(['qwtb wrapper testM: value ' calcset.unc ' of calcset.unc not implemented'])
 end
