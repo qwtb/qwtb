@@ -552,17 +552,34 @@ function calcset = check_gen_calcset(calcset) %<<<1
 end % function check_calcset
 
 function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
-% Checks if input data complies to the qwtb data format and has all variables
-% required by algorithm. Raises error in the case of missing fields. Fields Q.d
-% and Q.c are generated if permitted and required.
+% Checks if input data has all quantities required by algorithm.
+% Checks if input data complies to the qwtb data format.
+% Raises error in the case of missing quantities or fields. Fields Q.d and Q.c
+% are generated if permitted and required.
+
+    % search for missing quantities in input data structure: %<<<2
+    missingQ = 0;
+    tmps = [];
+    for i = 1:length(alginfo.requires)
+        if ~isfield(datain, alginfo.requires{i})
+                % missing quantity, generate part of error message with missing quantity informations:
+                tmps = [tmps sprintf('\n') '`' alginfo.requires{i} '`, ' alginfo.reqdesc{i}];
+                missingQ = missingQ + 1;
+        end
+    end
+    if missingQ
+        % some quantities missing, generate singular or plural version of error
+        % message:
+        if missingQ == 1
+            tmps = ['QWTB: followinq quantity is required by algorithm `' alginfo.id '` but is missing in input data structure:' tmps];
+        else
+            tmps = ['QWTB: followinq quantities are required by algorithm `' alginfo.id '` but are missing in input data structure:' tmps];
+        end
+        % raise error with missing quantity informations:
+        error(tmps)
+    end
 
     for i = 1:length(alginfo.requires)
-        Qname = alginfo.requires{i};
-        % check for quantity: %<<<2
-        if ~(isfield(datain, Qname))
-                error(['QWTB: quantity `' Qname '` required but missing in input data structure. Quantity description is: `' alginfo.reqdesc{i} '`'])
-        end
-
         % check for quantity components: %<<<2
         Q = datain.(Qname);
         % Q.v: %<<<3
