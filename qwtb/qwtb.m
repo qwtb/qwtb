@@ -69,7 +69,7 @@ function varargout = qwtb(varargin)
             end
 
             % process data:
-            [dataout, calcset] = check_and_run_alg(algid, datain, calcset);
+            [dataout, datain, calcset] = check_and_run_alg(algid, datain, calcset);
             varargout{1} = dataout;
             varargout{2} = datain;
             varargout{3} = calcset;
@@ -196,7 +196,7 @@ end % path_rem_all_algdirs
 
 
 % -------------------------------- algorithm related functions %<<<1
-function [dataout, calcset] = check_and_run_alg(algid, datain, calcset) %<<<1
+function [dataout, datain, calcset] = check_and_run_alg(algid, datain, calcset) %<<<1
 % checks data, settings and calls wrapper
 
     dataout = [];
