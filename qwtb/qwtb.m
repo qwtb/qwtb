@@ -565,8 +565,8 @@ function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
                 % missing quantity, generate part of error message with missing quantity informations:
                 tmps = [tmps sprintf('\n') '`' alginfo.requires{i} '`, ' alginfo.reqdesc{i}];
                 missingQ = missingQ + 1;
-        end
-    end
+        end % if
+    end % for alginfo.requires
     if missingQ
         % some quantities missing, generate singular or plural version of error
         % message:
@@ -577,121 +577,174 @@ function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
         end
         % raise error with missing quantity informations:
         error(tmps)
-    end
+    end % if missingQ
 
+    % check individual quantities: %<<<2
     for i = 1:length(alginfo.requires)
-        % check for quantity components: %<<<2
+        % for every quantity
+        Qname = alginfo.requires{i};
         Q = datain.(Qname);
-        % Q.v: %<<<3
-        if ~(isfield(Q, 'v'))
-                error(['QWTB: field `v` missing in quantity `' Qname '`'])
-        end
-        % Q.u: %<<<3
-        if ~(isfield(Q, 'u'))
+
+        % get which quantity components exist: %<<<3
+        Isv = isfield(Q, 'v');
+        Isu = isfield(Q, 'u');
+        Isd = isfield(Q, 'd');
+        Isc = isfield(Q, 'c');
+        Isr = isfield(Q, 'r');
+
+        % check if quantities are required: %<<<3
+        % Q.v: %<<<4
+        if ~(Isv) 
+                error(['QWTB: field `v` (value) missing in quantity `' Qname '`.'])
+        end % is Q.v
+        % Q.u: %<<<4
+        Genu = 0;
+        if ~(Isu)
             if ~( strcmpi(calcset.unc, 'none') )
-                    error(['QWTB: field `u` missing in quantity `' Qname '` and uncertainty calculation required'])
+                    error(['QWTB: field `u` (uncertainty) is missing in quantity `' Qname '` and uncertainty calculation is required.'])
             else
-                % generate empty field:
-                datain.(Qname).u = [];
-                Q = datain.(Qname);
+                Genu = 1;
             end
         end % is Q.u
-        % Q.d: %<<<3
+        % Q.d: %<<<4
+        Gend = 0;
         if ~(isfield(Q, 'd'))
             if ( strcmpi(calcset.unc, 'guf') && calcset.dof.req )
                 % if guf uncertainty calculation and dof is required
                 if calcset.dof.gen
                     % degrees of freedom generated automatically
-                    if calcset.verbose
-                        disp(['QWTB: default degrees of freedom generated for quantity `' Qname '`'])
-                    end
-                    datain.(Qname).d = 50.*ones(size(datain.(Qname).v));
-                    Q = datain.(Qname);
+                    Gend = 2;
                 else
-                    error(['QWTB: field `d` missing in quantity `' Qname '`, automatic generation disabled but guf uncertainty calculation required'])
+                    error(['QWTB: field `d` (degrees of freedom) is missing in quantity `' Qname '`, automatic generation is disabled but GUF uncertainty calculation is required.'])
                 end % if dof.gen
             else
-                % generate empty field:
-                datain.(Qname).d = [];
-                Q = datain.(Qname);
+                Gend = 1;
             end % if guf & dof.req
         end % if Q.d
-        % Q.c: %<<<3
+        % Q.c: %<<<4
         if ~(isfield(Q, 'c'))
             if ( ~strcmpi(calcset.unc, 'none') && calcset.cor.req )
                 % if uncertainty calculation and correlation required
                 if calcset.cor.gen
-                    % correlation matrix generated automatically
-                    if calcset.verbose
-                        disp(['QWTB: default correlation matrix generated for quantity `' Qname '`'])
-                    end
-                    datain.(Qname).c = zeros(length(Q.v), length(Q.v));
-                    Q = datain.(Qname);
-                    % XXX previous line do not work for matrix Q!, this only works
-                    % for scalar and vector!!!
+                    Genc = 2;
                 else
-                    error(['QWTB: field `c` missing in quantity `' Qname '`, automatic generation disabled but uncertainty calculation required'])
+                    error(['QWTB: field `c` (correlation matrix) is missing in quantity `' Qname '`, automatic generation is disabled but uncertainty calculation is required.'])
                 end
             else
-                % generate empty field:
-                datain.(Qname).c = [];
-                Q = datain.(Qname);
+                Genc = 1;
             end % if unc & cor.req
         end % if Q.c
-        % Q.r: %<<<3
+        % Q.r: %<<<4
         if ~( isfield(Q, 'r') )
             if strcmpi(calcset.unc, 'mcm')
                 if ~( calcset.mcm.randomize )
-                    error(['QWTB: field `r` missing in quantity `' Qname '` and mcm is required but automatic randomization is disabled'])
+                    error(['QWTB: field `r` (randomized uncertainties) is missing in quantity `' Qname '`, automatic randomization is disabled but MCM uncertainty calculation is required.'])
                 else
                     % randomize quantity:
-                    datain.(Qname).r = rand_quant(Q, calcset.mcm.repeats);
-                    Q = datain.(Qname);
-                    if calcset.verbose
-                        disp(['QWTB: quantity ' Qname ' was randomized by QWTB']);
-                    end
+                    Genr = 2;
                 end % if randomize
             else
-                % generate empty field:
-                datain.(Qname).r = [];
-                Q = datain.(Qname);
+                Genr = 1;
             end % if mcm
         end % if Q.r
 
-        % check components sizes: %<<<2
+        % transpose vector quantity if needed: %<<<3
+        if isvectorP(Q.v)
+            if size(Q.v, 1) > size(Q.v, 2)
+                warning(['QWTB: value of quantity `' Qname '` is column vector, it was automatically transposed.'])
+                Q.v = Q.v';
+            end
+            if Isu
+                if size(Q.u, 1) > size(Q.u, 2)
+                    warning(['QWTB: uncertainty of quantity `' Qname '` is column vector, it was automatically transposed.'])
+                    Q.u = Q.u';
+                end
+            end
+            if Isd
+                if size(Q.d, 1) > size(Q.d, 2)
+                    warning(['QWTB: degrees of freedom of quantity `' Qname '` is column vector, it was automatically transposed.'])
+                    Q.d = Q.d';
+                end
+            end
+            if Isr
+                if ( size(Q.v, 1) == size(Q.r, 2) || size(Q.v, 1) == size(Q.r, 2) )
+                    warning(['QWTB: randomized uncertainties of quantity `' Qname '` was automatically transposed.'])
+                    Q.r = Q.r';
+                end
+            end
+        end % isvectorP(Q.v)
+
+        % generate missing fields %<<<3
+        % Q.u: %<<<4
+        if Genu
+            % generate empty field:
+            Q.u = [];
+        end
+        % Q.d: %<<<4
+        if Gend == 1
+            % generate empty field:
+            Q.d = [];
+        end
+        if Gend == 2
+            if calcset.verbose
+                disp(['QWTB: default degrees of freedom generated for quantity `' Qname '`'])
+            end
+            Q.d = 50.*ones(size(Q.v));
+        end
+        % Q.c: %<<<4
+        if Genc == 1
+            % generate empty field:
+            Q.c = [];
+        end
+        if Genc == 2
+            if calcset.verbose
+                disp(['QWTB: default correlation matrix generated for quantity `' Qname '`'])
+            end
+            Q.c = zeros(length(Q.v), length(Q.v));
+            % XXX previous line do not work for matrix Q!, this only works
+            % for scalar and vector!!!
+        end
+        % Q.r: %<<<4
+        if Genr == 1
+            % generate empty field:
+            Q.r = [];
+        end
+        if Genr == 2
+            if calcset.verbose
+                disp(['QWTB: quantity ' Qname ' was randomized by QWTB']);
+            end
+            Q.r = rand_quant(Q, calcset.mcm.repeats);
+        end
+
+        % check components sizes: %<<<3
         Sv = size(Q.v);
         Su = size(Q.u);
         Sc = size(Q.c);
         Sd = size(Q.d);
         Sr = size(Q.r);
 
-        % Q.v: %<<<3
-        % if value is vector, should be row vector:
-        if isvectorP(Q.v)
-            if ( Sv(1) ~= 1 )
-                error(['QWTB: vector quantity `' Qname '` is not row vector.'])
-            end
+        % Q.v: %<<<4
+        % check that maximal number of non trailing non singleton dimensions is 2:
+        if ndims(Q.v) > 2
+            error(['QWTB: value of quantity `' Qname '` has too many dimensions.'])
         end
-
-        % Q.u: %<<<3
+        % Q.u: %<<<4
         if ~( strcmpi(calcset.unc, 'none') )
             % dimensions must fully match Qname.v
             if ~isequal(Sv, Su)
-                error(['QWTB: uncertainty matrix of quantity `' Qname '` has incorrect dimensions'])
+                error(['QWTB: dimensions of uncertainty matrix do not match dimensions of value matrix in quantity `' Qname '`.'])
             end
         end
-
-        % Q.d: %<<<3
+        % Q.d: %<<<4
         if strcmpi(calcset.unc, 'guf') 
             if calcset.dof.req
                 % dimensions must fully match Qname.v
                 if ~isequal(Sv, Sd)
-                    error(['QWTB: dimensions of degrees of freedom matrix do not match dimensions of value matrix in quantity `' Qname '`'])
+                    error(['QWTB: dimensions of degrees of freedom matrix do not match dimensions of value matrix in quantity `' Qname '`.'])
                 end
             end % if dof.req
         end % if guf
-
-        % Q.c: %<<<3
+        % Q.c: %<<<4
         if (strcmpi(calcset.unc, 'guf') || strcmpi(calcset.unc, 'mcm') )
             if calcset.cor.req
                 % XXX how?
@@ -714,8 +767,7 @@ function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
                 end
             end % if cor.req
         end % if guf or mcm
-
-        % Q.r: %<<<3
+        % Q.r: %<<<4
         if strcmpi(calcset.unc, 'mcm')
             % dimensions are same as Q.v but one dimension is equal calcset.mcm.repeats
             ok = 1;
@@ -752,8 +804,9 @@ function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
             if ~(ok)
                 error(['QWTB: randomized matrix of quantity `' Qname '` has incorrect dimensions (calcset.mcm.reapeats = ' num2str(calcset.mcm.repeats) ')'])
             end
-        end % if mcm
-
+        end % if mcm 
+        % update datain structure: %<<<3
+        datain.(Qname) = Q;
     end % for every Q
 end % function check_gen_datain
 
