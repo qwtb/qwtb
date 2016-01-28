@@ -15,11 +15,11 @@ DI.fest.v = 100.2;
 DO = qwtb('FPSWF', DI);
 
 % Check results --------------------------- %<<<1
-err = 1e-10;
-assert((DO.f.v > fnom.*(1-err)) & (DO.f.v < fnom.*(1+err)));
-assert((DO.A.v > Anom.*(1-err)) & (DO.A.v < Anom.*(1+err)));
-assert((DO.ph.v > phnom.*(1-err)) & (DO.ph.v < phnom.*(1+err)));
-assert((DO.O.v > Onom.*(1-err)) & (DO.O.v < Onom.*(1+err)));
+maxerr = 1e-10;
+assert((DO.f.v > fnom.*(1-maxerr)) & (DO.f.v < fnom.*(1+maxerr)));
+assert((DO.A.v > Anom.*(1-maxerr)) & (DO.A.v < Anom.*(1+maxerr)));
+assert((DO.ph.v > phnom.*(1-maxerr)) & (DO.ph.v < phnom.*(1+maxerr)));
+assert((DO.O.v > Onom.*(1-maxerr)) & (DO.O.v < Onom.*(1+maxerr)));
 
 end % function
 
