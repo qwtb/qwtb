@@ -55,7 +55,7 @@ if isOctave
 
 else % matlab code
 
-    fun = @(p) (p(1).*sin(2.*pi.*p(2).*t + p(3)) - p(4)) - y;
+    fun = @(p) (p(1).*sin(2.*pi.*p(2).*t + p(3)) + p(4)) - y;
     if verbose
         options = [];
         disp('Fitting started')
