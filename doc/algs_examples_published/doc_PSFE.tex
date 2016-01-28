@@ -51,7 +51,7 @@ DI.y.v = Anom*sin(2*pi*fnom*DI.t.v + phnom);
 Add noise:
 \end{par} \vspace{1em}
 \begin{lstlisting}[style=mcode]
-DI.y.v = DI.y.v + normrnd(0, 1e-3, size(DI.y.v));
+DI.y.v = DI.y.v + 1e-3.*randn(size(DI.y.v));
 \end{lstlisting}
 
 
@@ -110,17 +110,17 @@ pherrppm = (DO.ph.v - phnom)/phnom .* 1e6
 
 ferrppm =
 
-   -0.0394
+   -0.0015
 
 
 Aerrppm =
 
-  -18.9726
+    1.2432
 
 
 pherrppm =
 
-    5.5606
+   21.2068
 
 \end{lstlisting} \color{black}
     
