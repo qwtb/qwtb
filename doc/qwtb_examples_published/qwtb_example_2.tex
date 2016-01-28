@@ -170,7 +170,7 @@ To simulate real measurement, noise is added with normal distribution and standa
 \end{par} \vspace{1em}
 \begin{lstlisting}[style=mcode]
 sigma = 100e-6;
-DI.y.v = ideal_wave + normrnd(0, 100e-6, size(ideal_wave));
+DI.y.v = ideal_wave + 100e-6.*randn(size(ideal_wave));
 DOspfft = qwtb('SP-FFT', DI);
 DOpsfe = qwtb('PSFE', DI);
 DOfpswf = qwtb('FPSWF', DI);
@@ -226,7 +226,7 @@ ferr =
 
 Aerr =
 
-    1.1850
+    1.2729
 
 
 pherr =
@@ -237,33 +237,33 @@ PSFE errors:
 
 ferr =
 
-   -0.0092
+   -0.0119
 
 
 Aerr =
 
-    1.2753
+    1.1412
 
 
 pherr =
 
-    4.7572
+    5.7635
 
 FPSWF errors:
 
 ferr =
 
-   -0.0067
+   -0.0161
 
 
 Aerr =
 
-    1.1862
+    1.2757
 
 
 pherr =
 
-    3.8007
+    6.8762
 
 \end{lstlisting} \color{black}
     
@@ -485,7 +485,7 @@ pherr =
 In final test all distortions are put in a waveform and results are compared.
 \end{par} \vspace{1em}
 \begin{lstlisting}[style=mcode]
-err_wave = Anom*sin(2*pi*fnc*timestamps + phnom) + 0.1*Anom*sin(2*pi*fnc*2*timestamps + 2) + normrnd(0, 100e-6, size(ideal_wave));
+err_wave = Anom*sin(2*pi*fnc*timestamps + phnom) + 0.1*Anom*sin(2*pi*fnc*2*timestamps + 2) + 100e-6.*randn(size(ideal_wave));
 DI.y.v = err_wave;
 DOspfft = qwtb('SP-FFT', DI);
 DOpsfe = qwtb('PSFE', DI);
@@ -498,10 +498,10 @@ QWTB: no uncertainty calculation
 QWTB: no uncertainty calculation
 Fitting started
 
-Local minimum possible.
+Local minimum found.
 
-lsqnonlin stopped because the final change in the sum of squares relative to 
-its initial value is less than the default value of the function tolerance.
+Optimization completed because the size of the gradient is less than
+the default value of the function tolerance.
 
 
 
@@ -539,7 +539,7 @@ ferr =
 
 Aerr =
 
-    0.3891
+   -0.5039
 
 
 pherr =
@@ -550,33 +550,33 @@ PSFE errors:
 
 ferr =
 
-   -0.0088
+   -0.0037
 
 
 Aerr =
 
-    3.3181
+    1.5007
 
 
 pherr =
 
-    5.5998
+    2.0386
 
 FPSWF errors:
 
 ferr =
 
-   -0.7230
+   -0.7231
 
 
 Aerr =
 
-    2.9338
+    2.0408
 
 
 pherr =
 
-  229.8478
+  228.7726
 
 \end{lstlisting} \color{black}
     

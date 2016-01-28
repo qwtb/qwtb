@@ -412,10 +412,15 @@ Every quantity is a structure with following fields:
 \end{tightdesc}
 
 \subsection{\textsf{.v}} %<<<3 ------------------------------
-Value of the quantity. Can be a scalar, \emph{row} vector or matrix. More dimensions are not supported.
+Value of the quantity. Can be a scalar, vector or matrix. More dimensions are not
+supported. 
+
+Vectors should be ordered in a single \emph{row}. If the vector is ordered in a collumn,
+it is automatically transposed and a warning is generated. Other fields (\textsf{.u},
+\textsf{.d}, \textsf{.r}) are transposed if needed to match the value of the quantity.
 
 \subsection{\textsf{.u}} %<<<3 ------------------------------
-Standard uncertainty of the quantity. Dimensions are the same as of the value field. 
+Standard uncertainty of the quantity. Dimensions are the same as of the value field.
 
 \subsection{\textsf{.d}} %<<<3 ------------------------------
 Degrees of freedom the uncertainty according GUM Uncertainty Framework. Dimensions are the same as of the value field.
