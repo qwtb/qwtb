@@ -95,6 +95,10 @@ function alginfo = get_all_alg_info() %<<<1
 % checks for directories with algorithms and returns info on all available
 % algorithms
 
+    % XXX in this function, if there is only one directory alg_X, dir cannot
+    % find it and nothing is returned. if there are at least 2 directories,
+    % output is correct. It seems to be problem of dir function in octave
+    alginfo = struct();
     % get directory listings:
     lis = dir([qwtbdirpath filesep() 'alg_*']);
     % get only directories:
@@ -118,8 +122,8 @@ function alginfo = get_all_alg_info() %<<<1
                 disp(msg)
             end % if check_alginfo
             rmpath(algdir);
-        end
-    end
+        end % if is_alg_dir(algdir)
+    end % for i = 1:size(lis,1)
 end % function get_all_alg_info
 
 function res = get_one_alg_info(algid) %<<<1
@@ -203,6 +207,9 @@ function [dataout, datain, calcset] = check_and_run_alg(algid, datain, calcset) 
     path_add_algdir(algid);
     % get info structure:
     alginfo = alg_info();
+    % XXX when algorithm run, it is checked that algorithm exists, however it is
+    % not checked that alginfo is correct. is it really needed here?
+
     % check calculation settings structure:
     calcset = check_gen_calcset(calcset);
     % check input data structure:
@@ -282,8 +289,11 @@ function msg = check_alginfo(alginfo) %<<<1
 % returns empty string if algorithm info structure complies to the qwtb format,
 % else returns description of what is wrong
 
-    if ~(length(fieldnames(alginfo)) == 13)
+    % check number of fields %<<<2
+    if ~(length(fieldnames(alginfo)) == 11)
         msg = 'some fields are missing or redundant';
+
+    % check fields %<<<2
     elseif ~isfield(alginfo, 'id');
         msg = 'missing field `id`';
     elseif ~ischar(alginfo.id);
@@ -308,26 +318,23 @@ function msg = check_alginfo(alginfo) %<<<1
         msg = 'missing field `license`';
     elseif ~ischar(alginfo.license);
         msg = 'field `license` is not char type';
-    elseif ~isfield(alginfo, 'requires');
-        msg = 'missing field `requires`';
-    elseif ~iscellstr(alginfo.requires);
-        msg = 'field `requires` is not a cell of strings';
-    elseif ~isfield(alginfo, 'reqdesc');
-        msg = 'missing field `reqdesc`';
-    elseif ~iscellstr(alginfo.reqdesc);
-        msg = 'field `reqdesc` is not a cell of strings';
-    elseif ~isequal(size(alginfo.requires), size(alginfo.reqdesc));
-        msg = 'fields `requires` and `reqdesc` has different dimensions';
-    elseif ~isfield(alginfo, 'returns');
-        msg = 'missing field `returns`';
-    elseif ~iscellstr(alginfo.returns);
-        msg = 'field `returns` is not a cell of strings';
-    elseif ~isfield(alginfo, 'retdesc');
-        msg = 'missing field `retdesc`';
-    elseif ~iscellstr(alginfo.retdesc);
-        msg = 'field `retdesc` is not a cell of strings';
-    elseif ~isequal(size(alginfo.returns), size(alginfo.retdesc));
-        msg = 'fields `returns` and `retdesc` has different dimensions';
+
+    % check inputs array:
+    elseif ~isfield(alginfo, 'inputs');
+        msg = 'missing field `inputs`';
+    elseif ~isstruct(alginfo.inputs);
+        msg = 'field `inputs` is not a structure';
+    elseif ~isvector(alginfo.inputs);          % not isvectorP but isvector!
+        msg = 'field `inputs` is not a scalar nor vector array';
+
+    % check outputs array:
+    elseif ~isfield(alginfo, 'outputs');
+        msg = 'missing field `outputs`';
+    elseif ~isstruct(alginfo.outputs);
+        msg = 'field `outputs` is not a structure';
+    elseif ~isvector(alginfo.outputs);          % not isvectorP but isvector!
+        msg = 'field `outputs` is not a scalar nor vector array';
+
     elseif ~isfield(alginfo, 'providesGUF');
         msg = 'missing field `providesGUF`';
     elseif ~isfield(alginfo, 'providesMCM');
@@ -339,6 +346,84 @@ function msg = check_alginfo(alginfo) %<<<1
     else
         msg = '';
     end
+
+    % check input quantities definitions %<<<2
+    if isempty(msg)
+            for i = 1:length(alginfo.inputs)
+                    Q = alginfo.inputs(i);
+                    if ~(length(fieldnames(Q)) == 5)
+                        msg = ['some fields are missing or redundant in input quantity number ' num2str(i)];
+
+                    % name
+                    elseif ~isfield(Q, 'name');
+                        msg = ['missing field `name` in input quantity number ' num2str(i)];
+                    elseif isempty(Q.name);
+                        msg = ['empty field `name` in input quantity number ' num2str(i)];
+                    elseif ~ischar(Q.name);
+                        msg = ['field `name` is not char type in input quantity `' Q.name '`'];
+
+                    % desc
+                    elseif ~isfield(Q, 'desc');
+                        msg = ['missing field `desc` in input quantity `' Q.name '`'];
+                    elseif isempty(Q.desc);
+                        msg = ['empty field `desc` in input quantity `' Q.name '`'];
+                    elseif ~ischar(Q.desc);
+                        msg = ['field `desc` is not char type in input quantity `' Q.name '`'];
+
+                    % alternative
+                    elseif ~isfield(Q, 'alternative');
+                        msg = ['missing field `alternative` in input quantity `' Q.name '`'];
+                    elseif isempty(Q.alternative);
+                        msg = ['empty field `alternative` in input quantity `' Q.name '`'];
+                    elseif ~isnumeric(Q.alternative);
+                        msg = ['field `alternative` is not numeric in input quantity `' Q.name '`'];
+                    elseif ~isscalar(Q.alternative);
+                        msg = ['field `alternative` is not scalar in input quantity `' Q.name '`'];
+
+                    % optional
+                    elseif ~isfield(Q, 'optional');
+                        msg = ['missing field `optional` in input quantity `' Q.name '`'];
+                    elseif isempty(Q.optional);
+                        msg = ['empty field `optional` in input quantity `' Q.name '`'];
+                    elseif ~isnumeric(Q.optional);
+                        msg = ['field `optional` is not numeric in input quantity `' Q.name '`'];
+                    elseif ~isscalar(Q.optional);
+                        msg = ['field `optional` is not scalar in input quantity `' Q.name '`'];
+
+                    % parameter
+                    elseif ~isfield(Q, 'parameter');
+                        msg = ['missing field `parameter` in input quantity `' Q.name '`'];
+                    elseif isempty(Q.parameter);
+                        msg = ['empty field `parameter` in input quantity `' Q.name '`'];
+                    elseif ~isnumeric(Q.parameter);
+                        msg = ['field `parameter` is not numeric in input quantity `' Q.name '`'];
+                    elseif ~isscalar(Q.parameter);
+                        msg = ['field `parameter` is not scalar in input quantity `' Q.name '`'];
+                    end % if
+            end % for i = length(alginfo.inputs)
+    end % if isempty(msg)
+
+    % check output quantities definitions %<<<2
+    if isempty(msg)
+            for i = 1:length(alginfo.outputs)
+                    Q = alginfo.outputs(i);
+                    if ~(length(fieldnames(Q)) == 2)
+                        msg = ['some fields are missing or redundant in output quantity number ' num2str(i)];
+                    % name
+                    elseif ~isfield(Q, 'name');
+                        msg = ['missing field `name` in output quantity number ' num2str(i)];
+                    elseif ~ischar(Q.name);
+                        msg = ['field `name` is not char type in output quantity `' Q.name '`'];
+
+                    % desc
+                    elseif ~isfield(Q, 'desc');
+                        msg = ['missing field `desc` in output quantity `' Q.name '`'];
+                    elseif ~ischar(Q.desc);
+                        msg = ['field `desc` is not char type in output quantity `' Q.name '`'];
+                    end % if
+            end % for i = length(alginfo.inputs)
+    end % if isempty(msg)
+
 end % function check_alginfo
 
 % -------------------------------- structures related functions %<<<1
@@ -558,32 +643,29 @@ function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
 % are generated if permitted and required.
 
     % search for missing quantities in input data structure: %<<<2
-    missingQ = 0;
-    tmps = [];
-    for i = 1:length(alginfo.requires)
-        if ~isfield(datain, alginfo.requires{i})
-                % missing quantity, generate part of error message with missing quantity informations:
-                tmps = [tmps sprintf('\n') '`' alginfo.requires{i} '`, ' alginfo.reqdesc{i}];
-                missingQ = missingQ + 1;
-        end % if
-    end % for alginfo.requires
-    if missingQ
-        % some quantities missing, generate singular or plural version of error
-        % message:
-        if missingQ == 1
-            tmps = ['QWTB: followinq quantity is required by algorithm `' alginfo.id '` but is missing in input data structure:' tmps];
-        else
-            tmps = ['QWTB: followinq quantities are required by algorithm `' alginfo.id '` but are missing in input data structure:' tmps];
-        end
+    % parse requirements of the algorithm:
+    [reqQ, reqQdesc, optQ, optQdesc, reqQG, reqQGdesc, optQG, optQGdesc, parQ] = parse_alginfo_inputs(alginfo);
+    % compare requirements with datain:
+    errmsg = check_Q_present(datain, alginfo, reqQ, reqQdesc, optQ, optQdesc, reqQG, reqQGdesc, optQG, optQGdesc);
+    if ~isempty(errmsg)
         % raise error with missing quantity informations:
-        error(tmps)
-    end % if missingQ
+        error(errmsg)
+    endif
 
+    Qinnames = fieldnames(datain);
     % check individual quantities: %<<<2
-    for i = 1:length(alginfo.requires)
+    for i = 1:length(Qinnames)
         % for every quantity
-        Qname = alginfo.requires{i};
+        Qname = Qinnames{i};
         Q = datain.(Qname);
+
+        % find if quantity is parameter. add field 'par' to the quantity. it is
+        % usefull in other functions (and must be removed before handing it back
+        % to user):
+        Q.par = 0;
+        if ~isempty(parQ)
+            Q.par = any(strcmp(Qname, parQ));
+        end % if ~isempty(parQ)
 
         % get which quantity components exist: %<<<3
         Isv = isfield(Q, 'v');
@@ -597,218 +679,348 @@ function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
         if ~(Isv) 
                 error(['QWTB: field `v` (value) missing in quantity `' Qname '`.'])
         end % is Q.v
-        % Q.u: %<<<4
-        Genu = 0;
-        if ~(Isu)
+        if ~Q.par
+            % quantity is not parameter, so other fields are relevant
+            % Q.u: %<<<4
+            Genu = 0;
+            if ~(Isu)
+                if ~( strcmpi(calcset.unc, 'none') )
+                        error(['QWTB: field `u` (uncertainty) is missing in quantity `' Qname '` and uncertainty calculation is required.'])
+                else
+                    Genu = 1;
+                end
+            end % is Q.u
+            % Q.d: %<<<4
+            Gend = 0;
+            if ~(isfield(Q, 'd'))
+                if ( strcmpi(calcset.unc, 'guf') && calcset.dof.req )
+                    % if guf uncertainty calculation and dof is required
+                    if calcset.dof.gen
+                        % degrees of freedom generated automatically
+                        Gend = 2;
+                    else
+                        error(['QWTB: field `d` (degrees of freedom) is missing in quantity `' Qname '`, automatic generation is disabled but GUF uncertainty calculation is required.'])
+                    end % if dof.gen
+                else
+                    Gend = 1;
+                end % if guf & dof.req
+            end % if Q.d
+            % Q.c: %<<<4
+            if ~(isfield(Q, 'c'))
+                if ( ~strcmpi(calcset.unc, 'none') && calcset.cor.req )
+                    % if uncertainty calculation and correlation required
+                    if calcset.cor.gen
+                        Genc = 2;
+                    else
+                        error(['QWTB: field `c` (correlation matrix) is missing in quantity `' Qname '`, automatic generation is disabled but uncertainty calculation is required.'])
+                    end
+                else
+                    Genc = 1;
+                end % if unc & cor.req
+            end % if Q.c
+            % Q.r: %<<<4
+            if ~( isfield(Q, 'r') )
+                if strcmpi(calcset.unc, 'mcm')
+                    if ~( calcset.mcm.randomize )
+                        error(['QWTB: field `r` (randomized uncertainties) is missing in quantity `' Qname '`, automatic randomization is disabled but MCM uncertainty calculation is required.'])
+                    else
+                        % randomize quantity:
+                        Genr = 2;
+                    end % if randomize
+                else
+                    Genr = 1;
+                end % if mcm
+            end % if Q.r
+
+            % transpose vector quantity if needed: %<<<3
+            if isvectorP(Q.v)
+                if size(Q.v, 1) > size(Q.v, 2)
+                    warning(['QWTB: value of quantity `' Qname '` is column vector, it was automatically transposed.'])
+                    Q.v = Q.v';
+                end
+                if Isu
+                    if size(Q.u, 1) > size(Q.u, 2)
+                        warning(['QWTB: uncertainty of quantity `' Qname '` is column vector, it was automatically transposed.'])
+                        Q.u = Q.u';
+                    end
+                end
+                if Isd
+                    if size(Q.d, 1) > size(Q.d, 2)
+                        warning(['QWTB: degrees of freedom of quantity `' Qname '` is column vector, it was automatically transposed.'])
+                        Q.d = Q.d';
+                    end
+                end
+                if Isr
+                    if ( size(Q.v, 1) == size(Q.r, 2) || size(Q.v, 1) == size(Q.r, 2) )
+                        warning(['QWTB: randomized uncertainties of quantity `' Qname '` was automatically transposed.'])
+                        Q.r = Q.r';
+                    end
+                end
+            end % isvectorP(Q.v)
+
+            % generate missing fields %<<<3
+            % Q.u: %<<<4
+            if Genu
+                % generate empty field:
+                Q.u = [];
+            end
+            % Q.d: %<<<4
+            if Gend == 1
+                % generate empty field:
+                Q.d = [];
+            end
+            if Gend == 2
+                if calcset.verbose
+                    disp(['QWTB: default degrees of freedom generated for quantity `' Qname '`'])
+                end
+                Q.d = 50.*ones(size(Q.v));
+            end
+            % Q.c: %<<<4
+            if Genc == 1
+                % generate empty field:
+                Q.c = [];
+            end
+            if Genc == 2
+                if calcset.verbose
+                    disp(['QWTB: default correlation matrix generated for quantity `' Qname '`'])
+                end
+                Q.c = zeros(length(Q.v), length(Q.v));
+                % XXX previous line do not work for matrix Q!, this only works
+                % for scalar and vector!!!
+            end
+            % Q.r: %<<<4
+            if Genr == 1
+                % generate empty field:
+                Q.r = [];
+            end
+            if Genr == 2
+                if calcset.verbose
+                    disp(['QWTB: quantity ' Qname ' was randomized by QWTB']);
+                end
+                Q.r = rand_quant(Q, calcset.mcm.repeats);
+            end
+
+            % check components sizes: %<<<3
+            Sv = size(Q.v);
+            Su = size(Q.u);
+            Sc = size(Q.c);
+            Sd = size(Q.d);
+            Sr = size(Q.r);
+
+            % Q.v: %<<<4
+            % check that maximal number of non trailing non singleton dimensions is 2:
+            if ndims(Q.v) > 2
+                error(['QWTB: value of quantity `' Qname '` has too many dimensions.'])
+            end
+            % Q.u: %<<<4
             if ~( strcmpi(calcset.unc, 'none') )
-                    error(['QWTB: field `u` (uncertainty) is missing in quantity `' Qname '` and uncertainty calculation is required.'])
-            else
-                Genu = 1;
-            end
-        end % is Q.u
-        % Q.d: %<<<4
-        Gend = 0;
-        if ~(isfield(Q, 'd'))
-            if ( strcmpi(calcset.unc, 'guf') && calcset.dof.req )
-                % if guf uncertainty calculation and dof is required
-                if calcset.dof.gen
-                    % degrees of freedom generated automatically
-                    Gend = 2;
-                else
-                    error(['QWTB: field `d` (degrees of freedom) is missing in quantity `' Qname '`, automatic generation is disabled but GUF uncertainty calculation is required.'])
-                end % if dof.gen
-            else
-                Gend = 1;
-            end % if guf & dof.req
-        end % if Q.d
-        % Q.c: %<<<4
-        if ~(isfield(Q, 'c'))
-            if ( ~strcmpi(calcset.unc, 'none') && calcset.cor.req )
-                % if uncertainty calculation and correlation required
-                if calcset.cor.gen
-                    Genc = 2;
-                else
-                    error(['QWTB: field `c` (correlation matrix) is missing in quantity `' Qname '`, automatic generation is disabled but uncertainty calculation is required.'])
-                end
-            else
-                Genc = 1;
-            end % if unc & cor.req
-        end % if Q.c
-        % Q.r: %<<<4
-        if ~( isfield(Q, 'r') )
-            if strcmpi(calcset.unc, 'mcm')
-                if ~( calcset.mcm.randomize )
-                    error(['QWTB: field `r` (randomized uncertainties) is missing in quantity `' Qname '`, automatic randomization is disabled but MCM uncertainty calculation is required.'])
-                else
-                    % randomize quantity:
-                    Genr = 2;
-                end % if randomize
-            else
-                Genr = 1;
-            end % if mcm
-        end % if Q.r
-
-        % transpose vector quantity if needed: %<<<3
-        if isvectorP(Q.v)
-            if size(Q.v, 1) > size(Q.v, 2)
-                warning(['QWTB: value of quantity `' Qname '` is column vector, it was automatically transposed.'])
-                Q.v = Q.v';
-            end
-            if Isu
-                if size(Q.u, 1) > size(Q.u, 2)
-                    warning(['QWTB: uncertainty of quantity `' Qname '` is column vector, it was automatically transposed.'])
-                    Q.u = Q.u';
-                end
-            end
-            if Isd
-                if size(Q.d, 1) > size(Q.d, 2)
-                    warning(['QWTB: degrees of freedom of quantity `' Qname '` is column vector, it was automatically transposed.'])
-                    Q.d = Q.d';
-                end
-            end
-            if Isr
-                if ( size(Q.v, 1) == size(Q.r, 2) || size(Q.v, 1) == size(Q.r, 2) )
-                    warning(['QWTB: randomized uncertainties of quantity `' Qname '` was automatically transposed.'])
-                    Q.r = Q.r';
-                end
-            end
-        end % isvectorP(Q.v)
-
-        % generate missing fields %<<<3
-        % Q.u: %<<<4
-        if Genu
-            % generate empty field:
-            Q.u = [];
-        end
-        % Q.d: %<<<4
-        if Gend == 1
-            % generate empty field:
-            Q.d = [];
-        end
-        if Gend == 2
-            if calcset.verbose
-                disp(['QWTB: default degrees of freedom generated for quantity `' Qname '`'])
-            end
-            Q.d = 50.*ones(size(Q.v));
-        end
-        % Q.c: %<<<4
-        if Genc == 1
-            % generate empty field:
-            Q.c = [];
-        end
-        if Genc == 2
-            if calcset.verbose
-                disp(['QWTB: default correlation matrix generated for quantity `' Qname '`'])
-            end
-            Q.c = zeros(length(Q.v), length(Q.v));
-            % XXX previous line do not work for matrix Q!, this only works
-            % for scalar and vector!!!
-        end
-        % Q.r: %<<<4
-        if Genr == 1
-            % generate empty field:
-            Q.r = [];
-        end
-        if Genr == 2
-            if calcset.verbose
-                disp(['QWTB: quantity ' Qname ' was randomized by QWTB']);
-            end
-            Q.r = rand_quant(Q, calcset.mcm.repeats);
-        end
-
-        % check components sizes: %<<<3
-        Sv = size(Q.v);
-        Su = size(Q.u);
-        Sc = size(Q.c);
-        Sd = size(Q.d);
-        Sr = size(Q.r);
-
-        % Q.v: %<<<4
-        % check that maximal number of non trailing non singleton dimensions is 2:
-        if ndims(Q.v) > 2
-            error(['QWTB: value of quantity `' Qname '` has too many dimensions.'])
-        end
-        % Q.u: %<<<4
-        if ~( strcmpi(calcset.unc, 'none') )
-            % dimensions must fully match Qname.v
-            if ~isequal(Sv, Su)
-                error(['QWTB: dimensions of uncertainty matrix do not match dimensions of value matrix in quantity `' Qname '`.'])
-            end
-        end
-        % Q.d: %<<<4
-        if strcmpi(calcset.unc, 'guf') 
-            if calcset.dof.req
                 % dimensions must fully match Qname.v
-                if ~isequal(Sv, Sd)
-                    error(['QWTB: dimensions of degrees of freedom matrix do not match dimensions of value matrix in quantity `' Qname '`.'])
+                if ~isequal(Sv, Su)
+                    error(['QWTB: dimensions of uncertainty matrix do not match dimensions of value matrix in quantity `' Qname '`.'])
                 end
-            end % if dof.req
-        end % if guf
-        % Q.c: %<<<4
-        if (strcmpi(calcset.unc, 'guf') || strcmpi(calcset.unc, 'mcm') )
-            if calcset.cor.req
-                % XXX how?
+            end
+            % Q.d: %<<<4
+            if strcmpi(calcset.unc, 'guf') 
+                if calcset.dof.req
+                    % dimensions must fully match Qname.v
+                    if ~isequal(Sv, Sd)
+                        error(['QWTB: dimensions of degrees of freedom matrix do not match dimensions of value matrix in quantity `' Qname '`.'])
+                    end
+                end % if dof.req
+            end % if guf
+            % Q.c: %<<<4
+            if (strcmpi(calcset.unc, 'guf') || strcmpi(calcset.unc, 'mcm') )
+                if calcset.cor.req
+                    % XXX how?
+                    ok = 1;
+                    if isscalarP(Q.v)
+                        if ~isequal(Sv, Sc)
+                            ok = 0;
+                        end
+                    elseif isvectorP(Q.v)
+                        if ~( Sv(2) == Sc(2) && Sv(2) == Sc(1) )
+                            ok = 0;
+                        end
+                    elseif ismatrixP(Q.v)
+                        % XXX 2DO how?
+                    else
+                        error(['QWTB: quantity `' Qname '` has too many dimensions']);
+                    end % if scalar/vector/matrix
+                    if ~(ok)
+                        error(['QWTB: correlation matrix of quantity `' Qname '` has incorrect dimensions'])
+                    end
+                end % if cor.req
+            end % if guf or mcm
+            % Q.r: %<<<4
+            if strcmpi(calcset.unc, 'mcm')
+                % dimensions are same as Q.v but one dimension is equal calcset.mcm.repeats
                 ok = 1;
+                %%% if 
+                %%%     if strcmpi(calcset.unc, 'mcm')
+                %%%         % uncertainty must be randomized if general mcm will be
+                %%%         % used.
+                %%%         if calcset.mcm.randomize
+                %%%             disp(['QWTB: quantity ' Qname ' is randomized']);
+                %%%             datain.(Qname) = rand_quant(Q, calcset.mcm.repeats);
+                %%%             Q = datain.(Qname);
+                %%%         else
+                %%%             error(['QWTB: quantity `' Qname '` is not randomized, but mcm is required and automatic randomization is disabled'])
+                %%%         end % if mcm.randomize
+                %%%     end % if mcm
+                %%% else
+                %%%     % not equal dimensions, therefore uncertainty matrix is probably
+                %%%     % already randomized and prepared for monte carlo method
                 if isscalarP(Q.v)
-                    if ~isequal(Sv, Sc)
+                    if ~( Sr(2) == Sv(2) && Sr(1) == calcset.mcm.repeats )
                         ok = 0;
                     end
                 elseif isvectorP(Q.v)
-                    if ~( Sv(2) == Sc(2) && Sv(2) == Sc(1) )
+                    if ~( Sr(2) == Sv(2) && Sr(1) == calcset.mcm.repeats )
                         ok = 0;
                     end
                 elseif ismatrixP(Q.v)
-                    % XXX 2DO how?
+                    if ~( Sr(1) == Sv(1) && Sr(2) == Sv(2) && Sr(3) == calcset.mcm.repeats )
+                        ok = 0;
+                    end
                 else
                     error(['QWTB: quantity `' Qname '` has too many dimensions']);
                 end % if scalar/vector/matrix
                 if ~(ok)
-                    error(['QWTB: correlation matrix of quantity `' Qname '` has incorrect dimensions'])
+                    error(['QWTB: randomized matrix of quantity `' Qname '` has incorrect dimensions (calcset.mcm.reapeats = ' num2str(calcset.mcm.repeats) ')'])
                 end
-            end % if cor.req
-        end % if guf or mcm
-        % Q.r: %<<<4
-        if strcmpi(calcset.unc, 'mcm')
-            % dimensions are same as Q.v but one dimension is equal calcset.mcm.repeats
-            ok = 1;
-            %%% if 
-            %%%     if strcmpi(calcset.unc, 'mcm')
-            %%%         % uncertainty must be randomized if general mcm will be
-            %%%         % used.
-            %%%         if calcset.mcm.randomize
-            %%%             disp(['QWTB: quantity ' Qname ' is randomized']);
-            %%%             datain.(Qname) = rand_quant(Q, calcset.mcm.repeats);
-            %%%             Q = datain.(Qname);
-            %%%         else
-            %%%             error(['QWTB: quantity `' Qname '` is not randomized, but mcm is required and automatic randomization is disabled'])
-            %%%         end % if mcm.randomize
-            %%%     end % if mcm
-            %%% else
-            %%%     % not equal dimensions, therefore uncertainty matrix is probably
-            %%%     % already randomized and prepared for monte carlo method
-            if isscalarP(Q.v)
-                if ~( Sr(2) == Sv(2) && Sr(1) == calcset.mcm.repeats )
-                    ok = 0;
-                end
-            elseif isvectorP(Q.v)
-                if ~( Sr(2) == Sv(2) && Sr(1) == calcset.mcm.repeats )
-                    ok = 0;
-                end
-            elseif ismatrixP(Q.v)
-                if ~( Sr(1) == Sv(1) && Sr(2) == Sv(2) && Sr(3) == calcset.mcm.repeats )
-                    ok = 0;
-                end
-            else
-                error(['QWTB: quantity `' Qname '` has too many dimensions']);
-            end % if scalar/vector/matrix
-            if ~(ok)
-                error(['QWTB: randomized matrix of quantity `' Qname '` has incorrect dimensions (calcset.mcm.reapeats = ' num2str(calcset.mcm.repeats) ')'])
-            end
-        end % if mcm 
+            end % if mcm 
+
+        end % if ~Q.par
         % update datain structure: %<<<3
         datain.(Qname) = Q;
     end % for every Q
 end % function check_gen_datain
+
+function [reqQ, reqQdesc, optQ, optQdesc, reqQG, reqQGdesc, optQG, optQGdesc, parQ] = parse_alginfo_inputs(alginfo) %<<<1
+% parse requirements of the algorithm as stated in algorithm info structure
+% returns:
+% reqQ - cell of strings of names of required quantities
+% reqQdesc - cell of strings of descriptions of reqQ
+% optQ - cell of strings of names of optional quantities
+% optQdesc - cell of strings of descriptions of optQ
+% reqQG - cell of cell of strings of names of grouped quantities (one array
+%       element is one group) in which at least one quantity is required, therefore
+%       whole group is required
+% reqQGdesc - cell of cell of strings of descriptions of reqQG
+% optQG - cell of cell of strings of names of grouped quantities (one array
+%       element is one group) in which all quantities are optional, therefore whole
+%       group is optional
+% optQGdesc - cell of cell of strings of descriptions of optQG
+% parQ - cell of strings of names of parameter quantities (parameters)
+
+    reqQ = {};
+    reqQdesc = {};
+    optQ = {};
+    optQdesc = {};
+    tmpQG = {};
+    tmpQGdesc = {};
+    tmpQGopt = {};
+    parQ = {};
+
+    for i = 1:length(alginfo.inputs)
+        % for every input quantity
+        Q = alginfo.inputs(i);
+        if Q.alternative > 0
+            % grouped quantity -> store name, description and optionality:
+            tmpQG{Q.alternative}{end+1} = Q.name;
+            tmpQGdesc{Q.alternative}{end+1} = Q.desc;
+            tmpQGopt{Q.alternative}{end+1} = Q.optional;
+        else
+            % not-grouped quantity:
+            if Q.optional
+                % optional not-grouped quantity -> store name and description:
+                optQ{end+1} = Q.name;
+                optQdesc{end+1} = Q.desc;
+            else
+                % not-optional not-grouped quantity -> store name and
+                % description:
+                reqQ{end+1} = Q.name;
+                reqQdesc{end+1} = Q.desc;
+            end
+        end % if Q.alternative > 0
+        % check for parameter settings
+        if Q.parameter
+            parQ{end+1} = Q.name;
+        end
+    end % for every required quantity
+
+    % check that no empty elements are in reqQG (Q.alternative is incremental by
+    % one and e.g. 2, 5, 10). separate required and optional groups.
+    reqQG = {};
+    reqQGdesc = {};
+    optQG = {};
+    optQGdesc = {};
+    for i = 1:length(tmpQG)
+        if ~isempty(tmpQG{i}) % some groups numbers maybe do not exist
+            % check optionality of group. if all required quantities in this
+            % group are NOT optional -> group is NOT optional (and one of
+            % quantities in group must be in input data)
+            if all([tmpQGopt{i}{:}])
+                optQG{end+1} = tmpQG{i};
+                optQGdesc{end+1} = tmpQGdesc{i};
+            else
+                reqQG{end+1} = tmpQG{i};
+                reqQGdesc{end+1} = tmpQGdesc{i};
+            end % if all
+        end % if isempty
+    end % for i
+
+end % function parse_alginfo_inputs(alginfo)
+
+function errmsg = check_Q_present(datain, alginfo, reqQ, reqQdesc, optQ, optQdesc, reqQG, reqQGdesc, reqQGopt) %<<<1
+% checks if quantities present in datain meet requirements according required,
+% optional and grouped quantities
+% if output is empty, all is ok, otherwise errmsg contains error message
+
+    % names of quantities in datain:
+    Qinnames = fieldnames(datain);
+    % string with error message:
+    errmsg = [];
+    % count of missing Q:
+    missingQ = 0;
+
+    % check not-optional quantities are present in Qinnames (datain): %<<<2
+    for i = 1:length(reqQ)
+        if ~any(strcmp(reqQ{i}, Qinnames))
+            % missing not-optional quantity, generate part of error message with missing quantity informations:
+            errmsg = [errmsg sprintf('\n') '`' reqQ{i} '` - ' reqQdesc{i}];
+            missingQ = missingQ + 1;
+        end
+    end
+
+    % check one of required grouped quantities is present in Qinnames (datain): %<<<2
+    for i = 1:length(reqQG)
+        % for all quantity groups
+        if ~any([ cellfun(@strcmpi, Qinnames, repmat({reqQG{i}}, length(Qinnames), 1), 'uniformoutput', 0){:} ])
+            % not found, add error:
+            errmsg = [errmsg sprintf('\n') 'one of following:'];
+            for j = 1:length(reqQG{i})
+                errmsg = [errmsg ' `' reqQG{i}{j} '`,'];
+            end % for j
+            errmsg = errmsg(1:end-1);
+            missingQ = missingQ + 1;
+        end % if ~any
+    end % for i = 1:reqQG
+
+    % generate error message %<<<2
+    if ( missingQ ~= 0 )
+        % some quantities missing, generate singular or plural version of error
+        % message:
+        if missingQ == 1
+            errmsg = ['QWTB: followinq quantity is required by algorithm `' alginfo.id '` but is missing in input data structure:' errmsg];
+        else
+            errmsg = ['QWTB: followinq quantities are required by algorithm `' alginfo.id '` but are missing in input data structure:' errmsg];
+        end
+    else
+        errmsg = '';
+    end % if missingQ
+
+end % function check_Q_present
 
 function r = rand_quant(Q, M) %<<<1
 % generates randomize quantity Q
@@ -880,7 +1092,7 @@ function dataout = general_mcm(alginfo, datain, calcset) %<<<1
                 end
             end
             % call wrapper 
-            res(MCind) = call_alg(alginfo, datain, calcset, MCind);
+            res(MCind) = call_alg(datain, calcset, MCind);
         end
     % multi core code --------------------------- %<<<2
     elseif strcmpi(method, 'multicore') 
@@ -906,10 +1118,10 @@ function dataout = general_mcm(alginfo, datain, calcset) %<<<1
             % tmp = {datain};
             % tmp = repmat(datain, 1, M);
             % res = parcellfun(f, tmp);
-            res = parcellfun(procno, @call_alg, repmat({alginfo}, 1, M), repmat({datain}, 1, M), repmat({calcset}, 1, M), num2cell([1:M]));
+            res = parcellfun(procno, @call_alg, repmat({datain}, 1, M), repmat({calcset}, 1, M), num2cell([1:M]));
         else
             parfor i = 1:M
-                res(i) = call_alg(alginfo, datain, calcset, i);
+                res(i) = call_alg(datain, calcset, i);
             end
         end
     % multi station code --------------------------- %<<<2
@@ -922,9 +1134,9 @@ function dataout = general_mcm(alginfo, datain, calcset) %<<<1
     % concatenate data into output structure --------------------------- %<<<2
     % .v is created by mean of outputs
     % .u is all outputs
-    for i = 1:size(alginfo.returns, 2)
-        % through all quantities:
-        Qname = alginfo.returns{i};
+    for i = 1:length(alginfo.outputs)
+        % through all quantities which should be on the output:
+        Qname = alginfo.outputs(i).name;
         rescell = [res.(Qname)];
         rescell = {rescell.v};
 
@@ -969,14 +1181,20 @@ function dataout = general_mcm(alginfo, datain, calcset) %<<<1
     end % for concatenate
 end % function
 
-function dataout = call_alg(alginfo, datain, calcset, MCind) %<<<1
+function dataout = call_alg(datain, calcset, MCind) %<<<1
 % set quantity values and call algorithm
 
     % copy uncertainty to values for all required quantities:
-    for i = 1:length(alginfo.requires)
+    Qinnames = fieldnames(datain);
+    for i = 1:length(Qinnames)
         % for all quantities
-        Qname = alginfo.requires{i};
-        datain2.(Qname) = unc_to_val(datain.(Qname), MCind, Qname);
+        if datain.(Qinnames{i}).par
+            % quantity is parameter, just copy quantity:
+            datain2.(Qinnames{i}) = datain.(Qinnames{i});
+        else
+            % quantity is not parameter, copy uncertainty to value:
+            datain2.(Qinnames{i}) = unc_to_val(datain.(Qinnames{i}), MCind, Qinnames{i});
+        end
     end % for i
     % disable calculation of uncertainty:
     calcset.unc = 'none';

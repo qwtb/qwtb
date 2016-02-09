@@ -2,6 +2,26 @@
 ---
 dodelat multicore a multistation
 
+lepsi veliciny
+---
+.name
+.description
+.alternative
+.parameter
+.optional
+
+alternative - cislo skupiny alternativnich velicin. napr. 
+        t.alternative = 1
+        fs.alternative = 1
+        Ts.alternative = 1
+        r.alternative = 2
+        takze bud t nebo fs nebo Ts bude vyzadovano, ale r je jen jedno ve skupine alternativ 2, takze bude
+        pozadovan vzdy, pokud neni optional
+parameter - bez randomizace a nevyzaduje dalsi pole mimo .v
+optional - nepovinna velicina. hlavne pro parametry? nebo jen pro parametry?
+
+kdyz optional, nemuze byt alternative group? muze! ale proc? by musely byt vsechny...
+
 parts
 ---
 * rnd generator

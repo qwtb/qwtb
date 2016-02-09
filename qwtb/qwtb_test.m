@@ -1,5 +1,6 @@
 % test of qwtb functions
 % XXX missing tests for matrix input quantities
+% XXX add tests for automatic transposing of column/row input vector quantities
 clear all
 tg = 1;
 
@@ -14,6 +15,8 @@ assert(any(ismember(algsids, 'testM')))
 assert(any(ismember(algsids, 'testG')))
 % test for existing algorithm testGM: %<<<2
 assert(any(ismember(algsids, 'testGM')))
+% test for existing algorithm testQ: %<<<2
+assert(any(ismember(algsids, 'testQ')))
 
 disp(['------ TEST GROUP ' num2str(tg) ': error for incorrect numer of input arguments ------------']) % ------------------ %<<<1
 tg = tg + 1;
@@ -148,6 +151,93 @@ catch it
 end
 assert(strcmpi(it.message(1:5), 'QWTB:'))
 clear it
+
+disp(['------ TEST GROUP ' num2str(tg) ': missing and optional quantities ------------']) % ------------------ %<<<1
+tg = tg + 1;
+% prepare quantities: %<<<2
+DIq.x.v = 1;
+DIq.y.v = 1;
+DIq.u.v = 1;
+DIq.v.v = 1;
+DIq.r.v = 1;
+DIq.s.v = 1;
+DIq.a.v = 1;
+DIq.b.v = 1;
+DIq.c.v = 1;
+DIq.d.v = 1;
+
+% all quantities present: %<<<2
+[DO] = qwtb('testQ', DIq);
+
+% only minimal required number of quantities: %<<<2
+DIq2 = DIq;
+DIq2 = rmfield(DIq2, 'y'); 
+DIq2 = rmfield(DIq2, 'v'); 
+DIq2 = rmfield(DIq2, 'r'); 
+DIq2 = rmfield(DIq2, 's'); 
+DIq2 = rmfield(DIq2, 'b'); 
+DIq2 = rmfield(DIq2, 'd'); 
+[DO] = qwtb('testQ', DIq2);
+
+% only minimal required number of quantities with different selection of grouped quantities: %<<<2
+DIq3 = DIq;
+DIq3 = rmfield(DIq3, 'x'); 
+DIq3 = rmfield(DIq3, 'u'); 
+DIq3 = rmfield(DIq3, 'r'); 
+DIq3 = rmfield(DIq3, 's'); 
+DIq3 = rmfield(DIq3, 'b'); 
+DIq3 = rmfield(DIq3, 'd'); 
+[DO] = qwtb('testQ', DIq3);
+
+% for error when one of non optional group missing: %<<<2
+try
+    [DO] = qwtb('testQ', rmfield(DIq2, 'x') );
+catch it
+    disp(it.message)
+end
+assert(strcmpi(it.message(1:5), 'QWTB:'))
+clear it
+
+% for error when one of partially optional group missing: %<<<2
+try
+    [DO] = qwtb('testQ', rmfield(DIq2, 'u') );
+catch it
+    disp(it.message)
+end
+assert(strcmpi(it.message(1:5), 'QWTB:'))
+clear it
+
+% for error when non optional quantity missing: %<<<2
+try
+    [DO] = qwtb('testQ', rmfield(DIq2, 'a') );
+catch it
+    disp(it.message)
+end
+assert(strcmpi(it.message(1:5), 'QWTB:'))
+clear it
+
+% for error when non optional parameter missing: %<<<2
+try
+    [DO] = qwtb('testQ', rmfield(DIq2, 'c') );
+catch it
+    disp(it.message)
+end
+assert(strcmpi(it.message(1:5), 'QWTB:'))
+clear it
+
+% test mcm on optional quantities and parameters %<<<2
+CS = [];
+CS.unc = 'mcm';
+CS.mcm.repeats = 10;
+DIq.x.u = 1;
+DIq.y.u = 1;
+DIq.u.u = 1;
+DIq.v.u = 1;
+DIq.r.u = 1;
+DIq.s.u = 1;
+DIq.a.u = 1;
+DIq.b.u = 1;
+[DO] = qwtb('testQ', DIq, CS);
 
 disp(['------ TEST GROUP ' num2str(tg) ': test algorithms one by one ------------']) % ------------------ %<<<1
 tg = tg + 1;
