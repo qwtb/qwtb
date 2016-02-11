@@ -1,5 +1,5 @@
 ![QWTB logo](doc/logo/qwtb_logo_small.png?raw=true "QWTB logo")
-# Quantum Wave Tool Box (QWTB)
+# QWTB
 
 [https://qwtb.github.io/qwtb/](https://qwtb.github.io/qwtb/ "QWTB home page")
 
