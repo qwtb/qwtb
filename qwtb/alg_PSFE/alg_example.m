@@ -16,13 +16,14 @@
 % doi: 10.1109/TIM.2015.2401211, URL: http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7061456&isnumber=7104190'
 
 %% Generate sample data
-% Two quantities are prepared: |t| and |y|, representing 1 second of sinus
+% Two quantities are prepared: |Ts| and |y|, representing 1 second of sinus
 % waveform of nominal frequency 100 Hz, nominal amplitude 1 V and nominal phase
-% 1 rad, sampled at sampling frequency 10 kHz.
+% 1 rad, sampled with sampling time 0.1 ms.
 DI = [];
 Anom = 1; fnom = 100; phnom = 1;
-DI.t.v = [0:1/1e4:1-1/1e4];
-DI.y.v = Anom*sin(2*pi*fnom*DI.t.v + phnom);
+DI.Ts.v = 1e-4;
+t = [0:DI.Ts.v:1-DI.Ts.v];
+DI.y.v = Anom*sin(2*pi*fnom*t + phnom);
 %%
 % Add noise:
 DI.y.v = DI.y.v + 1e-3.*randn(size(DI.y.v));

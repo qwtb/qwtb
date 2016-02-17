@@ -19,6 +19,7 @@ function varargout = qwtb(varargin)
 
 % 2DO rem all qwtb paths, add own, restore paths?
 % 2DO what if path to alg_ already exist!?
+% 2DO remove .par from datain on output
 
     % start of qwtb function --------------------------- %<<<1
     % remove old alg_paths because if previous instance of qwtb ends with error,

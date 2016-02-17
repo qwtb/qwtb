@@ -7,12 +7,46 @@ alginfo.id = 'MADEV';
 alginfo.name = 'Modified Allan Deviation';
 alginfo.desc = 'Compute the modified Allan deviation for a set of time-domain frequency data.';
 alginfo.citation = 'D.W. Allan and J.A. Barnes, "A Modified Allan Variance with Increased Oscillator Characterization Ability", Proc. 35th Annu. Symp. on Freq. Contrl., pp. 470-474, May 1981. Implementation: Implementation by M. A. Hopcroft, mhopeng@gmail.com, Matlab Central, online: http://www.mathworks.com/matlabcentral/fileexchange/26637-allan-modified Test data by W. J. Riley, "The Calculation of Time Domain Frequency Stability", online: http://www.wriley.com/paper1ht.htm';
-alginfo.remarks = 'If tau is empty array, tau values are automatically generated. Tau values must be divisible by 1/fs. Invalid values are ignored. For tau values really used in the calculation see the output. Using sigma as uncertainty is probably not correct.';
+alginfo.remarks = 'If sampling frequency |fs| is not supplied, wrapper will calculate |fs| from sampling time |Ts| or if not supplied, first two elements of time series |t| are used to calculate |Ts|. If observation time(s) |tau| is not supplied, tau values are automatically generated. Tau values must be divisible by 1/|fs|. Invalid values are ignored. For tau values really used in the calculation see the output.';
+% XXX 2DO Using sigma as uncertainty is probably not correct.';
 alginfo.license = 'BSD License';
-alginfo.requires = {'y', 'fs', 'tau'};
-alginfo.reqdesc = {'sampled values', 'sampling frequency', 'observation time'};
-alginfo.returns = {'madev', 'tau'};
-alginfo.retdesc = {'modified Allan deviation', 'observation time of result values'};
+
+alginfo.inputs(1).name = 'fs';
+alginfo.inputs(1).desc = 'Sampling frequency';
+alginfo.inputs(1).alternative = 1;
+alginfo.inputs(1).optional = 0;
+alginfo.inputs(1).parameter = 0;
+
+alginfo.inputs(2).name = 'Ts';
+alginfo.inputs(2).desc = 'Sampling time';
+alginfo.inputs(2).alternative = 1;
+alginfo.inputs(2).optional = 0;
+alginfo.inputs(2).parameter = 0;
+
+alginfo.inputs(3).name = 't';
+alginfo.inputs(3).desc = 'Time series';
+alginfo.inputs(3).alternative = 1;
+alginfo.inputs(3).optional = 0;
+alginfo.inputs(3).parameter = 0;
+
+alginfo.inputs(4).name = 'y';
+alginfo.inputs(4).desc = 'Sampled values';
+alginfo.inputs(4).alternative = 0;
+alginfo.inputs(4).optional = 0;
+alginfo.inputs(4).parameter = 0;
+
+alginfo.inputs(5).name = 'tau';
+alginfo.inputs(5).desc = 'Observation time';
+alginfo.inputs(5).alternative = 0;
+alginfo.inputs(5).optional = 1;
+alginfo.inputs(5).parameter = 0;
+
+alginfo.outputs(1).name = 'madev';
+alginfo.outputs(1).desc = 'Modified Allan deviation';
+
+alginfo.outputs(2).name = 'tau';
+alginfo.outputs(2).desc = 'Observation time of resulted values';
+
 alginfo.providesGUF = 1;
 alginfo.providesMCM = 0;
 

@@ -1,5 +1,5 @@
 function dataout = alg_wrapper(datain, calcset) %<<<1
-% Part of QWTB. Wrapper script for algorithm ENOB-SINAD.
+% Part of QWTB. Wrapper script for algorithm SINAD-ENOB.
 %
 % See also qwtb
 
@@ -7,8 +7,25 @@ function dataout = alg_wrapper(datain, calcset) %<<<1
 % algorithm definition is:
 % function [SINAD, ENOB] = sinad(t, y, f, A, ph, O, NoB, FSR)
 
+N = length(datain.y.v);
+if isfield(datain, 't')
+    t = datain.t.v;
+elseif isfield(datain, 'fs')
+    Ts = 1./datain.fs.v;
+    t = linspace(0, N.*Ts-Ts, Ts);
+    if calcset.verbose
+        disp('QWTB: SINAD-ENOB wrapper: time series were calculated from sampling frequency')
+    end
+else
+    Ts = datain.Ts.v;
+    t = linspace(0, N.*Ts-Ts, Ts);
+    if calcset.verbose
+        disp('QWTB: SINAD-ENOB wrapper: time series were calculated from sampling time')
+    end
+end
+
 % Call algorithm ---------------------------  %<<<1
-[SINAD, ENOB] = sinad(datain.t.v, datain.y.v, datain.f.v, datain.A.v, datain.ph.v, datain.O.v, datain.bitres.v, datain.range.v);
+[SINAD, ENOB] = sinad(t, datain.y.v, datain.f.v, datain.A.v, datain.ph.v, datain.O.v, datain.bitres.v, datain.FSR.v);
 
 % Format output data:  --------------------------- %<<<1
 dataout.ENOB.v = ENOB;

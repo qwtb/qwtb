@@ -5,9 +5,11 @@ function alg_test(calcset) %<<<1
 
 % Generate sample data --------------------------- %<<<1
 DI = [];
+fs = 1e4;
 Anom = 1; fnom = 100; phnom = 1; Onom = 0.1;
-DI.t.v = [0:1/1e4:1-1/1e4];
-DI.y.v = Anom*sin(2*pi*fnom*DI.t.v + phnom) + Onom;
+t = [0:1/fs:1-1/fs];
+DI.y.v = Anom*sin(2*pi*fnom*t + phnom) + Onom;
+DI.Ts.v = 1/fs;
 
 % Call algorithm --------------------------- %<<<1
 % rectangular window:
@@ -33,6 +35,17 @@ assert((DO_h.A.v > Anom.*(1-Aeps))    & (DO_h.A.v < Anom.*(1+Aeps)));
 assert((DO_h.ph.v > phnom.*(1-pheps)) & (DO_h.ph.v < phnom.*(1+pheps)));
 assert((DO_h.O.v > Onom.*(1-Oeps))  & (DO_h.O.v < Onom.*(1+Oeps)));
 
+% Check alternative inputs --------------------------- %<<<1
+DI = rmfield(DI, 'window');
+DO = qwtb('iDFT3p', DI);
+
+DI = rmfield(DI, 'Ts');
+DI.fs.v = fs;
+DO = qwtb('iDFT3p', DI);
+
+DI = rmfield(DI, 'fs');
+DI.t.v = t;
+DO = qwtb('iDFT3p', DI);
 
 end % function
 

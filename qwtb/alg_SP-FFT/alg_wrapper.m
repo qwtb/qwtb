@@ -6,7 +6,19 @@ function dataout = alg_wrapper(datain, calcset)
 % Format input data --------------------------- %<<<1
 % ampphspectrum definition is:
 % function [f, amp, ph] = ampphspectrum(y,fs)
-fs = datain.fs.v;
+if isfield(datain, 'fs')
+    fs = datain.fs.v;
+elseif isfield(datain, 'Ts')
+    fs = 1/datain.Ts.v;
+    if calcset.verbose
+        disp('QWTB: SP-FFT wrapper: sampling frequency was calculated from sampling time')
+    end
+else
+    fs = 1/(datain.t.v(2) - datain.t.v(1));
+    if calcset.verbose
+        disp('QWTB: SP-FFT wrapper: sampling frequency was calculated from time series')
+    end
+end
 y = datain.y.v;
 
 % Call algorithm ---------------------------  %<<<1

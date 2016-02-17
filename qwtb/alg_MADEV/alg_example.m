@@ -16,8 +16,7 @@ DI.y.v = 1.5 + 3.*randn(1, 1e3);
 DI.y.v = DI.y.v + [1:1:1e3]./100;
 % Lets suppose a sampling frequency is 1 Hz:
 DI.fs.v = 1;
-% Let the algorithm generate all possible tau values automatically:
-DI.tau.v = [];
+% The algorithm will generate all possible tau values automatically.
 
 %% Call algorithm
 % Use QWTB to apply algorithm |MADEV| to data |DI|.

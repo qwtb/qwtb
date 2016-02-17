@@ -17,13 +17,32 @@ function dataout = alg_wrapper(datain, calcset) %<<<1
 %       P          - estimated phase
 %       O          - estimated offset
 
-% Call algorithm ---------------------------  %<<<1
-Ts = datain.t.v(2) - datain.t.v(1);
-
-if strcmpi(datain.window.v, 'Hann')
-    [f, A, ph, O] = iDFT3pHann(datain.y.v,Ts);
+if isfield(datain, 'Ts')
+    Ts = datain.Ts.v;
+elseif isfield(datain, 'fs')
+    Ts = 1/datain.fs.v;
+    if calcset.verbose
+        disp('QWTB: iDFT3p wrapper: sampling time was calculated from sampling frequency')
+    end
 else
+    Ts = datain.t.v(2) - datain.t.v(1);
+    if calcset.verbose
+        disp('QWTB: iDFT3p wrapper: sampling time was calculated from time series')
+    end
+end
+% select window: 1 - rectangular, 0 - hann
+win = 0;
+if isfield(datain, 'window')
+    if strcmpi(datain.window.v, 'rectangular')
+        win = 1;
+    end
+end
+
+% Call algorithm ---------------------------  %<<<1
+if win
     [f, A, ph, O] = iDFT3pRect(datain.y.v,Ts);
+else
+    [f, A, ph, O] = iDFT3pHann(datain.y.v,Ts);
 end
 
 % Format output data:  --------------------------- %<<<1

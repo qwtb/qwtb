@@ -6,18 +6,33 @@ function dataout = alg_wrapper(datain, calcset) %<<<1
 % Format input data --------------------------- %<<<1
 % MADEV definition is:
 % [RETVAL, S, ERRORB, TAU] = ALLAN_MODIFIED(DATA,TAU,NAME,VERBOSE)
+
+if isfield(datain, 'fs')
+    fs = datain.fs.v;
+elseif isfield(datain, 'Ts')
+    fs = 1/datain.Ts.v;
+    if calcset.verbose
+        disp('QWTB: MADEV wrapper: sampling frequency was calculated from sampling time')
+    end
+else
+    fs = 1./(datain.t.v(2) - datain.t.v(1));
+    if calcset.verbose
+        disp('QWTB: MADEV wrapper: sampling frequency was calculated from time series')
+    end
+end
+
 % structure DATA required by Hopcroft's scripts:
-DATA.rate = datain.fs.v;
+DATA.rate = fs;
 % values must be in row vectors:
 DATA.freq = datain.y.v(:);
 
-if isempty(datain.tau.v)
+if isfield(datain, 'tau')
+    % user supplied own tau values
+    TAU = datain.tau.v;
+else
     % generate all tau values:
     % calculation of tau must be in this form, otherwise rounding errors can occur:
     TAU = [1/DATA.rate : 1/DATA.rate : length(DATA.freq)./DATA.rate./2];
-else
-    % user has own tau values
-    TAU = datain.tau.v;
 end % if isempty
 
 % Call algorithm ---------------------------  %<<<1

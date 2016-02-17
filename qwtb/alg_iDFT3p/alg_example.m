@@ -11,13 +11,14 @@
 % Implemented by Rado Lapuh, 2016.';
 
 %% Generate sample data
-% Two quantities are prepared: |t| and |y|, representing 0.5 second of sinus waveform of nominal
-% frequency 100 Hz, nominal amplitude 1 V and nominal phase 1 rad, sampled at sampling frequency 10
-% kHz, with offset 0.1 V. The sampling is not coherent.
+% Two quantities are prepared: |Ts| and |y|, representing 0.5 second of sinus waveform of nominal
+% frequency 100 Hz, nominal amplitude 1 V and nominal phase 1 rad, sampled with sampling time 0.1
+% ms, with offset 0.1 V. The sampling is not coherent.
 DI = [];
 Anom = 1; fnom = 100; phnom = 1; Onom = 0.1;
-DI.t.v = [0:1/1e4:0.5];
-DI.y.v = Anom*sin(2*pi*fnom*DI.t.v + phnom) + Onom;
+DI.Ts.v = 1e-4;
+t = [0:DI.Ts.v:0.5];
+DI.y.v = Anom*sin(2*pi*fnom*t + phnom) + Onom;
 
 %% Call algorithm
 % First a rectangular window will be used to estimate main signal properties.

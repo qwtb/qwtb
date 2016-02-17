@@ -4,6 +4,7 @@ function alg_test(calcset) %<<<1
 % See also qwtb
 
 % Generate sample data --------------------------- %<<<1
+fs = 0.5;
 % following data are according:
 % THE CALCULATION OF TIME DOMAIN FREQUENCY STABILITY, W.J. Riley, Hamilton Technical Services, Revised on: 07/03/02  
 % accessible here: http://www.wriley.com/paper1ht.htm
@@ -20,8 +21,7 @@ DI.y.v = [...
     9.030000000000000e+02, ...
     6.770000000000000e+02, ...
     ];
-DI.fs.v = 1;
-DI.tau.v = [];
+DI.fs.v = fs;
 
 % Call algorithm --------------------------- %<<<1
 DO = qwtb('OADEV', DI);
@@ -29,7 +29,7 @@ DO = qwtb('OADEV', DI);
 % Check results --------------------------- %<<<1
 
 % check tau values:
-assert(all(DO.tau.v == [1 2 3 4]));
+assert(all(DO.tau.v == [1 2 3 4]./fs));
 
 % check oadev values:
 % reference values according literature mentioned above for averaging factors 1 and 2:
@@ -1048,8 +1048,7 @@ DI.y.v = [...
     7.264947764233201e-01, ...
     ];
 
-DI.fs.v = 1;
-DI.tau.v = [];
+DI.fs.v = fs;
 
 % Call algorithm --------------------------- %<<<1
 DO = qwtb('OADEV', DI);
@@ -1057,7 +1056,7 @@ DO = qwtb('OADEV', DI);
 % Check results --------------------------- %<<<1
 
 % check tau values:
-assert(all(DO.tau.v == [1:500]));
+assert(all(DO.tau.v == [1:500]./fs));
 
 % check oadev values:
 % reference values according literature mentioned above for averaging factors 1, 10, 100:
@@ -1067,6 +1066,23 @@ limit =     [0.0000005e-01  0.0000005e-02  0.0000005e-02];
 for i = [1:3]
     assert((DO.oadev.v(avfactor(i)) > reference(i) - limit(i)) & (DO.oadev.v(avfactor(i)) < reference(i) + limit(i)));
 end % for
+
+% Check alternative inputs --------------------------- %<<<1
+DI.tau.v = 2;
+DO = qwtb('OADEV', DI);
+assert(~isempty(DO.tau.v));
+assert(DO.tau.v == 2);
+i=1;
+assert((DO.oadev.v(avfactor(i)) > reference(i) - limit(i)) & (DO.oadev.v(avfactor(i)) < reference(i) + limit(i)));
+
+DI = rmfield(DI, 'fs');
+DI.Ts.v = 1/fs;
+DO = qwtb('OADEV', DI);
+
+DI = rmfield(DI, 'Ts');
+DI.t.v = [1:5]./fs;
+DO = qwtb('OADEV', DI);
+
 
 end % function
 

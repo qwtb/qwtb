@@ -10,12 +10,24 @@ function dataout = alg_wrapper(datain, calcset) %<<<1
 % Ts         - sampling time (in s)
 % init_guess: 0 - FFT max bin, 1 - IPDFT, negative initial frequency estimate
 
-% Call algorithm ---------------------------  %<<<1
-Record = datain.y.v;
-Ts = datain.t.v(2) - datain.t.v(1);
+if isfield(datain, 'Ts')
+    Ts = datain.Ts.v;
+elseif isfield(datain, 'fs')
+    Ts = 1/datain.fs.v;
+    if calcset.verbose
+        disp('QWTB: PSFE wrapper: sampling time was calculated from sampling frequency')
+    end
+else
+    Ts = datain.t.v(2) - datain.t.v(1);
+    if calcset.verbose
+        disp('QWTB: PSFE wrapper: sampling time was calculated from time series')
+    end
+end
+
 init_guess = 1;
 
-[fa A ph] = PSFE(Record,Ts,init_guess);
+% Call algorithm ---------------------------  %<<<1
+[fa A ph] = PSFE(datain.y.v,Ts,init_guess);
 
 % Format output data:  --------------------------- %<<<1
 % PSFE definition is:
