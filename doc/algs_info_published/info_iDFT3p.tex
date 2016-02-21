@@ -1,0 +1,34 @@
+\begin{tightdesc}
+\item [Id:] iDFT3p
+\item [Name:] 3-point interpolated DFT frequency estimator
+\item [Description:] An algorithm for estimating the frequency, amplitude, and phase of the fundamental component using interpolated discrete Fourier transform. Rectangular or Hann window can be used for DFT.
+\item [Citation:] Krzysztof Duda: Interpolation algorithms of DFT for parameters estimation of sinusoidal and damped sinusoidal signals. In S. M. Salih, editor, Fourier Transform - Signal Processing, chapter 1, pages 3-32, InTech, 2012. \url{http://www.intechopen.com/books/fourier-transform-signal-processing/interpolated-dft} Implemented by Rado Lapuh, 2016.
+\item [Remarks:] If sampling time |Ts| is not supplied, wrapper will calculate |Ts| from sampling frequency |fs| or if not supplied, first two elements of time series |t| are used to calculate |Ts|. The optional parameter |window| can be set to values `rectangular` or `Hann`. If parameter is not supplied, Hann window will be used.
+\item [License:] Implementation: MIT License
+\item [Provides GUF:] no
+\item [Provides MCM:] no
+\item [Input Quantities] \rule{0em}{0em}
+    \begin{tightdesc}
+    \item [Required:] 
+        \textsf{Ts} or \textsf{fs} or \textsf{t},\enspace \textsf{y}
+    \item [Optional:] 
+        \textsf{window}
+    \item [Parameters:] 
+        \textsf{window}
+    \end{tightdesc}
+\item [Descriptions:] \rule{0em}{0em}
+    \begin{tightdesc}
+        \item[\textsf{Ts}] -- Sampling time
+        \item[\textsf{fs}] -- Sampling frequency
+        \item[\textsf{t}] -- Time series
+        \item[\textsf{window}] -- DFT window: `Hann` or `rectangular`
+        \item[\textsf{y}] -- Sampled values
+    \end{tightdesc}
+\item [Output Quantities] \rule{0em}{0em}
+    \begin{tightdesc}
+        \item[\textsf{A}] -- Amplitude of main signal component
+        \item[\textsf{O}] -- Offset of main signal component
+        \item[\textsf{f}] -- Frequency of main signal component
+        \item[\textsf{ph}] -- Phase of main signal component
+    \end{tightdesc}
+\end{tightdesc}

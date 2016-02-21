@@ -1,26 +1,33 @@
 \begin{tightdesc}
-\item [\textsf{.id}] --- SINAD-ENOB
-\item [\textsf{.name}] --- Ratio of signal to noise and distortion and Effective number of bits (in time space)
-\item [\textsf{.desc}] ---  Algorithm calculates Ratio of signal to noise and distortion and Effective number of bits in time space, therefore it is suitable for noncoherent measurements. Requires estimates of the main signal component parameters: frequency, amplitude, phase and offset. If these values are estimated by four parameter sine wave fit, the SINAD and ENOB will be calculated according IEEE Std 1241-2000. A large sine wave should be applied to the ADC input. Almost any error source in the sine wave input other than gain accuracy and dc offset can affect the test result.
-\item [\textsf{.citation}] --- IEEE Std 1241-2000, pages 52 - 54
-\item [\textsf{.remarks}] --- 
-\item [\textsf{.license}] --- MIT License
-\item [\textsf{.requires}] \rule{0em}{0em}
-\begin{tightdesc}
-\item [\textsf{t}] --- time vector
-\item [\textsf{y}] --- sampled values
-\item [\textsf{f}] --- frequency of the main signal component
-\item [\textsf{A}] --- amplitude of the main signal component
-\item [\textsf{ph}] --- phase of the main signal component
-\item [\textsf{O}] --- offset of the main signal component
-\item [\textsf{bitres}] --- bit resolution of an ADC
-\item [\textsf{range}] --- Full scale range of an ADC
-\end{tightdesc}
-\item [\textsf{.returns}] \rule{0em}{0em}
-\begin{tightdesc}
-\item [\textsf{SINADdB}] --- Ratio of signal to noise and distortion in decibels relative to the amplitude of the main signal component 
-\item [\textsf{ENOB}] --- Effective number of bits
-\end{tightdesc}
-\item [\textsf{.providesGUF}] --- no
-\item [\textsf{.providesMCM}] ---  no
+\item [Id:] SINAD-ENOB
+\item [Name:] Ratio of signal to noise and distortion and Effective number of bits (in time space)
+\item [Description:]  Algorithm calculates Ratio of signal to noise and distortion and Effective number of bits in time space, therefore it is suitable for noncoherent measurements. Requires estimates of the main signal component parameters: frequency, amplitude, phase and offset. If these values are estimated by four parameter sine wave fit, the SINAD and ENOB will be calculated according IEEE Std 1241-2000. A large sine wave should be applied to the ADC input. Almost any error source in the sine wave input other than gain accuracy and dc offset can affect the test result.
+\item [Citation:] IEEE Std 1241-2000, pages 52 - 54
+\item [Remarks:] If Time series |t| is not supplied, wrapper will calculate |t| from sampling frequency |fs| or if not supplied, sampling time |Ts| is used to calculate |t|.
+\item [License:] MIT License
+\item [Provides GUF:] no
+\item [Provides MCM:] no
+\item [Input Quantities] \rule{0em}{0em}
+    \begin{tightdesc}
+    \item [Required:] 
+        \textsf{t} or \textsf{fs} or \textsf{Ts},\enspace \textsf{y},\enspace \textsf{f},\enspace \textsf{A},\enspace \textsf{ph},\enspace \textsf{O},\enspace \textsf{bitres},\enspace \textsf{FSR}
+    \end{tightdesc}
+\item [Descriptions:] \rule{0em}{0em}
+    \begin{tightdesc}
+        \item[\textsf{A}] -- Amplitude of main signal component
+        \item[\textsf{FSR}] -- Full scale range of an ADC
+        \item[\textsf{O}] -- Offset of signal
+        \item[\textsf{Ts}] -- Sampling time
+        \item[\textsf{bitres}] -- Bit resolution of an ADC
+        \item[\textsf{f}] -- Frequency of main signal component
+        \item[\textsf{fs}] -- Sampling frequency
+        \item[\textsf{ph}] -- Phase of main signal component
+        \item[\textsf{t}] -- Time series
+        \item[\textsf{y}] -- Sampled values
+    \end{tightdesc}
+\item [Output Quantities] \rule{0em}{0em}
+    \begin{tightdesc}
+        \item[\textsf{ENOB}] -- Effective number of bits
+        \item[\textsf{SINADdB}] -- Ratio of signal to noise and distortion in decibels relative to the amplitude of the main signal component
+    \end{tightdesc}
 \end{tightdesc}

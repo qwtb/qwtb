@@ -1,0 +1,29 @@
+\begin{tightdesc}
+\item [Id:] 4PSWF
+\item [Name:] Four Parameter Sine Wave Fit
+\item [Description:] Fits a sine wave to the recorded data by means of least squares fitting using 4 parameter (frequency, amplitude, phase and offset) model. An estimate of signal frequency is required. Due to non-linear characteristic, converge is not always achieved. When run in Matlab, function `lsqnonlin` in Optimization toolbox is used. When run in GNU Octave, function `leasqr` in GNU Octave Forge package optim is used.
+\item [Citation:] 
+\item [Remarks:] If Time series |t| is not supplied, wrapper will calculate |t| from sampling frequency |fs| or if not supplied, sampling time |Ts| is used to calculate |t|.
+\item [License:] MIT License
+\item [Provides GUF:] no
+\item [Provides MCM:] no
+\item [Input Quantities] \rule{0em}{0em}
+    \begin{tightdesc}
+    \item [Required:] 
+        \textsf{t} or \textsf{fs} or \textsf{Ts},\enspace \textsf{y}
+    \end{tightdesc}
+\item [Descriptions:] \rule{0em}{0em}
+    \begin{tightdesc}
+        \item[\textsf{Ts}] -- Sampling time
+        \item[\textsf{fs}] -- Sampling frequency
+        \item[\textsf{t}] -- Time series
+        \item[\textsf{y}] -- Sampled values
+    \end{tightdesc}
+\item [Output Quantities] \rule{0em}{0em}
+    \begin{tightdesc}
+        \item[\textsf{A}] -- Amplitude of main signal component
+        \item[\textsf{O}] -- Offset of signal
+        \item[\textsf{f}] -- Frequency of main signal component
+        \item[\textsf{ph}] -- Phase of main signal component
+    \end{tightdesc}
+\end{tightdesc}
