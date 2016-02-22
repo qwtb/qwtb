@@ -99,7 +99,6 @@ function alginfo = get_all_alg_info() %<<<1
     % XXX in this function, if there is only one directory alg_X, dir cannot
     % find it and nothing is returned. if there are at least 2 directories,
     % output is correct. It seems to be problem of dir function in octave
-    alginfo = struct();
     % get directory listings:
     lis = dir([qwtbdirpath filesep() 'alg_*']);
     % get only directories:
@@ -125,6 +124,12 @@ function alginfo = get_all_alg_info() %<<<1
             rmpath(algdir);
         end % if is_alg_dir(algdir)
     end % for i = 1:size(lis,1)
+    % following if is because of Matlab. It cannot assign algorithm info
+    % structure (i.e. some existing structure) to an empty structure. Following
+    % is to assure at least empty variable is assigned to an output.
+    if ~exist('alginfo','var')
+        alginfo = [];
+    end
 end % function get_all_alg_info
 
 function res = get_one_alg_info(algid) %<<<1
@@ -647,11 +652,11 @@ function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
     % parse requirements of the algorithm:
     [reqQ, reqQdesc, optQ, optQdesc, reqQG, reqQGdesc, optQG, optQGdesc, parQ] = parse_alginfo_inputs(alginfo);
     % compare requirements with datain:
-    errmsg = check_Q_present(datain, alginfo, reqQ, reqQdesc, optQ, optQdesc, reqQG, reqQGdesc, optQG, optQGdesc);
+    errmsg = check_Q_present(datain, alginfo, reqQ, reqQdesc, reqQG, reqQGdesc);
     if ~isempty(errmsg)
         % raise error with missing quantity informations:
         error(errmsg)
-    endif
+    end
 
     Qinnames = fieldnames(datain);
     % check individual quantities: %<<<2
@@ -798,7 +803,7 @@ function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
                 if calcset.verbose
                     disp(['QWTB: quantity ' Qname ' was randomized by QWTB']);
                 end
-                Q.r = rand_quant(Q, calcset.mcm.repeats);
+                Q.r = rand_quant(Q, calcset.mcm.repeats, Qname);
             end
 
             % check components sizes: %<<<3
@@ -928,9 +933,9 @@ function [reqQ, reqQdesc, optQ, optQdesc, reqQG, reqQGdesc, optQG, optQGdesc, pa
         Q = alginfo.inputs(i);
         if Q.alternative > 0
             % grouped quantity -> store name, description and optionality:
-            tmpQG{Q.alternative}{end+1} = Q.name;
-            tmpQGdesc{Q.alternative}{end+1} = Q.desc;
-            tmpQGopt{Q.alternative}{end+1} = Q.optional;
+            tmpQG = add_to_coc(tmpQG, Q.alternative, Q.name);
+            tmpQGdesc = add_to_coc(tmpQGdesc, Q.alternative, Q.desc);
+            tmpQGopt = add_to_coc(tmpQGopt, Q.alternative, Q.optional);
         else
             % not-grouped quantity:
             if Q.optional
@@ -971,9 +976,25 @@ function [reqQ, reqQdesc, optQ, optQdesc, reqQG, reqQGdesc, optQG, optQGdesc, pa
         end % if isempty
     end % for i
 
+    function coc = add_to_coc(coc, id1, value) %<<<2
+    % Matlab (contrary to GNU Octave) cannot do this operation: c{N}{end+1} on
+    % empty cell of cells (c = {}) or on non-initialized cell in a cell
+    % (c={1:L}, L < N).
+    % Therefore this stupid function/hack is required:
+        if isempty(coc)
+            tmp{1} = value;
+            coc{id1} = tmp;
+        elseif size(coc, 2) < id1;
+            tmp{1} = value;
+            coc{id1} = tmp;
+        else
+            coc{id1}{end+1} = value;
+        end
+    end
+
 end % function parse_alginfo_inputs(alginfo)
 
-function errmsg = check_Q_present(datain, alginfo, reqQ, reqQdesc, optQ, optQdesc, reqQG, reqQGdesc, reqQGopt) %<<<1
+function errmsg = check_Q_present(datain, alginfo, reqQ, reqQdesc, reqQG, reqQGdesc) %<<<1
 % checks if quantities present in datain meet requirements according required,
 % optional and grouped quantities
 % if output is empty, all is ok, otherwise errmsg contains error message
@@ -997,7 +1018,8 @@ function errmsg = check_Q_present(datain, alginfo, reqQ, reqQdesc, optQ, optQdes
     % check one of required grouped quantities is present in Qinnames (datain): %<<<2
     for i = 1:length(reqQG)
         % for all quantity groups
-        if ~any([ cellfun(@strcmpi, Qinnames, repmat({reqQG{i}}, length(Qinnames), 1), 'uniformoutput', 0){:} ])
+        tmp = cellfun(@strcmpi, Qinnames, repmat({reqQG{i}}, length(Qinnames), 1), 'uniformoutput', 0);
+        if ~any([tmp{:}])
             % not found, add error:
             errmsg = [errmsg sprintf('\n') 'one of following:'];
             for j = 1:length(reqQG{i})
@@ -1023,7 +1045,7 @@ function errmsg = check_Q_present(datain, alginfo, reqQ, reqQdesc, optQ, optQdes
 
 end % function check_Q_present
 
-function r = rand_quant(Q, M) %<<<1
+function r = rand_quant(Q, M, Qname) %<<<1
 % generates randomize quantity Q
     if isscalarP(Q.u)
         r = Q.v + Q.u.*randn(M, 1);

@@ -11,12 +11,12 @@ if isfield(datain, 'x')
     in1 = datain.x.v;
 else
     in1 = datain.y.v;
-endif
+end
 if isfield(datain, 'u')
     in2 = datain.u.v;
 else
     in2 = datain.v.v;
-endif
+end
 
 % just tap rest of required input quantities to check they are present:
 datain.a.v;
