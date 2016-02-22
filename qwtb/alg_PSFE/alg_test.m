@@ -23,10 +23,16 @@ assert((DO.ph.v > phnom.*(1-1e6)) & (DO.ph.v < phnom.*(1+1e6)));
 DI = rmfield(DI, 'Ts');
 DI.fs.v = 1/Ts;
 DO = qwtb('PSFE', DI);
+assert((DO.f.v > fnom.*(1-1e6)) & (DO.f.v < fnom.*(1+1e6)));
+assert((DO.A.v > Anom.*(1-1e6)) & (DO.A.v < Anom.*(1+1e6)));
+assert((DO.ph.v > phnom.*(1-1e6)) & (DO.ph.v < phnom.*(1+1e6)));
 
 DI = rmfield(DI, 'fs');
 DI.t.v = t;
 DO = qwtb('PSFE', DI);
+assert((DO.f.v > fnom.*(1-1e6)) & (DO.f.v < fnom.*(1+1e6)));
+assert((DO.A.v > Anom.*(1-1e6)) & (DO.A.v < Anom.*(1+1e6)));
+assert((DO.ph.v > phnom.*(1-1e6)) & (DO.ph.v < phnom.*(1+1e6)));
 
 end % function
 

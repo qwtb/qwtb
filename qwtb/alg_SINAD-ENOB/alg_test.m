@@ -44,9 +44,13 @@ assert((DO.SINADdB.v > SINADdBnom.*(1-SINADdBmaxerr)) & (DO.SINADdB.v < SINADdBn
 DI = rmfield(DI, 't');
 DI.fs.v = 1/Ts;
 DO = qwtb('SINAD-ENOB', DI);
+assert((DO.ENOB.v > ENOBnom.*(1-ENOBmaxerr)) & (DO.ENOB.v < ENOBnom.*(1+ENOBmaxerr)));
+assert((DO.SINADdB.v > SINADdBnom.*(1-SINADdBmaxerr)) & (DO.SINADdB.v < SINADdBnom.*(1+SINADdBmaxerr)));
 
 DI = rmfield(DI, 'fs');
 DI.Ts.v = Ts;
 DO = qwtb('SINAD-ENOB', DI);
+assert((DO.ENOB.v > ENOBnom.*(1-ENOBmaxerr)) & (DO.ENOB.v < ENOBnom.*(1+ENOBmaxerr)));
+assert((DO.SINADdB.v > SINADdBnom.*(1-SINADdBmaxerr)) & (DO.SINADdB.v < SINADdBnom.*(1+SINADdBmaxerr)));
 
 end

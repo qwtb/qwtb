@@ -38,14 +38,26 @@ assert((DO_h.O.v > Onom.*(1-Oeps))  & (DO_h.O.v < Onom.*(1+Oeps)));
 % Check alternative inputs --------------------------- %<<<1
 DI = rmfield(DI, 'window');
 DO = qwtb('iDFT3p', DI);
+assert((DO.f.v > fnom.*(1-feps))    & (DO.f.v < fnom.*(1+feps)));
+assert((DO.A.v > Anom.*(1-Aeps))    & (DO.A.v < Anom.*(1+Aeps)));
+assert((DO.ph.v > phnom.*(1-pheps)) & (DO.ph.v < phnom.*(1+pheps)));
+assert((DO.O.v > Onom.*(1-Oeps))    & (DO.O.v < Onom.*(1+Oeps)));
 
 DI = rmfield(DI, 'Ts');
 DI.fs.v = fs;
 DO = qwtb('iDFT3p', DI);
+assert((DO.f.v > fnom.*(1-feps))    & (DO.f.v < fnom.*(1+feps)));
+assert((DO.A.v > Anom.*(1-Aeps))    & (DO.A.v < Anom.*(1+Aeps)));
+assert((DO.ph.v > phnom.*(1-pheps)) & (DO.ph.v < phnom.*(1+pheps)));
+assert((DO.O.v > Onom.*(1-Oeps))    & (DO.O.v < Onom.*(1+Oeps)));
 
 DI = rmfield(DI, 'fs');
 DI.t.v = t;
 DO = qwtb('iDFT3p', DI);
+assert((DO.f.v > fnom.*(1-feps))    & (DO.f.v < fnom.*(1+feps)));
+assert((DO.A.v > Anom.*(1-Aeps))    & (DO.A.v < Anom.*(1+Aeps)));
+assert((DO.ph.v > phnom.*(1-pheps)) & (DO.ph.v < phnom.*(1+pheps)));
+assert((DO.O.v > Onom.*(1-Oeps))    & (DO.O.v < Onom.*(1+Oeps)));
 
 end % function
 

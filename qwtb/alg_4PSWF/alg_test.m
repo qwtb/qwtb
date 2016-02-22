@@ -25,10 +25,18 @@ assert((DO.O.v > Onom.*(1-maxerr)) & (DO.O.v < Onom.*(1+maxerr)));
 DI = rmfield(DI, 't');
 DI.fs.v = 1/Ts;
 DO = qwtb('4PSWF', DI);
+assert((DO.f.v > fnom.*(1-maxerr)) & (DO.f.v < fnom.*(1+maxerr)));
+assert((DO.A.v > Anom.*(1-maxerr)) & (DO.A.v < Anom.*(1+maxerr)));
+assert((DO.ph.v > phnom.*(1-maxerr)) & (DO.ph.v < phnom.*(1+maxerr)));
+assert((DO.O.v > Onom.*(1-maxerr)) & (DO.O.v < Onom.*(1+maxerr)));
 
 DI = rmfield(DI, 'fs');
 DI.Ts.v = Ts;
 DO = qwtb('4PSWF', DI);
+assert((DO.f.v > fnom.*(1-maxerr)) & (DO.f.v < fnom.*(1+maxerr)));
+assert((DO.A.v > Anom.*(1-maxerr)) & (DO.A.v < Anom.*(1+maxerr)));
+assert((DO.ph.v > phnom.*(1-maxerr)) & (DO.ph.v < phnom.*(1+maxerr)));
+assert((DO.O.v > Onom.*(1-maxerr)) & (DO.O.v < Onom.*(1+maxerr)));
 end % function
 
 % vim settings modeline: vim: foldmarker=%<<<,%>>> fdm=marker fen ft=octave textwidth=80 tabstop=4 shiftwidth=4

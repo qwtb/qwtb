@@ -1078,10 +1078,16 @@ assert((DO.madev.v(avfactor(i)) > reference(i) - limit(i)) & (DO.madev.v(avfacto
 DI = rmfield(DI, 'fs');
 DI.Ts.v = 1/fs;
 DO = qwtb('MADEV', DI);
+assert(~isempty(DO.tau.v));
+assert(DO.tau.v == 2);
+assert((DO.madev.v(avfactor(i)) > reference(i) - limit(i)) & (DO.madev.v(avfactor(i)) < reference(i) + limit(i)));
 
 DI = rmfield(DI, 'Ts');
 DI.t.v = [1:5]./fs;
 DO = qwtb('MADEV', DI);
+assert(~isempty(DO.tau.v));
+assert(DO.tau.v == 2);
+assert((DO.madev.v(avfactor(i)) > reference(i) - limit(i)) & (DO.madev.v(avfactor(i)) < reference(i) + limit(i)));
 
 end % function
 
