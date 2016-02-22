@@ -36,9 +36,9 @@ function [reqQ, reqQdesc, optQ, optQdesc, reqQG, reqQGdesc, optQG, optQGdesc, pa
         Qlist{i, 2} = Q.desc;
         if Q.alternative > 0
             % grouped quantity -> store name, description and optionality:
-            tmpQG{Q.alternative}{end+1} = Q.name;
-            tmpQGdesc{Q.alternative}{end+1} = Q.desc;
-            tmpQGopt{Q.alternative}{end+1} = Q.optional;
+            tmpQG = add_to_coc(tmpQG, Q.alternative, Q.name);
+            tmpQGdesc = add_to_coc(tmpQGdesc, Q.alternative, Q.desc);
+            tmpQGopt = add_to_coc(tmpQGopt, Q.alternative, Q.optional);
         else
             % not-grouped quantity:
             if Q.optional
@@ -82,7 +82,23 @@ function [reqQ, reqQdesc, optQ, optQdesc, reqQG, reqQGdesc, optQG, optQGdesc, pa
     % sort list of Quantities by name:
     [tmp, ind] = sort(Qlist(:,1));
     ind = ind(:,1);
-    Qlist = {Qlist{ind,1}; Qlist{ind,2}}';
+    Qlist = transpose({Qlist{ind,1}; Qlist{ind,2}});
+
+    function coc = add_to_coc(coc, id1, value) %<<<2
+    % Matlab (contrary to GNU Octave) cannot do this operation: c{N}{end+1} on
+    % empty cell of cells (c = {}) or on non-initialized cell in a cell
+    % (c={1:L}, L < N).
+    % Therefore this stupid function/hack is required:
+        if isempty(coc)
+            tmp{1} = value;
+            coc{id1} = tmp;
+        elseif size(coc, 2) < id1;
+            tmp{1} = value;
+            coc{id1} = tmp;
+        else
+            coc{id1}{end+1} = value;
+        end
+    end
 
 end % function parse_alginfo_inputs(alginfo)
 
