@@ -650,7 +650,7 @@ function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
 
     % search for missing quantities in input data structure: %<<<2
     % parse requirements of the algorithm:
-    [reqQ, reqQdesc, optQ, optQdesc, reqQG, reqQGdesc, optQG, optQGdesc, parQ] = parse_alginfo_inputs(alginfo);
+    [reqQ, reqQdesc, optQ, optQdesc, reqQG, reqQGdesc, optQG, optQGdesc, parQ, Qlist] = parse_alginfo_inputs(alginfo);
     % compare requirements with datain:
     errmsg = check_Q_present(datain, alginfo, reqQ, reqQdesc, reqQG, reqQGdesc);
     if ~isempty(errmsg)
@@ -902,7 +902,7 @@ function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
     end % for every Q
 end % function check_gen_datain
 
-function [reqQ, reqQdesc, optQ, optQdesc, reqQG, reqQGdesc, optQG, optQGdesc, parQ] = parse_alginfo_inputs(alginfo) %<<<1
+function [reqQ, reqQdesc, optQ, optQdesc, reqQG, reqQGdesc, optQG, optQGdesc, parQ, Qlist] = parse_alginfo_inputs(alginfo) %<<<1
 % parse requirements of the algorithm as stated in algorithm info structure
 % returns:
 % reqQ - cell of strings of names of required quantities
@@ -918,6 +918,7 @@ function [reqQ, reqQdesc, optQ, optQdesc, reqQG, reqQGdesc, optQG, optQGdesc, pa
 %       group is optional
 % optQGdesc - cell of cell of strings of descriptions of optQG
 % parQ - cell of strings of names of parameter quantities (parameters)
+% Qlist - cell with {x,1} names and {x,2} descriptions of all input quantities of algorithm, sorted by names of quantities
 
     reqQ = {};
     reqQdesc = {};
@@ -927,10 +928,14 @@ function [reqQ, reqQdesc, optQ, optQdesc, reqQG, reqQGdesc, optQG, optQGdesc, pa
     tmpQGdesc = {};
     tmpQGopt = {};
     parQ = {};
+    Qlist = {};
 
     for i = 1:length(alginfo.inputs)
         % for every input quantity
         Q = alginfo.inputs(i);
+        % prepare list of Quantities:
+        Qlist{i, 1} = Q.name;
+        Qlist{i, 2} = Q.desc;
         if Q.alternative > 0
             % grouped quantity -> store name, description and optionality:
             tmpQG = add_to_coc(tmpQG, Q.alternative, Q.name);
@@ -975,6 +980,11 @@ function [reqQ, reqQdesc, optQ, optQdesc, reqQG, reqQGdesc, optQG, optQGdesc, pa
             end % if all
         end % if isempty
     end % for i
+
+    % sort list of Quantities by name:
+    [tmp, ind] = sort(Qlist(:,1));
+    ind = ind(:,1);
+    Qlist = transpose({Qlist{ind,1}; Qlist{ind,2}});
 
     function coc = add_to_coc(coc, id1, value) %<<<2
     % Matlab (contrary to GNU Octave) cannot do this operation: c{N}{end+1} on
