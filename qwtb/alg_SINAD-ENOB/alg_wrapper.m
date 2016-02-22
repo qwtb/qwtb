@@ -12,13 +12,13 @@ if isfield(datain, 't')
     t = datain.t.v;
 elseif isfield(datain, 'fs')
     Ts = 1./datain.fs.v;
-    t = linspace(0, N.*Ts-Ts, Ts);
+    t = [0 : Ts : N.*Ts-Ts];
     if calcset.verbose
         disp('QWTB: SINAD-ENOB wrapper: time series were calculated from sampling frequency')
     end
 else
     Ts = datain.Ts.v;
-    t = linspace(0, N.*Ts-Ts, Ts);
+    t = [0 : Ts : N.*Ts-Ts];
     if calcset.verbose
         disp('QWTB: SINAD-ENOB wrapper: time series were calculated from sampling time')
     end
