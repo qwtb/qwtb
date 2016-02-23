@@ -575,12 +575,12 @@ Structure defines calculation methods.
         \item [\textsf{.unc}] ---  ('none') How uncertainty is calculated ('none', 'guf', 'mcm').
         \item [\textsf{.cor.req}] ---  (0) Correlation matrix is required for all input quantities.
         \item [\textsf{.cor.gen}] ---  (1) Zero correlation matrix is generated automatically if missing.
-        \item [\textsf{.dof.req}] ---  (1) Degrees of freedom are required for all input quantities.
+        \item [\textsf{.dof.req}] ---  (0) Degrees of freedom are required for all input quantities.
         \item [\textsf{.dof.gen}] ---  (1) Degree of freedom are generated automatically if missing with value 50.
         \item [\textsf{.mcm.repeats}] ---  (100) Number of Monte Carlo iterations.
         \item [\textsf{.mcm.verbose}] ---  (1) Display various informations concerning Monte Carlo method.
         \item [\textsf{.mcm.method}] ---  ('singlecore') Parallelization method ('multicore', 'multistation').
-        \item [\textsf{.mcm.procno}] ---  (1) Number of processors to use.
+        \item [\textsf{.mcm.procno}] ---  (0) Number of processors to use.
         \item [\textsf{.mcm.tmpdir}] ---  ('.') Directory for temporary data.
         \item [\textsf{.mcm.randomize}] ---  (1) Randomized uncertainties are generated automatically if missing.
 \end{tightdesc}
@@ -597,9 +597,9 @@ calculation, such as used uncertainty calculation method, automatic generation o
 
 \subsection{\textsf{.unc}} %<<<3 ------------------------------
 \label{structcalcsetunc}
-String, default value ''. Determines uncertainty calculation method. Only three values are possible:
+String, default value 'none'. Determines uncertainty calculation method. Only three values are possible:
 \begin{tightdesc}
-        \item [\textsf{''}] ---  Uncertainty is not calculated.
+        \item [\textsf{'none'}] ---  Uncertainty is not calculated.
         \item [\textsf{'guf'}] ---  Uncertainty is calculated by GUM Uncertainty Framework~\cite{JCGM1995}.
         \item [\textsf{'mcm'}] ---  Uncertainty is calculated by Monte Carlo Method~\cite{JCGM2008}.
 \end{tightdesc}
@@ -866,7 +866,7 @@ containing script {\tt qwtb.m}.
         (\ref{structcalcsetcor}).
         \item [\textsf{.cor.gen}] ---  (1) Zero correlation matrix is generated automatically if
         missing (\ref{structcalcsetcor}).
-        \item [\textsf{.dof.req}] ---  (1) Degrees of freedom are required for all input quantities
+        \item [\textsf{.dof.req}] ---  (0) Degrees of freedom are required for all input quantities
         (\ref{structcalcsetdof}).
         \item [\textsf{.dof.gen}] ---  (1) Degree of freedom are generated automat. if missing
         with value 50 (\ref{structcalcsetdof}).
@@ -876,7 +876,7 @@ containing script {\tt qwtb.m}.
         method (\ref{structcalcsetmcm}).
         \item [\textsf{.mcm.method}] ---  ('singlecore') Parallelization method ('multicore',
         'multistation') (\ref{structcalcsetmcm}).
-        \item [\textsf{.mcm.procno}] ---  (1) Number of processors to use (\ref{structcalcsetmcm}).
+        \item [\textsf{.mcm.procno}] ---  (0) Number of processors to use (\ref{structcalcsetmcm}).
         \item [\textsf{.mcm.tmpdir}] ---  ('.') Directory for temporary data
         (\ref{structcalcsetmcm}).
         \item [\textsf{.mcm.randomize}] ---  (1) Randomized uncert. are generated
