@@ -20,11 +20,11 @@ DI.window.v = 'Hann';
 DO_h = qwtb('iDFT3p', DI);
 
 % Check results --------------------------- %<<<1
-feps = 1e-6;
-Aeps = 1e-6;
-pheps = 1e-6;
-% XXX is it really correct? The offset has bad values:
-Oeps = 1e+4;
+feps = 1e-7;
+Aeps = 1e-7;
+pheps = 1e-7;
+Oeps = 1e-7;
+
 assert((DO_r.f.v > fnom.*(1-feps))    & (DO_r.f.v < fnom.*(1+feps)));
 assert((DO_r.A.v > Anom.*(1-Aeps))    & (DO_r.A.v < Anom.*(1+Aeps)));
 assert((DO_r.ph.v > phnom.*(1-pheps)) & (DO_r.ph.v < phnom.*(1+pheps)));
