@@ -54,6 +54,10 @@ if isOctave
     % plot(t, y, 'x', t, fun(t, p));
 
 else % matlab code
+    % check existence of required toolbox:
+    if exist('lsqnonlin') ~= 2
+        error('>>>>>>>>>>>>> FPSWF: your Matlab is missing optimization toolbox! <<<<<<<<<<<<<<');
+    end
 
     fun = @(p) (p(1).*sin(2.*pi.*p(2).*t + p(3)) + p(4)) - y;
     if verbose
