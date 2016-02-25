@@ -1,7 +1,7 @@
 %% Phase Sensitive Frequency Estimator
 % Example for algorithm iDFT3p.
 %
-% iDFT3p is an algorithm for estimating the frequency, amplitude, and phase of the fundamental
+% iDFT3p is an algorithm for estimating the frequency, amplitude, phase and offset of the fundamental
 % component using interpolated discrete Fourier transform. Rectangular or Hann window can be used
 % for DFT.';
 % See also Krzysztof Duda: Interpolation algorithms of DFT for parameters estimation of sinusoidal

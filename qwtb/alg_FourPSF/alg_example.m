@@ -1,7 +1,7 @@
 %% Four parameter sine wave fitting
 % Example for algorithm FourPSF.
 %
-% FourPSF is an algorithm for estimating the frequency, amplitude, and phase of the sine waveform
+% FourPSF is an algorithm for estimating the frequency, amplitude, phase and offset of the sine waveform
 % according standard IEEE Std 1241-2000';
 
 %% Generate sample data
@@ -19,7 +19,7 @@ CS.verbose = 1;
 DO = qwtb('FourPSF', DI, CS);
 
 %% Display results
-% Results is the amplitude, frequency and phase of sampled waveform.
+% Results is the amplitude, frequency, phase and offset of sampled waveform.
 A = DO.A.v
 f = DO.f.v
 ph = DO.ph.v
