@@ -121,13 +121,13 @@ for i = 1:length(infos) % for all info: %<<<1
             fprintf(fid, '%s', tmp);
         end
         % input quantities descriptions: %<<<3
-        fprintf(fid, '\n    \\end{tightdesc}\n\\item [Descriptions:] \\rule{0em}{0em}\n    \\begin{tightdesc}');
+        fprintf(fid, '\n    \\item [Descriptions:] \\rule{0em}{0em}\n        \\begin{tightdesc}');
         for j = 1:size(Qlist, 1)
-            fprintf(fid, '\n        \\item[\\textsf{%s}] -- %s', Qlist{j,1}, Qlist{j,2});
+            fprintf(fid, '\n            \\item[\\textsf{%s}] -- %s', Qlist{j,1}, Qlist{j,2});
         end
-    fprintf(fid, '\n    \\end{tightdesc}\n');
+    fprintf(fid, '\n        \\end{tightdesc}\n    \\end{tightdesc}\n');
     % add list and descriptions of all output quantities: %<<<2
-    fprintf(fid, '\\item [Output Quantities] \\rule{0em}{0em}\n    \\begin{tightdesc}');
+    fprintf(fid, '\\item [Output Quantities:] \\rule{0em}{0em}\n    \\begin{tightdesc}');
     % make a list of output quantities:
     Qlist = [{infos(i).outputs.name}; {infos(i).outputs.desc}]';
     [tmp, ind] = sort(Qlist(:,1));
