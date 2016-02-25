@@ -1,6 +1,6 @@
 The MIT License (MIT)
 
-Copyright (c) 2012 Rado Lapuh
+Copyright (c) 2016 Rado Lapuh
 
 This license is relevant only to the 'Phase Sensitive Frequency Estimator' algorithm.
 

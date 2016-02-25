@@ -1,6 +1,6 @@
 The MIT License (MIT)
 
-Copyright (c) 2015 Martin Šíra
+Copyright (c) 2016 Rado Lapuh
 
 This license is relevant only to the 'Four Parameter Sine Wave Fit' algorithm.
 
