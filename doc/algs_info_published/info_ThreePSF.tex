@@ -1,0 +1,28 @@
+\begin{tightdesc}
+\item [Id:] ThreePSF
+\item [Name:] Standard Three Parameter Sine Wave Fit according IEEE Std 1241-2000
+\item [Description:] Fits a sine wave to the recorded data using 3 parameter (amplitude, phase and offset) model. The algorithm is according IEEE Standard for Terminology and Test methods for Analog-to-Digital Converters 1241-2000. Algorithm requires exact value of signal frequency.
+\item [Citation:] IEEE Std 1241-2000, Implementation written Rado Lapuh, 2016
+\item [Remarks:] If sampling time |Ts| is not supplied, wrapper will calculate |Ts| from sampling frequency |fs| or if not supplied, time series |t| is used to calculate |Ts|.
+\item [License:] UNKNOWN
+\item [Provides GUF:] no
+\item [Provides MCM:] no
+\item [Input Quantities] \rule{0em}{0em}
+    \begin{tightdesc}
+    \item [Required:] 
+        \textsf{Ts} or \textsf{fs} or \textsf{t},\enspace \textsf{f}
+    \item [Descriptions:] \rule{0em}{0em}
+        \begin{tightdesc}
+            \item[\textsf{Ts}] -- Sampling time
+            \item[\textsf{f}] -- Signal frequency
+            \item[\textsf{fs}] -- Sampling frequency
+            \item[\textsf{t}] -- Time series
+        \end{tightdesc}
+    \end{tightdesc}
+\item [Output Quantities:] \rule{0em}{0em}
+    \begin{tightdesc}
+        \item[\textsf{A}] -- Amplitude of main signal component
+        \item[\textsf{O}] -- Offset of signal
+        \item[\textsf{ph}] -- Phase of main signal component
+    \end{tightdesc}
+\end{tightdesc}

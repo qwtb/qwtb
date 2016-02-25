@@ -17,10 +17,10 @@
 \subsection*{Four parameter sine wave fitting}
 
 \begin{par}
-Example for algorithm 4PSWF.
+Example for algorithm FourPSF.
 \end{par} \vspace{1em}
 \begin{par}
-4PSWF is an algorithm for estimating the frequency, amplitude, and phase of the sine waveform. The algorithm use least squares method. Algorithm requires good estimate of frequency.
+FourPSF is an algorithm for estimating the frequency, amplitude, phase and offset of the sine waveform according standard IEEE Std 1241-2000';
 \end{par} \vspace{1em}
 
 \subsubsection*{Contents}
@@ -44,43 +44,28 @@ Anom = 2; fnom = 100; phnom = 1; Onom = 0.2;
 DI.t.v = [0:1/1e4:1-1/1e4];
 DI.y.v = Anom*sin(2*pi*fnom*DI.t.v + phnom) + Onom;
 \end{lstlisting}
-\begin{par}
-Lets make an estimate of frequency 0.2 percent higher than nominal value:
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
-DI.fest.v = 100.2;
-\end{lstlisting}
 
 
 \subsubsection*{Call algorithm}
 
 \begin{par}
-Use QWTB to apply algorithm \lstinline{4PSWF} to data \lstinline{DI}.
+Use QWTB to apply algorithm \lstinline{FourPSF} to data \lstinline{DI}.
 \end{par} \vspace{1em}
 \begin{lstlisting}[style=mcode]
 CS.verbose = 1;
-DO = qwtb('4PSWF', DI, CS);
+DO = qwtb('FourPSF', DI, CS);
 \end{lstlisting}
 
         \begin{lstlisting}[style=output]
 QWTB: no uncertainty calculation
-Fitting started
-
-Local minimum found.
-
-Optimization completed because the size of the gradient is less than
-the default value of the function tolerance.
-
-
-
-Fitting finished
+QWTB: FourPSF wrapper: sampling time was calculated from first two elements of time series
 \end{lstlisting} \color{black}
     
 
 \subsubsection*{Display results}
 
 \begin{par}
-Results is the amplitude, frequency and phase of sampled waveform.
+Results is the amplitude, frequency, phase and offset of sampled waveform.
 \end{par} \vspace{1em}
 \begin{lstlisting}[style=mcode]
 A = DO.A.v
@@ -125,7 +110,7 @@ Oerrppm = (DO.O.v - Onom)/Onom .* 1e6
 
 Aerrppm =
 
-   4.8894e-07
+   2.2204e-09
 
 
 ferrppm =
@@ -135,12 +120,12 @@ ferrppm =
 
 pherrppm =
 
-   4.8850e-09
+   8.8818e-09
 
 
 Oerrppm =
 
-  -1.1102e-08
+   1.3878e-09
 
 \end{lstlisting} \color{black}
     

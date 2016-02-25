@@ -6,17 +6,13 @@
 % See also W. J. Riley, "The Calculation of Time Domain Frequency Stability". Implementation: M. A. Hopcroft, mhopeng@gmail.com, Matlab Central.'
 
 %% Generate sample data
+% A random numbers with normal probability distribution function will be generated into input data |DI.y.v|. Next a drift will be added.
 DI = [];
-%!demo
-%ysin=2.*sin(2.*pi.*1/300.*[1:1:1e3]);
-%! [x y s errors]=adev(1, ysin, 1, 'best averaging time is 300 s, i.e. cca one sine period');
-% A random numbers with normal probability distribution function will be generated into data input |DI.y.v|.
 DI.y.v = 1.5 + 3.*randn(1, 1e3);
-% Next a drift is added:
 DI.y.v = DI.y.v + [1:1:1e3]./100;
-% Lets suppose a sampling frequency is 1 Hz:
+%%
+% Lets suppose a sampling frequency is 1 Hz. The algorithm will generate all possible tau values automatically.
 DI.fs.v = 1;
-% The algorithm will generate all possible tau values automatically.
 
 %% Call algorithm
 % Use QWTB to apply algorithm |OADEV| to data |DI|.

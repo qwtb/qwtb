@@ -64,11 +64,11 @@ DI.fest.v = 100.2;
 \subsubsection*{Calculate estimates of signal parameters}
 
 \begin{par}
-Use QWTB to apply algorithm \lstinline{FPSWF} to data \lstinline{DI}.
+Use QWTB to apply algorithm \lstinline{4PSWF} to data \lstinline{DI}.
 \end{par} \vspace{1em}
 \begin{lstlisting}[style=mcode]
 CS.verbose = 1;
-DO = qwtb('FPSWF', DI, CS);
+DO = qwtb('4PSWF', DI, CS);
 \end{lstlisting}
 
         \begin{lstlisting}[style=output]
@@ -98,11 +98,11 @@ DI.ph = DO.ph;
 DI.O = DO.O;
 \end{lstlisting}
 \begin{par}
-Suppose the signal was sampled by a 20 bit digitizer with full scale range of 6 V (+- 3V). (The signal is not quantised, so the quantization noise is not present. Thus the simulation and results are not fully correct.):
+Suppose the signal was sampled by a 20 bit digitizer with full scale range \lstinline{FSR} of 6 V (+- 3V). (The signal is not quantised, so the quantization noise is not present. Thus the simulation and results are not fully correct.):
 \end{par} \vspace{1em}
 \begin{lstlisting}[style=mcode]
 DI.bitres.v = 20;
-DI.range.v = 3;
+DI.FSR.v = 3;
 \end{lstlisting}
 
 
@@ -131,12 +131,12 @@ ENOB = DO.ENOB.v
 
 SINADdB =
 
-   83.0029
+   83.0767
 
 
 ENOB =
 
-   13.0790
+   13.0912
 
 \end{lstlisting} \color{black}
     \begin{par}
@@ -144,7 +144,7 @@ Theoretical value of SINADdB is 20*log10(Anom./(noisestd.*sqrt(2))). Theoretical
 \end{par} \vspace{1em}
 \begin{lstlisting}[style=mcode]
 SINADdBtheor = 20*log10(Anom./(noisestd.*sqrt(2)));
-ENOBtheor = log2(DI.range.v./(noisestd.*sqrt(12)));
+ENOBtheor = log2(DI.FSR.v./(noisestd.*sqrt(12)));
 SINADerror = SINADdB - SINADdBtheor
 ENOBerror = ENOB - ENOBtheor
 \end{lstlisting}
@@ -153,12 +153,12 @@ ENOBerror = ENOB - ENOBtheor
 
 SINADerror =
 
-   -0.0074
+    0.0664
 
 
 ENOBerror =
 
-   -0.0012
+    0.0110
 
 \end{lstlisting} \color{black}
     

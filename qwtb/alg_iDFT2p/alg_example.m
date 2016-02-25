@@ -1,4 +1,4 @@
-%% Phase Sensitive Frequency Estimator
+%% 2-point interpolated DFT frequency estimator
 % Example for algorithm iDFT3p.
 %
 % iDFT2p is an algorithm for estimating the frequency, amplitude, and phase of the fundamental
@@ -21,25 +21,25 @@ t = [0:DI.Ts.v:0.5];
 DI.y.v = Anom*sin(2*pi*fnom*t + phnom) + Onom;
 
 %% Call algorithm
-% First a rectangular window will be used to estimate main signal properties.
+% First a rectangular window will be selected to estimate main signal properties. Use QWTB to apply
+% algorithm |iDFT3p| to data |DI| and put results into |DOr|.
 DI.window.v = 'rectangular';
-% Use QWTB to apply algorithm |iDFT3p| to data |DI| and put results into |DO_r|.
-DO_r = qwtb('iDFT2p', DI);
-% Next a Hann window will be used to estimate main signal properties Results will be put into
-% |DO_h|.
+DOr = qwtb('iDFT2p', DI);
+%%
+% Next a Hann window will be selected to estimate main signal properties Results will be put into |DOh|.
 DI.window.v = 'Hann';
-DO_h = qwtb('iDFT2p', DI);
+DOh = qwtb('iDFT2p', DI);
 
 %% Display results
 % Results is the amplitude, frequency and phase of sampled waveform. For rectangular window, the
 % error from nominal in parts per milion is:
-f_re = (DO_r.f.v - fnom)./fnom .* 1e6
-A_re = (DO_r.A.v - Anom)./Anom .* 1e6
-ph_re = (DO_r.ph.v - phnom)./phnom .* 1e6
-O_re = (DO_r.O.v - Onom)./Onom .* 1e6
+f_re = (DOr.f.v - fnom)./fnom .* 1e6
+A_re = (DOr.A.v - Anom)./Anom .* 1e6
+ph_re = (DOr.ph.v - phnom)./phnom .* 1e6
+O_re = (DOr.O.v - Onom)./Onom .* 1e6
 %%
 % For Hann window:
-f_he = (DO_h.f.v - fnom)./fnom .* 1e6
-A_he = (DO_h.A.v - Anom)./Anom .* 1e6
-ph_he = (DO_h.ph.v - phnom)./phnom .* 1e6
-O_he = (DO_h.O.v - Onom)./Onom .* 1e6
+f_he = (DOh.f.v - fnom)./fnom .* 1e6
+A_he = (DOh.A.v - Anom)./Anom .* 1e6
+ph_he = (DOh.ph.v - phnom)./phnom .* 1e6
+O_he = (DOh.O.v - Onom)./Onom .* 1e6

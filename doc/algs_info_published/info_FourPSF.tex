@@ -1,0 +1,29 @@
+\begin{tightdesc}
+\item [Id:] FourPSF
+\item [Name:] Standard Four Parameter Sine Wave Fit according IEEE Std 1241-2000
+\item [Description:] Fits a sine wave to the recorded data using 4 parameter (frequency, amplitude, phase and offset) model. The algorithm is according IEEE Standard for Terminology and Test methods for Analog-to-Digital Converters 1241-2000
+\item [Citation:] IEEE Std 1241-2000, Implementation written by Zoltán Tamás Bilau, modified by Janos Markus. Id: sfit4.m,v 3.0 2004/04/19 11:20:09 markus Exp. Copyright (c) 2001-2004 by Istvan Kollar and Janos Markus. Modified 2016 Rado Lapuh
+\item [Remarks:] If sampling time |Ts| is not supplied, wrapper will calculate |Ts| from sampling frequency |fs| or if not supplied, time series |t| is used to calculate |Ts|.
+\item [License:] UNKNOWN
+\item [Provides GUF:] no
+\item [Provides MCM:] no
+\item [Input Quantities] \rule{0em}{0em}
+    \begin{tightdesc}
+    \item [Required:] 
+        \textsf{Ts} or \textsf{fs} or \textsf{t},\enspace \textsf{y}
+    \item [Descriptions:] \rule{0em}{0em}
+        \begin{tightdesc}
+            \item[\textsf{Ts}] -- Sampling time
+            \item[\textsf{fs}] -- Sampling frequency
+            \item[\textsf{t}] -- Time series
+            \item[\textsf{y}] -- Sampled values
+        \end{tightdesc}
+    \end{tightdesc}
+\item [Output Quantities:] \rule{0em}{0em}
+    \begin{tightdesc}
+        \item[\textsf{A}] -- Amplitude of main signal component
+        \item[\textsf{O}] -- Offset of signal
+        \item[\textsf{f}] -- Frequency of main signal component
+        \item[\textsf{ph}] -- Phase of main signal component
+    \end{tightdesc}
+\end{tightdesc}

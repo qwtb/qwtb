@@ -39,13 +39,14 @@ See also Lapuh, R., "Estimating the Fundamental Component of Harmonically Distor
 \subsubsection*{Generate sample data}
 
 \begin{par}
-Two quantities are prepared: \lstinline{t} and \lstinline{y}, representing 1 second of sinus waveform of nominal frequency 100 Hz, nominal amplitude 1 V and nominal phase 1 rad, sampled at sampling frequency 10 kHz.
+Two quantities are prepared: \lstinline{Ts} and \lstinline{y}, representing 1 second of sinus waveform of nominal frequency 100 Hz, nominal amplitude 1 V and nominal phase 1 rad, sampled with sampling time 0.1 ms.
 \end{par} \vspace{1em}
 \begin{lstlisting}[style=mcode]
 DI = [];
 Anom = 1; fnom = 100; phnom = 1;
-DI.t.v = [0:1/1e4:1-1/1e4];
-DI.y.v = Anom*sin(2*pi*fnom*DI.t.v + phnom);
+DI.Ts.v = 1e-4;
+t = [0:DI.Ts.v:1-DI.Ts.v];
+DI.y.v = Anom*sin(2*pi*fnom*t + phnom);
 \end{lstlisting}
 \begin{par}
 Add noise:
@@ -110,17 +111,17 @@ pherrppm = (DO.ph.v - phnom)/phnom .* 1e6
 
 ferrppm =
 
-   -0.0015
+    0.1228
 
 
 Aerrppm =
 
-    1.2432
+    9.5634
 
 
 pherrppm =
 
-   21.2068
+  -45.3739
 
 \end{lstlisting} \color{black}
     

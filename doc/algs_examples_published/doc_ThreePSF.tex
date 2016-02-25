@@ -17,10 +17,10 @@
 \subsection*{Four parameter sine wave fitting}
 
 \begin{par}
-Example for algorithm 4PSWF.
+Example for algorithm ThreePSF.
 \end{par} \vspace{1em}
 \begin{par}
-4PSWF is an algorithm for estimating the frequency, amplitude, and phase of the sine waveform. The algorithm use least squares method. Algorithm requires good estimate of frequency.
+ThreePSF is an algorithm for estimating the amplitude, phase and offset of the sine waveform according standard IEEE Std 1241-2000';
 \end{par} \vspace{1em}
 
 \subsubsection*{Contents}
@@ -41,50 +41,35 @@ Two quantities are prepared: \lstinline{t} and \lstinline{y}, representing 1 sec
 \begin{lstlisting}[style=mcode]
 DI = [];
 Anom = 2; fnom = 100; phnom = 1; Onom = 0.2;
-DI.t.v = [0:1/1e4:1-1/1e4];
-DI.y.v = Anom*sin(2*pi*fnom*DI.t.v + phnom) + Onom;
-\end{lstlisting}
-\begin{par}
-Lets make an estimate of frequency 0.2 percent higher than nominal value:
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
-DI.fest.v = 100.2;
+t = [0:1/1e4:1-1/1e4];
+DI.y.v = Anom*sin(2*pi*fnom*t + phnom) + Onom;
+DI.Ts.v = 1e-4;
+DI.f.v = fnom;
 \end{lstlisting}
 
 
 \subsubsection*{Call algorithm}
 
 \begin{par}
-Use QWTB to apply algorithm \lstinline{4PSWF} to data \lstinline{DI}.
+Use QWTB to apply algorithm \lstinline{ThreePSF} to data \lstinline{DI}.
 \end{par} \vspace{1em}
 \begin{lstlisting}[style=mcode]
 CS.verbose = 1;
-DO = qwtb('4PSWF', DI, CS);
+DO = qwtb('ThreePSF', DI, CS);
 \end{lstlisting}
 
         \begin{lstlisting}[style=output]
 QWTB: no uncertainty calculation
-Fitting started
-
-Local minimum found.
-
-Optimization completed because the size of the gradient is less than
-the default value of the function tolerance.
-
-
-
-Fitting finished
 \end{lstlisting} \color{black}
     
 
 \subsubsection*{Display results}
 
 \begin{par}
-Results is the amplitude, frequency and phase of sampled waveform.
+Results is the amplitude, phase and offset of sampled waveform.
 \end{par} \vspace{1em}
 \begin{lstlisting}[style=mcode]
 A = DO.A.v
-f = DO.f.v
 ph = DO.ph.v
 O = DO.O.v
 \end{lstlisting}
@@ -94,11 +79,6 @@ O = DO.O.v
 A =
 
     2.0000
-
-
-f =
-
-   100
 
 
 ph =
@@ -116,7 +96,6 @@ Errors of estimation in parts per milion:
 \end{par} \vspace{1em}
 \begin{lstlisting}[style=mcode]
 Aerrppm = (DO.A.v - Anom)/Anom .* 1e6
-ferrppm = (DO.f.v - fnom)/fnom .* 1e6
 pherrppm = (DO.ph.v - phnom)/phnom .* 1e6
 Oerrppm = (DO.O.v - Onom)/Onom .* 1e6
 \end{lstlisting}
@@ -125,22 +104,17 @@ Oerrppm = (DO.O.v - Onom)/Onom .* 1e6
 
 Aerrppm =
 
-   4.8894e-07
-
-
-ferrppm =
-
-     0
+  -8.4377e-09
 
 
 pherrppm =
 
-   4.8850e-09
+  -9.7700e-09
 
 
 Oerrppm =
 
-  -1.1102e-08
+   8.3267e-10
 
 \end{lstlisting} \color{black}
     

@@ -61,6 +61,7 @@ figure
 plot(DO.INL.v, '-x');
 xlabel('Transition levels')
 ylabel('INL (k)')
+%%
 % Plot results of differential non-linearity. One can clearly observe defects on transitions 2-3 and
 % 10-11.
 figure
