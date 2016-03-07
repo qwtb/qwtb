@@ -1187,7 +1187,15 @@ function dataout = general_mcm(alginfo, datain, calcset) %<<<1
         end % for all dimensions
 
         % preparation:
-        if isscalarP(res(1).(Qname).v) == 1
+        if isempty(res(1).(Qname).v)
+            % quantity is empty
+            warning(['QWTB: output quantity `' Qname '` is empty'])
+            dataout.(Qname).v = nan;
+            dataout.(Qname).u = nan;
+            dataout.(Qname).r = nan;
+            dataout.(Qname).d = nan;
+            dataout.(Qname).c = nan;
+        elseif isscalarP(res(1).(Qname).v) == 1
             % quantity is scalar
             dataout.(Qname).v = mean([rescell{:}]);
             dataout.(Qname).u = std([rescell{:}]);
