@@ -7,7 +7,7 @@ function alginfo = alg_info() %<<<1
 
 alginfo.id = 'testQ';
 alginfo.name = 'Test of various input Quantities settings';
-alginfo.desc = 'Calculates minimum and maximum value of |v| quantity, or |u| quantity if present.';
+alginfo.desc = 'Returns value of |x| quantity, or |y| quantity if present, and an empty matrix.';
 alginfo.citation = 'see EMRP Q-Wave';
 alginfo.remarks = 'Do not use. This is only for testing QWTB';
 alginfo.license = 'MIT License';
@@ -72,13 +72,13 @@ alginfo.inputs(10).alternative = 0;
 alginfo.inputs(10).optional = 1;
 alginfo.inputs(10).parameter = 1;
 
-alginfo.outputs(1).name = 'max';
-alginfo.outputs(1).desc = 'maximal dependent quantity';
+alginfo.outputs(1).name = 'o';
+alginfo.outputs(1).desc = 'the same as the input x or y';
 
-alginfo.outputs(2).name = 'min';
-alginfo.outputs(2).desc = 'minimal dependent quantity';
+alginfo.outputs(2).name = 'e';
+alginfo.outputs(2).desc = 'empty matrix';
 
-alginfo.providesGUF = 1;
+alginfo.providesGUF = 0;
 alginfo.providesMCM = 0;
 
 % vim settings modeline: vim: foldmarker=%<<<,%>>> fdm=marker fen ft=octave textwidth=80 tabstop=4 shiftwidth=4
