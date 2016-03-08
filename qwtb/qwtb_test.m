@@ -239,6 +239,47 @@ DIq.a.u = 1;
 DIq.b.u = 1;
 [DO] = qwtb('testQ', DIq, CS);
 
+disp(['------ TEST GROUP ' num2str(tg) ': general mcm test with vectors and matrices as input - random test! ------------']) % ------------------ %<<<1
+tg = tg + 1;
+
+CS.unc = 'mcm';
+CS.mcm.randomize = 1;
+CS.mcm.verbose = 1;
+CS.mcm.repeats = 100;
+
+% test mcm on vectors %<<<2
+DIq.x.v = [1:5];
+DIq.x.u = [1:5].*0.001;
+[DO] = qwtb('testQ', DIq, CS);
+assert( all(size(DO.o.v) == [1 5]) );
+assert( all(size(DO.o.u) == [1 5]) );
+assert( all(DO.o.u < 0.01) );
+% XXX what is correct? : assert( all(size(DO.o.c,1) == [1 5]) );
+% XXX what is correct? : assert( all(size(DO.o.d,1) == [1 5]) );
+assert( all(size(DO.o.r) == [100 5]) );
+
+DIq.x.v = [1:5]';
+DIq.x.u = [1:5]'.*0.001;
+[DO] = qwtb('testQ', DIq, CS);
+assert( all(size(DO.o.v) == [1 5]) );
+assert( all(size(DO.o.u) == [1 5]) );
+assert( all(DO.o.u < 0.01) );
+% XXX what is correct? : assert( all(size(DO.o.c,1) == [1 5]) );
+% XXX what is correct? : assert( all(size(DO.o.d,1) == [1 5]) );
+assert( all(size(DO.o.r) == [100 5]) );
+
+% FINISH!
+% % test mcm on matrices %<<<2
+% DIq.x.v = ones(5,5);
+% DIq.x.u = ones(5,5).*0.001;
+% [DO] = qwtb('testQ', DIq, CS);
+% assert( all(size(DO.o.v) == [5 5]) );
+% assert( all(size(DO.o.u) == [5 5]) );
+% assert( all(DO.o.u < 0.01) );
+% % XXX what is correct? : assert( all(size(DO.o.c,1) == [1 5]) );
+% % XXX what is correct? : assert( all(size(DO.o.d,1) == [1 5]) );
+% assert( all(size(DO.o.r) == [100 5]) );
+
 disp(['------ TEST GROUP ' num2str(tg) ': test algorithms one by one ------------']) % ------------------ %<<<1
 tg = tg + 1;
 
@@ -254,7 +295,6 @@ for i = 1:length(algsids)
     disp(['test of algorithm: ' algsids{i}]);
     qwtb(algsids{i}, 'info');
 end % for all algorithms
-
 
 disp(['------ TEST GROUP ' num2str(tg) ': test for existence of algorithms licenses ------------']) % ------------------ %<<<1
 tg = tg + 1;
