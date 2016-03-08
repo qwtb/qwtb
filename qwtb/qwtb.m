@@ -1205,15 +1205,15 @@ function dataout = general_mcm(alginfo, datain, calcset) %<<<1
         elseif isvectorP(res(1).(Qname).v)
             % quantity is vector
             dataout.(Qname).v = mean(vertcat(rescell{:}));
-            dataout.(Qname).u = std([rescell{:}]);
-            dataout.(Qname).r = vertcat(rescell{:});
+            dataout.(Qname).u =  std(vertcat(rescell{:}));
+            dataout.(Qname).r =      vertcat(rescell{:});
             dataout.(Qname).d = nan;
             dataout.(Qname).c = nan;
         elseif ismatrixP(res(1).(Qname).v)
             % quantity is matrix
             dataout.(Qname).v = mean(vertcat(rescell{:}), 1);
-            dataout.(Qname).u = std([rescell{:}]);
-            dataout.(Qname).r = vertcat(rescell{:});
+            dataout.(Qname).u =  std(vertcat(rescell{:}), 1);
+            dataout.(Qname).r =      vertcat(rescell{:});
             dataout.(Qname).d = nan;
             dataout.(Qname).c = nan;
         else
