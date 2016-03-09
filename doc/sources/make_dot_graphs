@@ -1,0 +1,5 @@
+#!/bin/bash
+dot -Tsvg inner_dependencies.dot -o inner_dependencies.svg
+dot -Tsvg outer_dependencies.dot -o outer_dependencies.svg
+dot -Tpdf inner_dependencies.dot -o inner_dependencies.pdf
+dot -Tpdf outer_dependencies.dot -o outer_dependencies.pdf

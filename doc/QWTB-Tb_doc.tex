@@ -168,12 +168,12 @@ by the function \lstinline{qwtb} defined in the file {\tt qwtb.m}.
 \section{Toolbox use} %<<<2 ------------------------------
 The toolbox is used in several modes according to a number and character of input arguments.
 
-\subsection{Get list of implemented algorithms} %<<<3
+\subsection{Get informations of all implemented algorithms} %<<<3
 \begin{lstlisting}
 alginfo = qwtb()
 \end{lstlisting}
 
-With no input arguments, toolbox returns informations on all available algorithms. Result array
+With no input arguments, toolbox returns informations of all available algorithms. Result array
 \lstinline{alginfo} contains structures for every algorithm found in the same directory as
 \texttt{qwtb.m}. Format of structures is defined in~\ref{structalginfo}.
 
@@ -233,6 +233,14 @@ string. Toolbox will run a script \lstinline{alg_test.m} located in a algorithm 
 
 Test should prepare data, run algorithm and check results. If implementation of algorithm
 behaves incorrectly, an error will occur.
+
+\subsection{Get informations of algorithm} %<<<3 ------------------------------
+To get informations of only the selected algorithm, following syntax is used:
+\begin{lstlisting}
+qwtb('algid', 'info')
+\end{lstlisting}
+
+Result structure is defined in~\ref{structalginfo}.
 
 \subsection{Adding or removing algorithm path} %<<<3 ------------------------------
 Algorithms are stored in different directories, which are not in \mgo load path. To add directory
@@ -338,6 +346,15 @@ the example script will be accessible to the user.
 
 To create a documentation of the QWTB, function \lstinline{publish} is applied to the example script
 and resulting file is attached to the documentation file.
+
+\subsection{Overall flow chart} %<<<3 ----------------------------------------
+The main toolbox file {\tt qwtb.m} calls files in algorithm directory according following flow
+chart:
+\begin{center}
+        \includegraphics[width=1.0\textwidth]{sources/outer_dependencies.pdf}
+\end{center}
+Red arrow marks recursion, blue box represents files of the algorithm itself, green boxes represents
+files required or recommended by the toolbox.
 
 \section{Algorithm informations structure} %<<<2 ------------------------------
 \label{structalginfo}
@@ -660,8 +677,20 @@ Structure sets handling of Monte Carlo calculation of uncertainties. Structure h
         'mcm' (Monte Carlo) to prevent large memory usage.
 \end{tightdesc}
 
+%\section{qwtb.m subfunctions list} %<<<2 ----------------------------------------
+%Short list and descriptions of subfunctions in {\tt qwtb.m} file:
+% XXX 2DO
+
+\section{qwtb.m flow chart} %<<<2 ----------------------------------------
+Following flow chart shows dependencies of subfunctions included in {\tt qwtb.m} file.
+\begin{center}
+        \includegraphics[width=1.2\textwidth, angle=90]{sources/inner_dependencies.pdf}
+\end{center}
+
+
 \section{How uncertainty calculation works} %<<<2 ----------------------------------------
 %2DO
+
 
 \section{How to add a new algorithm} %<<<2 ----------------------------------------
 %2DO
@@ -819,13 +848,14 @@ containing script {\tt qwtb.m}.
 \newpage
 {\small \textbf{Toolbox use:}\\[-1.5em]
 \begin{lstlisting}[basicstyle=\small]
-                   alginfo = qwtb()
+                 [alginfo] = qwtb()
                    dataout = qwtb('algid', datain)
 [dataout, datain, calcset] = qwtb('algid', datain)
                    dataout = qwtb('algid', datain, calcset)
 [dataout, datain, calcset] = qwtb('algid', datain, calcset)
                              qwtb('algid', 'example')
                              qwtb('algid', 'test')
+                   alginfo = qwtb('algid', 'info')
                              qwtb('algid', 'addpath')
                              qwtb('algid', 'rempath')
                    license = qwtb('algid', 'license')

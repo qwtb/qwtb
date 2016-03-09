@@ -1,0 +1,223 @@
+digraph qwtb_inner_dependencies {
+    compound=true;
+    ordering=out;
+    node [shape = box];
+    #margin=0
+
+    qwtb00 [label = "qwtb", style=bold, fontname=bold];
+
+
+
+    # datain:
+    path_add_algdir05 [label = "path_add_algdir"];
+    alg_info02 [label = "alg_info", color = green];
+    check_gen_calcset [label = "check_gen_calcset"];
+    check_gen_datain [label = "check_gen_datain"];
+    path_rem_algdir05 [label = "path_rem_algdir"];
+    alg_wrapper00 [label = "alg_wrapper", color = green];
+    general_mcm [label = "general_mcm"];
+    subgraph cluster_check_and_run_alg {
+            node [shape=box];
+            label = "check_and_run_alg"
+            path_add_algdir05 -> alg_info02;
+            alg_info02 -> check_gen_calcset;
+            check_gen_calcset -> check_gen_datain;
+            check_gen_datain -> alg_wrapper00;
+            check_gen_datain -> general_mcm [label="general Monte\n Carlo method"];
+            alg_wrapper00 -> path_rem_algdir05;
+            general_mcm -> path_rem_algdir05;
+    }
+    qwtb00 -> path_add_algdir05 [lhead=cluster_check_and_run_alg, headlabel = "datain"];
+
+
+
+    # general_mcm:
+    call_alg02 [label = "call_alg"];
+    isscalarP01 [label = "isscalarP"];
+    isvectorP01 [label = "isvectorP"];
+    ismatrixP01 [label = "ismatrixP"];
+    subgraph cluster_general_mcm {
+            node [shape=box];
+            label = "general_mcm";
+            call_alg02 -> isscalarP01;
+            isscalarP01 -> isvectorP01;
+            isvectorP01 -> ismatrixP01;
+    }
+
+
+
+    # call_alg:
+    unc_to_val [label = "unc_to_val"];
+    alg_wrapper01 [label = "alg_wrapper", color = green];
+    subgraph cluster_call_alg {
+            node [shape=box];
+            label = "call_alg";
+            unc_to_val -> alg_wrapper01;
+    }
+
+
+
+    # unc_to_val:
+    isscalarP02 [label = "isscalarP"];
+    isvectorP02 [label = "isvectorP"];
+    ismatrixP02 [label = "ismatrixP"];
+    subgraph cluster_unc_to_val {
+            node [shape=box];
+            label = "unc_to_val";
+            isscalarP02 -> isvectorP02;
+            isvectorP02 -> ismatrixP02;
+    }
+
+
+
+    
+    # 'get_all_alg_info':
+    qwtbdirpath01 [label = "qwtbdirpath"];
+    check_alg_info [label = "check_alg_info"];
+    alg_info01 [label = "alg_info", color = green];
+    subgraph cluster_get_all_alg_info {
+            node [shape=box];
+            label = "get_all_alg_info";
+            qwtbdirpath01 -> alg_info01;
+            alg_info01 -> check_alg_info;
+    }
+    qwtb00 -> qwtbdirpath01 [lhead=cluster_get_all_alg_info, headlabel="no arguments"];
+
+
+
+    # 'test':
+    path_add_algdir01 [label = "path_add_algdir"];
+    get_standard_calcset01 [label = "get_standard_calcset"];
+    alg_test [label = "alg_test", color=green];
+    path_rem_algdir01 [label = "path_rem_algdir"];
+    qwtb01 [label = "qwtb", style=bold, fontname=bold];
+    subgraph cluster_run_alg_test {
+            node [shape=box];
+            label = "run_alg_test";
+            path_add_algdir01 -> get_standard_calcset01;
+            get_standard_calcset01 -> alg_test;
+            alg_test -> path_rem_algdir01;
+    }
+    qwtb00 -> path_add_algdir01 [lhead=cluster_run_alg_test, label="'test'"];
+    alg_test -> qwtb01 [color = red];
+    qwtb01 -> alg_test;
+
+
+
+    # 'example':
+    path_add_algdir02 [label = "path_add_algdir"];
+    get_standard_calcset02 [label = "get_standard_calcset"];
+    alg_example [label = "alg_example", color=green];
+    path_rem_algdir02 [label = "path_rem_algdir"];
+    qwtb02 [label = "qwtb", style=bold, fontname=bold];
+    subgraph cluster_run_alg_example {
+            node [shape=box];
+            label = "run_alg_example";
+            path_add_algdir02 -> get_standard_calcset02;
+            get_standard_calcset02 -> alg_example;
+            alg_example -> path_rem_algdir02;
+            }
+    qwtb00 -> path_add_algdir02 [lhead=cluster_run_alg_example, label="'example'"]
+    alg_example -> qwtb02 [color = red];
+    qwtb02 -> alg_example;
+
+
+
+    # 'addpath':
+    is_alg_dir [label = "is_alg_dir"];
+    algpath03 [label = "algpath"];
+    subgraph cluster_add_algdir {
+            node [shape=box];
+            label = "add_algdir";
+            is_alg_dir -> algpath03;
+    }
+    qwtb00 -> is_alg_dir [lhead=cluster_add_algdir, label = "'addpath'"];
+
+
+
+    # algpath:
+    qwtbdirpath02 [label = "qwtbdirpath"]
+    subgraph cluster_algpath {
+            node [shape=box];
+            label = "algpath";
+            qwtbdirpath02;
+    }
+
+
+
+    # 'rempath':
+    algpath04 [label = "algpath"];
+    subgraph cluster_path_rem_algdir {
+            node [shape=box];
+            label = "path_rem_algdir";
+            algpath04
+    }
+    qwtb00 -> algpath04 [lhead=cluster_path_rem_algdir, label = "'rempath'"];
+
+
+
+    # 'info':
+    path_add_algdir04 [label = "path_add_algdir"];
+    algpath01 [label = "algpath"];
+    check_alginfo01 [label = "check_alginfo"];
+    path_rem_algdir04 [label = "path_rem_algdir"];
+    subgraph cluster_get_one_alg_info {
+            node [shape=box];
+            label = "get_one_alg_info";
+            path_add_algdir04 -> algpath01;
+            algpath01 -> check_alginfo01;
+            check_alginfo01 -> path_rem_algdir04;
+    }
+    qwtb00 -> path_add_algdir04 [lhead=cluster_get_one_alg_info, label="'info'"]
+
+
+
+    # 'license':
+    algpath02 [label = "algpath"];
+    subgraph cluster_show_license {
+            node [shape=box];
+            label = "show_license";
+            algpath02;
+    }
+    qwtb00 -> algpath02 [lhead=cluster_show_license, label = "'license'"];
+
+
+
+    # legend:
+    subgraph cluster_legend {
+        style=rounded;
+        node [shape=box];
+        label = "legend";
+        color=blue
+        "subfunction" -> "function" [color = red, label=recursion];
+        "function" -> "subfunction";
+        subgraph cluster_main_aux {
+                style=box;
+                node [shape=box];
+                color=black;
+                label = "calling\n subfunction";
+                "first called\n subfunction" -> "second called\n subfunction" [label="time"];
+        }
+        funout [label="function\n outside\n qwtb.m", color = green];
+        subgraph cluster_called_subfunction {
+                style=box;
+                node [shape=box];
+                color=black;
+                label = "second called\n subfunction content";
+                "some content"
+        }
+        "second called\n subfunction" -> "some content" [lhead=cluster_called_subfunction, style=dashed, arrowhead=none]
+    }
+
+
+
+    # to create more compact and more leveled graph, these edges do not reflect source code:
+    general_mcm -> isscalarP01 [lhead=cluster_general_mcm, style=dotted, arrowhead=none];
+    call_alg02 -> alg_wrapper01 [lhead=cluster_call_alg, style=dotted, arrowhead=none];
+    unc_to_val -> isvectorP02 [lhead=cluster_unc_to_val, style=dotted, arrowhead=none];
+    #algpath02 -> qwtbdirpath02 [lhead=cluster_algpath, style=dotted, arrowhead=none];
+    #algpath01 -> qwtbdirpath02 [lhead=cluster_algpath, style=dotted, arrowhead=none];
+    algpath03 -> qwtbdirpath02 [lhead=cluster_algpath, style=dotted, arrowhead=none];
+    #algpath04 -> qwtbdirpath02 [lhead=cluster_algpath, style=dotted, arrowhead=none];
+    path_rem_algdir02-> funout [lhead=cluster_legend, style=invis];
+}

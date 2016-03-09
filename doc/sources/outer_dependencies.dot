@@ -1,0 +1,49 @@
+digraph qwtb_inner_dependencies {
+    compound=true;
+    ordering=out;
+    node [shape = box];
+    #margin=0
+
+    qwtb00 [label = "qwtb.m", style=bold, fontname=bold];
+    subgraph cluster_algorithm_directory {
+            node [shape=box];
+            label = "algorithm directory";
+            labelloc="b"
+            alg_wrapper [label = "alg_wrapper.m\n (Wrapper)", color=green];
+            alg_info [label = "alg_info.m\n (Description)", color=green];
+            alg_test [label = "alg_test.m\n (Testing function)", color=green];
+            alg_example [label = "alg_example.m\n (Example script)", color=green];
+            algorithm [label = "X1, X2, ...\n(Algorithm files)", color=blue];
+    }
+
+
+    qwtb00 -> alg_wrapper;
+    alg_wrapper -> algorithm;
+
+    qwtb00 -> alg_info [label="'info'"];
+
+    qwtb00 -> alg_test [label="'test'"];
+    alg_test -> qwtb00 [color = red];
+    #wtb00 -> alg_wrapper [constraint=false];
+
+    qwtb00 -> alg_example [label="'example'"];
+    alg_example -> qwtb00 [color = red];
+    #qwtb00 -> alg_wrapper [constraint=false];
+
+
+   # # legend:
+   #  subgraph cluster_legend {
+   #      style=rounded;
+   #      node [shape=box];
+   #      label = "legend";
+   #      color=blue
+   #      sf01 [label="script file"];
+   #      sf02 [label="script file"];
+   #      sf01 -> sf02 [color = red, label=recursion];
+   #      funout [label="script\n in algorithm\n directory", color = green];
+   #  }
+
+   #  #qwtb01 -> funout [style=invis];
+
+
+}
