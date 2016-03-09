@@ -18,7 +18,7 @@ elseif isfield(datain, 'fs')
         disp('QWTB: PSFE wrapper: sampling time was calculated from sampling frequency')
     end
 else
-    Ts = datain.t.v(2) - datain.t.v(1);
+    Ts = mean(datain.t.v(2:end) - datain.t.v(1:end-1));
     if calcset.verbose
         disp('QWTB: PSFE wrapper: sampling time was calculated from time series')
     end
