@@ -741,24 +741,32 @@ function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
             % transpose vector quantity if needed: %<<<3
             if isvectorP(Q.v)
                 if size(Q.v, 1) > size(Q.v, 2)
-                    warning(['QWTB: value of quantity `' Qname '` is column vector, it was automatically transposed.'])
+                    if calcset.verbose
+                        warning(['QWTB: value of quantity `' Qname '` is column vector, it was automatically transposed.'])
+                    end
                     Q.v = Q.v';
                 end
                 if Isu
                     if size(Q.u, 1) > size(Q.u, 2)
-                        warning(['QWTB: uncertainty of quantity `' Qname '` is column vector, it was automatically transposed.'])
+                        if calcset.verbose
+                            warning(['QWTB: uncertainty of quantity `' Qname '` is column vector, it was automatically transposed.'])
+                        end
                         Q.u = Q.u';
                     end
                 end
                 if Isd
                     if size(Q.d, 1) > size(Q.d, 2)
-                        warning(['QWTB: degrees of freedom of quantity `' Qname '` is column vector, it was automatically transposed.'])
+                        if calcset.verbose
+                            warning(['QWTB: degrees of freedom of quantity `' Qname '` is column vector, it was automatically transposed.'])
+                        end
                         Q.d = Q.d';
                     end
                 end
                 if Isr
                     if ( size(Q.v, 1) == size(Q.r, 2) || size(Q.v, 1) == size(Q.r, 2) )
-                        warning(['QWTB: randomized uncertainties of quantity `' Qname '` was automatically transposed.'])
+                        if calcset.verbose
+                            warning(['QWTB: randomized uncertainties of quantity `' Qname '` was automatically transposed.'])
+                        end
                         Q.r = Q.r';
                     end
                 end
