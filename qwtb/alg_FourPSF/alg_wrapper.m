@@ -16,9 +16,9 @@ elseif isfield(datain, 'fs')
         disp('QWTB: FourPSF wrapper: sampling time was calculated from sampling frequency')
     end
 else
-    Ts = datain.t.v(2) - datain.t.v(1);
+    Ts = mean(diff(datain.t.v));
     if calcset.verbose
-        disp('QWTB: FourPSF wrapper: sampling time was calculated from first two elements of time series')
+        disp('QWTB: FourPSF wrapper: sampling time was calculated from time series')
     end
 end
 

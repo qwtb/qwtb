@@ -15,7 +15,7 @@ elseif isfield(datain, 'Ts')
         disp('QWTB: OADEV wrapper: sampling frequency was calculated from sampling time')
     end
 else
-    fs = 1./(datain.t.v(2) - datain.t.v(1));
+    fs = 1./mean(diff(datain.t.v));
     if calcset.verbose
         disp('QWTB: OADEV wrapper: sampling frequency was calculated from time series')
     end

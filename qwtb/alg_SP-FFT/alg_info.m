@@ -7,7 +7,7 @@ alginfo.id = 'SP-FFT';
 alginfo.name = 'Spectrum by means of Fast Fourier Transform';
 alginfo.desc = 'Calculates frequency and phase spectrum by means of Fast Fourier Transform algorithm. Result is normalized.';
 alginfo.citation = '';
-alginfo.remarks = 'If sampling frequency |fs| is not supplied, wrapper will calculate |fs| from sampling time |Ts| or if not supplied, first two elements of time series |t| are used to calculate |fs|.';
+alginfo.remarks = 'If sampling frequency |fs| is not supplied, wrapper will calculate |fs| from sampling time |Ts| or if not supplied, mean of differences of time series |t| is used to calculate |fs|.';
 alginfo.license = 'MIT License';
 
 alginfo.inputs(1).name = 'fs';

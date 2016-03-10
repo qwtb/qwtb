@@ -8,7 +8,7 @@ alginfo.name = 'Standard Four Parameter Sine Wave Fit according IEEE Std 1241-20
 alginfo.desc = 'Fits a sine wave to the recorded data using 4 parameter (frequency, amplitude, phase and offset) model. The algorithm is according IEEE Standard for Terminology and Test methods for Analog-to-Digital Converters 1241-2000';
 alginfo.citation = 'IEEE Std 1241-2000, Implementation written by Zoltán Tamás Bilau, modified by Janos Markus. Id: sfit4.m,v 3.0 2004/04/19 11:20:09 markus Exp. Copyright (c) 2001-2004 by Istvan Kollar and Janos Markus. Modified 2016 Rado Lapuh';
 alginfo.remarks = '';
-alginfo.remarks = 'If sampling time |Ts| is not supplied, wrapper will calculate |Ts| from sampling frequency |fs| or if not supplied, time series |t| is used to calculate |Ts|.';
+alginfo.remarks = 'If sampling time |Ts| is not supplied, wrapper will calculate |Ts| from sampling frequency |fs| or if not supplied, mean of differences of time series |t| is used to calculate |Ts|.';
 alginfo.license = 'UNKNOWN';
 
 alginfo.inputs(1).name = 'Ts';

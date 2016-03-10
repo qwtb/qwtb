@@ -25,7 +25,7 @@ elseif isfield(datain, 'fs')
         disp('QWTB: iDFT2p wrapper: sampling time was calculated from sampling frequency')
     end
 else
-    Ts = datain.t.v(2) - datain.t.v(1);
+    Ts = mean(diff(datain.t.v));
     if calcset.verbose
         disp('QWTB: iDFT2p wrapper: sampling time was calculated from time series')
     end

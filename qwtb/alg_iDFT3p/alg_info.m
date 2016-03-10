@@ -7,7 +7,7 @@ alginfo.id = 'iDFT3p';
 alginfo.name = '3-point interpolated DFT frequency estimator';
 alginfo.desc = 'An algorithm for estimating the frequency, amplitude, phase and offset of the fundamental component using interpolated discrete Fourier transform. Rectangular or Hann window can be used for DFT.';
 alginfo.citation = 'Krzysztof Duda: Interpolation algorithms of DFT for parameters estimation of sinusoidal and damped sinusoidal signals. In S. M. Salih, editor, Fourier Transform - Signal Processing, chapter 1, pages 3-32, InTech, 2012. http://www.intechopen.com/books/fourier-transform-signal-processing/interpolated-dft Implemented by Rado Lapuh, 2016.';
-alginfo.remarks = 'If sampling time |Ts| is not supplied, wrapper will calculate |Ts| from sampling frequency |fs| or if not supplied, first two elements of time series |t| are used to calculate |Ts|. The optional parameter |window| can be set to values `rectangular` or `Hann`. If parameter is not supplied, Hann window will be used.';
+alginfo.remarks = 'If sampling time |Ts| is not supplied, wrapper will calculate |Ts| from sampling frequency |fs| or if not supplied, mean of differences of time series |t| is used to calculate |Ts|. The optional parameter |window| can be set to values `rectangular` or `Hann`. If parameter is not supplied, Hann window will be used.';
 alginfo.license = 'Implementation: MIT License';
 
 alginfo.inputs(1).name = 'Ts';
