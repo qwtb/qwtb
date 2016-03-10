@@ -34,6 +34,8 @@
 			<Item Name="TD MCM Calculation Method.ctl" Type="VI" URL="../TD MCM Calculation Method.ctl"/>
 			<Item Name="TD Uncertainty Calculation Method.ctl" Type="VI" URL="../TD Uncertainty Calculation Method.ctl"/>
 			<Item Name="TD Backend Engine.ctl" Type="VI" URL="../TD Backend Engine.ctl"/>
+			<Item Name="TD Algorithm Information Input.ctl" Type="VI" URL="../TD Algorithm Information Input.ctl"/>
+			<Item Name="TD Algorithm Information Output.ctl" Type="VI" URL="../TD Algorithm Information Output.ctl"/>
 		</Item>
 		<Item Name="Set MCM Calculation Settings.vi" Type="VI" URL="../Set MCM Calculation Settings.vi"/>
 		<Item Name="Set Cor Settings.vi" Type="VI" URL="../Set Cor Settings.vi"/>
