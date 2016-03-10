@@ -41,8 +41,12 @@
 		<Item Name="Set Cor Settings.vi" Type="VI" URL="../Set Cor Settings.vi"/>
 		<Item Name="Set DOF Settings.vi" Type="VI" URL="../Set DOF Settings.vi"/>
 	</Item>
+	<Item Name="Utility" Type="Folder">
+		<Item Name="Clear Temporary Variables.vi" Type="VI" URL="../Clear Temporary Variables.vi"/>
+		<Item Name="Parse Algorithm Inputs.vi" Type="VI" URL="../Parse Algorithm Inputs.vi"/>
+		<Item Name="Parse Algorithm Outputs.vi" Type="VI" URL="../Parse Algorithm Outputs.vi"/>
+	</Item>
 	<Item Name="VI Tree.vi" Type="VI" URL="../VI Tree.vi"/>
 	<Item Name="Set Data Call Alg Get Data.vi" Type="VI" URL="../Set Data Call Alg Get Data.vi"/>
 	<Item Name="Call Algorithm.vi" Type="VI" URL="../Call Algorithm.vi"/>
-	<Item Name="Clear Temporary Variables.vi" Type="VI" URL="../Clear Temporary Variables.vi"/>
 </Library>
