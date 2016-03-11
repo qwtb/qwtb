@@ -17,16 +17,16 @@
 		<Item Name="Get 1 Algorithm Info.vi" Type="VI" URL="../Get 1 Algorithm Info.vi"/>
 	</Item>
 	<Item Name="Set" Type="Folder">
+		<Item Name="Auxiliary Set" Type="Folder">
+			<Item Name="Set MCM Calculation Settings.vi" Type="VI" URL="../Set MCM Calculation Settings.vi"/>
+			<Item Name="Set Cor Settings.vi" Type="VI" URL="../Set Cor Settings.vi"/>
+			<Item Name="Set DOF Settings.vi" Type="VI" URL="../Set DOF Settings.vi"/>
+		</Item>
 		<Item Name="Set Quantity.vi" Type="VI" URL="../Set Quantity.vi"/>
 		<Item Name="Set Calculation Settings.vi" Type="VI" URL="../Set Calculation Settings.vi"/>
 		<Item Name="Set QWTB Path.vi" Type="VI" URL="../Set QWTB Path.vi"/>
 	</Item>
-	<Item Name="Auxiliary" Type="Folder">
-		<Item Name="Main Type Definitions" Type="Folder">
-			<Item Name="TD Algorithm Information.ctl" Type="VI" URL="../TD Algorithm Information.ctl"/>
-			<Item Name="TD Calculation Settings.ctl" Type="VI" URL="../TD Calculation Settings.ctl"/>
-			<Item Name="TD Quantity.ctl" Type="VI" URL="../TD Quantity.ctl"/>
-		</Item>
+	<Item Name="Type Definitions" Type="Folder">
 		<Item Name="Auxiliary Type Definitions" Type="Folder">
 			<Item Name="TD DOF Calculation Settings.ctl" Type="VI" URL="../TD DOF Calculation Settings.ctl"/>
 			<Item Name="TD Correlation Calculation Settings.ctl" Type="VI" URL="../TD Correlation Calculation Settings.ctl"/>
@@ -37,9 +37,9 @@
 			<Item Name="TD Algorithm Information Input.ctl" Type="VI" URL="../TD Algorithm Information Input.ctl"/>
 			<Item Name="TD Algorithm Information Output.ctl" Type="VI" URL="../TD Algorithm Information Output.ctl"/>
 		</Item>
-		<Item Name="Set MCM Calculation Settings.vi" Type="VI" URL="../Set MCM Calculation Settings.vi"/>
-		<Item Name="Set Cor Settings.vi" Type="VI" URL="../Set Cor Settings.vi"/>
-		<Item Name="Set DOF Settings.vi" Type="VI" URL="../Set DOF Settings.vi"/>
+		<Item Name="TD Algorithm Information.ctl" Type="VI" URL="../TD Algorithm Information.ctl"/>
+		<Item Name="TD Calculation Settings.ctl" Type="VI" URL="../TD Calculation Settings.ctl"/>
+		<Item Name="TD Quantity.ctl" Type="VI" URL="../TD Quantity.ctl"/>
 	</Item>
 	<Item Name="Utility" Type="Folder">
 		<Item Name="Clear Temporary Variables.vi" Type="VI" URL="../Clear Temporary Variables.vi"/>
