@@ -45,8 +45,10 @@
 		<Item Name="Clear Temporary Variables.vi" Type="VI" URL="../Clear Temporary Variables.vi"/>
 		<Item Name="Parse Algorithm Inputs.vi" Type="VI" URL="../Parse Algorithm Inputs.vi"/>
 		<Item Name="Parse Algorithm Outputs.vi" Type="VI" URL="../Parse Algorithm Outputs.vi"/>
+		<Item Name="Find QWTB Error.vi" Type="VI" URL="../Find QWTB Error.vi"/>
 	</Item>
 	<Item Name="VI Tree.vi" Type="VI" URL="../VI Tree.vi"/>
 	<Item Name="Set Data Call Alg Get Data.vi" Type="VI" URL="../Set Data Call Alg Get Data.vi"/>
 	<Item Name="Call Algorithm.vi" Type="VI" URL="../Call Algorithm.vi"/>
+	<Item Name="Example.vi" Type="VI" URL="../Example.vi"/>
 </Library>
