@@ -23,6 +23,8 @@
 			<Item Name="Output Data.vi" Type="VI" URL="../qwtblvgui/Output Data.vi"/>
 			<Item Name="Settings.vi" Type="VI" URL="../qwtblvgui/Settings.vi"/>
 			<Item Name="generate wvfrm.vi" Type="VI" URL="../qwtblvgui/generate wvfrm.vi"/>
+			<Item Name="Randomize.vi" Type="VI" URL="../qwtblvgui/Randomize.vi"/>
+			<Item Name="Scalar Vector Matrix in 2D.vi" Type="VI" URL="../qwtblvgui/Scalar Vector Matrix in 2D.vi"/>
 			<Item Name="TD GUI Settings.ctl" Type="VI" URL="../qwtblvgui/TD GUI Settings.ctl"/>
 		</Item>
 		<Item Name="QWTBLVLib.lvlib" Type="Library" URL="../qwtblvlib/QWTBLVLib.lvlib"/>
@@ -152,6 +154,9 @@
 				<Item Name="Nearest Frequency for Block.vi" Type="VI" URL="/&lt;vilib&gt;/express/express input/SimulateSignalConfig.llb/Nearest Frequency for Block.vi"/>
 				<Item Name="subSigGeneratorBlock.vi" Type="VI" URL="/&lt;vilib&gt;/express/express input/SimulateSignalBlock.llb/subSigGeneratorBlock.vi"/>
 				<Item Name="Dynamic To Waveform Array.vi" Type="VI" URL="/&lt;vilib&gt;/express/express shared/transition.llb/Dynamic To Waveform Array.vi"/>
+				<Item Name="NI_Matrix.lvlib" Type="Library" URL="/&lt;vilib&gt;/Analysis/Matrix/NI_Matrix.lvlib"/>
+				<Item Name="3D Comet Datatype.lvclass" Type="LVClass" URL="/&lt;vilib&gt;/Math Plots/3D Math Plots/3D Comet/3D Comet Datatype/3D Comet Datatype.lvclass"/>
+				<Item Name="3D Comet.lvclass" Type="LVClass" URL="/&lt;vilib&gt;/Math Plots/3D Math Plots/3D Comet/3D Comet/3D Comet.lvclass"/>
 			</Item>
 			<Item Name="lvanlys.dll" Type="Document" URL="/&lt;resource&gt;/lvanlys.dll"/>
 			<Item Name="_LaunchHelp.vi" Type="VI" URL="/&lt;helpdir&gt;/_LaunchHelp.vi"/>
