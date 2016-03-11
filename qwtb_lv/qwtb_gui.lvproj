@@ -19,13 +19,15 @@
 			<Item Name="globals.vi" Type="VI" URL="../qwtblvgui/globals.vi"/>
 			<Item Name="main.vi" Type="VI" URL="../qwtblvgui/main.vi"/>
 			<Item Name="Algorithms.vi" Type="VI" URL="../qwtblvgui/Algorithms.vi"/>
-			<Item Name="Input Data.vi" Type="VI" URL="../qwtblvgui/Input Data.vi"/>
-			<Item Name="Output Data.vi" Type="VI" URL="../qwtblvgui/Output Data.vi"/>
+			<Item Name="Input Quantities.vi" Type="VI" URL="../qwtblvgui/Input Quantities.vi"/>
+			<Item Name="Output Quantities.vi" Type="VI" URL="../qwtblvgui/Output Quantities.vi"/>
 			<Item Name="Settings.vi" Type="VI" URL="../qwtblvgui/Settings.vi"/>
 			<Item Name="generate wvfrm.vi" Type="VI" URL="../qwtblvgui/generate wvfrm.vi"/>
 			<Item Name="Randomize.vi" Type="VI" URL="../qwtblvgui/Randomize.vi"/>
 			<Item Name="Scalar Vector Matrix in 2D.vi" Type="VI" URL="../qwtblvgui/Scalar Vector Matrix in 2D.vi"/>
 			<Item Name="TD GUI Settings.ctl" Type="VI" URL="../qwtblvgui/TD GUI Settings.ctl"/>
+			<Item Name="About.vi" Type="VI" URL="../qwtblvgui/About.vi"/>
+			<Item Name="Get App Version.vi" Type="VI" URL="../qwtblvgui/Get App Version.vi"/>
 		</Item>
 		<Item Name="QWTBLVLib.lvlib" Type="Library" URL="../qwtblvlib/QWTBLVLib.lvlib"/>
 		<Item Name="icon.ico" Type="Document" URL="../qwtblvgui/icon.ico"/>
@@ -155,9 +157,29 @@
 				<Item Name="subSigGeneratorBlock.vi" Type="VI" URL="/&lt;vilib&gt;/express/express input/SimulateSignalBlock.llb/subSigGeneratorBlock.vi"/>
 				<Item Name="Dynamic To Waveform Array.vi" Type="VI" URL="/&lt;vilib&gt;/express/express shared/transition.llb/Dynamic To Waveform Array.vi"/>
 				<Item Name="NI_Matrix.lvlib" Type="Library" URL="/&lt;vilib&gt;/Analysis/Matrix/NI_Matrix.lvlib"/>
+				<Item Name="FileVersionInfo.vi" Type="VI" URL="/&lt;vilib&gt;/Platform/fileVersionInfo.llb/FileVersionInfo.vi"/>
+				<Item Name="FileVersionInformation.ctl" Type="VI" URL="/&lt;vilib&gt;/Platform/fileVersionInfo.llb/FileVersionInformation.ctl"/>
+				<Item Name="GetFileVersionInfoSize.vi" Type="VI" URL="/&lt;vilib&gt;/Platform/fileVersionInfo.llb/GetFileVersionInfoSize.vi"/>
+				<Item Name="BuildErrorSource.vi" Type="VI" URL="/&lt;vilib&gt;/Platform/fileVersionInfo.llb/BuildErrorSource.vi"/>
+				<Item Name="GetFileVersionInfo.vi" Type="VI" URL="/&lt;vilib&gt;/Platform/fileVersionInfo.llb/GetFileVersionInfo.vi"/>
+				<Item Name="VerQueryValue.vi" Type="VI" URL="/&lt;vilib&gt;/Platform/fileVersionInfo.llb/VerQueryValue.vi"/>
+				<Item Name="MoveMemory.vi" Type="VI" URL="/&lt;vilib&gt;/Platform/fileVersionInfo.llb/MoveMemory.vi"/>
+				<Item Name="FixedFileInfo_Struct.ctl" Type="VI" URL="/&lt;vilib&gt;/Platform/fileVersionInfo.llb/FixedFileInfo_Struct.ctl"/>
+				<Item Name="Open URL in Default Browser core.vi" Type="VI" URL="/&lt;vilib&gt;/Platform/browser.llb/Open URL in Default Browser core.vi"/>
+				<Item Name="Escape Characters for HTTP.vi" Type="VI" URL="/&lt;vilib&gt;/printing/PathToURL.llb/Escape Characters for HTTP.vi"/>
+				<Item Name="Path to URL.vi" Type="VI" URL="/&lt;vilib&gt;/printing/PathToURL.llb/Path to URL.vi"/>
+				<Item Name="Open URL in Default Browser (path).vi" Type="VI" URL="/&lt;vilib&gt;/Platform/browser.llb/Open URL in Default Browser (path).vi"/>
+				<Item Name="Open URL in Default Browser (string).vi" Type="VI" URL="/&lt;vilib&gt;/Platform/browser.llb/Open URL in Default Browser (string).vi"/>
+				<Item Name="Open URL in Default Browser.vi" Type="VI" URL="/&lt;vilib&gt;/Platform/browser.llb/Open URL in Default Browser.vi"/>
 			</Item>
 			<Item Name="lvanlys.dll" Type="Document" URL="/&lt;resource&gt;/lvanlys.dll"/>
 			<Item Name="_LaunchHelp.vi" Type="VI" URL="/&lt;helpdir&gt;/_LaunchHelp.vi"/>
+			<Item Name="version.dll" Type="Document" URL="version.dll">
+				<Property Name="NI.PreserveRelativePath" Type="Bool">true</Property>
+			</Item>
+			<Item Name="kernel32.dll" Type="Document" URL="kernel32.dll">
+				<Property Name="NI.PreserveRelativePath" Type="Bool">true</Property>
+			</Item>
 		</Item>
 		<Item Name="Build Specifications" Type="Build">
 			<Item Name="Packed Library" Type="Packed Library">
@@ -236,10 +258,10 @@
 				<Property Name="Source[4].itemID" Type="Ref">/My Computer/QWTBLVGUI/Algorithms.vi</Property>
 				<Property Name="Source[4].type" Type="Str">VI</Property>
 				<Property Name="Source[5].destinationIndex" Type="Int">0</Property>
-				<Property Name="Source[5].itemID" Type="Ref">/My Computer/QWTBLVGUI/Input Data.vi</Property>
+				<Property Name="Source[5].itemID" Type="Ref">/My Computer/QWTBLVGUI/Input Quantities.vi</Property>
 				<Property Name="Source[5].type" Type="Str">VI</Property>
 				<Property Name="Source[6].destinationIndex" Type="Int">0</Property>
-				<Property Name="Source[6].itemID" Type="Ref">/My Computer/QWTBLVGUI/Output Data.vi</Property>
+				<Property Name="Source[6].itemID" Type="Ref">/My Computer/QWTBLVGUI/Output Quantities.vi</Property>
 				<Property Name="Source[6].type" Type="Str">VI</Property>
 				<Property Name="Source[7].destinationIndex" Type="Int">0</Property>
 				<Property Name="Source[7].itemID" Type="Ref">/My Computer/QWTBLVGUI/Settings.vi</Property>
