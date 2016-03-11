@@ -14,20 +14,20 @@
 		<Property Name="server.vi.callsEnabled" Type="Bool">true</Property>
 		<Property Name="server.vi.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="specify.custom.address" Type="Bool">false</Property>
-		<Item Name="QWTBLVGUI" Type="Folder">
-			<Item Name="compare two string arrays.vi" Type="VI" URL="../qwtblvgui/compare two string arrays.vi"/>
-			<Item Name="globals.vi" Type="VI" URL="../qwtblvgui/globals.vi"/>
-			<Item Name="main.vi" Type="VI" URL="../qwtblvgui/main.vi"/>
-			<Item Name="Algorithms.vi" Type="VI" URL="../qwtblvgui/Algorithms.vi"/>
-			<Item Name="Input Quantities.vi" Type="VI" URL="../qwtblvgui/Input Quantities.vi"/>
-			<Item Name="Output Quantities.vi" Type="VI" URL="../qwtblvgui/Output Quantities.vi"/>
-			<Item Name="Settings.vi" Type="VI" URL="../qwtblvgui/Settings.vi"/>
-			<Item Name="generate wvfrm.vi" Type="VI" URL="../qwtblvgui/generate wvfrm.vi"/>
-			<Item Name="Randomize.vi" Type="VI" URL="../qwtblvgui/Randomize.vi"/>
-			<Item Name="Scalar Vector Matrix in 2D.vi" Type="VI" URL="../qwtblvgui/Scalar Vector Matrix in 2D.vi"/>
-			<Item Name="TD GUI Settings.ctl" Type="VI" URL="../qwtblvgui/TD GUI Settings.ctl"/>
-			<Item Name="About.vi" Type="VI" URL="../qwtblvgui/About.vi"/>
-			<Item Name="Get App Version.vi" Type="VI" URL="../qwtblvgui/Get App Version.vi"/>
+		<Item Name="simple QWTB GUI" Type="Folder">
+			<Item Name="compare two string arrays.vi" Type="VI" URL="../simple QWTB GUI/compare two string arrays.vi"/>
+			<Item Name="globals.vi" Type="VI" URL="../simple QWTB GUI/globals.vi"/>
+			<Item Name="main.vi" Type="VI" URL="../simple QWTB GUI/main.vi"/>
+			<Item Name="Algorithms.vi" Type="VI" URL="../simple QWTB GUI/Algorithms.vi"/>
+			<Item Name="Input Quantities.vi" Type="VI" URL="../simple QWTB GUI/Input Quantities.vi"/>
+			<Item Name="Output Quantities.vi" Type="VI" URL="../simple QWTB GUI/Output Quantities.vi"/>
+			<Item Name="Settings.vi" Type="VI" URL="../simple QWTB GUI/Settings.vi"/>
+			<Item Name="generate wvfrm.vi" Type="VI" URL="../simple QWTB GUI/generate wvfrm.vi"/>
+			<Item Name="Randomize.vi" Type="VI" URL="../simple QWTB GUI/Randomize.vi"/>
+			<Item Name="Scalar Vector Matrix in 2D.vi" Type="VI" URL="../simple QWTB GUI/Scalar Vector Matrix in 2D.vi"/>
+			<Item Name="TD GUI Settings.ctl" Type="VI" URL="../simple QWTB GUI/TD GUI Settings.ctl"/>
+			<Item Name="About.vi" Type="VI" URL="../simple QWTB GUI/About.vi"/>
+			<Item Name="Get App Version.vi" Type="VI" URL="../simple QWTB GUI/Get App Version.vi"/>
 		</Item>
 		<Item Name="QWTBLVLib.lvlib" Type="Library" URL="../qwtblvlib/QWTBLVLib.lvlib"/>
 		<Item Name="icon.ico" Type="Document" URL="../qwtblvgui/icon.ico"/>
@@ -173,13 +173,13 @@
 				<Item Name="Open URL in Default Browser.vi" Type="VI" URL="/&lt;vilib&gt;/Platform/browser.llb/Open URL in Default Browser.vi"/>
 			</Item>
 			<Item Name="lvanlys.dll" Type="Document" URL="/&lt;resource&gt;/lvanlys.dll"/>
-			<Item Name="_LaunchHelp.vi" Type="VI" URL="/&lt;helpdir&gt;/_LaunchHelp.vi"/>
 			<Item Name="version.dll" Type="Document" URL="version.dll">
 				<Property Name="NI.PreserveRelativePath" Type="Bool">true</Property>
 			</Item>
 			<Item Name="kernel32.dll" Type="Document" URL="kernel32.dll">
 				<Property Name="NI.PreserveRelativePath" Type="Bool">true</Property>
 			</Item>
+			<Item Name="_LaunchHelp.vi" Type="VI" URL="/&lt;helpdir&gt;/_LaunchHelp.vi"/>
 		</Item>
 		<Item Name="Build Specifications" Type="Build">
 			<Item Name="Packed Library" Type="Packed Library">
@@ -245,29 +245,29 @@
 				<Property Name="Source[0].itemID" Type="Str">{528B08C9-E890-43BE-B8AD-86A1DA91D895}</Property>
 				<Property Name="Source[0].type" Type="Str">Container</Property>
 				<Property Name="Source[1].destinationIndex" Type="Int">0</Property>
-				<Property Name="Source[1].itemID" Type="Ref">/My Computer/QWTBLVGUI/main.vi</Property>
+				<Property Name="Source[1].itemID" Type="Ref">/My Computer/simple QWTB GUI/main.vi</Property>
 				<Property Name="Source[1].sourceInclusion" Type="Str">TopLevel</Property>
 				<Property Name="Source[1].type" Type="Str">VI</Property>
 				<Property Name="Source[2].destinationIndex" Type="Int">0</Property>
-				<Property Name="Source[2].itemID" Type="Ref">/My Computer/QWTBLVGUI/compare two string arrays.vi</Property>
+				<Property Name="Source[2].itemID" Type="Ref">/My Computer/simple QWTB GUI/compare two string arrays.vi</Property>
 				<Property Name="Source[2].type" Type="Str">VI</Property>
 				<Property Name="Source[3].destinationIndex" Type="Int">0</Property>
-				<Property Name="Source[3].itemID" Type="Ref">/My Computer/QWTBLVGUI/globals.vi</Property>
+				<Property Name="Source[3].itemID" Type="Ref">/My Computer/simple QWTB GUI/globals.vi</Property>
 				<Property Name="Source[3].type" Type="Str">VI</Property>
 				<Property Name="Source[4].destinationIndex" Type="Int">0</Property>
-				<Property Name="Source[4].itemID" Type="Ref">/My Computer/QWTBLVGUI/Algorithms.vi</Property>
+				<Property Name="Source[4].itemID" Type="Ref">/My Computer/simple QWTB GUI/Algorithms.vi</Property>
 				<Property Name="Source[4].type" Type="Str">VI</Property>
 				<Property Name="Source[5].destinationIndex" Type="Int">0</Property>
-				<Property Name="Source[5].itemID" Type="Ref">/My Computer/QWTBLVGUI/Input Quantities.vi</Property>
+				<Property Name="Source[5].itemID" Type="Ref">/My Computer/simple QWTB GUI/Input Quantities.vi</Property>
 				<Property Name="Source[5].type" Type="Str">VI</Property>
 				<Property Name="Source[6].destinationIndex" Type="Int">0</Property>
-				<Property Name="Source[6].itemID" Type="Ref">/My Computer/QWTBLVGUI/Output Quantities.vi</Property>
+				<Property Name="Source[6].itemID" Type="Ref">/My Computer/simple QWTB GUI/Output Quantities.vi</Property>
 				<Property Name="Source[6].type" Type="Str">VI</Property>
 				<Property Name="Source[7].destinationIndex" Type="Int">0</Property>
-				<Property Name="Source[7].itemID" Type="Ref">/My Computer/QWTBLVGUI/Settings.vi</Property>
+				<Property Name="Source[7].itemID" Type="Ref">/My Computer/simple QWTB GUI/Settings.vi</Property>
 				<Property Name="Source[7].type" Type="Str">VI</Property>
 				<Property Name="Source[8].destinationIndex" Type="Int">0</Property>
-				<Property Name="Source[8].itemID" Type="Ref">/My Computer/QWTBLVGUI/TD GUI Settings.ctl</Property>
+				<Property Name="Source[8].itemID" Type="Ref">/My Computer/simple QWTB GUI/TD GUI Settings.ctl</Property>
 				<Property Name="Source[8].type" Type="Str">VI</Property>
 				<Property Name="SourceCount" Type="Int">9</Property>
 				<Property Name="TgtF_companyName" Type="Str">Czech Metrology Institute</Property>
