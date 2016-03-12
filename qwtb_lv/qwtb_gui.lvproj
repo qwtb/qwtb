@@ -28,9 +28,9 @@
 			<Item Name="TD GUI Settings.ctl" Type="VI" URL="../simple QWTB GUI/TD GUI Settings.ctl"/>
 			<Item Name="About.vi" Type="VI" URL="../simple QWTB GUI/About.vi"/>
 			<Item Name="Get App Version.vi" Type="VI" URL="../simple QWTB GUI/Get App Version.vi"/>
+			<Item Name="icon.ico" Type="Document" URL="../simple QWTB GUI/icon.ico"/>
 		</Item>
 		<Item Name="QWTBLVLib.lvlib" Type="Library" URL="../qwtblvlib/QWTBLVLib.lvlib"/>
-		<Item Name="icon.ico" Type="Document" URL="../qwtblvgui/icon.ico"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="Check if File or Folder Exists.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/libraryn.llb/Check if File or Folder Exists.vi"/>
@@ -186,19 +186,19 @@
 				<Property Name="Bld_buildCacheID" Type="Str">{D8318A1D-0D45-4D4B-AE4E-724BAD19A44C}</Property>
 				<Property Name="Bld_buildSpecName" Type="Str">Packed Library</Property>
 				<Property Name="Bld_excludeInlineSubVIs" Type="Bool">true</Property>
-				<Property Name="Bld_localDestDir" Type="Path">../release/qwtblvlib-[VersionNumber]</Property>
+				<Property Name="Bld_localDestDir" Type="Path">../release/QWTBLVLib - [VersionNumber]</Property>
 				<Property Name="Bld_localDestDirType" Type="Str">relativeToCommon</Property>
 				<Property Name="Bld_previewCacheID" Type="Str">{831D5EE3-6D0C-4D2F-AE02-0FF64A3527FC}</Property>
 				<Property Name="Bld_version.minor" Type="Int">1</Property>
 				<Property Name="Destination[0].destName" Type="Str">QWTBLVLib.lvlibp</Property>
-				<Property Name="Destination[0].path" Type="Path">../release/qwtblvlib-[VersionNumber]/QWTBLVLib.lvlibp</Property>
+				<Property Name="Destination[0].path" Type="Path">../release/QWTBLVLib - [VersionNumber]/QWTBLVLib.lvlibp</Property>
 				<Property Name="Destination[0].preserveHierarchy" Type="Bool">true</Property>
 				<Property Name="Destination[0].type" Type="Str">App</Property>
 				<Property Name="Destination[1].destName" Type="Str">Support Directory</Property>
-				<Property Name="Destination[1].path" Type="Path">../release/qwtblvlib-[VersionNumber]</Property>
+				<Property Name="Destination[1].path" Type="Path">../release/QWTBLVLib - [VersionNumber]</Property>
 				<Property Name="DestinationCount" Type="Int">2</Property>
 				<Property Name="PackedLib_callersAdapt" Type="Bool">true</Property>
-				<Property Name="Source[0].itemID" Type="Str">{528B08C9-E890-43BE-B8AD-86A1DA91D895}</Property>
+				<Property Name="Source[0].itemID" Type="Str">{16E604A0-315C-4CB9-956F-B027EBE5F51B}</Property>
 				<Property Name="Source[0].type" Type="Str">Container</Property>
 				<Property Name="Source[1].destinationIndex" Type="Int">0</Property>
 				<Property Name="Source[1].itemID" Type="Ref">/My Computer/QWTBLVLib.lvlib</Property>
@@ -211,7 +211,7 @@
 				<Property Name="SourceCount" Type="Int">2</Property>
 				<Property Name="TgtF_companyName" Type="Str">Czech Metrology Institute</Property>
 				<Property Name="TgtF_enableDebugging" Type="Bool">true</Property>
-				<Property Name="TgtF_fileDescription" Type="Str">Labview library for QWTB - Q-Wave Toolbox for generators/digitizers errors</Property>
+				<Property Name="TgtF_fileDescription" Type="Str">Labview library for QWTB - Q-Wave Toolbox for sampling measurements</Property>
 				<Property Name="TgtF_internalName" Type="Str">QWTBLVLib</Property>
 				<Property Name="TgtF_legalCopyright" Type="Str">Copyright © 2015 Martin Šíra</Property>
 				<Property Name="TgtF_productName" Type="Str">QWTBLVLib</Property>
@@ -223,26 +223,25 @@
 				<Property Name="App_INI_aliasGUID" Type="Str">{56E21462-C735-4307-8DAD-9840A3891CA4}</Property>
 				<Property Name="App_INI_GUID" Type="Str">{28506930-9C9A-48FD-80E5-FD705133BCAE}</Property>
 				<Property Name="App_serverConfig.httpPort" Type="Int">8002</Property>
-				<Property Name="App_winsec.description" Type="Str">http://www.CMI.com</Property>
 				<Property Name="Bld_buildCacheID" Type="Str">{655B4FA0-0255-4CE8-8F45-7A92905400EA}</Property>
 				<Property Name="Bld_buildSpecName" Type="Str">GUI Executable</Property>
 				<Property Name="Bld_excludeInlineSubVIs" Type="Bool">true</Property>
 				<Property Name="Bld_excludeLibraryItems" Type="Bool">true</Property>
 				<Property Name="Bld_excludePolymorphicVIs" Type="Bool">true</Property>
-				<Property Name="Bld_localDestDir" Type="Path">../release/qwtblvgui-[VersionNumber]</Property>
+				<Property Name="Bld_localDestDir" Type="Path">../release/simple QWTB GUI - [VersionNumber]</Property>
 				<Property Name="Bld_localDestDirType" Type="Str">relativeToCommon</Property>
 				<Property Name="Bld_modifyLibraryFile" Type="Bool">true</Property>
 				<Property Name="Bld_previewCacheID" Type="Str">{2765D6B5-EF22-49BD-82AC-410AD54165A3}</Property>
 				<Property Name="Bld_version.minor" Type="Int">1</Property>
-				<Property Name="Destination[0].destName" Type="Str">QWTBLVGUI.exe</Property>
-				<Property Name="Destination[0].path" Type="Path">../release/qwtblvgui-[VersionNumber]/QWTBLVGUI.exe</Property>
+				<Property Name="Destination[0].destName" Type="Str">simple QWTB GUI.exe</Property>
+				<Property Name="Destination[0].path" Type="Path">../release/simple QWTB GUI - [VersionNumber]/simple QWTB GUI.exe</Property>
 				<Property Name="Destination[0].preserveHierarchy" Type="Bool">true</Property>
 				<Property Name="Destination[0].type" Type="Str">App</Property>
 				<Property Name="Destination[1].destName" Type="Str">Support Directory</Property>
-				<Property Name="Destination[1].path" Type="Path">../release/qwtblvgui-[VersionNumber]/data</Property>
+				<Property Name="Destination[1].path" Type="Path">../release/simple QWTB GUI - [VersionNumber]/data</Property>
 				<Property Name="DestinationCount" Type="Int">2</Property>
-				<Property Name="Exe_iconItemID" Type="Ref">/My Computer/icon.ico</Property>
-				<Property Name="Source[0].itemID" Type="Str">{528B08C9-E890-43BE-B8AD-86A1DA91D895}</Property>
+				<Property Name="Exe_iconItemID" Type="Ref">/My Computer/simple QWTB GUI/icon.ico</Property>
+				<Property Name="Source[0].itemID" Type="Str">{A6E4E4F0-F186-4BD1-811F-90CE80559D64}</Property>
 				<Property Name="Source[0].type" Type="Str">Container</Property>
 				<Property Name="Source[1].destinationIndex" Type="Int">0</Property>
 				<Property Name="Source[1].itemID" Type="Ref">/My Computer/simple QWTB GUI/main.vi</Property>
@@ -269,14 +268,21 @@
 				<Property Name="Source[8].destinationIndex" Type="Int">0</Property>
 				<Property Name="Source[8].itemID" Type="Ref">/My Computer/simple QWTB GUI/TD GUI Settings.ctl</Property>
 				<Property Name="Source[8].type" Type="Str">VI</Property>
-				<Property Name="SourceCount" Type="Int">9</Property>
+				<Property Name="Source[9].Container.applyProperties" Type="Bool">true</Property>
+				<Property Name="Source[9].itemID" Type="Ref">/My Computer/simple QWTB GUI</Property>
+				<Property Name="Source[9].properties[0].type" Type="Str">Allow debugging</Property>
+				<Property Name="Source[9].properties[0].value" Type="Bool">true</Property>
+				<Property Name="Source[9].propertiesCount" Type="Int">1</Property>
+				<Property Name="Source[9].type" Type="Str">Container</Property>
+				<Property Name="SourceCount" Type="Int">10</Property>
 				<Property Name="TgtF_companyName" Type="Str">Czech Metrology Institute</Property>
-				<Property Name="TgtF_fileDescription" Type="Str">LabVIEW GUI for QWTB - Q-Wave Toolbox for generators/digitizers errors</Property>
-				<Property Name="TgtF_internalName" Type="Str">QWTBLVGUI</Property>
+				<Property Name="TgtF_enableDebugging" Type="Bool">true</Property>
+				<Property Name="TgtF_fileDescription" Type="Str">simple LabVIEW GUI for QWTB - Q-Wave Toolbox for sampling measurements</Property>
+				<Property Name="TgtF_internalName" Type="Str">simple QWTB GUI</Property>
 				<Property Name="TgtF_legalCopyright" Type="Str">Copyright © 2015 CMI</Property>
-				<Property Name="TgtF_productName" Type="Str">QWTB LV GUI</Property>
+				<Property Name="TgtF_productName" Type="Str">simple QWTB GUI</Property>
 				<Property Name="TgtF_targetfileGUID" Type="Str">{4B6FABB9-45B9-45A8-8472-C18F81A410F4}</Property>
-				<Property Name="TgtF_targetfileName" Type="Str">QWTBLVGUI.exe</Property>
+				<Property Name="TgtF_targetfileName" Type="Str">simple QWTB GUI.exe</Property>
 			</Item>
 		</Item>
 	</Item>
