@@ -31,7 +31,7 @@ function varargout = qwtb(varargin)
         varargout{1} = get_all_alg_info();
 
     elseif nargin == 1 || nargin > 3
-        error('QWTB: incorrect number of input arguments')
+        error(err_msg_gen(1)) % incorrect number of inputs!
 
     else
         algid = varargin{1};
@@ -57,7 +57,7 @@ function varargout = qwtb(varargin)
                 varargout{1} = show_license(algid);
             else
                 % unknown qwtb call
-                error('QWTB: second argument must be either `test`, `example`, `doc` or structure with input data');
+                error(err_msg_gen(2)); % incorrect second input argument!
             end % if strcmpi
         else
         % second argument is considered as input data:
@@ -108,6 +108,7 @@ function alginfo = get_all_alg_info() %<<<1
     % for all directories
     for i = 1:size(lis,1)
         % generate full path of current tested algorithm directory:
+        % maybe add algdir should be here !!! XXX
         algdir = [qwtbdirpath filesep() lis(i).name];
         if is_alg_dir(algdir)
             addpath(algdir);
@@ -121,6 +122,7 @@ function alginfo = get_all_alg_info() %<<<1
                 warning(['QWTB: algorithm info returned by alg_info.m in `' algdir '` has incorrect format and is excluded from results'])
                 disp(msg)
             end % if check_alginfo
+            % maybe path_rem_algdir should be here!!! XXX
             rmpath(algdir);
         end % if is_alg_dir(algdir)
     end % for i = 1:size(lis,1)
@@ -163,7 +165,7 @@ function path_add_algdir(algid) %<<<1
 % checks and adds path of algorithm to load path
     % check directory is algorithm directory:
     if ~is_alg_dir(algpath(algid))
-            error(['QWTB: algorithm `' algid '` not found'])
+            error(err_msg_gen(90, algid)) % algid not found!
     end
     % add wrapper to a load path:
     addpath(algpath(algid));
@@ -231,7 +233,7 @@ function [dataout, datain, calcset] = check_and_run_alg(algid, datain, calcset) 
         dataout = alg_wrapper(datain, calcset);
     elseif ( strcmpi(calcset.unc, 'guf') && not(alginfo.providesGUF) )
         % GUF required and cannot calculate GUF, raise error:
-        error('QWTB: uncertainty calculation by GUF method required, but algorithm does not provide GUF uncertainty calculation')
+        error(err_msg_gen(91, alginfo.id));
     elseif ( strcmpi(calcset.unc, 'guf') && alginfo.providesGUF ) || ( strcmpi(calcset.unc, 'mcm') && alginfo.providesMCM )
         % uncertainty is calculated by algorithm or wrapper:
         if calcset.verbose
@@ -244,8 +246,8 @@ function [dataout, datain, calcset] = check_and_run_alg(algid, datain, calcset) 
         end
         dataout = general_mcm(alginfo, datain, calcset);
     else
-        % unknown settings of calcset.unc or algorithm:
-        error(['QWTB: unknown settings of calcset.unc: `' calcset.unc '` or algorithm info structure concerning uncertainty calculation'])
+        % unknown settings of calcset.unc or algorithm. this shouldn't happen because calcset should be checked.
+        error(err_msg_gen(-5, calcset.unc));
     end % if calcset.unc
     % remove algorithm path from path:
     path_rem_algdir(algid);
@@ -285,7 +287,7 @@ function [license]= show_license(algid) %<<<1
     licfilpath = [algpath(algid) filesep 'LICENSE.txt'];
     % test for license file:
     if ~exist(licfilpath, 'file')
-        error(['QWTB: license file `' licfilpath '` for algorithm `' algid '` does not exist!'])
+        error(err_msg_gen(92, licfilpath, algid)); % license file does not exist!
     else
         license = fileread(licfilpath);
     end
@@ -461,7 +463,7 @@ function calcset = check_gen_calcset(calcset) %<<<1
     % verbose %<<<2
     if ~( isfield(calcset, 'verbose') )
         if calcset.strict
-            error('QWTB: field `verbose` is missing in calculation settings structure')
+            error(err_msg_gen(30)) % .verbose missing!
         else
             calcset.verbose = 1;
         end
@@ -474,18 +476,18 @@ function calcset = check_gen_calcset(calcset) %<<<1
     % unc %<<<2
     if ~( isfield(calcset, 'unc') )
         if calcset.strict
-            error('QWTB: field `unc` is missing in calculation settings structure')
+            error(err_msg_gen(31)) %.unc missing!
         else
             calcset.unc = 'none';
         end
     end
     if ~( strcmpi(calcset.unc, 'none') || strcmpi(calcset.unc, 'guf') || strcmpi(calcset.unc, 'mcm') )
-        error('QWTB: field `unc` has unknown value. Only `none`, `guf` and `mcm` are permitted.')
+        error(err_msg_gen(32)); % unc unkwnown value!
     end
     % cor %<<<2
     if ~( isfield(calcset, 'cor') )
         if calcset.strict
-            error('QWTB: field `cor` is missing in calculation settings structure')
+            error(err_msg_gen(33)); % cor is missing!
         else
             calcset.cor.req = 1;
             calcset.cor.gen = 1;
@@ -494,7 +496,7 @@ function calcset = check_gen_calcset(calcset) %<<<1
     % cor.req %<<<2
     if ~( isfield(calcset.cor, 'req') )
         if calcset.strict
-            error('QWTB: field `cor.req` is missing in calculation settings structure')
+            error(err_msg_gen(34)); %cor.req is missing!
         else
             calcset.cor.req = 1;
         end
@@ -507,7 +509,7 @@ function calcset = check_gen_calcset(calcset) %<<<1
     % cor.gen %<<<2
     if ~( isfield(calcset.cor, 'gen') )
         if calcset.strict
-            error('QWTB: field `cor.gen` is missing in calculation settings structure')
+            error(err_msg_gen(35)); % cor.gen is missing!
         else
             calcset.cor.gen = 1;
         end
@@ -519,7 +521,7 @@ function calcset = check_gen_calcset(calcset) %<<<1
     end
     if ~( isfield(calcset, 'dof') )
         if calcset.strict
-            error('QWTB: field `dof` is missing in calculation settings structure')
+            error(err_msg_gen(36)); % dof is missing!
         else
             calcset.dof.req = 1;
             calcset.dof.gen = 1;
@@ -528,7 +530,7 @@ function calcset = check_gen_calcset(calcset) %<<<1
     % dof.req %<<<2
     if ~( isfield(calcset.dof, 'req') )
         if calcset.strict
-            error('QWTB: field `dof.req` is missing in calculation settings structure')
+            error(err_msg_gen(37)); % dof.req is missing!
         else
             calcset.dof.req = 1;
         end
@@ -541,7 +543,7 @@ function calcset = check_gen_calcset(calcset) %<<<1
     % dof.gen %<<<2
     if ~( isfield(calcset.dof, 'gen') )
         if calcset.strict
-            error('QWTB: field `dof.gen` is missing in calculation settings structure')
+            error(err_msg_gen(38)); % dof.gen is missing!
         else
             calcset.dof.gen = 1;
         end
@@ -554,7 +556,7 @@ function calcset = check_gen_calcset(calcset) %<<<1
     % mcm %<<<2
     if ~( isfield(calcset, 'mcm') )
         if calcset.strict
-            error('QWTB: field `mcm` is missing in calculation settings structure')
+            error(err_msg_gen(39)); % mcm is missing!
         else
             calcset.mcm.repeats = 100;
             calcset.mcm.verbose = 1;
@@ -567,19 +569,19 @@ function calcset = check_gen_calcset(calcset) %<<<1
     % mcm.repeats %<<<2
     if ~( isfield(calcset.mcm, 'repeats') )
         if calcset.strict
-            error('QWTB: field `mcm.repeats` is missing in calculation settings structure')
+            error(err_msg_gen(40)); % mcm.repeats is missing!
         else
             calcset.mcm.repeats = 100;
         end
     end
     tmp = calcset.mcm.repeats;
     if ~(isscalarP(tmp) && tmp > 0 && abs(fix(tmp)) == tmp)
-        error('QWTB: field `calcset.mcm.repeats` must be scalar positive non-zero integer!')
+        error(err_msg_gen(41)); % mcm.reapeats incorrect!
     end
     % mcm.verbose %<<<2
     if ~( isfield(calcset.mcm, 'verbose') )
         if calcset.strict
-            error('QWTB: field `mcm.verbose` is missing in calculation settings structure')
+            error(err_msg_gen(42)); % mcm.verbose is missing!
         else
             calcset.mcm.verbose = 1;
         end
@@ -592,45 +594,45 @@ function calcset = check_gen_calcset(calcset) %<<<1
     % mcm.method %<<<2
     if ~( isfield(calcset.mcm, 'method') )
         if calcset.strict
-            error('QWTB: field `mcm.method` is missing in calculation settings structure')
+            error(err_msg_gen(43)); % mcm.method is missing!
         else
             calcset.mcm.method = 'singlecore';
         end
     end
     tmp = calcset.mcm.method;
     if ~( strcmpi(tmp, 'singlecore') || strcmpi(tmp, 'multicore') || strcmpi(tmp, 'multistation') )
-        error('QWTB: field `mcm.method` in calculation settings has unknown value. Only values `singlecore`, `multicore` or `multistation` are permitted.')
+        error(err_msg_gen(44)); % unknown mcm.method!
     end
     % mcm.procno %<<<2
     if ~( isfield(calcset.mcm, 'procno') )
         if calcset.strict
-            error('QWTB: field `mcm.procno` is missing in calculation settings structure')
+            error(err_msg_gen(45)); % mcm.procno is missing!
         else
             calcset.mcm.procno = 0;
         end
     end
     tmp = calcset.mcm.procno;
     if ~(isscalarP(tmp) && abs(fix(tmp)) == tmp)
-        error('QWTB: field `calcset.mcm.procno` must be scalar zero or positive integer!')
+        error(err_msg_gen(46)); % mcm.procno unknown value!
     end
     % mcm.tmpdir %<<<2
     if ~( isfield(calcset.mcm, 'tmpdir') )
         if calcset.strict
-            error('QWTB: field `mcm.tmpdir` is missing in calculation settings structure')
+            error(err_msg_gen(47)); % mcm.tmpdir is missing!
         else
             calcset.mcm.tmpdir = '.';
         end
     end
     if ~( ischar(calcset.mcm.tmpdir) )
-        error('QWTB: field `mcm.tmpdir` must be a string')
+        error(err_msg_gen(48)); % mcm.tmpdir not a string!
     end
     if ~( exist(calcset.mcm.tmpdir, 'dir') )
-        error(['QWTB: directory ' calcset.mcm.tmpdir ' does not exist'])
+        error(err_msg_gen(49, calcset.mcm.tmpdir)); % dir mcm.tmpdir does not exist!
     end
     % mcm.randomize %<<<2
     if ~( isfield(calcset.mcm, 'randomize') )
         if calcset.strict
-            error('QWTB: field `mcm.randomize` is missing in calculation settings structure')
+            error(err_msg_gen(50)); % mcm.randomize is missing!
         else
             calcset.mcm.randomize = 1;
         end
@@ -640,7 +642,7 @@ function calcset = check_gen_calcset(calcset) %<<<1
     else
         calcset.mcm.randomize = 0;
     end
-end % function check_calcset
+end % function check_gen_calcset
 
 function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
 % Checks if input data has all quantities required by algorithm.
@@ -654,8 +656,7 @@ function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
     % compare requirements with datain:
     errmsg = check_Q_present(datain, alginfo, reqQ, reqQdesc, reqQG, reqQGdesc);
     if ~isempty(errmsg)
-        % raise error with missing quantity informations:
-        error(errmsg)
+        error(errmsg) % errmsg 93 (singular) or 94 (plural)
     end
 
     Qinnames = fieldnames(datain);
@@ -683,7 +684,7 @@ function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
         % check if quantities are required: %<<<3
         % Q.v: %<<<4
         if ~(Isv) 
-                error(['QWTB: field `v` (value) missing in quantity `' Qname '`.'])
+                error(err_msg_gen(60, Qname)); % .v is missing!
         end % is Q.v
         if ~Q.par
             % quantity is not parameter, so other fields are relevant
@@ -691,7 +692,7 @@ function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
             Genu = 0;
             if ~(Isu)
                 if ~( strcmpi(calcset.unc, 'none') )
-                        error(['QWTB: field `u` (uncertainty) is missing in quantity `' Qname '` and uncertainty calculation is required.'])
+                        error(err_msg_gen(61, Qname)); % .u is missing!
                 else
                     Genu = 1;
                 end
@@ -705,7 +706,7 @@ function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
                         % degrees of freedom generated automatically
                         Gend = 2;
                     else
-                        error(['QWTB: field `d` (degrees of freedom) is missing in quantity `' Qname '`, automatic generation is disabled but GUF uncertainty calculation is required.'])
+                        error(err_msg_gen(62, Qname)); % .d is missing!
                     end % if dof.gen
                 else
                     Gend = 1;
@@ -718,7 +719,7 @@ function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
                     if calcset.cor.gen
                         Genc = 2;
                     else
-                        error(['QWTB: field `c` (correlation matrix) is missing in quantity `' Qname '`, automatic generation is disabled but uncertainty calculation is required.'])
+                        error(err_msg_gen(63, Qname)); % .c is missing!
                     end
                 else
                     Genc = 1;
@@ -728,7 +729,7 @@ function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
             if ~( isfield(Q, 'r') )
                 if strcmpi(calcset.unc, 'mcm')
                     if ~( calcset.mcm.randomize )
-                        error(['QWTB: field `r` (randomized uncertainties) is missing in quantity `' Qname '`, automatic randomization is disabled but MCM uncertainty calculation is required.'])
+                        error(err_msg_gen(64, Qname)); % .r is missing!
                     else
                         % randomize quantity:
                         Genr = 2;
@@ -824,13 +825,13 @@ function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
             % Q.v: %<<<4
             % check that maximal number of non trailing non singleton dimensions is 2:
             if ndims(Q.v) > 2
-                error(['QWTB: value of quantity `' Qname '` has too many dimensions.'])
+                error(err_msg_gen(65, Qname)); % .v too many dimensions!
             end
             % Q.u: %<<<4
             if ~( strcmpi(calcset.unc, 'none') )
                 % dimensions must fully match Qname.v
                 if ~isequal(Sv, Su)
-                    error(['QWTB: dimensions of uncertainty matrix do not match dimensions of value matrix in quantity `' Qname '`.'])
+                    error(err_msg_gen(66, Qname)); % .u dims not equal to .v dims!
                 end
             end
             % Q.d: %<<<4
@@ -838,7 +839,7 @@ function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
                 if calcset.dof.req
                     % dimensions must fully match Qname.v
                     if ~isequal(Sv, Sd)
-                        error(['QWTB: dimensions of degrees of freedom matrix do not match dimensions of value matrix in quantity `' Qname '`.'])
+                        error(err_msg_gen(67, Qname)); % .d dims not equal to .v dims!
                     end
                 end % if dof.req
             end % if guf
@@ -858,10 +859,11 @@ function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
                     elseif ismatrixP(Q.v)
                         % XXX 2DO how?
                     else
-                        error(['QWTB: quantity `' Qname '` has too many dimensions']);
+                        % Qname has too many dimensions. This shouldn't happen, dimensions should be already tested!
+                        error(err_msg_gen(-6, Qname));
                     end % if scalar/vector/matrix
                     if ~(ok)
-                        error(['QWTB: correlation matrix of quantity `' Qname '` has incorrect dimensions'])
+                        error(err_msg_gen(68, Qname)); % .c incorrect dims!
                     end
                 end % if cor.req
             end % if guf or mcm
@@ -878,7 +880,7 @@ function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
                 %%%             datain.(Qname) = rand_quant(Q, calcset.mcm.repeats);
                 %%%             Q = datain.(Qname);
                 %%%         else
-                %%%             error(['QWTB: quantity `' Qname '` is not randomized, but mcm is required and automatic randomization is disabled'])
+                %%%             error(XXX)['QWTB: quantity `' Qname '` is not randomized, but mcm is required and automatic randomization is disabled'])
                 %%%         end % if mcm.randomize
                 %%%     end % if mcm
                 %%% else
@@ -897,10 +899,11 @@ function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
                         ok = 0;
                     end
                 else
-                    error(['QWTB: quantity `' Qname '` has too many dimensions']);
+                    % Qname has too many dimensions. This shouldn't happen, dimensions should be already tested!
+                    error(err_msg_gen(-6, Qname));
                 end % if scalar/vector/matrix
                 if ~(ok)
-                    error(['QWTB: randomized matrix of quantity `' Qname '` has incorrect dimensions (calcset.mcm.reapeats = ' num2str(calcset.mcm.repeats) ')'])
+                    error(err_msg_gen(69, Qname, calcset.mcm.reapeats)); % .r incorrect dims;
                 end
             end % if mcm 
 
@@ -1015,21 +1018,21 @@ end % function parse_alginfo_inputs(alginfo)
 function errmsg = check_Q_present(datain, alginfo, reqQ, reqQdesc, reqQG, reqQGdesc) %<<<1
 % checks if quantities present in datain meet requirements according required,
 % optional and grouped quantities
-% if output is empty, all is ok, otherwise errmsg contains error message
+% if output is empty, all is ok, otherwise errmsg contains error message no. 93 (singular) or 94 (plural)
 
     % names of quantities in datain:
     Qinnames = fieldnames(datain);
-    % string with error message:
-    errmsg = [];
+    % string with missing quantities:
+    missingQ = [];
     % count of missing Q:
-    missingQ = 0;
+    missingQno = 0;
 
     % check not-optional quantities are present in Qinnames (datain): %<<<2
     for i = 1:length(reqQ)
         if ~any(strcmp(reqQ{i}, Qinnames))
             % missing not-optional quantity, generate part of error message with missing quantity informations:
-            errmsg = [errmsg sprintf('\n') '`' reqQ{i} '` - ' reqQdesc{i}];
-            missingQ = missingQ + 1;
+            missingQ = [missingQ sprintf('\n') '`' reqQ{i} '` - ' reqQdesc{i}];
+            missingQno = missingQno + 1;
         end
     end
 
@@ -1039,27 +1042,27 @@ function errmsg = check_Q_present(datain, alginfo, reqQ, reqQdesc, reqQG, reqQGd
         tmp = cellfun(@strcmpi, Qinnames, repmat({reqQG{i}}, length(Qinnames), 1), 'uniformoutput', 0);
         if ~any([tmp{:}])
             % not found, add error:
-            errmsg = [errmsg sprintf('\n') 'one of following:'];
+            missingQ = [missingQ sprintf('\n') 'one of following:'];
             for j = 1:length(reqQG{i})
-                errmsg = [errmsg ' `' reqQG{i}{j} '`,'];
+                missingQ = [missingQ ' `' reqQG{i}{j} '`,'];
             end % for j
-            errmsg = errmsg(1:end-1);
-            missingQ = missingQ + 1;
+            missingQ = missingQ(1:end-1);
+            missingQno = missingQno + 1;
         end % if ~any
     end % for i = 1:reqQG
 
     % generate error message %<<<2
-    if ( missingQ ~= 0 )
+    if ( missingQno ~= 0 )
         % some quantities missing, generate singular or plural version of error
         % message:
-        if missingQ == 1
-            errmsg = ['QWTB: followinq quantity is required by algorithm `' alginfo.id '` but is missing in input data structure:' errmsg];
+        if missingQno == 1
+            errmsg = err_msg_gen(93, alginfo.id, missingQ);
         else
-            errmsg = ['QWTB: followinq quantities are required by algorithm `' alginfo.id '` but are missing in input data structure:' errmsg];
+            errmsg = err_msg_gen(94, alginfo.id, missingQ);
         end
     else
         errmsg = '';
-    end % if missingQ
+    end % if missingQno
 
 end % function check_Q_present
 
@@ -1082,7 +1085,8 @@ function r = rand_quant(Q, M, Qname) %<<<1
         r = tmpv + tmpu.*randn(size(tmpu));
         % 2 DO correlations - mvnrnd
     else
-        error(['QWTB: quantity `' Qname '` has too many dimensions']);
+        % Qname has too many dimensions. This shouldn't happen, dimensions should be already tested!
+        error(err_msg_gen(-6, Qname));
     end % if scalar/vector/matrix
 end % function rand_quant
 
@@ -1169,7 +1173,8 @@ function dataout = general_mcm(alginfo, datain, calcset) %<<<1
     elseif strcmpi(method, 'multistation') 
         % 2DO
     else
-        error(['QWTB: unknown settings of calcset.mcm.method: `' method '` '])
+        % calcset.mcm.method has unknown value. this shouldn't happen, calcset is already checked:
+        error(err_msg_gen(-7, method));
     end
         
     % concatenate data into output structure --------------------------- %<<<2
@@ -1185,13 +1190,13 @@ function dataout = general_mcm(alginfo, datain, calcset) %<<<1
         % check all outputs has the same dimensions:
         tst = cellfun('ndims', rescell);
         if ~all(tst == tst(1))
-            error(['QWTB: some outputs `' Qname '.v` of general mcm has different numbers of dimensions'])
+            error(err_msg_gen(120, Qname, alginfo.id)); % different dimensions of algorithm outputs!
         end  % if not all tst
         for j = 1:tst(1)
             % for all dimensions
             tst2 = cellfun('size', rescell, j);
             if ~all(tst2 == tst2(1))
-                error(['QWTB: some outputs `' Qname '.v` of general mcm has different sizes'])
+                error(err_msg_gen(121, Qname, alginfo.id)); % different sizes of algorithm outputs!
             end
         end % for all dimensions
 
@@ -1226,7 +1231,7 @@ function dataout = general_mcm(alginfo, datain, calcset) %<<<1
             dataout.(Qname).d = nan;
             dataout.(Qname).c = nan;
         else
-            error(['QWTB: output quantity `' Qname '` has too many dimensions']);
+            error(err_msg_gen(122, Qname, alginfo.id)); % output too many dims!
         end
     end % for concatenate
 end % function
@@ -1276,8 +1281,8 @@ function Qout = unc_to_val(Qin, MCind, Qname) %<<<1
         Qout.d = [];
         Qout.c = [];
     else
-        % XXX tohle se musi checkovat taky na startu:!!!
-        error(['QWTB: quantity `' Qname '` has too many dimensions']);
+        % Qname has too many dimensions. This shouldn't happen, dimensions should be already tested!
+        error(err_msg_gen(-6, Qname));
     end
 %    % tohle by jenom melo presunout .u(i) do .v
 %    if length(Qin.v) == 1
@@ -1298,3 +1303,177 @@ function Qout = unc_to_val(Qin, MCind, Qname) %<<<1
 end % function
 
 % vim settings modeline: vim: foldmarker=%<<<,%>>> fdm=marker fen ft=octave textwidth=80 tabstop=4 shiftwidth=4
+% -------------------------------- others %<<<1
+function msg = err_msg_gen(varargin) %<<<1
+    % generates error message, so all errors are at one place. after each
+    % message a " QWTB err #X" is added, where X is number of error.
+    % 2DO - condider generating an error structure with error ids and message so it can be try-catched.
+
+    % groups of errors:
+    % negative - QWTB internal errors:
+    % just continued negative integer sequence
+    % 0 - empty output (no error)
+    % positive - user errors:
+    %  1  -  29  base input errors
+    % 30  -  59  CS errors
+    % 60  -  89  datain errors
+    % 90  - 119  algorithm errors
+    % 120 - 149  general mcm errors
+
+    % check inputs: %<<<2
+    if (nargin < 1)
+        errid = -1;
+    else
+        % error message number:
+        errid = varargin{1};
+        % check errid is scalar:
+        if ~( size(errid, 1) == 1 && size(errid, 2) == 1 )
+            errid = -2;
+        end
+        % check errid is integer number:
+        if ~(errid == fix(errid) && ~iscomplex(errid));
+            errid = -2;
+        end
+    end
+    % common parts of error message: %<<<2
+    % beginning of all errors:
+    prefix = 'QWTB: ';
+    % this is appended in the case of internal error:
+    interr = ' This is QWTB internal error. This should not happen. Please report this bug.';
+    % this is appended to all errors:
+    suffix = [' QWTB error #' num2str(errid, '%03d') '|'];
+    % %>>>2
+
+    % select error message:
+    try
+        switch (errid)
+            % ------------------- internal errors: %<<<2
+            case -1
+                msg = 'incorrect call of error handler: missing first argument';
+            case -2
+                msg = 'incorrect call of error handler: incorrect type of first argument.';
+            case -3 % one input - errid - this error is used for recursion from this switch statement otherwise
+                msg = ['unknown error number ' num2str(varargin{2}) '.'];
+            case -4 % one input - errid - this error is used for recursion from this switch statement otherwise
+                msg = ['insufficient number of input arguments for function err_msg_gen and QWTB error ' num2str(varargin{2}) '.'];
+            case -5 % one input - calcset.unc
+                msg = ['Unknown settings of .unc of calculation settings: `' varargin{2} '` or algorithm info structure concerning uncertainty calculation.'];
+            case -6 % one input - Qname
+                msg = ['Value of quantity `' varargin{2} '` has too many dimensions.'];
+            case -7 % one input - calcset.unc.method
+                msg = ['Unknown settings of .mcm.method of calculation settings: `' varargin{2} '`.'];
+            % ------------------- base input errors 1-29: %<<<2
+            case 1
+                msg = 'Incorrect number of input arguments. Please read QWTB documentation.';
+            case 2
+                msg = 'Second argument must be either structure with input data or `test`, `example`, `info`, `license`, `addpath`, `rempath`. Please read QWTB documentation.';
+            % ------------------- calculation settings errors 30-59: %<<<2
+            case 30
+                msg = 'Field `verbose` is missing in calculation settings structure. Please read QWTB documentation.';
+            case 31
+                msg = 'Field `unc` is missing in calculation settings structure. Plese read QWTB documentation.';
+            case 32
+                msg = 'Field `unc` of calculation settings structure has unknown value. Only `none`, `guf` and `mcm` are permitted. Plese read QWTB documentation.';
+            case 33
+                msg = 'Field `cor` is missing in calculation settings structure. Plese read QWTB documentation.';
+            case 34
+                msg = 'Field `cor.req` is missing in calculation settings structure. Plese read QWTB documentation.';
+            case 35
+                msg = 'Field `cor.gen` is missing in calculation settings structure. Plese read QWTB documentation.';
+            case 36
+                msg = 'Field `dof` is missing in calculation settings structure. Plese read QWTB documentation.';
+            case 37
+                msg = 'Field `dof.req` is missing in calculation settings structure. Plese read QWTB documentation.';
+            case 38
+                msg = 'Field `dof.gen` is missing in calculation settings structure. Plese read QWTB documentation.';
+            case 39
+                msg = 'Field `mcm` is missing in calculation settings structure. Plese read QWTB documentation.';
+            case 40
+                msg = 'Field `mcm.repeats` is missing in calculation settings structure. Plese read QWTB documentation.';
+            case 41
+                msg = 'Field `mcm.repeats` must be a scalar positive non-zero integer. Plese read QWTB documentation.';
+            case 42
+                msg = 'Field `mcm.verbose` is missing in calculation settings structure. Plese read QWTB documentation.';
+            case 43
+                msg = 'Field `mcm.method` is missing in calculation settings structure. Plese read QWTB documentation.';
+            case 44
+                msg = 'Field `mcm.method` in calculation settings has unknown value. Only values `singlecore`, `multicore` or `multistation` are permitted. Plese read QWTB documentation.';
+            case 45
+                msg = 'Field `mcm.procno` is missing in calculation settings structure. Plese read QWTB documentation.';
+            case 46
+                msg = 'Field `calcset.mcm.procno` must be a scalar zero or positive integer. Plese read QWTB documentation.';
+            case 47
+                msg = 'Field `mcm.tmpdir` is missing in calculation settings structure. Plese read QWTB documentation.';
+            case 48
+                msg = 'Field `mcm.tmpdir` must be a string. Plese read QWTB documentation.';
+            case 49 % one input - calcset.mcm.tmpdif %XXX dif nebo dir? !!!
+                msg = ['Directory `' varargin{2} '` specified in `mcm.tmpdir` in calculation settings structure does not exist. Plese read QWTB documentation.'];
+            case 50
+                msg = 'Field `mcm.randomize` is missing in calculation settings structure. Plese read QWTB documentation.';
+            % ------------------- datain errors 60-89: %<<<2
+            case 60 % one input - Qname
+                msg = ['Field `v` (value) missing in quantity `' varargin{2} '`. Please read QWTB documentation.'];
+            case 61 % one input - Qname
+                msg = ['Field `u` (uncertainty) is missing in quantity `' varargin{2} '` and uncertainty calculation is required. Please read QWTB documentation.'];
+            case 62 % one input - Qname
+                msg = ['Field `d` (degrees of freedom) is missing in quantity `' varargin{2} '`, automatic generation is disabled but GUF uncertainty calculation is required. Please read QWTB documentation.'];
+            case 63 % one input - Qname
+                msg = ['Field `c` (correlation matrix) is missing in quantity `' varargin{2} '`, automatic generation is disabled but uncertainty calculation is required. Please read QWTB documentation.'];
+            case 64 % one input - Qname
+                msg = ['Field `r` (randomized uncertainties) is missing in quantity `' varargin{2} '`, automatic randomization is disabled but MCM uncertainty calculation is required. Please read QWTB documentation.'];
+            case 65 % one input - Qname
+                msg = ['Value matrix of quantity `' varargin{2} '` has too many dimensions. Please read QWTB documentation.'];
+            case 66 % one input - Qname
+                msg = ['Dimensions of uncertainty matrix do not match dimensions of value matrix of quantity `' varargin{2} '`. Please read QWTB documentation.'];
+            case 67 % one input - Qname
+                msg = ['Dimensions of degrees of freedom matrix do not match dimensions of value matrix of quantity `' varargin{2} '`. Please read QWTB documentation.'];
+            case 68 % one input - Qname
+                msg = ['Correlation matrix of quantity `' varargin{2} '` has incorrect dimensions. Please read QWTB documentation.'];
+            case 69 % two inputs - Qname, calcset.mcm.repeats
+                msg = ['Randomized values matrix of quantity `' varargin{2} '` has incorrect dimensions (calcset.mcm.reapeats = ' num2str(varargin{3}) '). Please read QWTB documentation.'];
+            % ------------------- algorithm errors 90-119: %<<<2
+            case 90 % one input - algid
+                msg = ['Algorithm `' varargin{2} '` not found. Please check available algorithms.'];
+            case 91 % one input - algiid
+                msg = ['Uncertainty calculation by GUF method required, but algorithm `' varargin{2} '` does not provide GUF uncertainty calculation. Please check algorithm documentation.'];
+            case 92 % two inputs - licfilpath and algid
+                msg = ['License file `' varargin{2} '` for algorithm `' varargin{3} '` does not exist. Please check installed files.'];
+            case 93 % two inputs - alginfo.id, quantity
+                msg = ['Followinq quantity is required by algorithm `' varargin{2} '` but missing in input data structure:' varargin{3} sprintf('\nPlease read Algorithm documentation.')];
+            case 94 % two inputs - alginfo.id, quantities
+                msg = ['Followinq quantities are required by algorithm `' varargin{2} '` but missing in input data structure:' varargin{3} sprintf('\n')];
+            % ------------------- general mcm errors 120-149: %<<<2
+            case 120 %  two inputs - Qname, algid
+                msg = ['Output quantity `' varargin{2} '` generated by algorithm `' varargin{3} '` during general mcm has inconsistent number of dimensions. Please check algorithm functions or algorithm wrapper.'];
+            case 121 %  two inputs - Qname, algid
+                msg = ['Output quantity `' varargin{2} '` generated by algorithm `' varargin{3} '` during general mcm has inconsistent size. Please check algorithm functions or algorithm wrapper.'];
+            case 122 %  two inputs - Qname, algid
+                msg = ['Output quantity `' varargin{2} '` generated by algorithm `' varargin{3} '` during general mcm has too many dimensions. Please check algorithm functions or algorithm wrapper.'];
+            otherwise
+                msg = err_msg_gen(-3, errid);
+        end %>>>2
+    catch
+        % try to catch index out of bound error, i.e. not enough input arguments (varargin out of bounds):
+        isOctave = exist('OCTAVE_VERSION') ~= 0;
+        if isOctave
+            laste = lasterror;
+            if strcmpi(laste.identifier, 'Octave:index-out-of-bounds')
+                % throw internal QWTB error:
+                msg = err_msg_gen(-4, errid);
+            end
+        else
+            % XXX 2DO! MATLAB version here!
+        end
+    end
+    % compose final error message:
+    msg = [prefix msg];
+    if (errid < 0)
+        msg = [msg interr];
+    end
+    msg = [msg suffix];
+    % make empty output for zero errid:
+    if errid == 0
+        msg = '';
+    end
+end % err_msg_gen
+    
