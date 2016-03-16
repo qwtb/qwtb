@@ -1302,7 +1302,6 @@ function Qout = unc_to_val(Qin, MCind, Qname) %<<<1
 %    end
 end % function
 
-% vim settings modeline: vim: foldmarker=%<<<,%>>> fdm=marker fen ft=octave textwidth=80 tabstop=4 shiftwidth=4
 % -------------------------------- others %<<<1
 function msg = err_msg_gen(varargin) %<<<1
     % generates error message, so all errors are at one place. after each
@@ -1331,7 +1330,7 @@ function msg = err_msg_gen(varargin) %<<<1
             errid = -2;
         end
         % check errid is integer number:
-        if ~(errid == fix(errid) && ~iscomplex(errid));
+        if ~(errid == fix(errid) && isreal(errid));
             errid = -2;
         end
     end
@@ -1452,17 +1451,19 @@ function msg = err_msg_gen(varargin) %<<<1
             otherwise
                 msg = err_msg_gen(-3, errid);
         end %>>>2
-    catch
+    catch ERR
         % try to catch index out of bound error, i.e. not enough input arguments (varargin out of bounds):
         isOctave = exist('OCTAVE_VERSION') ~= 0;
         if isOctave
-            laste = lasterror;
-            if strcmpi(laste.identifier, 'Octave:index-out-of-bounds')
+            if strcmpi(ERR.identifier, 'Octave:index-out-of-bounds')
                 % throw internal QWTB error:
                 msg = err_msg_gen(-4, errid);
             end
         else
-            % XXX 2DO! MATLAB version here!
+            if (strcmpi(ERR.identifier,'MATLAB:badsubscript'))
+                % throw internal QWTB error:
+                msg = err_msg_gen(-4, errid);
+            end
         end
     end
     % compose final error message:
@@ -1477,3 +1478,4 @@ function msg = err_msg_gen(varargin) %<<<1
     end
 end % err_msg_gen
     
+% vim settings modeline: vim: foldmarker=%<<<,%>>> fdm=marker fen ft=octave textwidth=80 tabstop=4 shiftwidth=4
