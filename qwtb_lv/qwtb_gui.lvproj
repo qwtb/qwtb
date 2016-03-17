@@ -15,6 +15,12 @@
 		<Property Name="server.vi.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="specify.custom.address" Type="Bool">false</Property>
 		<Item Name="simple QWTB GUI" Type="Folder">
+			<Item Name="Import data" Type="Folder">
+				<Item Name="Import data part 2 - csv.vi" Type="VI" URL="../simple QWTB GUI/Import data/Import data part 2 - csv.vi"/>
+				<Item Name="Import data part 1.vi" Type="VI" URL="../simple QWTB GUI/Import data/Import data part 1.vi"/>
+				<Item Name="TD - Data type.ctl" Type="VI" URL="../simple QWTB GUI/Import data/TD - Data type.ctl"/>
+				<Item Name="TD - Q field.ctl" Type="VI" URL="../simple QWTB GUI/Import data/TD - Q field.ctl"/>
+			</Item>
 			<Item Name="compare two string arrays.vi" Type="VI" URL="../simple QWTB GUI/compare two string arrays.vi"/>
 			<Item Name="globals.vi" Type="VI" URL="../simple QWTB GUI/globals.vi"/>
 			<Item Name="main.vi" Type="VI" URL="../simple QWTB GUI/main.vi"/>
@@ -29,6 +35,7 @@
 			<Item Name="About.vi" Type="VI" URL="../simple QWTB GUI/About.vi"/>
 			<Item Name="Get App Version.vi" Type="VI" URL="../simple QWTB GUI/Get App Version.vi"/>
 			<Item Name="icon.ico" Type="Document" URL="../simple QWTB GUI/icon.ico"/>
+			<Item Name="TD Input Quantities qeue values.ctl" Type="VI" URL="../simple QWTB GUI/TD Input Quantities qeue values.ctl"/>
 		</Item>
 		<Item Name="QWTBLVLib.lvlib" Type="Library" URL="../qwtblvlib/QWTBLVLib.lvlib"/>
 		<Item Name="Dependencies" Type="Dependencies">
