@@ -713,6 +713,7 @@ function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
                 end % if guf & dof.req
             end % if Q.d
             % Q.c: %<<<4
+            Genc = 0;
             if ~(isfield(Q, 'c'))
                 if ( ~strcmpi(calcset.unc, 'none') && calcset.cor.req )
                     % if uncertainty calculation and correlation required
@@ -726,6 +727,7 @@ function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
                 end % if unc & cor.req
             end % if Q.c
             % Q.r: %<<<4
+            Genr = 0;
             if ~( isfield(Q, 'r') )
                 if strcmpi(calcset.unc, 'mcm')
                     if ~( calcset.mcm.randomize )
