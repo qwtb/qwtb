@@ -35,6 +35,12 @@ alginfo.inputs(4).alternative = 0;
 alginfo.inputs(4).optional = 0;
 alginfo.inputs(4).parameter = 0;
 
+alginfo.inputs(5).name = 'fest';
+alginfo.inputs(5).desc = 'Estimate of signal frequency';
+alginfo.inputs(5).alternative = 0;
+alginfo.inputs(5).optional = 0;
+alginfo.inputs(5).parameter = 0;
+
 alginfo.outputs(1).name = 'f';
 alginfo.outputs(1).desc = 'Frequency of main signal component';
 
