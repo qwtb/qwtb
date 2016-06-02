@@ -17,10 +17,10 @@
 \subsection*{Four parameter sine wave fitting}
 
 \begin{par}
-Example for algorithm 4PSWF.
+Example for algorithm FPNLSF.
 \end{par} \vspace{1em}
 \begin{par}
-4PSWF is an algorithm for estimating the frequency, amplitude, and phase of the sine waveform. The algorithm use least squares method. Algorithm requires good estimate of frequency.
+FPNLSF is an algorithm for estimating the frequency, amplitude, and phase of the sine waveform. The algorithm use least squares method. Algorithm requires good estimate of frequency.
 \end{par} \vspace{1em}
 
 \subsubsection*{Contents}
@@ -55,11 +55,11 @@ DI.fest.v = 100.2;
 \subsubsection*{Call algorithm}
 
 \begin{par}
-Use QWTB to apply algorithm \lstinline{4PSWF} to data \lstinline{DI}.
+Use QWTB to apply algorithm \lstinline{FPNLSF} to data \lstinline{DI}.
 \end{par} \vspace{1em}
 \begin{lstlisting}[style=mcode]
 CS.verbose = 1;
-DO = qwtb('4PSWF', DI, CS);
+DO = qwtb('FPNLSF', DI, CS);
 \end{lstlisting}
 
         \begin{lstlisting}[style=output]

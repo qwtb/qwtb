@@ -64,11 +64,11 @@ DI.fest.v = 100.2;
 \subsubsection*{Calculate estimates of signal parameters}
 
 \begin{par}
-Use QWTB to apply algorithm \lstinline{4PSWF} to data \lstinline{DI}.
+Use QWTB to apply algorithm \lstinline{FPNLSF} to data \lstinline{DI}.
 \end{par} \vspace{1em}
 \begin{lstlisting}[style=mcode]
 CS.verbose = 1;
-DO = qwtb('4PSWF', DI, CS);
+DO = qwtb('FPNLSF', DI, CS);
 \end{lstlisting}
 
         \begin{lstlisting}[style=output]
@@ -89,7 +89,7 @@ Fitting finished
 \subsubsection*{Copy results to inputs}
 
 \begin{par}
-Take results of \lstinline{FPSWF} and put them as inputs \lstinline{DI}.
+Take results of \lstinline{FPNLSF} and put them as inputs \lstinline{DI}.
 \end{par} \vspace{1em}
 \begin{lstlisting}[style=mcode]
 DI.f = DO.f;
@@ -131,12 +131,12 @@ ENOB = DO.ENOB.v
 
 SINADdB =
 
-   83.0767
+   82.9229
 
 
 ENOB =
 
-   13.0912
+   13.0657
 
 \end{lstlisting} \color{black}
     \begin{par}
@@ -153,12 +153,12 @@ ENOBerror = ENOB - ENOBtheor
 
 SINADerror =
 
-    0.0664
+   -0.0874
 
 
 ENOBerror =
 
-    0.0110
+   -0.0145
 
 \end{lstlisting} \color{black}
     

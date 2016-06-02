@@ -17,7 +17,7 @@
 \subsection*{testQ}
 
 \begin{par}
-Example for algorithm testQ. Algorithm is usefull only for testing QWTB toolbox. It calculates maximal and minimal value of the record.
+Example for algorithm testQ. Algorithm is usefull only for testing QWTB toolbox. It returns values from the input. This script has no real sense.
 \end{par} \vspace{1em}
 \begin{par}
 See also \lstinline{qwtb}
@@ -60,17 +60,17 @@ DO = qwtb('testQ', DI);
 QWTB: no uncertainty calculation
 \end{lstlisting} \color{black}
     \begin{par}
-The result is maximal value of \lstinline{v}, i.e. 10:
+The result is value of \lstinline{v}:
 \end{par} \vspace{1em}
 \begin{lstlisting}[style=mcode]
-DO.max.v
+DO.e.v
 \end{lstlisting}
 
         \begin{lstlisting}[style=output]
 
 ans =
 
-    10
+     []
 
 \end{lstlisting} \color{black}
     
@@ -89,17 +89,17 @@ DO = qwtb('testQ', DI);
 QWTB: no uncertainty calculation
 \end{lstlisting} \color{black}
     \begin{par}
-The result is maximal value of \lstinline{u}, i.e. 110:
+The result is value of \lstinline{u}:
 \end{par} \vspace{1em}
 \begin{lstlisting}[style=mcode]
-DO.max.v
+DO.e.v
 \end{lstlisting}
 
         \begin{lstlisting}[style=output]
 
 ans =
 
-   110
+     []
 
 \end{lstlisting} \color{black}
     

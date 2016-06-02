@@ -78,10 +78,11 @@ A = DO.A.v
 
         \begin{lstlisting}[style=output]
 QWTB: no uncertainty calculation
+QWTB: PSFE wrapper: sampling time was calculated from sampling frequency
 
 f =
 
-   1.0000e+03
+ 1000.0000
 
 
 A =
@@ -101,12 +102,19 @@ DI.t.u = zeros(size(DI.t.v)) + 1e-5;
 DI.y.u = zeros(size(DI.y.v)) + 1e-4;
 \end{lstlisting}
 \begin{par}
-Calculations settings is created with Monte Carlo uncertainty calculation method, 1000 repeats and singlecore calculation.
+Calculations settings is created with Monte Carlo uncertainty calculation method, 1000 repeats and singlecore calculation. The output of messages is supressed to increase calculation speed.
 \end{par} \vspace{1em}
 \begin{lstlisting}[style=mcode]
 CS.unc = 'mcm';
 CS.mcm.repeats = 1000;
 CS.mcm.method = 'singlecore';
+CS.verbose = 0;
+\end{lstlisting}
+\begin{par}
+An uncertainty of sampling frequency has to be added. Let suppose the value:
+\end{par} \vspace{1em}
+\begin{lstlisting}[style=mcode]
+DI.fs.u = 1e-3;
 \end{lstlisting}
 \begin{par}
 Run PSFE algorithm on input data \lstinline{DI} and with calculattion settings \lstinline{CS}.
@@ -114,15 +122,7 @@ Run PSFE algorithm on input data \lstinline{DI} and with calculattion settings \
 \begin{lstlisting}[style=mcode]
 DO = qwtb('PSFE',DI,CS);
 \end{lstlisting}
-
-        \begin{lstlisting}[style=output]
-QWTB: default correlation matrix generated for quantity `t`
-QWTB: quantity t was randomized by QWTB
-QWTB: default correlation matrix generated for quantity `y`
-QWTB: quantity y was randomized by QWTB
-QWTB: general mcm uncertainty calculation
-\end{lstlisting} \color{black}
-    \begin{par}
+\begin{par}
 Result is displayed as a histogram of calculated frequency.
 \end{par} \vspace{1em}
 \begin{lstlisting}[style=mcode]
