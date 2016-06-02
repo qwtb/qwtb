@@ -23,12 +23,12 @@ DI.y.v = DI.y.v + noisestd.*randn(size(DI.y.v));
 DI.fest.v = 100.2;
 
 %% Calculate estimates of signal parameters
-% Use QWTB to apply algorithm |4PSWF| to data |DI|.
+% Use QWTB to apply algorithm |FPNLSF| to data |DI|.
 CS.verbose = 1;
-DO = qwtb('4PSWF', DI, CS);
+DO = qwtb('FPNLSF', DI, CS);
 
 %% Copy results to inputs
-% Take results of |FPSWF| and put them as inputs |DI|.
+% Take results of |FPNLSF| and put them as inputs |DI|.
 DI.f = DO.f;
 DI.A = DO.A;
 DI.ph = DO.ph;

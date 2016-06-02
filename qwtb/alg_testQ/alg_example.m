@@ -1,6 +1,6 @@
 %% testQ
-% Example for algorithm testQ. Algorithm is usefull only for testing QWTB toolbox. It calculates
-% maximal and minimal value of the record.
+% Example for algorithm testQ. Algorithm is usefull only for testing QWTB toolbox. It returns
+% values from the input. This script has no real sense.
 %
 % See also |qwtb|
 
@@ -15,12 +15,12 @@ DI.c.v = 'variable c';
 % Use QWTB to apply algorithm |testQ| to data |DI|.
 DO = qwtb('testQ', DI);
 %%
-% The result is maximal value of |v|, i.e. 10:
-DO.max.v
+% The result is value of |v|:
+DO.e.v
 %% Different input
 % Add quantity |u|, which has precedence over |v|:
 DI.u.v = [100:110];
 DO = qwtb('testQ', DI);
 %%
-% The result is maximal value of |u|, i.e. 110:
-DO.max.v
+% The result is value of |u|:
+DO.e.v

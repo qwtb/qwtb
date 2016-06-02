@@ -34,10 +34,15 @@ DI.t.u = zeros(size(DI.t.v)) + 1e-5;
 DI.y.u = zeros(size(DI.y.v)) + 1e-4;
 %%
 % Calculations settings is created with Monte Carlo uncertainty calculation
-% method, 1000 repeats and singlecore calculation.
+% method, 1000 repeats and singlecore calculation. The output of messages is supressed to increase
+% calculation speed.
 CS.unc = 'mcm';
 CS.mcm.repeats = 1000;
 CS.mcm.method = 'singlecore';
+CS.verbose = 0;
+%%
+% An uncertainty of sampling frequency has to be added. Let suppose the value:
+DI.fs.u = 1e-3;
 %%
 % Run PSFE algorithm on input data |DI| and with calculattion settings |CS|.
 DO = qwtb('PSFE',DI,CS);

@@ -115,8 +115,8 @@ DOpsfe = qwtb('PSFE', DI);
 DOfpnlsf = qwtb('FPNLSF', DI);
 
 %% Compare results for harmonically distorted signal.
-% Comparison of relative errors. |PSFE| or |FPNLSF| are not affected by harmonic
-% distortion, however |FPNLSF| is not suitable.
+% Comparison of relative errors. |SP-FFT| or |PSFE| are not affected by harmonic
+% distortion, however |FPNLSF| is thus is not suitable for such signal.
 disp('SP-FFT errors (ppm):')
 [tmp, ind] = max(DOspfft.A.v);
 ferr  = (DOspfft.f.v(ind) - fnom)/fnom .* 1e6 
