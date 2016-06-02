@@ -3,7 +3,7 @@
 
 [https://qwtb.github.io/qwtb/](https://qwtb.github.io/qwtb/ "QWTB home page")
 
-QWTB is a software toolbox written in MATLAB/GNU Octave. It aims for aggregation of high-quality algorithms required for data processing of sampled measurements. QWTB consist of data processing algorithms from different sources, unifying application interface and graphical user interface.
+QWTB is a software toolbox written in M-code and is running in MATLAB/GNU Octave. It aims for aggregation of high-quality algorithms required for data processing of sampled measurements. QWTB consist of data processing algorithms from different sources, unifying application interface and graphical user interface.
 
 The toolbox gives the possibility to use different data processing algorithms with one set of data and removes the need to reformat data for every particular algorithm. Toolbox is extensible. The toolbox can variate input data and calculate uncertainties by means of Monte Carlo Method (MCM).
 
