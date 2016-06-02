@@ -1,7 +1,7 @@
 %% Four parameter sine wave fitting
-% Example for algorithm 4PSWF.
+% Example for algorithm FPNLSF.
 %
-% 4PSWF is an algorithm for estimating the frequency, amplitude, and phase of the sine waveform. The
+% FPNLSF is an algorithm for estimating the frequency, amplitude, and phase of the sine waveform. The
 % algorithm use least squares method. Algorithm requires good estimate of frequency.
 %
 
@@ -18,9 +18,9 @@ DI.y.v = Anom*sin(2*pi*fnom*DI.t.v + phnom) + Onom;
 DI.fest.v = 100.2;
 
 %% Call algorithm
-% Use QWTB to apply algorithm |4PSWF| to data |DI|.
+% Use QWTB to apply algorithm |FPNLSF| to data |DI|.
 CS.verbose = 1;
-DO = qwtb('4PSWF', DI, CS);
+DO = qwtb('FPNLSF', DI, CS);
 
 %% Display results
 % Results is the amplitude, frequency and phase of sampled waveform.

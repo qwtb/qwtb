@@ -1,5 +1,5 @@
 function alg_test(calcset) %<<<1
-% Part of QWTB. Test script for algorithm 4PSWF
+% Part of QWTB. Test script for algorithm FPNLSF
 %
 % See also qwtb
 
@@ -12,7 +12,7 @@ DI.y.v = Anom*sin(2*pi*fnom*DI.t.v + phnom) + Onom;
 DI.fest.v = 100.2;
 
 % Call algorithm
-DO = qwtb('4PSWF', DI);
+DO = qwtb('FPNLSF', DI);
 
 % Check results --------------------------- %<<<1
 maxerr = 1e-10;
@@ -24,7 +24,7 @@ assert((DO.O.v > Onom.*(1-maxerr)) & (DO.O.v < Onom.*(1+maxerr)));
 % Check alternative inputs --------------------------- %<<<1
 DI = rmfield(DI, 't');
 DI.fs.v = 1/Ts;
-DO = qwtb('4PSWF', DI);
+DO = qwtb('FPNLSF', DI);
 assert((DO.f.v > fnom.*(1-maxerr)) & (DO.f.v < fnom.*(1+maxerr)));
 assert((DO.A.v > Anom.*(1-maxerr)) & (DO.A.v < Anom.*(1+maxerr)));
 assert((DO.ph.v > phnom.*(1-maxerr)) & (DO.ph.v < phnom.*(1+maxerr)));
@@ -32,7 +32,7 @@ assert((DO.O.v > Onom.*(1-maxerr)) & (DO.O.v < Onom.*(1+maxerr)));
 
 DI = rmfield(DI, 'fs');
 DI.Ts.v = Ts;
-DO = qwtb('4PSWF', DI);
+DO = qwtb('FPNLSF', DI);
 assert((DO.f.v > fnom.*(1-maxerr)) & (DO.f.v < fnom.*(1+maxerr)));
 assert((DO.A.v > Anom.*(1-maxerr)) & (DO.A.v < Anom.*(1+maxerr)));
 assert((DO.ph.v > phnom.*(1-maxerr)) & (DO.ph.v < phnom.*(1+maxerr)));

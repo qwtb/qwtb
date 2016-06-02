@@ -1,5 +1,5 @@
-function [A, f, ph, O] = FPSWF(t, y, estf, verbose);
-% Fits a sine wave to the recorded data by means of least squares using four
+function [A, f, ph, O] = FPNLSF(t, y, estf, verbose);
+% Fits a sine wave to the recorded data by means of non-linear least squares using four
 % parameter model. Requires good estimate of frequency. Different functions are
 % used when run in MATLAB or GNU Octave.
 % t - time series
@@ -56,7 +56,7 @@ if isOctave
 else % matlab code
     % check existence of required toolbox:
     if exist('lsqnonlin') ~= 2
-        error('>>>>>>>>>>>>> FPSWF: your Matlab is missing optimization toolbox! <<<<<<<<<<<<<<');
+        error('>>>>>>>>>>>>> FPNLSF: your Matlab is missing optimization toolbox! <<<<<<<<<<<<<<');
     end
 
     fun = @(p) (p(1).*sin(2.*pi.*p(2).*t + p(3)) + p(4)) - y;

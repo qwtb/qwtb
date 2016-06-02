@@ -1,11 +1,11 @@
 function alginfo = alg_info() %<<<1
-% Part of QWTB. Info script for algorithm 4PSWF
+% Part of QWTB. Info script for algorithm FPNLSF
 %
 % See also qwtb
 
-alginfo.id = '4PSWF';
-alginfo.name = 'Four Parameter Sine Wave Fit';
-alginfo.desc = 'Fits a sine wave to the recorded data by means of least squares fitting using 4 parameter (frequency, amplitude, phase and offset) model. An estimate of signal frequency is required. Due to non-linear characteristic, converge is not always achieved. When run in Matlab, function `lsqnonlin` in Optimization toolbox is used. When run in GNU Octave, function `leasqr` in GNU Octave Forge package optim is used.';
+alginfo.id = 'FPNLSF';
+alginfo.name = 'Four Parameter Non-Linear Sine Fit';
+alginfo.desc = 'Fits a sine wave to the recorded data by means of non-linear least squares fitting method using 4 parameter (frequency, amplitude, phase and offset) model. An estimate of signal frequency is required. Due to non-linear characteristic, convergence is not always achieved. When run in Matlab, function `lsqnonlin` in Optimization toolbox is used. When run in GNU Octave, function `leasqr` in GNU Octave Forge package optim is used. Therefore results can differ.';
 alginfo.citation = '';
 alginfo.remarks = 'Algorithm works essentially only for simple sine wave. Algorithm is very sensitive to distortion. Algorithm requires good estimate of signal frequency.';
 alginfo.remarks = 'If Time series |t| is not supplied, wrapper will calculate |t| from sampling frequency |fs| or if not supplied, sampling time |Ts| is used to calculate |t|.';
