@@ -840,6 +840,46 @@ license = qwtb('algid', 'license')
 The license of the toolbox itself is MIT License, please see file {\tt LICENSE.txt} in the directory
 containing script {\tt qwtb.m}.
 
+\chapter{QWTBLVLib \& simple QWTB GUI} %<<<1 ----------------------------------------
+\section{QWTBLVLib} %<<<2 ----------------------------------------
+QWTBLVLib is a set of \labview Virtual Instruments (VI) forming a library and providing an easy link
+between \labview and QWTB. It uses {\em MATLAB Script
+Node} to make {\em ActiveX} calls to \matlab and run QWTB. In future a use of {\sc GOLPI} is intended to run QWTB
+by means of \octave.
+
+Description of particular VIs and example of use is a part of the library.
+Following figure shows the content of {\tt VI Tree.vi}.
+
+\begin{center}
+        \includegraphics[width=\textwidth]{sources/QWTBLVLib-vitree.png}
+\end{center}
+
+\section{simple QWTB GUI} %<<<2 ----------------------------------------
+simple QWTB GUI (Graphical User Interface) is a fully working example of using QWTBLVLib written in \labview.
+User can browse available algorithms and its descriptions, load or simulate data, run calculations
+with selected algorithm and view results.
+
+See following figure with a screen shot of the Simple QWTB GUI.
+
+\begin{center}
+        \includegraphics[width=\textwidth]{sources/simpleQWTBGUI.png}
+\end{center}
+
+After a start of simple QWTB GUI a window with several buttons is shown. To show
+a window with a list of input quantities, to set input quantities or to generate input quantities
+press button {\tt Show Input Quantities}. To list of available algorithms and algorithm informations
+or to select algorithm press button
+{\tt Show Algorithms}. To set calculation settings or GUI settings pres  button {\tt Show Settings}.
+To run calculation with set input quantities and selected algorithm press  button {\tt Calculate!}.
+To view output quantities press button {\tt Show Output Quantities}. To quit the simple QWTB
+GUI press button {\tt QUIT}.
+
+The work flow is following. After the start user have to set the directory containing QWTB in window
+{\tt Settings}. Next user have to set input quantities in window {\tt Input Quantities}. After selecting required
+algorithm in window {\tt Algorithms} the user can pres button {\tt Calculate!}. The results can be
+reviewed in window {\tt Output quantities}.
+
+
 % Bibliography %<<<1 ------------------------------
 %%\bibliographystyle{ieeetr}
 \printbibliography[title={Bilbiography},heading={bibnumbered}]
