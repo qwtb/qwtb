@@ -1022,6 +1022,7 @@ function errmsg = check_Q_present(datain, alginfo, reqQ, reqQdesc, reqQG, reqQGd
 % optional and grouped quantities
 % if output is empty, all is ok, otherwise errmsg contains error message no. 93 (singular) or 94 (plural)
 
+    % XXX here should be check if datain is not empty and is structure!
     % names of quantities in datain:
     Qinnames = fieldnames(datain);
     % string with missing quantities:
@@ -1155,6 +1156,8 @@ function dataout = general_mcm(alginfo, datain, calcset) %<<<1
             else
                 % XXX does not work. however it is not relevant because matlab
                 % doesn't know how to limit number of processors in parfor
+                % probably parpool(procno) should be here. but only with
+                % paralllel package?!
                 procno = getenv('NUMBER_OF_PROCESSORS')
             end
         end % if procno < 1
