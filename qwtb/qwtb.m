@@ -576,7 +576,7 @@ function calcset = check_gen_calcset(calcset) %<<<1
     end
     tmp = calcset.mcm.repeats;
     if ~(isscalarP(tmp) && tmp > 0 && abs(fix(tmp)) == tmp)
-        error(err_msg_gen(41)); % mcm.reapeats incorrect!
+        error(err_msg_gen(41)); % mcm.repeats incorrect!
     end
     % mcm.verbose %<<<2
     if ~( isfield(calcset.mcm, 'verbose') )
@@ -905,7 +905,7 @@ function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
                     error(err_msg_gen(-6, Qname));
                 end % if scalar/vector/matrix
                 if ~(ok)
-                    error(err_msg_gen(69, Qname, calcset.mcm.reapeats)); % .r incorrect dims;
+                    error(err_msg_gen(69, Qname, calcset.mcm.repeats)); % .r incorrect dims;
                 end
             end % if mcm 
 
@@ -1434,7 +1434,7 @@ function msg = err_msg_gen(varargin) %<<<1
             case 68 % one input - Qname
                 msg = ['Correlation matrix of quantity `' varargin{2} '` has incorrect dimensions. Please read QWTB documentation.'];
             case 69 % two inputs - Qname, calcset.mcm.repeats
-                msg = ['Randomized values matrix of quantity `' varargin{2} '` has incorrect dimensions (calcset.mcm.reapeats = ' num2str(varargin{3}) '). Please read QWTB documentation.'];
+                msg = ['Randomized values matrix of quantity `' varargin{2} '` has incorrect dimensions (calcset.mcm.repeats = ' num2str(varargin{3}) '). Please read QWTB documentation.'];
             % ------------------- algorithm errors 90-119: %<<<2
             case 90 % one input - algid
                 msg = ['Algorithm `' varargin{2} '` not found. Please check available algorithms.'];
