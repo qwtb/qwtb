@@ -143,6 +143,39 @@ par- ticipating countries within EURAMET and the European Union.
 \includegraphics[width=0.3\textwidth]{sources/eurametlogo.jpg}
 
 
+\chapter{Installation} %<<<1 ----------------------------------------
+\section{QWTB} %<<<2 ----------------------------------------
+The toolbox can be downloaded either as a~{\sc git} repository or as a zip archive containing
+documentation and a {\tt qwtb} directory containing all scripts and algorithms. Extract
+archive into a directory of your selection {\tt YourDirectory}.
+
+Start \matlab or \octave. To use the toolbox, two methods can be used:
+\begin{enumerate}
+        \item Change current working directory of \matlab or \octave by command:
+\end{enumerate}
+
+\begin{lstlisting}
+cd('YourDirectory/qwtb')
+\end{lstlisting}
+
+\begin{enumerate}
+        \setcounter{enumi}{1}
+        \item Or add toolbox directory into the search path by command:
+\end{enumerate}
+\begin{lstlisting}
+addpath('YourDirectory/qwtb')
+\end{lstlisting}
+
+\section{QWTBLVLib} %<<<2 ----------------------------------------
+Library can be downloaded either as source codes in a~{\sc git} repository or as a zip archive
+containing packed project library with {\tt .lvlibp} and {\tt .dll} libraries. Extract archive into
+a directory of your selection and import into your \labview project. 
+
+\section{simple QWTB GUI} %<<<2 ----------------------------------------
+Simple graphical user interace can be downloaded either as source codes in a~{\sc git} repository or
+as a zip archive containing executable and required libraries. Extract archive into a directory of
+your selection and run the executable file.
+
 \chapter{Basic description of the toolbox} %<<<1 ------------------------
 \section{Toolbox overall scheme} %<<<2 ------------------------------
 The basic scheme of the toolbox is following:
@@ -158,7 +191,7 @@ toolbox to apply a selected algorithm on the data and review results. Toolbox wi
         \item Check user data.
         \item Check or generate calculation settings.
         \item If required, quantities are randomized according uncertainties to prepare for MCM uncertainty calculation.
-        \item Data are handled to a wrapper. If needed, wrapper is run multiple times according MCM.
+        \item Data are handled to a wrapper. If needed, wrapper is run multiple times according to MCM.
         \item Output data are the result of the toolbox.
 \end{enumerate}
 
