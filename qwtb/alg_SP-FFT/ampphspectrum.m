@@ -29,6 +29,7 @@ function [f, amp, ph] = ampphspectrum(y,fs)
         end
 
         % ---- DFT ----
+        % (DFT is maybe slightly complicated because the input can contain odd number of samples)
         % number of samples:
         N = length(y);
         % calculate frequency spacing
@@ -51,8 +52,9 @@ function [f, amp, ph] = ampphspectrum(y,fs)
         Y = Y(end:-1:1);
         % power values normalized:
         amp = 2 * abs(Y) / N;
-        % calculate phases:
-        ph = angle(Y);
+        % calculate phases (and correctly multiply by minuses etc. because we used negative part of
+        % spectra):
+        ph = -1.*angle(-i.*Y);
 end
 
 % vim settings line: vim: foldmarker=%{{{,%}}} fdm=marker fen ft=octave
