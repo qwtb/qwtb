@@ -51,4 +51,4 @@ DO = qwtb('PSFE',DI,CS);
 figure; hist(DO.f.r,50);
 %%
 % One can see the histogram is not Gaussian function. To get correct
-% uncertainties, a shortest covariant interval has to be used.
+% uncertainties, a shortest coverage interval has to be used.
