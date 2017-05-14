@@ -40,49 +40,64 @@ function dataout = alg_wrapper(datain, calcset)
 %   as Model 3a, but unknown covariance matrices Vq and Vk
 
 % Static variables  --------------------------- %<<<1
+% algorithm related: %<<<2
 % directory of this algorithm:
 curalgdir = 'alg_CCC';
-% directory of the source code if present:
-srccodedir = [curalgdir filesep 'CCC'];
-srccode = [srccodedir filesep 'CCC_SoftwareNoGUI.m'];
+% possible exponents values accepted by CCC algorithm:
+possibleexps = [-5 -4 -3 -2 -1 -0.5 0 0.5 1 2 3 4 5];
+
+% executable and MCR: %<<<2
 % unix executable:
 unixbinary = ['./' curalgdir filesep 'run_CCC_SoftwareNoGUI.sh'];
 % windows executable:
 windowsbinary = [curalgdir filesep 'CCC_SoftwareNoGUI.exe'];
 % file with path to matlab runtime
 runtimepathfile = [curalgdir filesep 'path_to_matlab_runtime.txt'];
-% rest of error message for use in unix environment:
-unixerrend = sprintf('\n==========\nTo use a CCC in unix environment one have to:\n 1, install MATLAB Runtime (see https://www.mathworks.com/products/compiler/mcr/)\n 2, create a text file named `%s` in algorithm directory `%s`\n 3, write down path to the MATLAB Runtime into the text file.\n==========', runtimepathfile, curalgdir);
-% rest of error message in the case CCC did not generated output:
-nooutputerrend = sprintf('\nFollowing could be cause:\n 1, MATLAB Runtime is not installed. To check this, see https://www.mathworks.com/products/compiler/mcr/\n 2, Data was invalid, to check this see output lower');
-% possible exponents values accepted by CCC algorithm:
-possibleexps = [-5 -4 -3 -2 -1 -0.5 0 0.5 1 2 3 4 5];
+% required matlab Compiler Runtime version description:
+mcr_ver = 'R2013a (8.1) 32-bit';
+% general Matlab Compiler Runtime web address:
+mcr_www = 'https://www.mathworks.com/products/compiler/mcr.html';
+% required Matlab Compiler Runtime installer web address:
+mcr_unix_inst_www = 'https://www.mathworks.com/supportfiles/MCR_Runtime/R2013a/MCR_R2013a_glnxa64_installer.zip';
+mcr_win_inst_www = 'https://www.mathworks.com/supportfiles/MCR_Runtime/R2013a/MCR_R2013a_win32_installer.exe';
+% required matlab Compiler Runtime dll for windows:
+mcr_dll = 'mclmcrrt8_1.dll';
+
+% source code handling: %<<<2
+% directory of the source code if present:
+src_code_dir = [curalgdir filesep 'CCC'];
+% filename of source code main function:
+src_code = [src_code_dir filesep 'CCC_SoftwareNoGUI.m'];
+
+% error messages: %<<<2
+% missing algorithm output:
+msg_no_output = '1, Data was invalid.\n 2, MATLAB Compiler Runtime is not installed.';
+% file with path to mcr is missing:
+msg_unix_mcr_path_file_missing = sprintf('File `%s` not found!', runtimepathfile);
+msg_unix_mcr_path_not_exist = sprintf('Directory with MATLAB Compiler Runtime not found! Following path was specified in file `%s`:', runtimepathfile);
+% how to install MCR in unix:
+msg_unix_install_mcr = sprintf('\n==========\nTo use a CCC in unix environment, one have to:\n1, install MATLAB Compiler Runtime version %s, see\n%s\nand\n%s\n2, create a text file named `%s` (i.e. placed in algorithm directory `%s`)\n3, write down path to the installed MATLAB Compiler Runtime into the text file `%s`.\n==========', mcr_ver, mcr_www, mcr_unix_inst_www, runtimepathfile, curalgdir, runtimepathfile);
+% how to install MCR in windows:
+msg_win_install_mcr = sprintf('\n===========\nTo use a CCC in windows environment, one have to:\n1, install Matlab Compiler Runtime version %s, see\n%s\nand\n%s\n2, restart windows.\n===========', mcr_ver, mcr_www, mcr_win_inst_www);
 
 % Check the installation --------------------------- %<<<1
-if exist(srccode, 'file')
-    usesrccode = 1;
+if exist(src_code, 'file')
+    use_src_code = 1;
 else
-    usesrccode = 0;
-    % check for matlab runtime libraries: XXX
+    use_src_code = 0;
+    % check for matlab runtime libraries:
     if isunix
         if ~exist(runtimepathfile, 'file')
-            error(['QWTB: CCC wrapper: file `' runtimepathfile '` not found!' unixerrend]);
+            error(sprintf('QWTB: CCC wrapper: %s\n%s', msg_unix_mcr_path_file_missing, msg_unix_install_mcr));
         end
         fid = fopen(runtimepathfile, 'r'); 
         runtimepath = fgetl(fid);
         fclose(fid);
         if ~exist(runtimepath, 'dir')
-            error(['QWTB: CCC wrapper: directory with MATLAB Runtime `' runtimepath '` not found!' unixerrend]);
+            error(sprintf('QWTB: CCC wrapper: %s\n%s', msg_unix_mcr_path_not_exist, msg_unix_install_mcr));
         end
     else
-        % XXX
-        % ver?
-        % If you have the compiler installed, one of the lines will be:
-        % MATLAB Compiler Version 4.9 (R2008b)
-        % (Yes I know it say 4.9 but the v4.9 compiler actually builds an
-        % executable that expects and requires the v7.9 MCR)
-        % Regards,
-        % ImageAnalyst
+        % nothing required to do for windows, just try it.
     end
 end
 
@@ -201,29 +216,43 @@ fprintf(fid, '%s', s);
 fclose(fid);
 
 % Call algorithm ---------------------------  %<<<1
-if usesrccode
+if use_src_code
     % source code will be used: %<<<2
-    addpath(srccodedir);
+    addpath(src_code_dir);
     [data, par, res] = CCC_SoftwareNoGUI(datafile, outputfile, model, exponents, 'NoHumanReadable', 'NoPlot');
-    rmpath(srccodedir);
+    rmpath(src_code_dir);
 else
     % no source code, suppose compiled executable file exist: %<<<2
     if isunix
         cmd = [unixbinary ' ' runtimepath];
     else
+        % check 
         cmd = windowsbinary;
     end
     cmd = [cmd ' "' datafile '" "' outputfile '" "' model '" "[' num2str(exponents) ']" "NoHumanReadable" "NoPlot"'];
     [status, cmdout] = system(cmd);
 end
 
+% Check existence of output ---------------------------  %<<<1
 if exist(outputfile, 'file') ~= 2
     % no output, explain why
     shellout = sprintf('\n\nIssued command:\n%s\nStatus of shell command:\n%d\nOutput from the command:\n%s', cmd, status, cmdout);
-    error(['QWTB: CCC wrapper: the CCC software did not generated output.' nooutputerrend shellout])
+    if ~isunix
+        % check for existence of MCR in windows:
+        if ~exist_file_in_path_win(mcr_dll)
+            msgbox(msg_mcr_install, 'Matlab Compiler Library is missing.')
+            error(sprintf('QWTB: CCC wrapper: the Matlab Compiler Library is missing.\n%s', msg_win_install_mcr));
+        end % ~exist_file_in_path_win
+    end % if ~isunix
+    if isunix
+        tmp = msg_unix_install_mcr;
+    else
+        tmp = msg_unix_install_mcr;
+    end % isunic
+    error(sprintf('QWTB: CCC wrapper: the CCC software did not generated output.\n%s\n%s', msg_no_output, tmp))
 else
-    if ~usesrccode
-        if calcset.verbose & ~isempty(cmdout)
+    if ~use_src_code
+        if calcset.verbose && ~isempty(cmdout)
             disp(sprintf('CCC: %s', cmdout))
         end
     end
@@ -662,5 +691,22 @@ function section = infogetsection(infostr, key) %<<<1
         end
         section=strtrim(T{1});
 end
+
+function B = exist_file_in_path_win(filename) %<<<1
+    % checks if file 'filename' exists in any directory specified in Windows variable PATH
+    % filename = 'mclmcrrt8_1.dll';
+    B = 0;
+    [status, output] = system('PATH');
+    [S, E, TE, M, T, NM, SP] = regexpi (output, 'PATH=')
+    % remove path=
+    [pths] = strsplit(output(E(1):end), pathsep);
+    for i = 1:length(pths)
+            file = file_in_path(pths{i}, filename)
+            if ~isempty(file)
+                    B = 1;
+                    return
+            end
+    end % for i
+end % function
 
 % vim settings modeline: vim: foldmarker=%<<<,%>>> fdm=marker fen ft=octave textwidth=80 tabstop=4 shiftwidth=4
