@@ -21,7 +21,9 @@ for i = 1:length(infos) % for all info: %<<<1
     % add basic informations:
     fprintf(fid, '\\item [Id:] %s\n', infos(i).id);
     fprintf(fid, '\\item [Name:] %s\n', infos(i).name);
-    fprintf(fid, '\\item [Description:] %s\n', infos(i).desc);
+    % convert _ to \_:
+    tmp = strrep(infos(i).desc, '_', '\_');
+    fprintf(fid, '\\item [Description:] %s\n', tmp);
     tmp = infos(i).citation;
     % match urls in citation field and format urls:
     [S, E, TE, M, T, NM, SP] = regexp (tmp, 'https?://\S+');
@@ -34,8 +36,12 @@ for i = 1:length(infos) % for all info: %<<<1
     end
     % add other informations
     fprintf(fid, '\\item [Citation:] %s\n', tmp);
-    fprintf(fid, '\\item [Remarks:] %s\n', infos(i).remarks);
-    fprintf(fid, '\\item [License:] %s\n', infos(i).license);
+    % convert _ to \_:
+    tmp = strrep(infos(i).remarks, '_', '\_');
+    fprintf(fid, '\\item [Remarks:] %s\n', tmp);
+    % convert _ to \_:
+    tmp = strrep(infos(i).license, '_', '\_');
+    fprintf(fid, '\\item [License:] %s\n', tmp);
     % add informations about uncertainty calculation:
     if infos(i).providesGUF
         tmp = 'yes';
@@ -52,6 +58,17 @@ for i = 1:length(infos) % for all info: %<<<1
     % add list and descriptions of all input quantities: %<<<2
     % XXX this function does not differ optional/nonoptional parameters?
     [reqQ, reqQdesc, optQ, optQdesc, reqQG, reqQGdesc, optQG, optQGdesc, parQ, Qlist] = parse_alginfo_inputs(infos(i));
+    % convert _ to \_:
+    reqQ      = cellfun(@strrep, reqQ     , repmat({'_'}, size(reqQ     )), repmat({'\_'}, size(reqQ     )), 'UniformOutput', 0);
+    reqQdesc  = cellfun(@strrep, reqQdesc , repmat({'_'}, size(reqQdesc )), repmat({'\_'}, size(reqQdesc )), 'UniformOutput', 0);
+    optQ      = cellfun(@strrep, optQ     , repmat({'_'}, size(optQ     )), repmat({'\_'}, size(optQ     )), 'UniformOutput', 0);
+    optQdesc  = cellfun(@strrep, optQdesc , repmat({'_'}, size(optQdesc )), repmat({'\_'}, size(optQdesc )), 'UniformOutput', 0);
+    reqQG     = cellfun(@strrep, reqQG    , repmat({'_'}, size(reqQG    )), repmat({'\_'}, size(reqQG    )), 'UniformOutput', 0);
+    reqQGdesc = cellfun(@strrep, reqQGdesc, repmat({'_'}, size(reqQGdesc)), repmat({'\_'}, size(reqQGdesc)), 'UniformOutput', 0);
+    optQG     = cellfun(@strrep, optQG    , repmat({'_'}, size(optQG    )), repmat({'\_'}, size(optQG    )), 'UniformOutput', 0);
+    optQGdesc = cellfun(@strrep, optQGdesc, repmat({'_'}, size(optQGdesc)), repmat({'\_'}, size(optQGdesc)), 'UniformOutput', 0);
+    parQ      = cellfun(@strrep, parQ     , repmat({'_'}, size(parQ     )), repmat({'\_'}, size(parQ     )), 'UniformOutput', 0);
+    Qlist     = cellfun(@strrep, Qlist    , repmat({'_'}, size(Qlist    )), repmat({'\_'}, size(Qlist    )), 'UniformOutput', 0);
     % input quantites:
     fprintf(fid, '\\item [Input Quantities] \\rule{0em}{0em}\n    \\begin{tightdesc}');
         % required quantities: %<<<3
