@@ -1,4 +1,3 @@
-close all
 %% Windowed Discrete Fourier Transform
 % Example for algorithm SP-WFFT.
 %
@@ -22,14 +21,15 @@ for i = 1:length(fnom)
 end
 %
 %% Call algorithm
-% Calculate amplitude and phase spectrum. Window function is not specified, therefore rectangle
-% (none) window will be used.
+% Calculate amplitude and phase spectrum and store results into |DO|. Window function is not specified, therefore rectangle (none) window will be used.
 DO = qwtb('SP-WFFT', DI);
-% Set window function to blackman and calculate windowed amplitude and phase spectrum.
+%
+% Set window function to blackman and calculate windowed amplitude and phase spectrum and store results into |DOw|.
 DI.window.v = 'blackman';
 DOw = qwtb('SP-WFFT', DI);
+%
 % Set zero padding to 10 times the signal length and calculate zero padded windowed amplitude and
-% phase spectrum.
+% phase spectrum and stre results into |DOwz|.
 DI.fft_padding.v = 10.*length(DI.y.v);
 DOwz = qwtb('SP-WFFT', DI);
 %
@@ -56,6 +56,8 @@ xlabel('frequency (Hz)'); ylabel('phase (rad)');
 hold off
 % 
 %% Compare window coefficients
+% Different windows has different peak widths, heights of side lobes and side lobes 
+% roll off ratio. To see the window differences a zero padding is used.
 % First a simple signal of ones is prepared and zero padding is specified to 100x the length of
 % signal. Next for every window a spectrum is calculated and plotted.
 clear DI
@@ -72,7 +74,7 @@ for i = 1:length(avail_windows)
 end
 h=legend(avail_windows);
 h=legend('location','eastoutside');
-set(h,'FontSize',6, 'interpreter','none');
+set(h,'FontSize',8, 'interpreter','none');
 xlabel('FFT bin * 100');
 ylabel('amplitude');
 hold off;
