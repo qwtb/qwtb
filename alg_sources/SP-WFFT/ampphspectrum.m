@@ -67,17 +67,17 @@ function [f, amp, ph] = ampphspectrum(y, fs, verbose=0, stem_plot=1, win='', win
         % ---- check input values ----
         if (nargin > 7 || nargin < 2)
                 print_usage();
-        endif
-        if !( isnumeric(y) && isvector(y))
+        end
+        if ~( isnumeric(y) && isvector(y))
                 error('ampphspectrum: y has to be a vector!');
         endif
-        if !( isnumeric(fs) && isscalar(fs) && fs > 0)
+        if ~( isnumeric(fs) && isscalar(fs) && fs > 0)
                 error('amppphspectrum: fs has to be a positive nonzero scalar');
         endif
         if ~ischar(win)
                 error('win has to be a string!');
         endif
-        if !( isnumeric(padding) && isscalar(padding) && padding >= 0)
+        if ~( isnumeric(padding) && isscalar(padding) && padding >= 0)
                 error('amppphspectrum: padding has to be a non-negative scalar');
         endif
 
@@ -102,10 +102,8 @@ function [f, amp, ph] = ampphspectrum(y, fs, verbose=0, stem_plot=1, win='', win
 
         % ---- zero padding ---- %<<<1
         if padding
-                % add zero after signal to get specified length:
-                y = postpad(y, padding);
                 % update number of samples:
-                N = length(y);
+                N = padding;
         endif
 
         % ---- DFT ---- %<<<1
@@ -117,7 +115,7 @@ function [f, amp, ph] = ampphspectrum(y, fs, verbose=0, stem_plot=1, win='', win
         % move all frequencies that are greater than fs/2 to the negative side of the axis
         f(f >= fs / 2) = f(f >= fs / 2) - fs;
         % dft calculation:
-        Y = fft(y);
+        Y = fft(y, N);
         % now, Y and f are aligned with one another; if you want frequencies in strictly
         % increasing order, fftshift() them
         Y = fftshift(Y);
@@ -253,6 +251,5 @@ end
 %!error ampphspectrum (1, [1:5])
 %!error ampphspectrum (1, 1, 1, 1, '', 5, -5)
 %!error ampphspectrum (1, 1, 1, 1, 'somewin', 5, 5)
-
 
 % vim settings line: vim: foldmarker=%{{{,%}}} fdm=marker fen ft=octave

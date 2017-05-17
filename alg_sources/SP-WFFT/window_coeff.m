@@ -206,8 +206,8 @@ else
         endif
         if ~any( cellfun(@strcmpi, avail_windows, repmat({win}, size(avail_windows))) )
                 error(['window_coeff: unknown window `' win '`']);
-        endif
-        if !( (isscalar (L) && (L == fix (L)) && (L > 0)))
+        end
+        if ~( (isscalar (L) && (L == fix (L)) && (L > 0)))
                 error ('window_coeff: L must be a positive integer');
         endif
         % set default value for periodic/symmetric:
@@ -319,7 +319,7 @@ endfunction
 %!         w = w(1:end-1);
 %!         sp = fftshift(abs(fft(postpad(w, n))))./sum(w);
 %!         sp = max(1e-8, sp);
-%!         plot(sp, '-', 'color', c(i,:))
+%!         plot(sp, '-', 'color', col(i,:))
 %! endfor
 %! legend(avail_windows);
 %! title('Spectrum, periodic window coefficients, zero padded')
