@@ -4,13 +4,14 @@
 clear all
 
 imgprefix = 'algs_examples_published/';
-dirprefix = ['../' imgprefix];
+dirprefix = ['../doc/' imgprefix];
 
 % remove all files in target directory:
 delete([dirprefix '*'])
 
 % path to qwtb:
-addpath('../../qwtb');
+cd('../../qwtb');
+addpath('../doc/publishscripts');
 
 % get all algs:
 algs = qwtb();
@@ -52,5 +53,7 @@ for PAAi = 1:length(PAAalgsids)
 end % for all algorithms
 
 close all
+
+cd('../doc/publishscripts');
 
 % vim settings modeline: vim: foldmarker=%<<<,%>>> fdm=marker fen ft=octave textwidth=80 tabstop=4 shiftwidth=4
