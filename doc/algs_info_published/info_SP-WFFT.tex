@@ -1,0 +1,37 @@
+\begin{tightdesc}
+\item [Id:] SP-WFFT
+\item [Name:] Spectrum by means of Windowed Discrete Fourier Transform
+\item [Description:] Calculates amplitude and phase spectrum by means of Discrete Fourier Transform with windowing and/or zero padding. Result is normalized. Follwing windows are implemented: barthann, bartlett, blackman, blackmanharris, blackmannuttall, bohman, cheb, flattop\_matlab, flattop\_SFT3F, flattop\_SFT4F, flattop\_SFT5F, flattop\_SFT3M, flattop\_SFT4M, flattop\_SFT5M, flattop\_248D, gaussian, hamming, hanning, kaiser, nuttall, parzen, rect, triang, tukey, welch.
+\item [Citation:]  Various sources. See algorithm scripts for details. A. V. Oppenheim and R. W. Schafer, Discrete-Time Signal Processing. Peter Lynch, "The Dolph-Chebyshev Window: A Simple Optimal Filter", Monthly Weather Review, Vol. 125, pp. 655-660, April 1997, \url{http://www.maths.tcd.ie/~plynch/Publications/Dolph.pdf} . C. Dolph, "A current distribution for broadside arrays which optimizes the relationship between beam width and side-lobe level", Proc. IEEE, 34, pp. 335-348. \url{https://www.mathworks.com/help/signal/ref/flattopwin.html} . D`Antona, Gabriele, and A. Ferrero. Digital Signal Processing for Measurement Systems. New York: Springer Media, 2006, pp. 70–72. Gade, Svend, and Henrik Herlufsen. "Use of Weighting Functions in DFT/FFT Analysis (Part I)." Windows to FFT Analysis (Part I): Bruel and Kjaer Technical Review, No. 3, 1987, pp. 1-28. G. Heinzel, `Spectrum and spectral density estimation by the Discrete Fourier transform (DFT), including a comprehensive list of window functions and some new flat-top windows`, IEEE, 2003. Fredric J. Harris, "On the Use of Windows for Harmonic Analysis with the Discrete Fourier Transform, Proceedings of the IEEE", Vol. 66, No. 1, January 1978, Page 67, Equation 38. Implemented by: Sylvain Pelissier, Andreas Weingessel, Muthiah Annamalai, Andre Carezia, Vera Novaková Zachovalova, Paul Kienzle, Paul Kienzle, Laurent Mazet, Muthiah Annamalai, Mike Gross, Peter V. Lanspeary.
+\item [Remarks:] If sampling frequency |fs| is not supplied, wrapper will calculate |fs| from sampling time |Ts| or if not supplied, first two elements of time series |t| are used to calculate |fs|. If |window| is not specified, a rectangular (none) window will be used. If |window| is `cheb` and |cheb\_att| is not specified, a value of 100 dB is set. If |window| is `gaussian` and |gaussian\_width| is not specified, a value of 1 is set. If |window| is `kaiser` and |kaiser\_att| is not specified, a value of 0.5 is set. If |window| is `tukey` and |tukey\_ratio| is not specified, a value of 0.5 is set.
+\item [License:] Mixed license - every window function has its own license.
+\item [Provides GUF:] no
+\item [Provides MCM:] no
+\item [Input Quantities] \rule{0em}{0em}
+    \begin{tightdesc}
+    \item [Required:] 
+        \textsf{fs} or \textsf{Ts} or \textsf{t},\enspace \textsf{y}
+    \item [Optional:] 
+        \textsf{window},\enspace \textsf{cheb\_att},\enspace \textsf{gaussian\_width},\enspace \textsf{kaiser\_att},\enspace \textsf{fft\_padding}
+    \item [Parameters:] 
+        \textsf{window},\enspace \textsf{cheb\_att},\enspace \textsf{gaussian\_width},\enspace \textsf{kaiser\_att},\enspace \textsf{fft\_padding}
+    \item [Descriptions:] \rule{0em}{0em}
+        \begin{tightdesc}
+            \item[\textsf{Ts}] -- Sampling time
+            \item[\textsf{cheb\_att}] -- Only for Dolph-Chebyshev window: stop-band attenuation in dB
+            \item[\textsf{fft\_padding}] -- Zero padding of signal in samples
+            \item[\textsf{fs}] -- Sampling frequency
+            \item[\textsf{gaussian\_width}] -- Only for Gaussian window: width of the window in Hz
+            \item[\textsf{kaiser\_att}] -- Only for Kaiser window: stop-band attenuation in FFT bins
+            \item[\textsf{t}] -- Time series
+            \item[\textsf{window}] -- Name of window function
+            \item[\textsf{y}] -- Sampled values
+        \end{tightdesc}
+    \end{tightdesc}
+\item [Output Quantities:] \rule{0em}{0em}
+    \begin{tightdesc}
+        \item[\textsf{A}] -- Amplitude spectrum
+        \item[\textsf{f}] -- Frequency series
+        \item[\textsf{ph}] -- Phase spectrum
+    \end{tightdesc}
+\end{tightdesc}

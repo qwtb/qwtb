@@ -1,0 +1,33 @@
+\begin{tightdesc}
+\item [Id:] CCC
+\item [Name:] Calibration Curves Computing
+\item [Description:] Calibration Curves Computing is a software for the evaluation of instrument calibration curves and developed at Istituto Nazionale di Ricerca Metrologica (INRIM). The software may be applied to pairs of measurement values of independent/explanatory variable and dependent/explained variable. If uncertainties associated with the data are available, they can be provided as inputs to the software. The regression models which can be addressed by the software are (fractional) polynomial curves. The software can perform the following kind of regression procedures: Ordinary least-squares regression (OLS), Weighted least-squares regression (WLS), Weighted total least-squares regression (WTLS).
+\item [Citation:] A. Malengo and F. Pennecchi, A weighted total least-squares algorithm for any fitting model with correlated variables, Metrologia (2013), 50, 654.
+\item [Remarks:] If |x| and |y| are matrices: wrapper suppose the measured data are a set of groups organized in such that every row of |x| and |y| is one set of measurement, uncertainties in |x| and |y| are neglected and Model 2b is selected. If you want Model 1b or Model 3b, it must be set in quantitiy |model|. If |x| and |y| are vectors: if uncertainties of |x| are zero and uncertainties of |y| contains all the same numbers, Model 1b is selected; if uncertainties of |x| are zero and uncertainties of |y| contains various numbers, Model 2b is selected; if uncertainties of |x| are nonzero Model 3b is selected. In every case the value of |model| overloads automatic determination of the model.
+\item [License:] Dedicated license
+\item [Provides GUF:] yes
+\item [Provides MCM:] no
+\item [Input Quantities] \rule{0em}{0em}
+    \begin{tightdesc}
+    \item [Required:] 
+        \textsf{x},\enspace \textsf{y},\enspace \textsf{exponents}
+    \item [Optional:] 
+        \textsf{model}
+    \item [Parameters:] 
+        \textsf{exponents},\enspace \textsf{model}
+    \item [Descriptions:] \rule{0em}{0em}
+        \begin{tightdesc}
+            \item[\textsf{exponents}] -- Exponents of polynomial used to fit, from -5 to 5 including 0, -0.5, 0.5
+            \item[\textsf{model}] -- Identification of the model. 1a, 2a, 3a, 1b, 2b, 3b.
+            \item[\textsf{x}] -- Independent/explanatory variable
+            \item[\textsf{y}] -- Dependent/explained variable
+        \end{tightdesc}
+    \end{tightdesc}
+\item [Output Quantities:] \rule{0em}{0em}
+    \begin{tightdesc}
+        \item[\textsf{coefs}] -- Fitted coefficients
+        \item[\textsf{exponents}] -- Exponents of polynomial used to fit, from -5 to 5 including 0, -0.5, 0.5
+        \item[\textsf{model}] -- Model used for calculation.
+        \item[\textsf{yhat}] -- Fitted values y
+    \end{tightdesc}
+\end{tightdesc}
