@@ -76,9 +76,9 @@ msg_no_output = '1, Data was invalid.\n 2, MATLAB Compiler Runtime is not instal
 msg_unix_mcr_path_file_missing = sprintf('File `%s` not found!', runtimepathfile);
 msg_unix_mcr_path_not_exist = sprintf('Directory with MATLAB Compiler Runtime not found! Following path was specified in file `%s`:', runtimepathfile);
 % how to install MCR in unix:
-msg_unix_install_mcr = sprintf('\n==========\nTo use a CCC in unix environment, one have to:\n1, install MATLAB Compiler Runtime version %s, see\n%s\nand\n%s\n2, create a text file named `%s` (i.e. placed in algorithm directory `%s`)\n3, write down path to the installed MATLAB Compiler Runtime into the text file `%s`.\n==========', mcr_ver, mcr_www, mcr_unix_inst_www, runtimepathfile, curalgdir, runtimepathfile);
+msg_unix_install_mcr = sprintf('\n===========================================\nTo use a CCC in unix environment, one have to:\n1, install MATLAB Compiler Runtime version %s, see\n%s\nand\n%s\n2, create a text file named `%s` (i.e. placed in algorithm directory `%s`)\n3, write down path to the installed MATLAB Compiler Runtime into the text file `%s`.\n===========================================', mcr_ver, mcr_www, mcr_unix_inst_www, runtimepathfile, curalgdir, runtimepathfile);
 % how to install MCR in windows:
-msg_win_install_mcr = sprintf('\n===========\nTo use a CCC in windows environment, one have to:\n1, install Matlab Compiler Runtime version %s, see\n%s\nand\n%s\n2, restart windows.\n===========', mcr_ver, mcr_www, mcr_win_inst_www);
+msg_win_install_mcr = sprintf('\n============================================\nTo use a CCC in windows environment, one have to:\n1, install Matlab Compiler Runtime version %s, see\n%s\nand\n%s\n2, restart windows.\n============================================', mcr_ver, mcr_www, mcr_win_inst_www);
 
 % Check the installation --------------------------- %<<<1
 if exist(src_code, 'file')
@@ -240,7 +240,7 @@ if exist(outputfile, 'file') ~= 2
     if ~isunix
         % check for existence of MCR in windows:
         if ~exist_file_in_path_win(mcr_dll)
-            msgbox(msg_mcr_install, 'Matlab Compiler Library is missing.')
+            msgbox(msg_win_install_mcr, 'Matlab Compiler Library is missing.')
             error(sprintf('QWTB: CCC wrapper: the Matlab Compiler Library is missing.\n%s', msg_win_install_mcr));
         end % ~exist_file_in_path_win
     end % if ~isunix
@@ -699,10 +699,10 @@ function B = exist_file_in_path_win(filename) %<<<1
     [status, output] = system('PATH');
     [S, E, TE, M, T, NM, SP] = regexpi (output, 'PATH=')
     % remove path=
-    [pths] = strsplit(output(E(1):end), pathsep);
+    [pths] = strsplit(output(E(1)+1:end), pathsep);
     for i = 1:length(pths)
-            file = file_in_path(pths{i}, filename)
-            if ~isempty(file)
+            file = [pths{i} filesep filename];
+            if exist(file, 'file')
                     B = 1;
                     return
             end
