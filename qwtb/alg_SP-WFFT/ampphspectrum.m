@@ -52,7 +52,7 @@ function [f, amp, ph] = ampphspectrum(y, fs, verbose, stem_plot, win, winparam, 
 
 % Author: Martin Šíra <msira@cmi.cz>
 % Created: 2013-02-27
-% Version: 1.1
+% Version: 1.2
 
 % Calcualtes discrete fourier transformation of vector of sampled values |y| with sampling
 % frequency |fs|, normalize values and returns frequency vector |f|, amplitudes |amp| and
@@ -113,30 +113,25 @@ function [f, amp, ph] = ampphspectrum(y, fs, verbose, stem_plot, win, winparam, 
         end
 
         % ---- DFT ---- %<<<1
-        % (DFT is maybe slightly complicated because the input can contain odd number of samples)
-        % calculate frequency spacing
-        df = fs / N;
-        % calculate unshifted frequency vector
-        f = [0:(N - 1)]*df;
-        % move all frequencies that are greater than fs/2 to the negative side of the axis
-        f(f >= fs / 2) = f(f >= fs / 2) - fs;
-        % dft calculation:
+        % DFT calculation:
         Y = fft(y, N);
-        % now, Y and f are aligned with one another; if you want frequencies in strictly
-        % increasing order, fftshift() them
-        Y = fftshift(Y);
-        f = fftshift(f);
-        % select negative frequencies part of results:
-        Y = Y(1:find(f == 0));
-        f = f(1:find(f == 0));
-        % change sort order and make neg. freq. positive:
-        f = abs(f(end:-1:1));
-        Y = Y(end:-1:1);
-        % power values normalized:
+        % throw away negative frequencies of the spectrum:
+        Y = Y(1 : ceil(N./2+0.5));
+        % correct phases:
+        Y = Y.*exp(j.*pi./2);
+        % normalize power values (factor 2 because of taking only half of the spectrum):
         amp = 2 * abs(Y) ./ normalisation_factor;
-        % calculate phases (and correctly multiply by minuses etc. because we used negative part of
-        % spectra):
-        ph = -1.*angle(-i.*Y);
+        % and fix DC offset error (offset is only once in result of DFT, therefore factor 2 is not
+        % valid here):
+        amp(1) = amp(1)*0.5;
+        % calculate phases:
+        ph = arg(Y);
+        % build frequency vector (spacing is df=fs/N):
+        f = fs./N.*[0:length(Y)-1];
+        % force same orientation of fr. vector as of input y vector:
+        if iscolumn(y)
+                f = f';
+        end
 
         % ---- plot ---- %<<<1
         % plot figures in the case of verbose:
@@ -229,14 +224,24 @@ end
 %!assert(f,   [0 1 2],  1e-14);
 %!assert(amp, [0 1 0],  1e-14);
 %!assert(ph(2),     1,  1e-14);
-%! % Test proper results for complex signal:
+%! % Test proper results for complex signal with offset:
 %!  fs = 50;
 %!  t = [0 : 1/fs : 1](1:end-1);
 %!  y = [1; 0.5; 0.3].*sin(2.*pi.*[1; 8; 15].*t + [0; 1; 2]);
-%!  [f,amp,ph]=ampphspectrum(sum(y,1),fs);
+%!  y = sum(y,1) + 2;
+%!  [f,amp,ph]=ampphspectrum(y,fs);
+%!assert (size(f), size(amp))
+%!assert (size(f), size(ph))
+%!assert (amp(1),    2, 1e-14)
 %!assert (amp(2),    1, 1e-14)
 %!assert (amp(9),  0.5, 1e-14)
 %!assert (amp(16), 0.3, 1e-14)
+%!assert (amp(16), 0.3, 1e-14)
+%! % Test also column vector:
+%!  y = y';
+%!  [f,amp,ph]=ampphspectrum(y,fs);
+%!assert (size(f), size(amp))
+%!assert (size(f), size(ph))
 %! % Test windowing:
 %!  y = sin(2.*pi.*10.*t);
 %!  [f,amp,ph]=ampphspectrum(y, fs, 0, 0, 'cheb');
