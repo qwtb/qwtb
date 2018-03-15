@@ -1,0 +1,4 @@
+#!/usr/bin/octave-cli
+
+addpath('~/prog/octave/mDepGen - github')
+mDepGen('../../qwtb','qwtb','./dependencies', {'alg_wrapper', 'alg_info', 'alg_test', 'alg_example'}, {'isscalarP', 'ismatrixP', 'isvectorP'}, 'plotfileframes', 0);
