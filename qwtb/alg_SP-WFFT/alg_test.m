@@ -35,6 +35,7 @@ for i = 1:length(fnom)
 end
 DI.y.v = DI.y.v + 2;
 DO = qwtb('SP-WFFT', DI);
+DO.A.v(1);
 assert(all(abs(DO.A.v(1)  -   2) < 1e-14));
 assert(all(abs(DO.A.v(2)  -   1) < 1e-14));
 assert(all(abs(DO.A.v(9)  - 0.5) < 1e-14));

@@ -1,16 +1,16 @@
-function [f, amp, ph] = ampphspectrum(y, fs, verbose, stem_plot, win, winparam, padding)
+function [f, amp, ph, w] = ampphspectrum(y, fs, verbose, stem_plot, win, winparam, padding)
 % original definition removed for Matlab compatibility. Wrapper always defines all inputs,
 % therefore default values are not needed. Do NOT use without wrapper, or use original 
 % source code (see alg_sources)
-% function [f, amp, ph] = ampphspectrum(y, fs, verbose=0, stem_plot=1, win='', winparam=[], padding=0)
+% function [f, amp, ph, w] = ampphspectrum(y, fs, verbose=0, stem_plot=1, win='', winparam=[], padding=0)
 
-% -- Function File: [F, AMP, PH] = ampphspectrum (Y, FS, [VERBOSE,
+% -- Function File: [F, AMP, PH, W] = ampphspectrum (Y, FS, [VERBOSE,
 %          STEM_PLOT, WIN, WINPARAM, PADDING])
 %
 %     Calcualtes amplitude and phase spectrum by means of discrete
 %     fourier transformation of vector of sampled values Y with sampling
 %     frequency FS.  Function returns returns frequency vector F,
-%     amplitudes AMP and phases PH.
+%     amplitudes AMP and phases PH. Also returns window coefficients W.
 %
 %     If VERBOSE is set, two figures with amplitude and phase will be
 %     plotted as stem plots (or line plots if STEM_PLOT is set to 0).
@@ -35,7 +35,7 @@ function [f, amp, ph] = ampphspectrum(y, fs, verbose, stem_plot, win, winparam, 
 %     See demo for more detailed example.
 %
 
-% Copyright (C) 2017 Martin Šíra
+% Copyright (C) 2018 Martin Šíra
 %
 % This program is free software; you can redistribute it and/or modify
 % it under the terms of the GNU General Public License as published by
@@ -52,7 +52,8 @@ function [f, amp, ph] = ampphspectrum(y, fs, verbose, stem_plot, win, winparam, 
 
 % Author: Martin Šíra <msira@cmi.cz>
 % Created: 2013-02-27
-% Version: 1.2
+% Modified: 2018-06-19
+% Version: 1.3
 
 % Calcualtes discrete fourier transformation of vector of sampled values |y| with sampling
 % frequency |fs|, normalize values and returns frequency vector |f|, amplitudes |amp| and
@@ -122,15 +123,17 @@ function [f, amp, ph] = ampphspectrum(y, fs, verbose, stem_plot, win, winparam, 
         % normalize power values (factor 2 because of taking only half of the spectrum):
         amp = 2 * abs(Y) ./ normalisation_factor;
         % and fix DC offset error (offset is only once in result of DFT, therefore factor 2 is not
-        % valid here):
-        amp(1) = amp(1)*0.5;
+        % valid here), furthermore abs() for reals will cause loss of the sign:
+        amp(1) = imag(Y(1)) ./ normalisation_factor; % note: imag because we rotated the result by pi/2 before!
         % calculate phases:
         ph = arg(Y);
+        ph(1) = 0; % no phase angle of the DC!
         % build frequency vector (spacing is df=fs/N):
         f = fs./N.*[0:length(Y)-1];
         % force same orientation of fr. vector as of input y vector:
         if iscolumn(y)
                 f = f';
+                w = w';
         end
 
         % ---- plot ---- %<<<1
