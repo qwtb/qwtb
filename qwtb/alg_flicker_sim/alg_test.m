@@ -1,5 +1,5 @@
 function alg_test(calcset) %<<<1
-% Part of QWTB. Test script for algorithm flciker_sim.
+% Part of QWTB. Test script for algorithm flicker_sim.
 %
 % See also qwtb
 
