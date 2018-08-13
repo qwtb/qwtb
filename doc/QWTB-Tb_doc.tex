@@ -210,6 +210,12 @@ With no input arguments, toolbox returns informations of all available algorithm
 \lstinline{alginfo} contains structures for every algorithm found in the same directory as
 \texttt{qwtb.m}. Format of structures is defined in~\ref{structalginfo}.
 
+This call can be also used to get \emph{standard} calculation settings used in the toolbox:
+\begin{lstlisting}
+[alginfo, calcset] = qwtb()
+\end{lstlisting}
+For use of calcset, see next chapter.
+
 \subsection{Application of an algorithm on the data} %<<<3 ------------------------------
 \begin{lstlisting}
 dataout = qwtb('algid', datain)
@@ -622,6 +628,7 @@ Structure defines calculation methods.
 \begin{tightdesc}
         \item [\textsf{.strict}] ---  (0) If zero, other fields generated automatically.
         \item [\textsf{.verbose}] ---  (1) Display various informations.
+        \item [\textsf{.checkinputs}] ---  (0) Check if inputs are proper.
         \item [\textsf{.unc}] ---  ('none') How uncertainty is calculated ('none', 'guf', 'mcm').
         \item [\textsf{.cor.req}] ---  (0) Correlation matrix is required for all input quantities.
         \item [\textsf{.cor.gen}] ---  (1) Zero correlation matrix is generated automatically if missing.
@@ -644,6 +651,13 @@ automatically and set to a default value.
 \label{structcalcsetverbose}
 Boolean, default value 1. If set to non-zero value, various messages are displayed during
 calculation, such as used uncertainty calculation method, automatic generation of matrices etc.
+
+\subsection{\textsf{.checkinputs}} %<<<3 ------------------------------
+\label{structcalcsetverbose}
+Boolean, default value 1. If set to zero, all checks of inputs (calculation settings, input data)
+are skipped. However if inputs are not proper, various undocumented errors can happen. This option
+can be used to speed up qwtb processing. About 2~ms of processing data can be saved (iCore 5, GNU
+Octave 4.2.2). User have to be sure all inputs conform proper format and contain all needed data.
 
 \subsection{\textsf{.unc}} %<<<3 ------------------------------
 \label{structcalcsetunc}

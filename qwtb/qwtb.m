@@ -1,7 +1,8 @@
 function varargout = qwtb(varargin) 
 % QWTB: Q-Wave Toolbox for data processing algorithms
-%   alginfo = QWTB()
-%       Gives informations on available algorithms.
+%   [alginfo, calcset] = QWTB()
+%       Gives informations on available algorithms and standard calculation
+%       settings.
 %   dataout = QWTB('algid', datain, [calcset])
 %       Apply algorithm with id `algid` to input data `datain` with calculation
 %       settings `calcset`.
@@ -21,6 +22,7 @@ function varargout = qwtb(varargin)
 % 2DO what if path to alg_ already exist!?
 % 2DO remove .par from datain on output
 
+
     % start of qwtb function --------------------------- %<<<1
     % remove old alg_paths because if previous instance of qwtb ends with error,
     % it could left some alg directory in the path
@@ -29,6 +31,7 @@ function varargout = qwtb(varargin)
     if nargin == 0
         % returns all algorithms info
         varargout{1} = get_all_alg_info();
+        varargout{2} = check_gen_calcset();
 
     elseif nargin == 1 || nargin > 3
         error(err_msg_gen(1)) % incorrect number of inputs!
@@ -64,7 +67,7 @@ function varargout = qwtb(varargin)
             datain = varargin{2};
             if nargin == 2
                 % calculation settings is missing, generate a standard one:
-                calcset = get_standard_calcset();
+                calcset = check_gen_calcset();
             else
                 calcset = varargin{3};
             end
@@ -258,7 +261,7 @@ function run_alg_test(algid) %<<<1
     if ~exist('alg_test.m','file')
         disp(['QWTB: self test of algorithm `' algid '` is not implemented']);
     else
-        calcset = get_standard_calcset();
+        calcset = check_gen_calcset();
         calcset.verbose = 0;
         calcset.mcm.verbose = 0;
         alg_test(calcset);
@@ -271,7 +274,7 @@ function run_alg_example(algid) %<<<1
     if ~exist('alg_example.m','file')
         disp(['QWTB: example of algorithm `' algid '` is not implemented']);
     else
-        calcset = get_standard_calcset();
+        calcset = check_gen_calcset();
         % run example script in base workspace so user can operate with datain,
         % dataout and calcset:
         disp(['For description of example, please take a look at script `alg_' algid filesep 'alg_example.m`.']);
@@ -435,26 +438,43 @@ function msg = check_alginfo(alginfo) %<<<1
 end % function check_alginfo
 
 % -------------------------------- structures related functions %<<<1
-function calcset = get_standard_calcset() %<<<1
-% creates a standard calculation settings
-    calcset.strict = 0;
-    calcset.verbose = 1;
-    calcset.unc = 'none';
-    calcset.cor.req = 0;
-    calcset.cor.gen = 1;
-    calcset.dof.req = 0;
-    calcset.dof.gen = 1;
-    calcset.mcm.repeats = 100;
-    calcset.mcm.verbose = 1;
-    calcset.mcm.method = 'singlecore';
-    calcset.mcm.procno = 0;
-    calcset.mcm.tmpdir = '.';
-    calcset.mcm.randomize = 1;
-end % function get_standard_calcset
+function calcset = check_gen_calcset(varargin) %<<<1
+% Checks if calculation settings complies to the qwtb format.
+% If no input, standard calculation settings is generated.
+% If checkinputs is set to 0, function is skipped.
+% If .strict is set to 0, missing fields are generated.
+% Boolean values are reformatted to 0/1.
 
-function calcset = check_gen_calcset(calcset) %<<<1
-% Checks if calculation settings complies to the qwtb format. If .strict is set
-% to 0, missing fields are generated. Boolean values are reformatted to 0/1.
+    % This should be a standard values of calculation settings:
+    % calcset.strict = 0;
+    % calcset.verbose = 1;
+    % calcset.checkinputs = 1;
+    % calcset.unc = 'none';
+    % calcset.cor.req = 0;
+    % calcset.cor.gen = 1;
+    % calcset.dof.req = 0;
+    % calcset.dof.gen = 1;
+    % calcset.mcm.repeats = 100;
+    % calcset.mcm.verbose = 1;
+    % calcset.mcm.method = 'singlecore';
+    % calcset.mcm.procno = 0;
+    % calcset.mcm.tmpdir = '.';
+    % calcset.mcm.randomize = 1;
+
+    % check if there is some input:
+    if nargin == 0
+        calcset = struct();
+    else
+        calcset = varargin{1}
+    endif
+
+    % check if check of inputs is disabled
+    if isfield(calcset, 'checkinputs')
+        if ~calcset.checkinputs
+            % checking of inputs is disabled, get out
+            return
+        end
+    end
 
     % strict %<<<2
     if ~( isfield(calcset, 'strict') )
@@ -472,6 +492,10 @@ function calcset = check_gen_calcset(calcset) %<<<1
         calcset.verbose = 1;
     else 
         calcset.verbose = 0;
+    end
+    % checkinputs %<<<2
+    if ~( isfield(calcset, 'checkinputs') )
+        calcset.checkinputs = 1;
     end
     % unc %<<<2
     if ~( isfield(calcset, 'unc') )
@@ -647,9 +671,16 @@ end % function check_gen_calcset
 function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
 % Checks if input data has all quantities required by algorithm.
 % Checks if input data complies to the qwtb data format.
-% Raises error in the case of missing quantities or fields. Fields Q.d and Q.c
-% are generated if permitted and required.
+% Raises error in the case of missing quantities or fields. 
+% Fields Q.d and Q.c are generated if permitted and required.
+% If calcset.checkinputs is set to 0, function is skipped.
 
+    % check if check of inputs is disabled
+    if ~calcset.checkinputs
+        % checking of inputs is disabled, get out
+        return
+    end
+    
     % search for missing quantities in input data structure: %<<<2
     % parse requirements of the algorithm:
     [reqQ, reqQdesc, optQ, optQdesc, reqQG, reqQGdesc, optQG, optQGdesc, parQ, Qlist] = parse_alginfo_inputs(alginfo);
