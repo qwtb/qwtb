@@ -5,7 +5,7 @@ function [P_st, P_inst] = flicker_sim(u, fs, f_line, verbose)
 % flicker severity P_ST. For best performance, observation time
 % of the U series must be greater than 600 seconds. Calculated
 % instantaneous flicker severity values before last 600 seconds
-% are not taking into account. Requires either Signal Procesing
+% are not taking into account. Requires either Signal Processing
 % Toolbox when run in MATLAB or signal package when run in GNU
 % Octave. 
 %
@@ -27,7 +27,7 @@ function [P_st, P_inst] = flicker_sim(u, fs, f_line, verbose)
 %     at least 720 s thus filters can be properly charged. See
 %     reference [4].
 %   FS: Sampling frequency of u in Hz. Should be 7-23 kHz. If
-%     higher, signal is downsampled.
+%     higher, signal is down sampled.
 %   F_LINE: Line frequency in Hz. Must be 50 or 60 Hz.
 %   VERBOSE: if set to 1 shows plots of P_INST and cumulative 
 %     probability function, if set to 2 shows also responses
@@ -129,13 +129,13 @@ end
 
 %% Downsampling
 % to be ok with standard, the sampling frequency should be 2 - 33 kHz.
-% to be below 0.01 error, the sampling f should be 7 - 23 kHz.
+% to be below 0.01 error, the sampling f should be 7.5 - 23 kHz.
 % minimum usable sampling frequency:
-fsmin = 7e3;
+fsmin = 7.5e3;
 % maximum usable sampling frequency:
 fsmax = 23e3;
 % optimal usable sampling frequency:
-fsoptim = 17e3;
+fsoptim = 20e3;
 
 if fs < fsmin
         error(['Sampling frequency (fs) is too low! Use fs in range ' num2str(fsmin) ' - ' num2str(fsmax) ' kHz to get result. If fs is greater, the signal will be downsampled, this have some impact on precision. Optimally use fs = ' num2str(fsoptim) ' kHz.']);
