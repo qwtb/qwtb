@@ -656,8 +656,33 @@ calculation, such as used uncertainty calculation method, automatic generation o
 \label{structcalcsetverbose}
 Boolean, default value 1. If set to zero, all checks of inputs (calculation settings, input data)
 are skipped. However if inputs are not proper, various undocumented errors can happen. This option
-can be used to speed up qwtb processing. About 2~ms of processing data can be saved (iCore 5, GNU
-Octave 4.2.2). User have to be sure all inputs conform proper format and contain all needed data.
+can be used to speed up qwtb processing. About 13~ms of processing time can be saved for algorithm
+with 30 input quantities (measured at iCore 5, GNU Octave 4.2.2). User have to be sure all inputs
+conform proper format and contain all needed data.
+
+% Timing testing results:
+% wrapper without anything: 2.2e-5
+% addpath takes about 0.005
+%       clear time_addpath; for i = 1:1e3; rmpath('alg_TST'); a=tic; addpath('alg_TST'); tmp=toc(a), time_addpath(i)=tmp; endfor
+% rmpath takes approx. the same time, slightly faster.
+% path(X, path) takes about 0.039724
+% path() takes 0.003
+% path(originalpaths) takes about 0.06
+% exist takes about 6e-5 s to check existence of function
+% which takes about 2e-3 s
+% which of nonexisting takes about 0.002 s
+% 
+% timing qwtb:
+%       for i = 1:29; eval(['DI.x' num2str(i) '.v=' num2str(i)]); endfor
+%       [tmp CS]=qwtb
+%       CS.checinputs = 0; clear time_qwtb; for i = 1:1e3; a=tic; DO = qwtb('TST',DI, CS); tmp=toc(a), time_qwtb(i)=tmp; endfor
+% 
+% path to algorithm is already set in userspace , no checkinputs: mean = 3.1044e-04, std 1e-4
+% path to alg. is not set in userspace: mean 0.0043346, std 1e-3
+% so if path is set in userspace, most of the time takes addpath and rmpath, that is goooooooooooooooooooooood
+% for checkinputs=1, path not set in userspace: mean 0.017 std 0.002
+
+
 
 \subsection{\textsf{.unc}} %<<<3 ------------------------------
 \label{structcalcsetunc}

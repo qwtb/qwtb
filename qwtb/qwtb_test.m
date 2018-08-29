@@ -58,6 +58,29 @@ CS.verbose = 1;
 [DO, DIout, CSout] = qwtb('testM', DI, CS);
 assert(DO.max.v == 20);
 
+disp(['------ TEST GROUP ' num2str(tg) ': qwtb used in bad path environmnet ------------']) % ------------------ %<<<1
+tg = tg + 1;
+
+% add paths to multiple algorithms in multiple ways: %<<<2
+% remember good paths:
+properpaths = path();
+% add paths:
+addpath('alg_testG')
+addpath('../qwtb/alg_testG')
+addpath([pwd filesep 'alg_testG'])
+addpath('alg_testGM')
+addpath('alg_testM')
+
+% test: %<<<2
+CS.verbose = 1;
+DIq = ''; DIq.x.v = 123;
+DIq.y.v = 1; DIq.u.v = 1; DIq.v.v = 1; DIq.r.v = 1; DIq.s.v = 1; DIq.a.v = 1; DIq.b.v = 1; DIq.c.v = 1; DIq.d.v = 1;
+[DO, DIout, CSout] = qwtb('testQ', DIq, CS);
+assert(DO.o.v == DIq.x.v);
+
+% restore paths:
+path(properpaths );
+
 disp(['------ TEST GROUP ' num2str(tg) ': guf by wrapper ------------']) % ------------------ %<<<1
 tg = tg + 1;
 
