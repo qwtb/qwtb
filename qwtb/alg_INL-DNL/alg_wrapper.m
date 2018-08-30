@@ -19,8 +19,17 @@ dsc.simulation = 1;
 
 % do not show figures:
 display_settings.results_win = 0;
-display_settings.summary_win = 0;
-display_settings.warning_dialog = 0;
+% show warnings about data quality:
+% (The summary window is not shown (is commented in ProcessHistogramTest.m), but
+% there is a code run only if summary_win=1. This code is is needed for the
+% warning dialog)
+if calcset.verbose
+    display_settings.summary_win = 1;
+    display_settings.warning_dialog = 1;
+else
+    display_settings.summary_win = 0;
+    display_settings.warning_dialog = 0;
+end
 
 % Call algorithm ---------------------------  %<<<1
 INL = ProcessHistogramTest(dsc,display_settings);

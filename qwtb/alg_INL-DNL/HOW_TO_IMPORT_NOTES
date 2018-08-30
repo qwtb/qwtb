@@ -1,0 +1,7 @@
+Instructions on importing INL_DNL algorithm from ADCTest toolbox
+
+The script ProcessHistogramTest.m can be imported from ADCTest toolbox as is. However to obtain
+warning messages and keep it working in GNU Octave, it is needed to comment out following lines
+controlling Matlab specific GUI:
+Comment lines 281 to 288.
+Comment lines 138 to 268.
