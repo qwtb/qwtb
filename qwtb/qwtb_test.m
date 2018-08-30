@@ -303,14 +303,6 @@ assert( all(size(DO.o.r) == [100 5]) );
 % % XXX what is correct? : assert( all(size(DO.o.d,1) == [1 5]) );
 % assert( all(size(DO.o.r) == [100 5]) );
 
-disp(['------ TEST GROUP ' num2str(tg) ': test algorithms one by one ------------']) % ------------------ %<<<1
-tg = tg + 1;
-
-for i = 1:length(algsids)
-    disp(['test of algorithm: ' algsids{i}]);
-    qwtb(algsids{i}, 'test');
-end % for all algorithms
-
 disp(['------ TEST GROUP ' num2str(tg) ': test getting algorithm info one by one ------------']) % ------------------ %<<<1
 tg = tg + 1;
 
@@ -326,5 +318,13 @@ for i = 1:length(algsids)
     disp(['test of algorithm: ' algsids{i}]);
     qwtb(algsids{i}, 'license');
 end % for all algorithms
+disp(['------ TEST GROUP ' num2str(tg) ': test algorithms one by one ------------']) % ------------------ %<<<1
+tg = tg + 1;
+
+for i = 1:length(algsids)
+    disp(['============ test of algorithm: ' algsids{i} ' ============']);
+    qwtb(algsids{i}, 'test');
+end % for all algorithms
+
 disp(['------ ALL ' num2str(tg) ' GROUPS OF TESTS OK! ------------']) %<<<1
 % vim settings modeline: vim: foldmarker=%<<<,%>>> fdm=marker fen ft=octave textwidth=80 tabstop=4 shiftwidth=4
