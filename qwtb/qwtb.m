@@ -107,16 +107,6 @@ function pth = qwtbdirpath() %<<<1
     pth = fileparts(mfilename('fullpath'));
 end % function qwtbdirpath
 
-function calcset = ensure_minimal_calcset(calcset) %<<<1
-% ensure calcset contains at least the minimum set of fields, that are really
-% needed for functions even before calling check_gen_calcset.
-    if ~isfield(calcset, 'checkinputs')
-        % field "checkinputs" is needed because it must be queried 
-        % before check_gen_calcset
-        calcset.checkinputs = 1;
-    end
-end % function ensure_minimal_calcset
-
 function pth = algpath(algid) %<<<1
 % returns full path to the algorithm directory
     pth = [qwtbdirpath filesep() 'alg_' algid];
@@ -192,7 +182,7 @@ function [alginfo, paths] = get_all_alg_info(paths) %<<<1
     % find it and nothing is returned. if there are at least 2 directories,
     % output is correct. It seems to be problem of dir function in octave
     % get directory listings:
-    lis = dir([qwtbdirpath filesep() 'alg_*']);
+    lis = dir(algpath('*'));
     % get only directories:
     lis = lis([lis.isdir]);
     % prepare found algorithm counter:
@@ -228,24 +218,23 @@ end % function get_all_alg_info
 
 function [res, paths] = get_one_alg_info(algid, paths) %<<<1
 % Return info structure of one algorithm.
-    algdir = [qwtbdirpath filesep() algid];
-    if is_alg_dir(algdir)
-        paths = ensure_alg_path(algid, paths);
-        tmp = alg_info();
-        % Add fullpath of the algorithm into info structure: 
-        tmp.fullpath = algpath(algid);
-        % checks if info is in proper format:
-        msg = check_alginfo(tmp);
-        if isempty(msg)
-            res = tmp;
-        else
-            % 2DO should be error or warning?
-            warning(['QWTB: algorithm info returned by alg_info.m in `' algdir '` has incorrect format'])
-            disp(msg)
-        end % if check_alginfo
+    % check if it is valid algorithm:
+    if ~is_alg_dir(algpath(algid))
+        error(err_msg_gen(90, algid)); % alg not found
+    end
+    paths = ensure_alg_path(algid, paths);
+    tmp = alg_info();
+    % Add fullpath of the algorithm into info structure: 
+    tmp.fullpath = algpath(algid);
+    % checks if info is in proper format:
+    msg = check_alginfo(tmp);
+    if isempty(msg)
+        res = tmp;
     else
-        % XXX 2DO some error or something that algid is not algorithm!
-    end % if is_alg_dir(algdir)
+        % 2DO should be error or warning?
+        warning(['QWTB: algorithm info returned by alg_info.m in `' algpath(algid) '` has incorrect format'])
+        disp(msg)
+    end % if check_alginfo
 end % function get_one_alg_info
 
 function res = is_alg_dir(pth) %<<<1
@@ -269,7 +258,7 @@ function paths = path_rem_all_algdirs(paths) %<<<1
         % ms, together with isdir, that takes just only 0.1 ms. But ls with
         % wildcard character '*' behaves recursively and this is operating
         % system specific so it is quite problematic.
-    lis = dir([qwtbdirpath filesep() 'alg_*']);
+    lis = dir(algpath('*'));
     % split full path to cells:
     if isempty(paths.orig)
         paths.orig = path();
@@ -304,6 +293,10 @@ end % path_rem_all_algdirs
 % -------------------------------- algorithm related functions %<<<1
 function [dataout, datain, calcset, paths] = check_and_run_alg(algid, datain, calcset, paths) %<<<1
 % checks data, settings and calls wrapper
+    % check if it is valid algorithm:
+    if ~is_alg_dir(algpath(algid))
+        error(err_msg_gen(90, algid)); % alg not found
+    end
     % preparation %<<<2
     dataout = [];
     % XXX asi by tu melo byt i datain a calcset
@@ -358,6 +351,10 @@ end % function check_and_run_alg
 
 function paths = run_alg_test(algid, paths) %<<<1
 % Runs alg_test of algorithm algid.
+    % check if it is valid algorithm:
+    if ~is_alg_dir(algpath(algid))
+        error(err_msg_gen(90, algid)); % alg not found
+    end
     paths = ensure_alg_path(algid, paths);
     % check for alg_test.m function:
     if ~exist('alg_test.m','file')
@@ -374,6 +371,10 @@ end % run_alg_test
 
 function paths = run_alg_example(algid, paths) %<<<1
 % Runs alg_example of algorithm algid.
+    % check if it is valid algorithm:
+    if ~is_alg_dir(algpath(algid))
+        error(err_msg_gen(90, algid)); % alg not found
+    end
     paths = ensure_alg_path(algid, paths);
     if ~exist('alg_example.m','file')
         disp(['QWTB: example of algorithm `' algid '` is not implemented']);
@@ -394,6 +395,10 @@ end % run_alg_example function
 function [license]= show_license(algid) %<<<1
 % Display license of specified algorithm.
 % Does not alter paths.
+    % check if it is valid algorithm:
+    if ~is_alg_dir(algpath(algid))
+        error(err_msg_gen(90, algid)); % alg not found
+    end
     % construct path to the license file:
     licfilpath = [algpath(algid) filesep 'LICENSE.txt'];
     % test for license file:
@@ -546,6 +551,16 @@ function msg = check_alginfo(alginfo) %<<<1
 end % function check_alginfo
 
 % -------------------------------- structures related functions %<<<1
+function calcset = ensure_minimal_calcset(calcset) %<<<1
+% ensure calcset contains at least the minimum set of fields, that are really
+% needed for functions even before calling check_gen_calcset.
+    if ~isfield(calcset, 'checkinputs')
+        % field "checkinputs" is needed because it must be queried 
+        % before check_gen_calcset
+        calcset.checkinputs = 1;
+    end
+end % function ensure_minimal_calcset
+
 function calcset = check_gen_calcset(varargin) %<<<1
 % Checks if calculation settings complies to the qwtb format.
 % If no input, standard calculation settings is generated.
