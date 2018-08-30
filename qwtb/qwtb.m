@@ -128,7 +128,7 @@ function paths = ensure_alg_path(algid, paths); %<<<1
         % there is some algorithm in the path
         if isempty(paths.orig)
             paths.orig = path();
-        endif
+        end
         idx1 = strfind(paths.orig, 'alg_');
         idx2 = strfind(paths.orig, ['alg_' algid]);
         if length(idx1) == 1 && length(idx2) == 1
@@ -262,7 +262,7 @@ function paths = path_rem_all_algdirs(paths) %<<<1
     % split full path to cells:
     if isempty(paths.orig)
         paths.orig = path();
-    endif
+    end
     pth = strsplit(paths.orig, pathsep);
     indexes = [];
     % for every probable alg. directory:
@@ -820,6 +820,10 @@ function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
         Qname = Qinnames{i};
         Q = datain.(Qname);
 
+        % check if quantity is structure:
+        if ~isstruct(Q)
+                error(err_msg_gen(70, Qname)); % .v is missing!
+        end
         % find if quantity is parameter. add field 'par' to the quantity. it is
         % usefull in other functions (and must be removed before handing it back
         % to user):
@@ -1591,6 +1595,8 @@ function msg = err_msg_gen(varargin) %<<<1
                 msg = ['Correlation matrix of quantity `' varargin{2} '` has incorrect dimensions. Please read QWTB documentation.'];
             case 69 % two inputs - Qname, calcset.mcm.repeats
                 msg = ['Randomized values matrix of quantity `' varargin{2} '` has incorrect dimensions (calcset.mcm.repeats = ' num2str(varargin{3}) '). Please read QWTB documentation.'];
+            case 70 % input quantity is not a structure (typically DI.x=5 instead of DI.x.v=5)
+                msg = ['Input quantity `' varargin{2} '` is not a structure. Maybe you set `datain.' varargin{2} '=something` instead of `datain.' varargin{2} '.v=something`?'];
             % ------------------- algorithm errors 90-119: %<<<2
             case 90 % one input - algid
                 msg = ['Algorithm `' varargin{2} '` not found. Please check available algorithms.'];
