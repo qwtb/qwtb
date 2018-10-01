@@ -1,0 +1,8 @@
+Source codes in this directory are from the book:
+Rado Lapuh, "Sampling with 3458A, Understanding, Programming, Sampling and Signal Processing", ISBN
+978-961-94476-0-4, 1st. ed., Ljubljana, Left Right d.o.o., 2018
+
+The listings published here are just for educational purposes and provided as is. Redistribution and
+use of the source code given in these listings, in source and binary forms, with or without
+modifications, are permitted provided that all kinds of redistribution retain the copyright notice,
+the reference to the publication given in each script and the reference to this book.
