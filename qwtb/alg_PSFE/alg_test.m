@@ -6,10 +6,10 @@ function alg_test(calcset) %<<<1
 % Generate sample data --------------------------- %<<<1
 DI = [];
 Ts = 1e-4;
-Anom = 1; fnom = 1; phnom = 1;
+Anom = 1; fnom = 1; phnom = 1; Onom = 0.1;
 t = [0:Ts:1-Ts];
 DI.Ts.v = Ts;
-DI.y.v = Anom*sin(2*pi*fnom*t + phnom);
+DI.y.v = Anom*sin(2*pi*fnom*t + phnom) + Onom;
 
 % Call algorithm --------------------------- %<<<1
 DO = qwtb('PSFE', DI);
@@ -18,6 +18,7 @@ DO = qwtb('PSFE', DI);
 assert((DO.f.v > fnom.*(1-1e6)) & (DO.f.v < fnom.*(1+1e6)));
 assert((DO.A.v > Anom.*(1-1e6)) & (DO.A.v < Anom.*(1+1e6)));
 assert((DO.ph.v > phnom.*(1-1e6)) & (DO.ph.v < phnom.*(1+1e6)));
+assert((DO.O.v > Onom.*(1-1e6)) & (DO.O.v < Onom.*(1+1e6)));
 
 % Check alternative inputs --------------------------- %<<<1
 DI = rmfield(DI, 'Ts');
@@ -26,6 +27,7 @@ DO = qwtb('PSFE', DI);
 assert((DO.f.v > fnom.*(1-1e6)) & (DO.f.v < fnom.*(1+1e6)));
 assert((DO.A.v > Anom.*(1-1e6)) & (DO.A.v < Anom.*(1+1e6)));
 assert((DO.ph.v > phnom.*(1-1e6)) & (DO.ph.v < phnom.*(1+1e6)));
+assert((DO.O.v > Onom.*(1-1e6)) & (DO.O.v < Onom.*(1+1e6)));
 
 DI = rmfield(DI, 'fs');
 DI.t.v = t;
@@ -33,6 +35,7 @@ DO = qwtb('PSFE', DI);
 assert((DO.f.v > fnom.*(1-1e6)) & (DO.f.v < fnom.*(1+1e6)));
 assert((DO.A.v > Anom.*(1-1e6)) & (DO.A.v < Anom.*(1+1e6)));
 assert((DO.ph.v > phnom.*(1-1e6)) & (DO.ph.v < phnom.*(1+1e6)));
+assert((DO.O.v > Onom.*(1-1e6)) & (DO.O.v < Onom.*(1+1e6)));
 
 end % function
 

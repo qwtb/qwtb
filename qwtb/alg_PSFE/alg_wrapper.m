@@ -5,10 +5,17 @@ function dataout = alg_wrapper(datain, calcset) %<<<1
 
 % Format input data --------------------------- %<<<1
 % PSFE definition is:
-% function [fa A ph] = PSFE(Record,Ts,init_guess)
-% Record     - sampled input signal
-% Ts         - sampling time (in s)
-% init_guess: 0 - FFT max bin, 1 - IPDFT, negative initial frequency estimate
+% PSFE (Phase Sensitive Frequency Estimator)
+%  [fa, A, ph, O] = PSFE(Record,Ts)
+%
+%  Input arguments
+%    Record     - sampled input signal
+%    Ts         - sampling time (in s)
+%  Output arguments
+%    fa         - estimated signal's frequency
+%    A          - estimated signal's amplitude
+%    ph         - estimated signal's phase
+%    O          - estimated signal's offset
 
 if isfield(datain, 'Ts')
     Ts = datain.Ts.v;
@@ -24,10 +31,8 @@ else
     end
 end
 
-init_guess = 1;
-
 % Call algorithm ---------------------------  %<<<1
-[fa A ph] = PSFE(datain.y.v,Ts,init_guess);
+[fa A ph O] = PSFE(datain.y.v,Ts);
 
 % Format output data:  --------------------------- %<<<1
 % PSFE definition is:
@@ -39,6 +44,7 @@ init_guess = 1;
 dataout.f.v = fa;
 dataout.A.v = A;
 dataout.ph.v = ph;
+dataout.O.v = O;
 
 end % function
 
