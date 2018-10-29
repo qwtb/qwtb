@@ -30,3 +30,6 @@ Calculates Allan deviation of a time domain signal
 There can be interresting algorithms:
 Group Members: Max Lambert, Andrew Engroff, Matt Dyer, Ben Byer 
 <https://www.clear.rice.edu/elec301/Projects02/empiricalMode/index.html>
+
+## Swerlein's Algorithm
+https://www.keysight.com/main/editorial.jspx?ckey=235459&id=235459&lc=eng&cc=CZ
