@@ -1,5 +1,5 @@
 function varargout = qwtbvar(varargin)
-% NTO FINISHED, IN DEVELOPEMENT PHASE
+% NOT FINISHED, IN DEVELOPEMENT PHASE
 % QWTBVAR: Variator for  Q-Wave Toolbox
 %   [jobfn] = QWTBVAR(algid, datain, datainvar, calcset)
 %       Variates inputs 'datain' according 'datainvar' and applies them one
@@ -138,7 +138,7 @@ function varargout = qwtbvar(varargin)
         % check inputs - only type of variable, content is checked in subfunctions
         if ~ischar(jobfn)
             error(err_msg_gen(1)); % bad jobfn
-        endif % ~ischar(jobfn)
+        end % if % ~ischar(jobfn)
         % continue calculation
         job = make_var(jobfn);
         % return actual job filename:
@@ -151,15 +151,15 @@ function varargout = qwtbvar(varargin)
         % check inputs - only type of variable, content is checked in subfunctions
         if ~ischar(jobfn)
             error(err_msg_gen(1)); % bad jobfn
-        endif % ~ischar(jobfn)
+        end % if % ~ischar(jobfn)
         if ~ischar(varx)
             error(err_msg_gen(7)); % bad varx/vary/varz
-        endif % ~ischar(varx)
+        end % if % ~ischar(varx)
         if ~ischar(vary)
             error(err_msg_gen(7)); % bad varx/vary/varz
-        endif % ~ischar(vary)
+        end % if % ~ischar(vary)
         % get data to plot:
-        [X Y] = get_plotdata(jobfn, varx, vary, '');
+        [X, Y] = get_plotdata(jobfn, varx, vary, '');
         % make plot or return data:
         if nargout == 2
             varargout{1} = X;
@@ -169,7 +169,7 @@ function varargout = qwtbvar(varargin)
             varargout{1} = H;
             varargout{2} = X;
             varargout{3} = Y;
-        endif % nargout == 2
+        end % if % nargout == 2
     elseif nargin == 4 %<<<2
         if ischar(varargin{2})
             % plotting of 3D data
@@ -180,18 +180,18 @@ function varargout = qwtbvar(varargin)
             % check inputs - only type of variable, content is checked in subfunctions
             if ~ischar(jobfn)
                 error(err_msg_gen(1)); % bad jobfn
-            endif % ~ischar(jobfn)
+            end % if % ~ischar(jobfn)
             if ~ischar(varx)
                 error(err_msg_gen(7)); % bad varx/vary/varz
-            endif % ~ischar(varx)
+            end % if % ~ischar(varx)
             if ~ischar(vary)
                 error(err_msg_gen(7)); % bad varx/vary/varz
-            endif % ~ischar(vary)
+            end % if % ~ischar(vary)
             if ~ischar(varz)
                 error(err_msg_gen(7)); % bad varx/vary/varz
-            endif % ~ischar(varz)
+            end % if % ~ischar(varz)
             % get data to plot:
-            [X Y Z] = get_plotdata(jobfn, varx, vary, varz);
+            [X, Y, Z] = get_plotdata(jobfn, varx, vary, varz);
             % make plot or return data:
             if nargout == 3
                 varargout{1} = X;
@@ -203,7 +203,7 @@ function varargout = qwtbvar(varargin)
                 varargout{2} = X;
                 varargout{3} = Y;
                 varargout{4} = Z;
-            endif % nargout == 3
+            end % if % nargout == 3
         else nargin == 4
             algid = varargin{1};
             datain = varargin{2};
@@ -212,16 +212,16 @@ function varargout = qwtbvar(varargin)
             % check inputs - only type of variable, content is checked in subfunctions
             if ~ischar(algid)
                 error(err_msg_gen(2)); % bad algid name
-            endif % ~ischar(algid)
+            end % if % ~ischar(algid)
             if ~isstruct(datain)
                 error(err_msg_gen(3)); % bad datain structure
-            endif % ~ischar(datain)
+            end % if % ~ischar(datain)
             if ~isstruct(datainvar)
                 error(err_msg_gen(4)); % bad datainvar structure
-            endif % ~ischar(datainvar)
+            end % if % ~ischar(datainvar)
             if ~isstruct(calcset)
                 error(err_msg_gen(5)); % bad calcset structure
-            endif % ~ischar(calcset)
+            end % if % ~ischar(calcset)
             % check calcset
             calcset = check_gen_calcset(calcset);
             % prepare job
@@ -229,13 +229,13 @@ function varargout = qwtbvar(varargin)
             % do calculation
             job = make_var(job);
             varargout{1} = job.jobfn;
-        endif % ischar(varagin{2})
+        end % if % ischar(varagin{2})
     else %<<<2
         error(err_msg_gen(6)); % bad inputs number
-    endif
-endfunction % qwtbvar
+    end % if
+end % function % qwtbvar
 
-function [Q f] = parse_Q_f(str)
+function [Q, f] = parse_Q_f(str)
 % parse string into quantity Q and field f
 % possible strings:
 % Q; Q.; Q.f;
@@ -248,21 +248,21 @@ function [Q f] = parse_Q_f(str)
     if isempty(id)
         % only quantity in the string
         Q = str;
-        break
-    endif % isempty(id)
+        return;
+    end % if % isempty(id)
     if numel(id) > 1
         error(err_msg_gen(7)); % bad varx/vary/varz
-    endif % numel(id) > 1)
+    end % if % numel(id) > 1)
     if id < 2
         % there is missing Q, because '.' is on first place
         error(err_msg_gen(7)); % bad varx/vary/varz
-    endif % id < 2
+    end % if % id < 2
     % there is quantity in string:
     Q = str(1:id-1);
     % there could be field in the string ('a'(5:4) gives empty string, so no
     % possible error can happen):
     f = str(id+1:end);
-endfunction % [Q f] = parse_Q_f
+end % function % [Q f] = parse_Q_f
 
 % -------------------------------- check input data %<<<1
 function check_datainvar(datain, datainvar) %<<<1
@@ -271,16 +271,16 @@ function check_datainvar(datain, datainvar) %<<<1
 
     % get all quantities that will be variated
     Qnamesvar = fieldnames(datainvar);
-    for i = 1:length(Qnamesvar);
+    for i = 1:length(Qnamesvar)
         if ~isfield(datain, Qnamesvar{i})
             error(err_msg_gen(60, Qnamesvar{i})); % Q in datainvar missing in datain
-        endif
+        end % if
         % get all fields of actual quantity:
         Fnamesvar = fieldnames(datainvar.(Qnamesvar{i}));
         for j = 1:length(Fnamesvar)
             if ~isfield(datain.(Qnamesvar{i}), Fnamesvar{j})
                 error(err_msg_gen(61, Fnamesvar{j}, Qnamesvar{i})); % Q.f in datainvar missing in datain
-            endif
+            end % if
             % size of datain Q.f:
             szf   = size(datain.(Qnamesvar{i}).(Fnamesvar{j}));
             % size of datainvar Q.f:
@@ -291,21 +291,21 @@ function check_datainvar(datain, datainvar) %<<<1
                 % fill in zero dimensions to get same number of dimensions for szf as in szfvar for
                 % easy comparison later:
                 szf(i) = zeros(numel(szfvar) - numel(szf));
-            endif
+            end % if
             % find out differing dimensions
             id = find(not(szf == szfvar));
             if isempty(id)
                 error(err_msg_gen(63, Fnamesvar{j}, Qnamesvar{i})); % same dimensions in datain and datainvar
-            endif
+            end % if
             if numel(id) > 1
                 error(err_msg_gen(64, Fnamesvar{j}, Qnamesvar{i})); % too many differing dimensions
-            endif % numel(id) > 1
+            end % if % numel(id) > 1
             if szf(id) ~= 1
                 error(err_msg_gen(65, Fnamesvar{j}, Qnamesvar{i})); % differing dimension in datain not one
-            endif
-        endfor % j = 1:length(Fnamesvar)
-    endfor % i = 1:length(Qnamesvar);
-endfunction % check_datainvar
+            end % if
+        end % for % j = 1:length(Fnamesvar)
+    end % for % i = 1:length(Qnamesvar);
+end % function % check_datainvar
 
 function calcset = check_gen_calcset(varargin) %<<<1
 % Checks if calculation settings complies to the qwtbvar format.
@@ -348,7 +348,7 @@ function calcset = check_gen_calcset(varargin) %<<<1
     else 
         calcset.var.cleanfiles = 0;
     end
-endfunction % check_gen_calcset
+end % function % check_gen_calcset
 
 % -------------------------------- variation %<<<1
 function job = prepare_var(algid, datain, datainvar, calcset) %<<<1
@@ -366,7 +366,7 @@ function job = prepare_var(algid, datain, datainvar, calcset) %<<<1
     % XXX prod or sum? permutations or not?
     % construct DI cells - move it into calculation itself? cdatain can be very large... XXX
     % generate_datain_cells_independent(varQ, varf, dim, dimsz, datain, datainvar);
-    [job.count job.calcplan] = generate_datain_cells_dependent(job.varlist, datain, datainvar);
+    [job.count, job.calcplan] = generate_datain_cells_dependent(job.varlist, datain, datainvar);
     % disp(['number of variation calculations, independent, by size: ' num2str(job.count)]);
     % XXX display method of variations generation: dependent/independent
     % display number of calculations
@@ -377,10 +377,10 @@ function job = prepare_var(algid, datain, datainvar, calcset) %<<<1
 
     if ~exist(calcset.var.dir, 'dir')
         mkdir(calcset.var.dir);
-    endif % ~exist(calcset.var.dir)
+    end % if % ~exist(calcset.var.dir)
     if ~exist(calcset.var.dir, 'dir')
         error(err_msg_gen(30, calcset.var.dir)); % not a folder
-    endif % ~exist(calcset.var.dir, 'dir')
+    end % if % ~exist(calcset.var.dir, 'dir')
 
     job.algid = algid;
     job.datain = datain;
@@ -388,19 +388,21 @@ function job = prepare_var(algid, datain, datainvar, calcset) %<<<1
     job.calcset = calcset;
 
     % generate filenames of result files
-    resfntemplate = fullfile(calcset.var.dir, [calcset.var.fnprefix '_QV_res_%0' num2str(ceil(log10(job.count))+1, '%d') 'd']);
+    resfnstart = fullfile(calcset.var.dir, [calcset.var.fnprefix '_QV_res_']);
+    resfntemplate = ['%0' num2str(ceil(log10(job.count))+1, '%d') 'd.mat'];
     for i = 1:job.count
-        job.resultfn{i} = sprintf(resfntemplate, i);
+        % whole string is not in sprintf to prevent sprintf to escape path: dir/subdir
+        job.resultfn{i} = [resfnstart sprintf(resfntemplate, i)];
         if calcset.var.cleanfiles
             if exist(job.resultfn{i}, 'file')
                 delete(job.resultfn{i});
                 disp_msg(7, job.resultfn{i}); % result deleted
-            endif % exist(job.resultfn{i}, 'file')
-        endif % calcset.var.cleanfiles
-    endfor % i = 1:job.count
+            end % if % exist(job.resultfn{i}, 'file')
+        end % if % calcset.var.cleanfiles
+    end % for % i = 1:job.count
 
     % generate main job file name
-    job.jobfn = fullfile(calcset.var.dir, [calcset.var.fnprefix '_QV_job']);
+    job.jobfn = fullfile(calcset.var.dir, [calcset.var.fnprefix '_QV_job.mat']);
     if exist(job.jobfn, 'file')
         if calcset.var.cleanfiles
             delete(job.jobfn)
@@ -408,11 +410,11 @@ function job = prepare_var(algid, datain, datainvar, calcset) %<<<1
             save(job.jobfn, 'job');
         else % if calcset.var.cleanfiles
             disp_msg(1, job.jobfn); % jobfn already exist
-        endif % calcset.var.cleanfiles
+        end % if % calcset.var.cleanfiles
     else
         save(job.jobfn, 'job');
-    endif % ~exist(calcset.var.dir, 'dir')
-endfunction % prepare_var
+    end % if % ~exist(calcset.var.dir, 'dir')
+end % function % prepare_var
 
 % function [cdatain varinfo] = generate_datain_cells_independent(varQ, varf, dim, dimsz, datain, datainvar); %<<<1
 % % XXX zastarale
@@ -442,14 +444,14 @@ endfunction % prepare_var
 %     % user could have put there anything and one would need to compare floats etc.
 %     % XXX
 % 
-% endfunction % generate_datain_cells_independent
+% end % function % generate_datain_cells_independent
 
-function [count plan] = generate_datain_cells_dependent(list, datain, datainvar); %<<<1
+function [count, plan] = generate_datain_cells_dependent(list, datain, datainvar) %<<<1
 % prepare variation info with plan for calculations
 
     % total number of calculations
     % (e.g. if dimension sizes of variated Q.f{1}, Q.f{2} are 2,3, than count = 6)
-    count = prod([list.dimsz(:)]);
+    count = prod(list.dimsz(:));
     % number of variated Q.f:
     Qfno = length(list.Q);
     
@@ -463,7 +465,7 @@ function [count plan] = generate_datain_cells_dependent(list, datain, datainvar)
     % prepare dimension sizes for multidimensional meshgrid:
     for i = 1:Qfno
         c{i} = [1:list.dimsz(i)];
-    endfor % i = 1:length(Qfno)
+    end % for % i = 1:length(Qfno)
     plan.mg = cell(Qfno,1);
     % multidimensional meshgrid:
     [plan.mg{:}] = ndgrid(c{:});
@@ -476,8 +478,8 @@ function [count plan] = generate_datain_cells_dependent(list, datain, datainvar)
         plan.dimsz(:, i) = repmat(list.dimsz(i), count, 1);
         % reshape correctly shape meshgrid into vector:
         plan.dimidx(:, i) = reshape(plan.mg{i}, count, 1);
-    endfor % i = 1:Qfno
-endfunction % generate_datain_cells_dependent
+    end % for % i = 1:Qfno
+end % function % generate_datain_cells_dependent
 
 function [list] = get_var_dimensions(datain, datainvar) %<<<1
 % Finds out which Q are to be variated, finds out the dimension of Q.f that has
@@ -486,12 +488,12 @@ function [list] = get_var_dimensions(datain, datainvar) %<<<1
 % It was already checked that all Qs and fields of Qs in datainvar are correct
 % with respect to the datain in function check_datainvar.
 
-    list.Q = cell();      % quantities to be variated
-    list.f = cell();     % fields of Q to be variated
+    list.Q = cell(0);      % quantities to be variated
+    list.f = cell(0);     % fields of Q to be variated
     list.dim = [];     % dimension of Q.f that should be variated
     list.dimsz = [];   % size of dimension dim of Q.f that should be variated
     Qnamesvar = fieldnames(datainvar);  % all quantities that will be variated
-    for j = 1:length(Qnamesvar);
+    for j = 1:length(Qnamesvar)
         Fnamesvar = fieldnames(datainvar.(Qnamesvar{j})); % fields of quantity that will be variated
         for i = 1:length(Fnamesvar)
             szf   = size(datain  .(Qnamesvar{j}).(Fnamesvar{i}));   % size of datain quantity/field
@@ -499,18 +501,18 @@ function [list] = get_var_dimensions(datain, datainvar) %<<<1
             if numel(szfvar) > numel(szf)
                 % fill in zero dimensions to get same number of dimensions for szf as in szfvar for easy comparison later
                 szf(i) = zeros(numel(szfvar) - numel(szf));
-            endif
+            end % if
             % find out differing dimensions
             id = find(not(szf == szfvar));
             list.Q = [list.Q Qnamesvar(j)]; % actual quantity
             list.f = [list.f Fnamesvar(i)]; % actual field
             list.dim = [list.dim id(1)]; % actual dimension that contains variated values of the field
             list.dimsz = [list.dimsz szfvar(list.dim(end)) - szf(list.dim(end)) + 1]; % actual number of variations
-        endfor % i = 1:length(Qvarfields)
-    endfor % j = 1:length(Qnamesvar);
-endfunction % get_var_dimensions
+        end % for % i = 1:length(Qvarfields)
+    end % for % j = 1:length(Qnamesvar);
+end % function % get_var_dimensions
 
-function datainout = variate_datain(job, calcno); %<<<1
+function datainout = variate_datain(job, calcno) %<<<1
 % change datain according calculation plan and calculation number calcno
 
     datainout = job.datain;
@@ -533,16 +535,14 @@ function datainout = variate_datain(job, calcno); %<<<1
         idx.subs{dim} = dimidx;
         % set value of Q.f in datain by value from daitainvar:
         datainout.(Q).(f) = subsref(value, idx);
-    endfor
-endfunction % variate_datain
+    end % for
+end % function % variate_datain
 
 function job = make_var(job) %<<<1
     % load data for calculation
     job = load_job(job);
 
     % make variation calculation %<<<2
-    DO = cell(1, job.count);
-    CS = cell(1, job.count);
     id = tic();
     for i = 1:job.count
         % variate quantitites:
@@ -555,14 +555,14 @@ function job = make_var(job) %<<<1
             % do not check qwtb inputs somewhere?!! XXX
             save(job.resultfn{i}, 'DO', 'DI', 'CS');
             disp_msg(5, job.resultfn{i}) % result saved
-        endif % exist(job.resultfn{i})
-    endfor % i = 1:job.count
+        end % if % exist(job.resultfn{i})
+    end % for % i = 1:job.count
     % display final message
     disp_msg(6, toc(id)); % all calculations finished
-endfunction % make_var
+end % function % make_var
 
 % -------------------------------- plotting %<<<1
-function [X, Y, Z] = get_plotdata(jobfn, varx, vary, varz); %<<<1
+function [X, Y, Z] = get_plotdata(jobfn, varx, vary, varz) %<<<1
 % XXX ZASTARALE?!
 % loads and extracts all data needed for plotting
 
@@ -581,31 +581,31 @@ function [X, Y, Z] = get_plotdata(jobfn, varx, vary, varz); %<<<1
         % load job file: %<<<2
         job = load_job(jobfn);
         % parse variables:
-        [Qx fx] = parse_Q_f(varx);
+        [Qx, fx] = parse_Q_f(varx);
         if isempty(fx)
             % if field was missing, plot .v with .u
             fx = 'v';
             xunc = 1;   % do uncertainties
-        endif % isempty(fx)
-        [Qy fy] = parse_Q_f(vary);
+        end % if % isempty(fx)
+        [Qy, fy] = parse_Q_f(vary);
         if isempty(fy)
             % if field was missing, plot .v with .u
             fy = 'v';
             yunc = 1;   % do uncertainties
-        endif % isempty(fy)
+        end % if % isempty(fy)
         if isempty(varz)
             Qz = []; fz = [];   % only 2D data required
             % (there is [] and not '' because field with empty string is valid
             % and can be constructed: a.('') = 5. However isfield(a,[]) results
             % in 0 and that is ok.
         else
-            [Qz fz] = parse_Q_f(varz);
+            [Qz, fz] = parse_Q_f(varz);
             if isempty(fz)
                 % if field was missing, plot .v with .u
                 fz = 'v';
                 zunc = 1;   % do uncertainties
-            endif % isempty(fz)
-        endif % isempty(varz)
+            end % if % isempty(fz)
+        end % if % isempty(varz)
 
         % go through all jobs. this is not ideal method! improve! %XXX
         % (because what if some jobs have variated other parameters? but the
@@ -619,7 +619,7 @@ function [X, Y, Z] = get_plotdata(jobfn, varx, vary, varz); %<<<1
                 tmp = load(job.resultfn{i});
             else
                 error(err_msg_gen(93, job.resultfn{i}, jobfn)); % resultfn does not exist
-            endif
+            end % if
             % find varx in input or output cells: %<<<2
             if isfield(tmp.DI, Qx)
                 tmpQx = tmp.DI.(Qx);
@@ -627,11 +627,11 @@ function [X, Y, Z] = get_plotdata(jobfn, varx, vary, varz); %<<<1
                 tmpQx = tmp.DO.(Qx);
             else
                 error(err_msg_gen(90, varx, job.resultfn{i})); % var not found in output data.
-            endif % isfield(tmp.DI, Qx)
+            end % if % isfield(tmp.DI, Qx)
             % check size of data to plot:
             if ~isscalar(tmpQx.v)
                 error(err_msg_gen(91, varx)); % var not scalar
-            endif % ~isscalar(tmpQx.v)
+            end % if % ~isscalar(tmpQx.v)
             % find vary in input or output cells: %<<<2
             if isfield(tmp.DI, Qy)
                 tmpQy = tmp.DI.(Qy);
@@ -639,11 +639,11 @@ function [X, Y, Z] = get_plotdata(jobfn, varx, vary, varz); %<<<1
                 tmpQy = tmp.DO.(Qy);
             else
                 error(err_msg_gen(90, vary, job.resultfn{i})); % var not found in output data.
-            endif % isfield(tmp.DI, Qy)
+            end % if % isfield(tmp.DI, Qy)
             % check size of data to plot:
             if ~isscalar(tmpQy.v)
                 error(err_msg_gen(91, vary)); % var not scalar
-            endif % ~isscalar(tmpQy.v)
+            end % if % ~isscalar(tmpQy.v)
             % find varz in input or output cells only if varz required: %<<<2
             if ~isempty(varz)
                 if isfield(tmp.DI, Qz)
@@ -652,12 +652,12 @@ function [X, Y, Z] = get_plotdata(jobfn, varx, vary, varz); %<<<1
                     tmpQz = tmp.DO.(Qz);
                 else
                     error(err_msg_gen(90, varz, job.resultfn{i})); % var not found in output data.
-                endif % isfield(tmp.DI, Qz)
+                end % if % isfield(tmp.DI, Qz)
                 % check size of data to plot:
                 if ~isscalar(tmpQz.v)
                     error(err_msg_gen(91, varz)); % var not scalar
-                endif % ~isscalar(tmpQz.v)
-            endif % ~isempty(vary)
+                end % if % ~isscalar(tmpQz.v)
+            end % if % ~isempty(vary)
 
             % get fields %<<<2
             % find field
@@ -669,10 +669,10 @@ function [X, Y, Z] = get_plotdata(jobfn, varx, vary, varz); %<<<1
                 else
                     % disable getting of uncertainties:
                     xunc = 0; % XXX make a message about it to the user!
-                endif % xunc
+                end % if % xunc
             else
                 error(err_msg_gen(92, fx, tmpQx, job.resultfn{i})); % var is missing field
-            endif % isfield(tmpQx, fx)
+            end % if % isfield(tmpQx, fx)
             if isfield(tmpQy, fy)
                 Y.v(end+1) = tmpQy.(fy);
                 if yunc && isfield(tmpQy, 'u')
@@ -681,10 +681,10 @@ function [X, Y, Z] = get_plotdata(jobfn, varx, vary, varz); %<<<1
                 else
                     % disable getting of uncertainties:
                     yunc = 0; % XXX make a message about it to the user!
-                endif % yunc
+                end % if % yunc
             else
                 error(err_msg_gen(92, fy, tmpQy, job.resultfn{i})); % var is missing field
-            endif % isfield(tmpQy, fy)
+            end % if % isfield(tmpQy, fy)
             if ~isempty(varz)
                 if isfield(tmpQz, fz)
                     Z.v(end+1) = tmpQz.(fz);
@@ -694,25 +694,25 @@ function [X, Y, Z] = get_plotdata(jobfn, varx, vary, varz); %<<<1
                     else
                         % disable getting of uncertainties:
                         zunc = 0; % XXX make a message about it to the user!
-                    endif % zunc
+                    end % if % zunc
                 else
                     error(err_msg_gen(92, fz, tmpQz, job.resultfn{i})); % var is missing field
-                endif % isfield(tmpQz, fz)
-            endif % ~isempty(varz)
-        endfor % i = 1:length(job.resultfn)
+                end % if % isfield(tmpQz, fz)
+            end % if % ~isempty(varz)
+        end % for % i = 1:length(job.resultfn)
 
         % clear possible partial uncertainties %<<<2
         if ~xunc
             X.u = [];
-        endif % ~xunc
+        end % if % ~xunc
         if ~yunc
             Y.u = [];
-        endif % ~yunc
+        end % if % ~yunc
         if ~zunc
             Z.u = [];
-        endif % ~zunc
+        end % if % ~zunc
            
-endfunction % get_plotdata;
+end % function % get_plotdata;
 
 function H = plot_2D(jobfn, varx, vary, X, Y) %<<<1
 % plots 2D figure with possible x/y/xy errorbars
@@ -726,29 +726,29 @@ function H = plot_2D(jobfn, varx, vary, X, Y) %<<<1
                 H = errorbar(X.v, Y.v, Y.u, "~rx-");
             else
                 H = errorbar(X.v, Y.v, X.u, Y.u, "~>rx-");
-            endif
+            end % if
             % set blue color of the main line (uncertainties will stay red):
             Hc = get(H, 'Children');
             set(Hc(1),'color','b'); % data, Hc(2) are errorbars
-        endif % isempty(X.u) && isempty(Y.u)
+        end % if % isempty(X.u) && isempty(Y.u)
         % add labels
         xlabel(varx, 'interpreter', 'none');
         ylabel(vary, 'interpreter', 'none');
         title(jobfn, 'interpreter', 'none');
-endfunction % plot_2D
+end % function % plot_2D
 
 function H = plot_3D(jobfn, varx, vary, varz, X, Y, Z) %<<<1
 % plots 3D figure with possible x/y/z errorbars % XXX not working yet
 % returns handle to the figure
 % XXX no idea how to plot 3D surface plots with x uncertainties, only by
 % using multilines in single plot
-    H = scatter3(X.v, Y.v, Z.v, [], Z.v)
+    H = scatter3(X.v, Y.v, Z.v, [], Z.v);
     % add labels
     xlabel(varx, 'interpreter', 'none');
     ylabel(vary, 'interpreter', 'none');
     zlabel(varz, 'interpreter', 'none');
     title(jobfn, 'interpreter', 'none');
-endfunction % plot_3D
+end % function % plot_3D
 
 % -------------------------------- others %<<<1
 function job = load_job(job) %<<<1
@@ -756,10 +756,10 @@ function job = load_job(job) %<<<1
     if ~isstruct(job)
         if ~exist(job, 'file')
             error(err_msg_gen(8, job))% jobfn does not exist
-        endif % ~exist(job)
+        end % if % ~exist(job)
         load(job);
-    endif % isstruct(job)
-endfunction % load_job(job)
+    end % if % isstruct(job)
+end % function % load_job(job)
 
 function disp_msg(varargin) %<<<1
     % generates display message, so all messages are at one place and visually unified
@@ -812,7 +812,7 @@ function disp_msg(varargin) %<<<1
     msg = ['### QWTBVAR: ' msg];
     % display message to user:
     disp(msg)
-endfunction % warn_msg_gen
+end % function % warn_msg_gen
 
 function msg = err_msg_gen(varargin) %<<<1
     % generates error message, so all errors are at one place. after each
@@ -836,7 +836,7 @@ function msg = err_msg_gen(varargin) %<<<1
             errid = -2;
         end
         % check errid is integer number:
-        if ~(errid == fix(errid) && isreal(errid));
+        if ~(errid == fix(errid) && isreal(errid))
             errid = -2;
         end
     end
@@ -863,7 +863,7 @@ function msg = err_msg_gen(varargin) %<<<1
             case -4 % one input - errid - this error is used for recursion from this switch statement otherwise
                 msg = ['insufficient number of input arguments for function err_msg_gen and QWTB error ' num2str(varargin{2}) '.'];
             case -5 % one input - errid - this error is used for recursion from this switch statement otherwise
-                msg = ['bad use of disp_msg function.'];
+                msg = 'bad use of disp_msg function.';
             % ------------------- input errors 1-29: %<<<2
             case 1
                 msg = 'Input `jobfn` must be a string with filename to the existing job file.';
@@ -942,18 +942,18 @@ function msg = err_msg_gen(varargin) %<<<1
         % print out error message with nice frame. error itself will appear below
         % with this message again
         if errid > 0
-            disp( '‚îè‚îÅ‚îÅ‚îÅ‚îÅ‚îÅ‚îÅ‚îÅ‚îÅ‚îÅ‚îÅ‚îÅ‚îÅ')
-            disp( '‚îÉ')
-            disp(['‚îÉ ' msg])
-            disp( '‚îÉ')
-            disp( '‚îó‚îÅ‚îÅ‚îÅ‚îÅ‚îÅ‚îÅ‚îÅ‚îÅ‚îÅ‚îÅ‚îÅ‚îÅ')
-        endif
+            disp( '‚îè‚î?‚î?‚î?‚î?‚î?‚î?‚î?‚î?‚î?‚î?‚î?‚î?')
+            disp( '‚î?')
+            disp(['‚î? ' msg])
+            disp( '‚î?')
+            disp( '‚îó‚î?‚î?‚î?‚î?‚î?‚î?‚î?‚î?‚î?‚î?‚î?‚î?')
+        end % if
         msg = [msg suffix];
         % make empty output for zero errid:
         if errid == 0
             msg = '';
         end
-    endif % msg_generated
+    end % if % msg_generated
 end % err_msg_gen
 
 % vim settings modeline: vim: foldmarker=%<<<,%>>> fdm=marker fen ft=octave textwidth=80 tabstop=4 shiftwidth=4
