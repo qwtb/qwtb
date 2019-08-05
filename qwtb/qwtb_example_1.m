@@ -16,10 +16,10 @@ DI.y.v = Anom*sin(2*pi*fnom*DI.t.v + phnom);
 DI.y.v = DI.y.v + 1e-3.*randn(size(DI.y.v));
 
 %% Analyzing data
-% To get a frequency spectrum, algorithm |SP-FFT| can be used. This algorithm
+% To get a frequency spectrum, algorithm |SP-WFFT| can be used. This algorithm
 % requires sampling frequency, so third quantity |fs| is added.
 DI.fs.v = fsnom;
-DO = qwtb('SP-FFT', DI);
+DO = qwtb('SP-WFFT', DI);
 plot(DO.f.v, DO.A.v, '-xb'); xlim([980 1020])
 %%
 % One can see it is not a coherent measurement. Therefore to get 'unknown'

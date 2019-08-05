@@ -18,24 +18,24 @@ DI.y.v = ideal_wave;
 
 %% Apply three algorithms
 % QWTB will be used to apply three algorithms to determine frequency and
-% amplitude: |SP-FFT|, |PSFE| and |FPNLSF|. Results are in data out structure
+% amplitude: |SP-WFFT|, |PSFE| and |FPNLSF|. Results are in data out structure
 % |DOxxx|. Algorithm |FPNLSF| requires an estimate, select it to 0.1% different
-% from nominal frequency. |SP-FFT| requires sampling frequency.
+% from nominal frequency. |SP-WFFT| requires sampling frequency.
 DI.fest.v = fnom.*1.001;
 DI.fs.v = fsnom;
-DOspfft = qwtb('SP-FFT', DI);
+DOspwfft = qwtb('SP-WFFT', DI);
 DOpsfe = qwtb('PSFE', DI);
 DOfpnlsf = qwtb('FPNLSF', DI);
 
 %% Compare results for ideal signal
 % Calculate relative errors in ppm for all algorithm to know which one is best.
-% |SP-FFT| returns whole spectrum, so only the largest amplitude peak is
+% |SP-WFFT| returns whole spectrum, so only the largest amplitude peak is
 % interesting. One can see for the ideal case all errors are very small.
-disp('SP-FFT errors (ppm):')
-[tmp, ind] = max(DOspfft.A.v);
-ferr  = (DOspfft.f.v(ind) - fnom)/fnom .* 1e6 
-Aerr  = (DOspfft.A.v(ind) - Anom)/Anom .* 1e6
-pherr = (DOspfft.ph.v(ind) - phnom)/phnom .* 1e6
+disp('SP-WFFT errors (ppm):')
+[tmp, ind] = max(DOspwfft.A.v);
+ferr  = (DOspwfft.f.v(ind) - fnom)/fnom .* 1e6 
+Aerr  = (DOspwfft.A.v(ind) - Anom)/Anom .* 1e6
+pherr = (DOspwfft.ph.v(ind) - phnom)/phnom .* 1e6
 
 disp('PSFE errors (ppm):')
 ferr  = (DOpsfe.f.v - fnom)/fnom .* 1e6 
@@ -52,7 +52,7 @@ pherr = (DOfpnlsf.ph.v - phnom)/phnom .* 1e6
 % standard deviation |sigma| of 100 microvolt. Algorithms are again applied.
 sigma = 100e-6;
 DI.y.v = ideal_wave + 100e-6.*randn(size(ideal_wave));
-DOspfft = qwtb('SP-FFT', DI);
+DOspwfft = qwtb('SP-WFFT', DI);
 DOpsfe = qwtb('PSFE', DI);
 DOfpnlsf = qwtb('FPNLSF', DI);
 
@@ -60,11 +60,11 @@ DOfpnlsf = qwtb('FPNLSF', DI);
 % Again relative errors are compared. One can see amplitude and phase errors
 % increased to several ppm, however frequency is still determined quite good by
 % all three algorithms. FFT is not affected by noise at all.
-disp('SP-FFT errors (ppm):')
-[tmp, ind] = max(DOspfft.A.v);
-ferr  = (DOspfft.f.v(ind) - fnom)/fnom .* 1e6 
-Aerr  = (DOspfft.A.v(ind) - Anom)/Anom .* 1e6
-pherr = (DOspfft.ph.v(ind) - phnom)/phnom .* 1e6
+disp('SP-WFFT errors (ppm):')
+[tmp, ind] = max(DOspwfft.A.v);
+ferr  = (DOspwfft.f.v(ind) - fnom)/fnom .* 1e6 
+Aerr  = (DOspwfft.A.v(ind) - Anom)/Anom .* 1e6
+pherr = (DOspwfft.ph.v(ind) - phnom)/phnom .* 1e6
 
 disp('PSFE errors:')
 ferr  = (DOpsfe.f.v - fnom)/fnom .* 1e6 
@@ -82,18 +82,18 @@ pherr = (DOfpnlsf.ph.v - phnom)/phnom .* 1e6
 fnc = fnom*(1 + 20e-6);
 noncoh_wave = Anom*sin(2*pi*fnc*timestamps + phnom);
 DI.y.v = noncoh_wave;
-DOspfft = qwtb('SP-FFT', DI);
+DOspwfft = qwtb('SP-WFFT', DI);
 DOpsfe = qwtb('PSFE', DI);
 DOfpnlsf = qwtb('FPNLSF', DI);
 
 %% Compare results for non-coherent signal
 % Comparison of relative errors. Results of |PSFE| or |FPNLSF| are correct, however
 % FFT is affected by non-coherent signal considerably.
-disp('SP-FFT errors (ppm):')
-[tmp, ind] = max(DOspfft.A.v);
-ferr  = (DOspfft.f.v(ind) - fnc)/fnc .* 1e6 
-Aerr  = (DOspfft.A.v(ind) - Anom)/Anom .* 1e6
-pherr = (DOspfft.ph.v(ind) - phnom)/phnom .* 1e6
+disp('SP-WFFT errors (ppm):')
+[tmp, ind] = max(DOspwfft.A.v);
+ferr  = (DOspwfft.f.v(ind) - fnc)/fnc .* 1e6 
+Aerr  = (DOspwfft.A.v(ind) - Anom)/Anom .* 1e6
+pherr = (DOspwfft.ph.v(ind) - phnom)/phnom .* 1e6
 
 disp('PSFE errors:')
 ferr  = (DOpsfe.f.v - fnc)/fnc .* 1e6 
@@ -110,18 +110,18 @@ pherr = (DOfpnlsf.ph.v - phnom)/phnom .* 1e6
 % order harmonic of 10% amplitude as the main signal.
 hadist_wave = Anom*sin(2*pi*fnom*timestamps + phnom) + 0.1*Anom*sin(2*pi*fnom*2*timestamps + 2);
 DI.y.v = hadist_wave;
-DOspfft = qwtb('SP-FFT', DI);
+DOspwfft = qwtb('SP-WFFT', DI);
 DOpsfe = qwtb('PSFE', DI);
 DOfpnlsf = qwtb('FPNLSF', DI);
 
 %% Compare results for harmonically distorted signal.
-% Comparison of relative errors. |SP-FFT| or |PSFE| are not affected by harmonic
+% Comparison of relative errors. |SP-WFFT| or |PSFE| are not affected by harmonic
 % distortion, however |FPNLSF| is thus is not suitable for such signal.
-disp('SP-FFT errors (ppm):')
-[tmp, ind] = max(DOspfft.A.v);
-ferr  = (DOspfft.f.v(ind) - fnom)/fnom .* 1e6 
-Aerr  = (DOspfft.A.v(ind) - Anom)/Anom .* 1e6
-pherr = (DOspfft.ph.v(ind) - phnom)/phnom .* 1e6
+disp('SP-WFFT errors (ppm):')
+[tmp, ind] = max(DOspwfft.A.v);
+ferr  = (DOspwfft.f.v(ind) - fnom)/fnom .* 1e6 
+Aerr  = (DOspwfft.A.v(ind) - Anom)/Anom .* 1e6
+pherr = (DOspwfft.ph.v(ind) - phnom)/phnom .* 1e6
 
 disp('PSFE errors:')
 ferr  = (DOpsfe.f.v - fnom)/fnom .* 1e6 
@@ -137,17 +137,17 @@ pherr = (DOfpnlsf.ph.v - phnom)/phnom .* 1e6
 % In final test all distortions are put in a waveform and results are compared.
 err_wave = Anom*sin(2*pi*fnc*timestamps + phnom) + 0.1*Anom*sin(2*pi*fnc*2*timestamps + 2) + 100e-6.*randn(size(ideal_wave));
 DI.y.v = err_wave;
-DOspfft = qwtb('SP-FFT', DI);
+DOspwfft = qwtb('SP-WFFT', DI);
 DOpsfe = qwtb('PSFE', DI);
 DOfpnlsf = qwtb('FPNLSF', DI);
 
 %% Compare results for harmonically distorted, noisy, non-coherent signal.
 % 
-disp('SP-FFT errors (ppm):')
-[tmp, ind] = max(DOspfft.A.v);
-ferr  = (DOspfft.f.v(ind) - fnc)/fnc .* 1e6 
-Aerr  = (DOspfft.A.v(ind) - Anom)/Anom .* 1e6
-pherr = (DOspfft.ph.v(ind) - phnom)/phnom .* 1e6
+disp('SP-WFFT errors (ppm):')
+[tmp, ind] = max(DOspwfft.A.v);
+ferr  = (DOspwfft.f.v(ind) - fnc)/fnc .* 1e6 
+Aerr  = (DOspwfft.A.v(ind) - Anom)/Anom .* 1e6
+pherr = (DOspwfft.ph.v(ind) - phnom)/phnom .* 1e6
 
 disp('PSFE errors:')
 ferr  = (DOpsfe.f.v - fnc)/fnc .* 1e6 
