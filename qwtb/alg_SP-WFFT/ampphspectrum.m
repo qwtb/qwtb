@@ -1,4 +1,48 @@
-function [f, amp, ph, w] = ampphspectrum(y, fs, verbose=0, plottype='stemabsrad', win='', winparam=[], padding=0)
+function [f, amp, ph, w] = ampphspectrum(y, fs, verbose, plottype, win, winparam, padding)
+% [f, amp, ph, w] = ampphspectrum (y, fs, [verbose, plottype, win, winparam, padding]
+%
+% Calcualtes amplitude and phase spectrum by means of discrete fourier
+% transformation of vector of sampled values |y| with sampling
+% frequency |fs|. Function returns frequency vector |f|, amplitudes
+% |amp| and phases |ph|. Used window coefficients are returned in |w|,
+% this can be usefull for further processing.
+% 
+% If |verbose| is set, two figures with amplitude and phase will be
+% plotted. Plot properties can be modified by string |plottype|
+% containing keywords, see lower.
+%
+% Window function will be used if |win| contains name of
+% window function. Some window functions are parametric, its value can
+% be set in |winparam|.
+%
+% If |padding| is set, signal will be zero
+% padded at right side to the total length of |padding|.
+%
+% |plottype| is searched for following keywords. Keywords can be
+% written in any case, keywords do not have to be separated in any
+% way, any other content is ignored.
+% line - plots are line types
+% stem - (nominal) plots are stem types
+% log - y-axis of amplitude spectrum is logarithmic
+% dBm - y-axis of amplitude spectrum is in decibels relative to 1e-3
+% dBu - y-axis of amplitude spectrum is in decibels relative to 1e-6
+% dB - y-axis of amplitude spectrum is in decibels relative to 1
+% Np - y-axis of amplitude spectrum is in Neppers relative to 1
+% abs - (nominal) y-axis of amplitude spectrum is in absolute values
+% deg - y-axis of phase spectrum is in degrees
+% rad - (nominal) y-axis of phase spectrum is in radians.
+%
+% Example with signal of frequency 1 Hz, sampled by 50 Hz 
+% frequency, two harmonic components at 1 and 8 Hz and one
+% interharmonic component at 15.5 Hz with various
+% amplitudes and phases:
+% 
+% fr=1; fs=50;
+% x=[0:1/fs:1/fr];
+% x = x(1:end-1);
+% y=sin(2*pi*fr*x+1)+0.5*sin(2*pi*8*fr*x+2)+0.3*sin(2*pi*15.5*fr*x+3);
+% [f,amp,ph,w]=ampphspectrum(y,fs,1, 'log deg');
+% 
 
 % Copyright (C) 2017 Martin Šíra
 %
@@ -17,49 +61,76 @@ function [f, amp, ph, w] = ampphspectrum(y, fs, verbose=0, plottype='stemabsrad'
 
 % Author: Martin Šíra <msira@cmi.cz>
 % Created: 2013-02-27
-% Modified: 2018-08-05
-% Version: 1.4
+% Modified: 2019-08-05
+% Version: 1.5
 
-% Calcualtes amplitude and phase spectrum by means of discrete fourier
-% transformation of vector of sampled values |y| with sampling
-% frequency |fs|. Function returns frequency vector |f|, amplitudes
-% |amp| and phases |ph|. Used window coefficients are returned in |w|,
-% this can be usefull for further processing. If |verbose| is set, two
-% figures with amplitude and phase will be plotted. If @var{verbose}
-% is set, two figures with amplitude and phase will be plotted. Plot
-% properties can be modified by string |plottype| containing keywords,
-% see lower. Window function will be used if |win| contains name of
-% window function. Some window functions are parametric, its value can
-% be set in |winparam|. If |padding| is set, signal will be zero
-% padded at right side to the total length of |padding|.
-% |plottype| is searched for following keywords. Keywords can be
-% written in any case, keywords do not have to be separated in any
-% way, any other content is ignored. line - plots are line types, stem
-% - (nominal) plots are stem types, log - y-axis of amplitude spectrum
-% is logarithmic, dBm - y-axis of amplitude spectrum is in decibels
-% relative to 1e-3, dBu - y-axis of amplitude spectrum is in decibels
-% relative to 1e-6, dB - y-axis of amplitude spectrum is in decibels
-% relative to 1, Np - y-axis of amplitude spectrum is in Neppers
-% relative to 1, abs - (nominal) y-axis of amplitude spectrum is in
-% absolute values, deg - y-axis of phase spectrum is in degrees, deg -
-% (nominal) y-axis of phase spectrum is in radians.
-% 
-% Example with signal of frequency 1 Hz, sampled by 50 Hz 
-% frequency, two harmonic components at 1 and 8 Hz and one
-% interharmonic component at 15.5 Hz with various
-% amplitudes and phases:
-% 
-% fr=1; fs=50;
-% x=[0:1/fs:1/fr];
-% x = x(1:end-1);
-% y=sin(2*pi*fr*x+1)+0.5*sin(2*pi*8*fr*x+2)+0.3*sin(2*pi*15.5*fr*x+3);
-% [f,amp,ph,w]=ampphspectrum(y,fs,1, 'log deg');
-% 
+% texinfo for octave:
+% ## -*- texinfo -*-
+% ## @deftypefn {Function File} {[@var{f}, @var{amp}, @var{ph}, @var{w}] = ampphspectrum (@var{y}, @var{fs}, [@var{verbose}, @var{plottype}, @var{win}, @var{winparam}, @var{padding}]) }
+% ##  
+% ## Calcualtes amplitude and phase spectrum by means of discrete fourier transformation of vector of sampled values @var{y} with sampling
+% ## frequency @var{fs}. Function returns frequency vector @var{f}, amplitudes @var{amp} and
+% ## phases @var{ph}. Used window coefficients are returned in @var{w}, this can be usefull for further
+% ## processing.
+% ## 
+% ## If @var{verbose} is set, two figures with amplitude and phase will be plotted. 
+% ## Plot properties can be modified by string @var{plottype} containing
+% ## keywords, see lower.
+% ## 
+% ## Window function will be used if @var{win} contains name of window function. Some window
+% ## functions are parametric, its value can be set in @var{winparam}.
+% ## 
+% ## If @var{padding} is set, signal will be zero padded at right side to the total length of
+% ## @var{padding}.
+% ##
+% ## @var{plottype} is searched for following keywords. Keywords can be
+% ## written in any case, keywords do not have to be separated in any
+% ## way, any other content is ignored.
+% ## @table @keywords
+% ## @item line - plots are line types,
+% ## @item stem - (nominal) plots are stem types,
+% ## @item log - y-axis of amplitude spectrum is logarithmic,
+% ## @item dBm - y-axis of amplitude spectrum is in decibels relative to 1e-3,
+% ## @item dBu - y-axis of amplitude spectrum is in decibels relative to 1e-6,
+% ## @item dB - y-axis of amplitude spectrum is in decibels relative to 1,
+% ## @item Np - y-axis of amplitude spectrum is in Neppers relative to 1,
+% ## @item abs - (nominal) y-axis of amplitude spectrum is in absolute values,
+% ## @item deg - y-axis of phase spectrum is in degrees,
+% ## @item rad - (nominal) y-axis of phase spectrum is in radians.
+% ## @end table
+% ## 
+% ## Example with signal of frequency 1 Hz, sampled by frequency 50 samples/s. Two harmonic components at 1 and 8 Hz and one
+% ## interharmonic component at 15.5 Hz with various amplitudes and phases:
+% ## 
+% ## @example
+% ## fr=1; fs=50;
+% ## x=[0:1/fs:1/fr](1:end-1);
+% ## y=sin(2*pi*fr*x+1)+0.5*sin(2*pi*8*fr*x+2)+0.3*sin(2*pi*15.5*fr*x+3);
+% ## [f,amp,ph,w]=ampphspectrum(y,fs,1, 'log deg');
+% ## @end example
+% ## 
+% ## See demo for more detailed example.
+% ## 
+% ## @end deftypefn
+
+
 
         % ---- check input values ---- %<<<1
+        % check number of inputs:
         if (nargin > 7 || nargin < 2)
                 print_usage();
         end
+
+        % assign optional values:
+        % full call of the function in Octave: ampphspectrum(y, fs, verbose=0, plottype='stemabsrad', win='', winparam=[], padding=0)
+        % this is because of Matlab:
+        if ~exist('verbose', 'var'), verbose = 0; end
+        if ~exist('plottype', 'var'), plottype = 'stemabsrad'; end
+        if ~exist('win', 'var'), win = ''; end
+        if ~exist('winparam', 'var'), winparam = []; end
+        if ~exist('padding', 'var'), padding = 0; end
+
+        % check values of inputs:
         if ~( isnumeric(y) && isvector(y))
                 error('ampphspectrum: y has to be a vector!');
         end
