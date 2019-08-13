@@ -71,6 +71,9 @@ function varargout = qwtbvar(varargin)
 %   '.cleanfiles' (0) if 1, delete old jobs and results with colliding
 %   filenames during preparation of calculation (but not during
 %   continuation)
+%   '.smalloutput' - (1) large data of quantities in datain and dataout are not
+%   saved. This affects fields .c (correlation matrix) and .r (randomized
+%   values).
 %   '.prod/simple' - XXX meshgrid or nomeshgrid %XXX
 %
 %   Plotting
@@ -339,7 +342,7 @@ function calcset = check_gen_calcset(varargin) %<<<1
     elseif ~ischar(calcset.var.fnprefix)
         error(err_msg_gen(33)); % var.fnprefix must be string
     end
-    % var.cleanfiles
+    % var.cleanfiles %<<<2
     if ~( isfield(calcset.var, 'cleanfiles') )
         calcset.var.cleanfiles = 0;
     end
@@ -347,6 +350,15 @@ function calcset = check_gen_calcset(varargin) %<<<1
         calcset.var.cleanfiles = 1;
     else 
         calcset.var.cleanfiles = 0;
+    end
+    % var.smalloutput %<<<2
+    if ~( isfield(calcset.var, 'smalloutput') )
+        calcset.var.smalloutput = 1;
+    end
+    if calcset.var.smalloutput
+        calcset.var.smalloutput = 1;
+    else
+        calcset.var.smalloutput = 0;
     end
 end % function % check_gen_calcset
 
@@ -407,12 +419,12 @@ function job = prepare_var(algid, datain, datainvar, calcset) %<<<1
         if calcset.var.cleanfiles
             delete(job.jobfn)
             disp_msg(8, job.jobfn); % job deleted
-            save(job.jobfn, 'job');
+            save('-v7', job.jobfn, 'job');
         else % if calcset.var.cleanfiles
             disp_msg(1, job.jobfn); % jobfn already exist
         end % if % calcset.var.cleanfiles
     else
-        save(job.jobfn, 'job');
+        save('-v7', job.jobfn, 'job');
     end % if % ~exist(calcset.var.dir, 'dir')
 end % function % prepare_var
 
@@ -553,7 +565,12 @@ function job = make_var(job) %<<<1
         else % if exist(job.resultfn{i})
             [DO, DI, CS] = qwtb(job.algid, DI, job.calcset);
             % do not check qwtb inputs somewhere?!! XXX
-            save(job.resultfn{i}, 'DO', 'DI', 'CS');
+            if job.calcset.var.smalloutput
+                % remove large data from quantities (Q.c and Q.r)
+                DI = remove_c_r_fields(DI);
+                DO = remove_c_r_fields(DO);
+            end % if % job.calcset.var.smalloutput
+            save('-v7', job.resultfn{i}, 'DO', 'DI', 'CS');
             disp_msg(5, job.resultfn{i}) % result saved
         end % if % exist(job.resultfn{i})
     end % for % i = 1:job.count
@@ -760,6 +777,19 @@ function job = load_job(job) %<<<1
         load(job);
     end % if % isstruct(job)
 end % function % load_job(job)
+
+function D = remove_c_r_fields(D) %<<<1
+% removes fields .r and .c from all quantities in D - usefull for spacesaving
+    Qnames = fieldnames(D);
+    for i = 1:length(Qnames);
+        if isfield(D.(Qnames{i}), 'c')
+            D.(Qnames{i}) = rmfield(D.(Qnames{i}), 'c');
+        end
+        if isfield(D.(Qnames{i}), 'r')
+            D.(Qnames{i}) = rmfield(D.(Qnames{i}), 'r');
+        end
+    end % for
+end % function % remove_c_r_fields(D)
 
 function disp_msg(varargin) %<<<1
     % generates display message, so all messages are at one place and visually unified
