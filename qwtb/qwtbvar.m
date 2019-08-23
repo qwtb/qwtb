@@ -82,6 +82,16 @@ function varargout = qwtbvar(varargin)
 %   if results file contained it. Using QWTBVAR('somepath', 'x.v','y.u')
 %   will plot 2D figure with dependence of uncertainty of y on value of x.
 %   The same apply to the 3D plotting.
+%
+%   User function
+%   'algid' does not have to be full QWTB algorithm but can be a simple user
+%   function. The function must have two inputs: 'datain' and
+%   'calculation_settings', and three outputs: 'dataout', 'datain' and
+%   'calculation_settings'.
+%   Example of user function working with quantity Q:
+%       function [dataout, datain, cs] = userfunction(datain, cs)
+%               dataout.x.v = 2.*datain.x.v;
+%       end
 
 % Copyright (c) 2019 by Martin Šíra
 
@@ -554,6 +564,13 @@ function job = make_var(job) %<<<1
     % load data for calculation
     job = load_job(job);
 
+    alginfo = qwtb();
+    is_qwtb_alg = 1;
+    if ~any(strcmp({alginfo.id}, job.algid))
+        % it is not qwtb algorithm, but function
+        is_qwtb_alg = 0;
+    endif
+
     % make variation calculation %<<<2
     id = tic();
     for i = 1:job.count
@@ -563,7 +580,13 @@ function job = make_var(job) %<<<1
         if exist(job.resultfn{i}, 'file')
             disp_msg(4, job.resultfn{i}); %result exist
         else % if exist(job.resultfn{i})
-            [DO, DI, CS] = qwtb(job.algid, DI, job.calcset);
+            if is_qwtb_alg
+                % call QWTB:
+                [DO, DI, CS] = qwtb(job.algid, DI, job.calcset);
+            else
+                % call user function:
+                [DO, DI, CS] = feval(job.algid, DI, job.calcset);
+            endif
             % do not check qwtb inputs somewhere?!! XXX
             if job.calcset.var.smalloutput
                 % remove large data from quantities (Q.c and Q.r)
