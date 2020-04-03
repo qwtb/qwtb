@@ -93,6 +93,9 @@ function [retval, s, errorb, tau] = allan_overlap(data,tau,name,verbose)
 %
 % I welcome your comments and feedback!
 %
+% MS Jan2020
+% v.2.25 bugfix for small values of data.freq
+%
 % MH Mar2014
 % v2.24 fix bug related to generating freq data from phase with timestamps
 %       (thanks to S. David-Grignot for finding the bug)
@@ -102,9 +105,8 @@ function [retval, s, errorb, tau] = allan_overlap(data,tau,name,verbose)
 % v2.20 update to match allan.m (dsplot.m, columns)
 %       discard tau values with timestamp irregularities
 
-versionstr = 'allan_overlap v2.24';
+versionstr = 'allan_overlap v2.25';
 
-%
 % MH MAR2010
 % v2.1  bugfixes for irregular sample rates
 %        (thanks to Ryad Ben-El-Kezadri for feedback and testing)
@@ -260,7 +262,12 @@ if isfield(data,'rate') && data.rate > 0 % if data rate was given
     
     % check the range of tau values and truncate if necessary
     % find halfway point of time record
-    halftime = round(tmstep*length(data.freq)/2);
+    halftime = tmstep*fix(length(data.freq)/2); % FIXED by MARTIN SIRA 2020/01/17
+            % Original line:
+            % halftime = round(tmstep*length(data.freq)/2);
+            % FIX REASON: for small values of data.freq, the round(tmstep*leng...) produced zero, and all tau
+            % values have been removed. To get really halftime, first half of samples must be aquired,
+            % rounded and multipled by time.
     % truncate tau to appropriate values
     tau = tau(tau >= tmstep & tau <= halftime);
     if verbose >= 2, fprintf(1, 'allan_overlap: allowable tau range: %g to %g sec. (1/rate to total_time/2)\n',tmstep,halftime); end
