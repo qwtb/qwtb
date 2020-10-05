@@ -323,6 +323,11 @@ function [dataout, datain, calcset, paths] = check_and_run_alg(algid, datain, ca
 
     % do verbose %<<<2
     if calcset.verbose
+        % get algorithm info if not already loaded:
+        if ~exist('alginfo','var')
+            alginfo = alg_info();
+        end
+        % check uncertainty calculation method:
         if strcmpi(calcset.unc, 'none') % no uncertainty, just calculate value:
             disp('QWTB: no uncertainty calculation')
         elseif ( strcmpi(calcset.unc, 'guf') && alginfo.providesGUF ) || ( strcmpi(calcset.unc, 'mcm') && alginfo.providesMCM )
@@ -339,7 +344,7 @@ function [dataout, datain, calcset, paths] = check_and_run_alg(algid, datain, ca
     end
 
     % call calculation %<<<2
-    if ( strcmpi(calcset.unc, 'mcm') && ~alginfo.providesMCM )
+    if ( strcmpi(calcset.unc, 'mcm') && ~alginfo.providesMCM ) % short-circuit evaluation, alginfo doesn't have to exist if first part of expression is already false
         % MCM is calculated by general method:
         dataout = general_mcm(alginfo, datain, calcset);
     else
@@ -900,7 +905,7 @@ function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
             % Q.r: %<<<4
             Genr = 0;
             if ~( isfield(Q, 'r') )
-                if strcmpi(calcset.unc, 'mcm')
+                if strcmpi(calcset.unc, 'mcm') && ~alginfo.providesMCM % ### do not check if MCM is provided by user
                     if ~( calcset.mcm.randomize )
                         error(err_msg_gen(64, Qname)); % .r is missing!
                     else
@@ -1041,7 +1046,7 @@ function datain = check_gen_datain(alginfo, datain, calcset) %<<<1
                 end % if cor.req
             end % if guf or mcm
             % Q.r: %<<<4
-            if strcmpi(calcset.unc, 'mcm')
+            if strcmpi(calcset.unc, 'mcm') && ~alginfo.providesMCM % ### do not check if MCM is provided by user
                 % dimensions are same as Q.v but one dimension is equal calcset.mcm.repeats
                 ok = 1;
                 %%% if 
