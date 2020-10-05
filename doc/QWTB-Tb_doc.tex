@@ -630,6 +630,7 @@ Structure defines calculation methods.
         \item [\textsf{.verbose}] ---  (1) Display various informations.
         \item [\textsf{.checkinputs}] ---  (0) Check if inputs are proper.
         \item [\textsf{.unc}] ---  ('none') How uncertainty is calculated ('none', 'guf', 'mcm').
+        \item [\textsf{.loc}] ---  (0.6827) Required level of confidence of output uncertainties (0 $>$ \text{loc} $>$ 1 ).
         \item [\textsf{.cor.req}] ---  (0) Correlation matrix is required for all input quantities.
         \item [\textsf{.cor.gen}] ---  (1) Zero correlation matrix is generated automatically if missing.
         \item [\textsf{.dof.req}] ---  (0) Degrees of freedom are required for all input quantities.
@@ -694,6 +695,15 @@ String, default value 'none'. Determines uncertainty calculation method. Only th
 \end{tightdesc}
 See chapter XXX %XXX
 for uncertainty calculation details.
+
+\subsection{\textsf{.loc}} %<<<3 ------------------------------
+\label{structcalcsetloc}
+Number, default value 0.6827. Determines required level of confidence for output uncertainties. If
+set to 0.6827, uncertainties are calculated for coverage factor 1 (for the case of normal probability
+density function). Value 0.9545 correspond to a coverage factor 2. Value of loc is respected if
+uncertainty is calculated by the toolbox. If the uncertainty is calculated by the algorithm itself,
+one should check capabilities of the algorithm. Currently only standard uncertainties (68.27\%) are
+supported. %XXX 2DO XXX
 
 \subsection{\textsf{.cor}} %<<<3 ------------------------------
 \label{structcalcsetcor}
@@ -1010,6 +1020,8 @@ reviewed in window {\tt Output quantities}.
         \item [\textsf{.verbose}] ---  (1) Display various informations (\ref{structcalcsetverbose}).
         \item [\textsf{.unc}] ---  ('none') How uncertainty is calculated ('none', 'guf', 'mcm')
         (\ref{structcalcsetunc}).
+        \item [\textsf{.loc}] ---  (0.6827) Required level of confidence of output uncertainties (0, 1)
+        (\ref{structcalcsetloc}).
         \item [\textsf{.cor.req}] ---  (0) Correlation matrix is required for all input quantities
         (\ref{structcalcsetcor}).
         \item [\textsf{.cor.gen}] ---  (1) Zero correlation matrix is generated automatically if

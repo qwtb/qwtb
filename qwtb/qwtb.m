@@ -573,6 +573,7 @@ function calcset = check_gen_calcset(varargin) %<<<1
     % calcset.verbose = 1;
     % calcset.checkinputs = 1;
     % calcset.unc = 'none';
+    % calcset.loc = 0.6827;
     % calcset.cor.req = 0;
     % calcset.cor.gen = 1;
     % calcset.dof.req = 0;
@@ -630,6 +631,18 @@ function calcset = check_gen_calcset(varargin) %<<<1
     end
     if ~( strcmpi(calcset.unc, 'none') || strcmpi(calcset.unc, 'guf') || strcmpi(calcset.unc, 'mcm') )
         error(err_msg_gen(32)); % unc unkwnown value!
+    end
+    % loc %<<<2
+    if ~( isfield(calcset, 'loc') )
+        if calcset.strict
+            error(err_msg_gen(51)) %.loc missing!
+        else
+            calcset.loc = 0.6827;
+        end
+    end
+    tmp = calcset.loc;
+    if ~(isscalarP(tmp) && tmp > 0 && tmp < 1)
+        error(err_msg_gen(52)); % loc bad value!
     end
     % cor %<<<2
     if ~( isfield(calcset, 'cor') )
@@ -1574,6 +1587,10 @@ function msg = err_msg_gen(varargin) %<<<1
                 msg = ['Directory `' varargin{2} '` specified in `mcm.tmpdir` in calculation settings structure does not exist. Plese read QWTB documentation.'];
             case 50
                 msg = 'Field `mcm.randomize` is missing in calculation settings structure. Plese read QWTB documentation.';
+            case 51
+                msg = 'Field `loc` is missing in calculation settings structure. Plese read QWTB documentation.';
+            case 52
+                msg = 'Field `loc` must be a scalar number in range (0, 1). Plese read QWTB documentation.';
             % ------------------- datain errors 60-89: %<<<2
             case 60 % one input - Qname
                 msg = ['Field `v` (value) missing in quantity `' varargin{2} '`. Please read QWTB documentation.'];
