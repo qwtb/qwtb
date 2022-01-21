@@ -109,6 +109,8 @@ function varargout = qwtbvar(varargin)
 %   calculate   |1|4|   jobfn |       |       |       | 'calc'   | algid | datain| datainvar |         |        | %XXX add this possibility
 %   calculate   |1|5|   jobfn |       |       |       | 'calc'   | algid | datain| datainvar | calcset |        |
 %
+%   make LUT    |1|3|   lutfn |       |       |       | 'lut'    | jobfn | ax    | qu        |         |        | %XXX add to help
+%
 %   2D plot     |-|4|   -     | -     | -     | -     | 'plot2D' | jobfn | varx  | vary      |         |        |
 %   2D plot     |-|5|   -     | -     | -     | -     | 'plot2D' | jobfn | varx  | vary      | consts  |        |
 %   2D plot     |1|-|   H     |       |       |       | -        | -     | -     | -         | -       |        |
@@ -125,105 +127,162 @@ function varargout = qwtbvar(varargin)
 %   input arguments, H - handle to output figure)
 
 % Description of the calculation job %<<<2
-% job.id            - id of variation combination id
+% main job structure %<<<3
+% job.id            - id of variation combination id - XXX REVIEW is it used?
 % job.jobfn         - filename of the main job file with calculation description
-%                   (where this structure is stored)
+%                     (where this structure is stored)
 % job.count         - total number of variation calculations
-% job.resultfn      - cell of strings, full paths with the partial result files
+% job.resultfns     - cell of strings, full paths with the partial result files
 % job.fullresultfn  - string of filename with final total result
 % job.algid         - string with algorithm (input of qwtbvar)
 % job.datain        - datain, has values of all nonvariated variables and standard
-%                   values of variated variables (input of qwtbvar)
+%                     values of variated variables (input of qwtbvar)
 % job.datainvar     - datain with variated variables (input of qwtbvar)
 % job.calcset       - calculation settings (input of qwtbvar)
-% job.varlist       - structure with list of variated quantities.
-% job.calcplan      - structure with calculation plan
+% job.varlist       - structure with list of variated quantities, see lower
+% job.calcplan      - structure with calculation plan, see lower
 
-% Description of the list of variated quantities and plan of calculation %<<<2
+% job - list of variated quantities %<<<3
 %   List of variated quantities:
-% varlist.Q{}           - list of quantities to be variated (e.g. 'x', 'x', 'y')
-% varlist.f{}           - list of fields to be variated (e.g. 'v', 'u', 'v')
-% varlist.Qf{}          - composed quantity and field 'Q.f'
-% varlist.n             - number of parameters to variate (numel(.Q), that is
-%                         the same as numel(.f))
-% varlist.dim()         - array of dimension of Q{i}.f{i} to be variated. E.g.
-%                         index of the dimension of DIvar.Q.f that is missing in
-%                         DI.Q.f.
-% varlist.dimsz()       - array of size of dimension Q{i}.f{i} to be variated
-%                         (e.g. both quantities to be variated are scalars, so
-%                         variations are vectors, but 1st variation vector got 2
-%                         elements, and 2nd got 3 elments, so
-%                         dimsz = [2 3]; prod() of this denotes number of
-%                         variations)
-%
-%   Calculation plan:
-%   (values for particular calculation jobs)
-% calcplan.Q{}          - cell of names of quantity to be changed from default
-%                         (datain) value to one variated (datainvar) value in
-%                         particular job. Number of cells is equal to jobs
-%                         (variations).
-% calcplan.f{}          - cell of names of fields of Q{i} to be variated.
-% calcplan.dim()        - actual dimension of DIvar.Q.f that contains variated
-%                         values of the field. i.e. dimension, through which
-%                         values are changing for variation of DI.Q.f (variated
-%                         parameter). Dimension of Q.f. that should be variated.
-% calcplan.dimsz()      - number of variations for actual Q.f. Size of dimension 
-%                         of Q.f that should be variated.
-% calcplan.dimidx()     - index of the variated value (value goes through
-%                         1:dimsz(i) for actual Q{i}.f{i}) (e.g. for datain
-%                         x.v=[1], and datainvar x.v=[4 5 6], if dimidx=2 than
-%                         at 2nd calculation x.v=2)
-% calcplan.mg           - meshgrid of the plan (if any). Cell of arrays.
-%                         Multidimensional meshgrid.
-% calcplan.job_ids      - indexes of jobs for all variations (1:job.count)
-% calcplan.ndimjobids   - n-dimensional matrix with jobids, for recreation of
-%                         ndimensional matrix of results
-% calcplan.axes.Q       - axes of meshgrid (same as varlist.Q)
-% calcplan.XXXaxes.f    - axes of meshgrid
-% calcplan.XXXaxes.Qf   - axes of meshgrid
-% 
-% Description of the resulting n-dimensional matrices
+% .varlist.Q{}      - list of quantity names to be variated
+%                       Example: 'a','a','x','y'
+% .varlist.f{}      - list of field names to be variated (e.g. 'v', 'u', 'v')
+%                       Example: 'v', 'u', 'v', 'v'
+% .varlist.names{}  - composed quantity and field names 'Q.f' (e.g. 'x.v')
+%                       Example: 'a.v', 'a.u', 'x.v', 'y.v'
+% .varlist.dim()    - array of dimension of Q{i}.f{i} to be variated. E.g.
+%                     index of the dimension of DIvar.Q.f that is missing in
+%                     DI.Q.f.
+%                       Example: [2 2 2 1]
+% .varlist.dimsz()  - array of size of dimension Q{i}.f{i} to be variated
+%                    (e.g. both quantities to be variated are scalars, so
+%                    variations are vectors, but 1st variation vector got 2
+%                    elements, and 2nd got 3 elments, so
+%                    dimsz = [2 3]; prod() of this denotes number of
+%                    variations)
+%                       Example: [2 3 5 6]
+% .varlist.n        - number of parameters to variate (numel(.Q), that is
+%                     the same as numel(.f) or numel(.names))
+%                       Example: 4
 
+% job - calculation plan %<<<3
+% (values for particular calculation jobs)
+% .calcplan.count        - number of calculations
+%                           Example: 180 (=2*3*5*6)
+% .calcplan.Q{}          - cell of names of quantity to be changed from default
+%                          (datain) value to one variated (datainvar) value in
+%                          particular job. Number of cells is equal to jobs
+%                          (variations).
+%                           Example: size(.Q) = [180, 4]
+%                           .Q = ['a', 'x', 'x', 'y';
+%                                 ...
+%                                 'a', 'x', 'x', 'y']
+% .calcplan.f{}          - cell of names of fields of Q{i} to be variated.
+%                           Example: size(.f) = [180, 4]
+%                           .f = ['v', 'u', 'v', 'v';
+%                                 ...
+%                                 'v', 'u', 'v', 'v']
+% .calcplan.names{}       - cell of names of fields of Q{i} to be variated.
+%                           Example: size(.names) = [180, 4]
+%                           .f = ['a.v', 'a.u', 'x.v', 'y.v';
+%                                 ...
+%                                 'a.v', 'a.u', 'x.v', 'y.v']
+% .calcplan.dim()        - actual dimension of DIvar.Q.f that contains variated
+%                          values of the field. i.e. dimension, through which
+%                          values are changing for variation of DI.Q.f (variated
+%                          parameter). Dimension of Q.f. that should be variated.
+%                          e.g. [2 2; 2 2; ...; 2 2]; (change DIvar.x.v
+%                          dimension 2 and DIvar.y.v dimension 2; ... )
+%                           Example: size(.dim) = [180, 4]
+%                           .dim = [2 2 2 1;
+%                                   ...
+%                                   2 2 2 1]
+% .calcplan.dimidx()     - index of the variated value (value goes through
+%                          1:dimsz(i) for actual Q{i}.f{i}) (e.g. for datain
+%                          x.v=[1], and datainvar x.v=[4 5 6], if dimidx=2 than
+%                          at 2nd calculation x.v=2)
+%                          (rows are jobs, columns are Q.f)
+%                          it is 'linearizzation' of meshgrid
+%                           Example: size(.dimidx) = [180, 4]
+%                           .dimidx = [1   1   1   1
+%                                      2   1   1   1
+%                                      1   2   1   1
+%                                      2   2   1   1
+%                                      1   3   1   1
+%                                      2   3   1   1
+%                                      1   1   2   1
+%                                      ...
+%                                      1   2   5   6
+%                                      2   2   5   6
+%                                      1   3   5   6
+%                                      2   3   5   6]
+% .calcplan.job_ids      - indexes of jobs for all variations (1:job.count)
+%                           Example: [1, 2, ..., 180];
+% .calcplan.ndimjobids   - n-dimensional matrix with jobids, for recreation of
+%                          ndimensional matrix of results
+%                           Example: size(.ndimjobids) = [2 3 5 6];
+%                           .ndimjobids = (:,:,1,1) =
+%                                           [1   3   5
+%                                            2   4   6]
+%                                         (:,:,2,1) =
+%                                           [7    9   11
+%                                            8   10   12]
+%                                         ...
+%                                         (:,:,5,6) =
+%                                           [175   177   179
+%                                            176   178   180]
+
+% Description of the result structure %<<<2
+% .calcplan.axes.Q       - axes of meshgrid (same as varlist.Q)
+% .calcplan.XXXaxes.f    - axes of meshgrid
+% .calcplan.XXXaxes.names   - axes of meshgrid
+% Description of the resulting n-dimensional matrices
+% ndres.Q.f             - n-dimensional matrix, only if output quantity Q.f was scalar
+% ndresc                - n-dimensional cell with result structures
+%   ndresc{x,y,...}.Q.f - result structure for dimension values x,y,...
+
+% res.ndaxes        - axes values of ndim result
+%
 % -------------------------------- main function %<<<1
 % main qwtbvar function %<<<1
-    % determine inputs:
+% parse input parameters, make basic type checks of inputs and run sub function
+% main_something
     % check basic things %<<<2
     if nargin < 2
+        % always at least 2 input arguments are required
         error(err_msg_gen(6)); % bad call
-    end % if nargin < 2
+    end
     if ~ischar(varargin{1})
+        % first argument is not char, mode is unknown
         error(err_msg_gen(9, char(varargin{1}))); % bad mode
-    end % if ~ischar(varargin{1})
+    end
 
     % check mode 'continue' %<<<2
     if strcmpi('cont', deblank(varargin{1}))
         % continuation of unfinished calculation
         if nargin > 2
             error(err_msg_gen(6)); % bad call
-        end % if nargin > 2
-        jobfn = varargin{1};
-        % check inputs - only type of variable, content is checked in subfunctions
+        end
+        % check rest:
         if ~ischar(jobfn)
             error(err_msg_gen(1)); % bad jobfn
-        end % if % ~ischar(jobfn)
-        % continue calculation
-        job = run_calculation(jobfn);
-        % return actual job filename:
-        varargout{1} = job.jobfn;
+        end
+        % return job filename:
+        varargout{1} = main_cont(varargin{1});
 
     % check mode 'job' %<<<2
     elseif strcmpi('job', deblank(varargin{1}))
-        % calculating particualr jobs
-        if nargin == 3
-            jobfn = varargin{2};
-            job_ids = varargin{3};
-        else
+        % calculating one or more particualr jobs, for internal use mainly
+        if nargin ~= 3
             error(err_msg_gen(6)); % bad call
-        end % if nargin ==
+        end
+        if ~ischar(jobfn)
+            error(err_msg_gen(1)); % bad jobfn
+        end
+        % return job filename:
+        varargout{1} = main_job(varargin{2}, varargin{3});
 
-        varargout{1} = calculate_job(jobfn, job_ids);
-
-    % check mode 'calculate' %<<<2
+    % check mode 'calc' %<<<2
     elseif strcmpi('calc', deblank(varargin{1}))
         % setting up and starting calculation
         if nargin == 4
@@ -235,7 +294,7 @@ function varargout = qwtbvar(varargin)
             algid = varargin{2};
             datain = varargin{3};
             datainvar = varargin{4};
-            calcset = varargin{5};
+            calcset = check_gen_calcset(varargin{5});
         else
             error(err_msg_gen(6)); % bad call
         end % if nargin ==
@@ -252,13 +311,41 @@ function varargout = qwtbvar(varargin)
         if ~isstruct(calcset)
             error(err_msg_gen(5)); % bad calcset structure
         end % if % ~ischar(calcset)
-        % check calcset
-        calcset = check_gen_calcset(calcset);
-        % prepare job
-        job = prepare_var(algid, datain, datainvar, calcset);
-        % do calculation
-        job = run_calculation(job);
-        varargout{1} = job.jobfn;
+        % check datain and datainvar
+        check_datainvar(datain, datainvar);
+        % return job filename:
+        varargout{1} = main_calc(algid, datain, datainvar, calcset);
+
+    % check mode 'lut' %<<<2
+    elseif strcmpi('lut', deblank(varargin{1}))
+        % setting up and starting lut compilation
+        if nargin == 2
+            jobfn = varargin{2};
+            axset = check_gen_axset();
+            quset = check_gen_quset();
+        elseif nargin == 3
+            jobfn = varargin{2};
+            axset = check_gen_axset(varargin{3});
+            quset = check_gen_quset();
+        elseif nargin == 4
+            jobfn = varargin{2};
+            axset = check_gen_axset(varargin{3});
+            quset = check_gen_quset(varargin{4});
+        else
+            error(err_msg_gen(6)); % bad call
+        end % if nargin ==
+        % check inputs - only type of variable, content is checked in subfunctions
+        if ~ischar(jobfn)
+            error(err_msg_gen(1)); % bad jobfn
+        end
+        if ~isstruct(axset)
+            error(err_msg_gen(11)); % bad axset
+        end
+        if ~isstruct(quset)
+            error(err_msg_gen(12)); % bad quset
+        end
+        % return lut filename:
+        varargout{1} = main_lut(jobfn, axset, quset);
 
     % check mode 'plot2D' %<<<2
     elseif strcmpi('plot2D', deblank(varargin{1}))
@@ -267,40 +354,33 @@ function varargout = qwtbvar(varargin)
             jobfn = varargin{2};
             varx = varargin{3};
             vary = varargin{4};
-            consts = struct();
+            plotset = check_gen_plotset();
         elseif nargin == 5
             jobfn = varargin{2};
             varx = varargin{3};
             vary = varargin{4};
-            consts = varargin{5};
+            plotset = check_gen_plotset(varargin{5});
         else
             error(err_msg_gen(6)); % bad call
-        end % if nargin ==
+        end
         % check inputs - only type of variable, content is checked in subfunctions
         if ~ischar(jobfn)
             error(err_msg_gen(1)); % bad jobfn
-        end % if % ~ischar(jobfn)
+        end
         if ~ischar(varx)
             error(err_msg_gen(7)); % bad varx/vary/varz
-        end % if % ~ischar(varx)
+        end
         if ~ischar(vary)
             error(err_msg_gen(7)); % bad varx/vary/varz
-        end % if % ~ischar(vary)
+        end
         if ~isstruct(consts)
-            error(err_msg_gen(10)); % bad consts
-        end % if % ~ischar(vary)
-        % get data to plot:
-        [X, Y] = get_plotdata(jobfn, varx, vary, '', consts); % XXX consts
-        % make plot or return data:
+            error(err_msg_gen(10)); % bad plotset
+        end
         if nargout == 2
-            varargout{1} = X;
-            varargout{2} = Y;
+            [tmp, varargout{1}, varargout{2}] = main_plot2D(0, jobfn, varx, vary, plotset);
         else
-            H = plot_2D(jobfn, varx, vary, X, Y, consts); % XXX consts
-            varargout{1} = H;
-            varargout{2} = X;
-            varargout{3} = Y;
-        end % if % nargout ==
+            [varargout{1}, varargout{2}, varargout{3}] = main_plot2D(1, jobfn, varx, vary, plotset);
+        end
 
     % check mode 'plot3D' %<<<2
     elseif strcmpi('plot3D', deblank(varargin{1}))
@@ -310,81 +390,120 @@ function varargout = qwtbvar(varargin)
             varx = varargin{3};
             vary = varargin{4};
             varz = varargin{5};
-            consts = struct();
+            plotset = check_gen_plotset();
         elseif nargin == 6
             jobfn = varargin{2};
             varx = varargin{3};
             vary = varargin{4};
             varz = varargin{5};
-            consts = varargin{6};
+            plotset = check_gen_plotset(varargin{6});
         else
             error(err_msg_gen(6)); % bad call
-        end % if nargin ==
+        end
         % check inputs - only type of variable, content is checked in subfunctions
         if ~ischar(jobfn)
             error(err_msg_gen(1)); % bad jobfn
-        end % if % ~ischar(jobfn)
+        end
         if ~ischar(varx)
             error(err_msg_gen(7)); % bad varx/vary/varz
-        end % if % ~ischar(varx)
+        end
         if ~ischar(vary)
             error(err_msg_gen(7)); % bad varx/vary/varz
-        end % if % ~ischar(vary)
+        end
         if ~ischar(varz)
             error(err_msg_gen(7)); % bad varx/vary/varz
-        end % if % ~ischar(varz)
+        end
         if ~isstruct(consts)
             error(err_msg_gen(10)); % bad consts
-        end % if % ~ischar(vary)
-        % get data to plot:
-        [X, Y, Z] = get_plotdata(jobfn, varx, vary, varz, consts); % XXX consts
-        % make plot or return data:
+        end
         if nargout == 3
-            varargout{1} = X;
-            varargout{2} = Y;
-            varargout{3} = Z;
+            [tmp, varargout{1}, varargout{2}, varargout{3}] = main_plot3D(0, jobfn, varx, vary, varz, plotset);
         else
-            H = plot_3D(jobfn, varx, vary, varz, X, Y, Z, consts); % XXX consts
-            varargout{1} = H;
-            varargout{2} = X;
-            varargout{3} = Y;
-            varargout{4} = Z;
-        end % if % nargout == 3
-
-    else %<<<2
+            [varargout{1}, varargout{2}, varargout{3}, varargout{4}] = main_plot3D(1, jobfn, varx, vary, varz, plotset);
+        end
+    else % unknown mode %<<<2
         % checking value of mode (first argument) failed
         error(err_msg_gen(9, varargin{1})); % bad mode
     end % if
 end % function % qwtbvar
 
-function [Q, f] = parse_Q_f(str) %<<<1
-% parse string into quantity Q and field f
-% possible strings:
-% Q; Q.; Q.f;
-% bad strings:
-% .; .f; Q.f.X;
-    Q = '';
-    f = '';
-    % find dot:
-    id = strfind(str, '.');
-    if isempty(id)
-        % only quantity in the string
-        Q = str;
-        return;
-    end % if % isempty(id)
-    if numel(id) > 1
-        error(err_msg_gen(7)); % bad varx/vary/varz
-    end % if % numel(id) > 1)
-    if id < 2
-        % there is missing Q, because '.' is on first place
-        error(err_msg_gen(7)); % bad varx/vary/varz
-    end % if % id < 2
-    % there is quantity in string:
-    Q = str(1:id-1);
-    % there could be field in the string ('a'(5:4) gives empty string, so no
-    % possible error can happen):
-    f = str(id+1:end);
-end % function % [Q f] = parse_Q_f
+function jobfn = main_cont(jobfn) %<<<1
+    % continuation of unfinished calculation
+    job = run_calculation(jobfn);
+    jobfn = job.jobfn;
+end
+
+function jobfn = main_job(jobfn, job_ids) %<<<1
+    % calculating one or more particualr jobs, for internal use mainly
+    jobfn = calculate_job(jobfn, job_ids);
+end
+
+function jobfn = main_calc(algid, datain, datainvar, calcset) %<<<1
+    % setting up and starting calculation
+    % initialize variable 'job'
+    job = init_job_structure(algid, datain, datainvar, calcset);
+    % find out variation parameters and their dimensions
+    [job.varlist] = make_varlist(datain, datainvar);
+    % create calculation plan
+    [job.calcplan] = make_calculation_plan(job.varlist);
+    job.count = job.calcplan.count; % XXX casem zrusit job.count, neni potreba
+    % display number of variations/calculations:
+    disp_msg(2, num2str(job.count));
+
+    % initialize filenames and directory
+    job = init_filenames(job, calcset)
+
+    % ensure job main file exists
+    if exist(job.jobfn, 'file')
+        if calcset.var.cleanfiles
+            delete(job.jobfn)
+            disp_msg(8, job.jobfn); % job deleted
+            save('-v7', job.jobfn, 'job');
+        else % if calcset.var.cleanfiles
+            disp_msg(1, job.jobfn); % jobfn already exist
+        end % if % calcset.var.cleanfiles
+    else
+        save('-v7', job.jobfn, 'job');
+    end % if % ~exist(calcset.var.dir, 'dir')
+    % do calculation
+    job = run_calculation(job);
+    jobfn = job.jobfn;
+end
+
+function lut = main_lut(jobfn, axset, quset) %<<<1
+% setting up and starting lut compilation
+    % load calculation settings:
+    job = load_job(jobfn);
+    % reshape results into n-dimensional matrix
+    [ndres, ndresc] = reshape_results(job);
+    [job.ndaxes] = make_ndaxes(job);
+    % make lut
+    lut = make_lut(ndres, ndresc, job.ndaxes, job.varlist, axset, quset);
+    keyboard
+end
+
+function [H, X, Y] = main_plot2D(do_plot, jobfn, varx, vary, consts) %<<<1
+% plotting of 2D data
+    % get data to plot:
+    [X, Y] = get_plotdata(jobfn, varx, vary, '', consts); % XXX consts
+    % make plot or return data:
+    if do_plot
+        H = plot_2D(jobfn, varx, vary, X, Y, consts); % XXX consts
+    else
+        H = [];
+    end
+end
+
+function [H, X, Y, Z] = main_plot3D(do_plot, jobfn, varx, vary, varz, consts) %<<<1
+        % get data to plot:
+        [X, Y, Z] = get_plotdata(jobfn, varx, vary, varz, consts); % XXX consts
+        % make plot or return data:
+        if do_plot
+            H = plot_3D(jobfn, varx, vary, varz, X, Y, Z, consts); % XXX consts
+        else
+            H = [];
+        end
+end
 
 % -------------------------------- check input data %<<<1
 function check_datainvar(datain, datainvar) %<<<1
@@ -504,128 +623,109 @@ function calcset = check_gen_calcset(varargin) %<<<1
     end
 end % function % check_gen_calcset
 
+function plotset = check_gen_plotset(plotset) %<<<1
+    plotset = struct();
+    warning('FINISH ME')
+end % function plotset = check_gen_plotset
+
+function axset = check_gen_axset(axset) %<<<1
+    if isempty(axset)
+        axset = struct();
+        warning('FINISH ME')
+    end
+end % function axset = check_gen_axset
+
+function quset = check_gen_quset(quset) %<<<1
+    if isempty(quset)
+        quset = struct();
+        warning('FINISH ME')
+    end
+end % function quset = check_gen_quset
+
 % -------------------------------- variation %<<<1
-function job = prepare_var(algid, datain, datainvar, calcset) %<<<1
-% default values of variables as DI
-% variables to be variated as var with dimension of every variable +1 compared to
-% DI. not all .v, .u, only those to be variated
-% generate jobs, input data
-
-    check_datainvar(datain, datainvar)
-    % initialize variable 'job'
-    job = init_job_structure(algid, datain, datainvar, calcset)
-
-    % find out variation parameters and their dimensions
-    [job.varlist, job.ndaxes] = get_var_dimensions(datain, datainvar);
-
-    % create calculation plan
-    [job.count, job.calcplan] = calculation_plan(job.varlist);
-    % display number of variations/calculations:
-    disp_msg(2, num2str(job.count));
-
-    % initialize filenames and directory
-    job = init_filenames(job, calcset)
-
-    % generate main job file name
-    job.jobfn = fullfile(calcset.var.dir, [calcset.var.fnprefix '_QV_job.mat']);
-    if exist(job.jobfn, 'file')
-        if calcset.var.cleanfiles
-            delete(job.jobfn)
-            disp_msg(8, job.jobfn); % job deleted
-            save('-v7', job.jobfn, 'job');
-        else % if calcset.var.cleanfiles
-            disp_msg(1, job.jobfn); % jobfn already exist
-        end % if % calcset.var.cleanfiles
-    else
-        save('-v7', job.jobfn, 'job');
-    end % if % ~exist(calcset.var.dir, 'dir')
-end % function % prepare_var
-
-function [count, plan] = calculation_plan(varlist) %<<<1
-% prepare variation informations with plan for calculations
-
-    % total number of calculations
-    % (e.g. if dimension sizes of variated Q.f{1}, Q.f{2} are 2,3, than count = 6)
-    count = prod(varlist.dimsz(:));
-    % number of variated Q.f:
-    n = varlist.n;
-    
-    % prepare empty structure:
-    plan.Q = cell(count, n);
-    plan.f = cell(count, n);
-    plan.dim = zeros(count, n);
-    plan.dimsz = zeros(count, n);
-    plan.dimidx = zeros(count, n);
-
-    % prepare dimension sizes for multidimensional meshgrid:
-    for i = 1:n
-        c{i} = [1:varlist.dimsz(i)];
-    end % for % i = 1:length(n)
-    plan.mg = cell(n,1);
-    % multidimensional meshgrid:
-    [plan.mg{:}] = ndgrid(c{:});
-    % make calcplan structure:
-    for i = 1:n
-        % fill in collumn for every variated Q.f
-        plan.Q(:, i) = repmat(varlist.Q(i), count, 1);
-        plan.f(:, i) = repmat(varlist.f(i), count, 1);
-        plan.Qf(:, i) = repmat(varlist.Qf(i), count, 1);
-        plan.dim(:, i) = repmat(varlist.dim(i), count, 1);
-        plan.dimsz(:, i) = repmat(varlist.dimsz(i), count, 1);
-        % reshape correctly meshgrid into vector:
-        plan.dimidx(:, i) = reshape(plan.mg{i}, count, 1);
-    end % for % i = 1:n
-    % XXX popis
-    plan.job_ids = 1:count;
-    if varlist.n > 1
-        % reshape got sense only if more than 1 variated quantity
-        plan.ndimjobids = reshape(plan.job_ids, varlist.dimsz(:))
-    end % if varlist.n > 1
-end % function [count, plan] = calculation_plan(varlist)
-
-function [list, ndaxes] = get_var_dimensions(datain, datainvar) %<<<1
+function [varlist] = make_varlist(datain, datainvar) %<<<1
 % Finds out which Q are to be variated, finds out the dimension of Q.f that has
-% to be variated, and number of variations. Put all in list structure (see
+% to be variated, and number of variations. Put all in varlist structure (see
 % description of varlist.
 % It was already checked that all Qs and fields of Qs in datainvar are correct
 % with respect to the datain in function check_datainvar.
 
-    list.Q = cell(0);     % quantities to be variated
-    list.f = cell(0);     % fields of Q to be variated
-    list.Qf = cell(0);    % concatenated string
-    list.dim = [];     % dimension of Q.f that should be variated
-    list.dimsz = [];   % size of dimension dim of Q.f that should be variated
-    ndaxes.values = {}    % cell of values of axes of n-dimensional result matrices
+    varlist.Q = cell(0);     % quantities to be variated
+    varlist.f = cell(0);     % fields of Q to be variated
+    varlist.names = cell(0);    % concatenated string
+    varlist.dim = [];     % dimension of Q.f that should be variated
+    varlist.dimsz = [];   % size of dimension dim of Q.f that should be variated
     Qnamesvar = fieldnames(datainvar);  % all quantities that will be variated
     for j = 1:length(Qnamesvar)
         Fnamesvar = fieldnames(datainvar.(Qnamesvar{j})); % fields of quantity that will be variated
-        for i = 1:length(Fnamesvar)
-            szf   = size(datain.(Qnamesvar{j}).(Fnamesvar{i}));   % size of datain quantity/field
-            szfvar = size(datainvar.(Qnamesvar{j}).(Fnamesvar{i})); % size of datainvar quantity/field
+        for k = 1:length(Fnamesvar)
+            szf   = size(datain.(Qnamesvar{j}).(Fnamesvar{k}));   % size of datain quantity/field
+            szfvar = size(datainvar.(Qnamesvar{j}).(Fnamesvar{k})); % size of datainvar quantity/field
             if numel(szfvar) > numel(szf)
                 % fill in zero dimensions to get same number of dimensions for
                 % szf as in szfvar for easy comparison later
-                szf(i) = zeros(numel(szfvar) - numel(szf));
+                szf(k) = zeros(numel(szfvar) - numel(szf));
             end % if
             % find out differing dimensions
             id = find(not(szf == szfvar));
-            list.Q = [list.Q Qnamesvar(j)]; % actual quantity
-            list.f = [list.f Fnamesvar(i)]; % actual field
-            list.Qf = [list.Qf [Qnamesvar{j} '.' Fnamesvar{i}]]; % composed quantity.field
-            list.dim = [list.dim id(1)]; % actual dimension that contains variated values of the field
-            list.dimsz = [list.dimsz szfvar(list.dim(end)) - szf(list.dim(end)) + 1]; % actual number of variations
-            ndaxes.values{end+1} = datainvar.(Qnamesvar{j}).(Fnamesvar{i});
-        end % for % i = 1:length(Qvarfields)
+            varlist.Q = [varlist.Q Qnamesvar(j)]; % actual quantity
+            varlist.f = [varlist.f Fnamesvar(k)]; % actual field
+            varlist.names = [varlist.names [Qnamesvar{j} '.' Fnamesvar{k}]]; % composed quantity.field
+            varlist.dim = [varlist.dim id(1)]; % actual dimension that contains variated values of the field
+            varlist.dimsz = [varlist.dimsz szfvar(varlist.dim(end)) - szf(varlist.dim(end)) + 1]; % actual number of variations
+            % XXX remove after making lone function XXX ndaxes{end+1} = datainvar.(Qnamesvar{j}).(Fnamesvar{k});
+        end % for % k = 1:length(Qvarfields)
     end % for % j = 1:length(Qnamesvar);
     % number of parameters for variation:
-    list.n = numel(list.Q);
-    ndaxes.Q = list.Q;
-    ndaxes.f = list.f;
-    ndaxes.Qf = list.Qf;
-end % function % get_var_dimensions
+    varlist.n = numel(varlist.Q);
+end % function % make_varlist
+
+function [calcplan] = make_calculation_plan(varlist) %<<<1
+% prepare variation informations with plan for calculations
+
+    % total number of calculations
+    % (e.g. if dimension sizes of variated Q.f{1}, Q.f{2} are 2,3, than count = 6)
+    calcplan.count = prod(varlist.dimsz(:));
+    % this is for simplification of lines in this function:
+    C = calcplan.count;
+    % number of variated Q.f:
+    n = varlist.n;
+    
+    % prepare empty structure:
+    calcplan.Q = cell(C, n);
+    calcplan.f = cell(C, n);
+    calcplan.dim = zeros(C, n);
+        % XXX smazat neni pouzite calcplan.dimsz = zeros(C, n);
+    calcplan.dimidx = zeros(C, n);
+
+    % XXX co to je?
+    % prepare dimension sizes for multidimensional meshgrid:
+    for i = 1:n
+        c{i} = [1:varlist.dimsz(i)];
+    end % for % i = 1:length(n)
+    % multidimensional meshgrid, one cell for every Q.f:
+    MG = cell(n,1);
+    [MG{:}] = ndgrid(c{:});
+    % make calcplan structure:
+    for i = 1:n
+        % fill in collumn for every variated Q.f
+        calcplan.Q(:, i) = repmat(varlist.Q(i), C, 1);
+        calcplan.f(:, i) = repmat(varlist.f(i), C, 1);
+        calcplan.names(:, i) = repmat(varlist.names(i), C, 1);
+        calcplan.dim(:, i) = repmat(varlist.dim(i), C, 1);
+        % reshape correctly meshgrid into vector:
+        calcplan.dimidx(:, i) = reshape(MG{i}, C, 1);
+    end % for % i = 1:n
+    % generate job indexes, as vector:
+    calcplan.job_ids = 1:C;
+    if varlist.n > 1
+        % reshape got sense only if more than 1 variated quantity
+        calcplan.ndimjobids = reshape(calcplan.job_ids, varlist.dimsz(:));
+    end % if varlist.n > 1
+end % function [calcplan] = make_calculation_plan(varlist)
 
 function datainout = variate_datain(job, calcno) %<<<1
-% change datain according calculation plan and calculation number calcno
+% change datain according calculation plan and calculation index calcno
 
     datainout = job.datain;
     % for all Q.f that will be variated:
@@ -668,10 +768,10 @@ end % function % variate_datain
 %     for i = 1:job.count
 %         % variate quantitites:
 %         DI = variate_datain(job, i);
-%         disp_msg(3, i, job.count, job.resultfn{i}); % calculating result no
-%         if exist(job.resultfn{i}, 'file')
-%             disp_msg(4, job.resultfn{i}); %result exist
-%         else % if exist(job.resultfn{i})
+%         disp_msg(3, i, job.count, job.resultfns{i}); % calculating result no
+%         if exist(job.resultfns{i}, 'file')
+%             disp_msg(4, job.resultfns{i}); %result exist
+%         else % if exist(job.resultfns{i})
 %             if is_qwtb_alg
 %                 % call QWTB:
 %                 [DO, DI, CS] = qwtb(job.algid, DI, job.calcset);
@@ -685,9 +785,9 @@ end % function % variate_datain
 %                 DI = remove_c_r_fields(DI);
 %                 DO = remove_c_r_fields(DO);
 %             end % if % job.calcset.var.smalloutput
-%             save('-v7', job.resultfn{i}, 'DO', 'DI', 'CS');
-%             disp_msg(5, job.resultfn{i}) % result saved
-%         end % if % exist(job.resultfn{i})
+%             save('-v7', job.resultfns{i}, 'DO', 'DI', 'CS');
+%             disp_msg(5, job.resultfns{i}) % result saved
+%         end % if % exist(job.resultfns{i})
 %     end % for % i = 1:job.count
 %     % display final message
 %     disp_msg(6, toc(time_start)); % all calculations finished
@@ -741,52 +841,7 @@ function job = run_calculation(job) %<<<1
     else
         error('some results failed'); % XXX fix to stdandardized error
     end % if all(res)
-    % reshaping results into n-dimensional matrix
-    ndres = reshape_results(job);
-    % XXXXXXXXXXXX vystup ndres nekam strcit
 end % function job = run_calculation(job)
-
-function ndres = reshape_results(job) %<<<1
-% load and reshape results into a n-dimensional matrix with marked axes
-% this helps for selecting data for plotting and further analysis
-    for j = 1:numel(job.resultfn)
-        % load data %<<<2
-        if exist(job.resultfn{j}, 'file')
-            tmp = load(job.resultfn{j});
-            resdata{j} = tmp.DO;
-            % DI is not saved into results, this could save a lot of space
-        else
-            error(err_msg_gen(93, job.resultfn{j}, jobfn)); % resultfn does not exist
-        end % if
-    end % for j = 1:job.resultfn
-    % reshape results to ndim matrix:
-    % (axes of ndimres are job.varlist.Qf)
-    if job.varlist.n > 1
-        % reshape got sense only if more than 1 variated quantity
-        ndres.DO = reshape(resdata, job.varlist.dimsz(:));
-    end % if job.varlist.n > 1
-    % process all fields in resdata and make particular ndimensional matrices:
-    Qs = fieldnames(resdata{1});
-    for j = 1:numel(Qs)
-        Q = Qs{j};
-        fs = fieldnames(resdata{1}.(Q));
-        for k = 1:numel(fs)
-            f = fs{k};
-            if isscalar(resdata{1}.(Q).(f))
-                tmp = [[[resdata{:}].(Q)].(f)];
-            else
-                tmp = {[[resdata{:}].(Q)].(f)};
-            end % if isscalar(resdata{1}.(Q).(f))
-            if job.varlist.n > 1
-                % reshape got sense only if more than 1 variated quantity
-                ndres.(Q).(f) = reshape(tmp, job.varlist.dimsz(:));
-            end % if job.varlist.n > 1
-        end % for k = 1:numel(fs)
-    end % for j = 1:numel(flds)
-
-    % save reshaped results:
-    save('-v7', job.fullresultfn, 'ndres');
-end % function reshape_results()
 
 function resstat = calculate_job(job, job_ids) %<<<1
 % calculate one or more jobs designated by job_ids XXX full description
@@ -801,9 +856,9 @@ function resstat = calculate_job(job, job_ids) %<<<1
         if job_id == 0
             % do nothing, it was only postpadded because of chunks XXX
         else
-            if exist(job.resultfn{job_id}, 'file')
+            if exist(job.resultfns{job_id}, 'file')
                 % job result exist, display message and quit
-                disp_msg(4, job.resultfn{i}); %result exist
+                disp_msg(4, job.resultfns{i}); %result exist
             else
                 % calculate
                 alginfo = qwtb();
@@ -815,7 +870,7 @@ function resstat = calculate_job(job, job_ids) %<<<1
                 % make variation calculation
                 % variate quantitites:
                 DI = variate_datain(job, job_id);
-                disp_msg(3, job_id, job.count, job.resultfn{job_id}); % calculating result no
+                disp_msg(3, job_id, job.count, job.resultfns{job_id}); % calculating result no
                 if is_qwtb_alg
                     % call QWTB:
                     [DO, DI, CS] = qwtb(job.algid, DI, job.calcset);
@@ -829,9 +884,9 @@ function resstat = calculate_job(job, job_ids) %<<<1
                     DI = remove_c_r_fields(DI);
                     DO = remove_c_r_fields(DO);
                 end % if % job.calcset.var.smalloutput
-                save('-v7', job.resultfn{job_id}, 'DO', 'DI', 'CS');
-                disp_msg(5, job.resultfn{job_id}) % result saved
-            end % if exist(job.resultfn{job_id}, 'file')
+                save('-v7', job.resultfns{job_id}, 'DO', 'DI', 'CS');
+                disp_msg(5, job.resultfns{job_id}) % result saved
+            end % if exist(job.resultfns{job_id}, 'file')
         end % if job_id == 0
     end % for j = 1:numel(job_ids)
 end % function resstat = calculate_job(job, job_ids)
@@ -843,47 +898,6 @@ function job = init_job_structure(algid, datain, datainvar, calcset) %<<<1
     job.datainvar = datainvar;
     job.calcset = calcset;
 end % function job = init_job_structure()
-
-function job = init_filenames(job, calcset) %<<<1
-    % prepare directory for job files and temporary calculation files
-    prepare_calculation_directory(calcset)
-    % generate filenames of result files
-    job = generate_results_filenames(job);
-end % function init_filenames(calcset)
-
-function prepare_calculation_directory(calcset) %<<<1
-% prepare directory for job files and temporary calculation files
-    if ~exist(calcset.var.dir, 'dir')
-        mkdir(calcset.var.dir);
-    end % if % ~exist(calcset.var.dir)
-    if ~exist(calcset.var.dir, 'dir')
-        error(err_msg_gen(30, calcset.var.dir)); % not a folder
-    end % if % ~exist(calcset.var.dir, 'dir')
-end % function prepare_calculation_directory(calcset)
-
-function job = generate_results_filenames(job) %<<<1
-% generate filenames of result files
-    % final result filename:
-    job.fullresultfn = fullfile(job.calcset.var.dir, [job.calcset.var.fnprefix '_QV_final_res.mat']);
-    if job.calcset.var.cleanfiles
-        delete(job.fullresultfn)
-        disp_msg(7, job.fullresultfn); % result deleted
-    end % if job.calcset.var.cleanfiles
-
-    % partial result filenames:
-    resfnstart = fullfile(job.calcset.var.dir, [job.calcset.var.fnprefix '_QV_res_']);
-    resfntemplate = ['%0' num2str(ceil(log10(job.count))+1, '%0d') 'd.mat'];
-    for i = 1:job.count
-        % whole string is not in sprintf to prevent sprintf to escape path: dir/subdir
-        job.resultfn{i} = [resfnstart sprintf(resfntemplate, i)];
-        if job.calcset.var.cleanfiles
-            if exist(job.resultfn{i}, 'file')
-                delete(job.resultfn{i});
-                disp_msg(7, job.resultfn{i}); % result deleted
-            end % if % exist(job.resultfn{i}, 'file')
-        end % if % calcset.var.cleanfiles
-    end % for % i = 1:job.count
-end % function generate_results_filenames
 
 % -------------------------------- plotting %<<<1
 function [X, Y, Z] = get_plotdata(jobfn, varx, vary, varz, consts) %<<<1
@@ -939,25 +953,25 @@ function [X, Y, Z] = get_plotdata(jobfn, varx, vary, varz, consts) %<<<1
         % other outputs can be affected also! and this will now show in the
         % figure as multiple results for single x)
         % it should be done in this way to look at calcplan.Q and load only required values
-        for i = 1:length(job.resultfn)
+        for i = 1:length(job.resultfns)
             % load data %<<<2
-            if exist(job.resultfn{i}, 'file')
-                resdata = load(job.resultfn{i});
+            if exist(job.resultfns{i}, 'file')
+                resdata = load(job.resultfns{i});
             else
-                error(err_msg_gen(93, job.resultfn{i}, jobfn)); % resultfn does not exist
+                error(err_msg_gen(93, job.resultfns{i}, jobfn)); % resultfns does not exist
             end % if
             % check if values of constants in the result data are the required
             % ones:
             if check_plot_constants(resdata, consts)
                 % get variables
-                [X, xunc] = get_variable(resdata, Qx, fx, X, xunc, job.resultfn{i});
-                [Y, yunc] = get_variable(resdata, Qy, fy, Y, yunc, job.resultfn{i});
+                [X, xunc] = get_variable(resdata, Qx, fx, X, xunc, job.resultfns{i});
+                [Y, yunc] = get_variable(resdata, Qy, fy, Y, yunc, job.resultfns{i});
                 if ~isempty(varz)
                     % varz only if required: %<<<2
-                    [Z, zunc] = get_variable(resdata, Qz, fz, Z, zunc, job.resultfn{i});
+                    [Z, zunc] = get_variable(resdata, Qz, fz, Z, zunc, job.resultfns{i});
                 end % if % ~isempty(vary)
             end % check_plot_constants(resdat, consts)
-        end % for % i = 1:length(job.resultfn)
+        end % for % i = 1:length(job.resultfns)
 
         % clear possible partial uncertainties %<<<2
         % (if uncertainty was not found in some job result, it was disabled)
@@ -1102,31 +1116,156 @@ function valid = check_plot_constants(resdata, consts) %<<<1
     end % for j = 1:numel(constnames)
 end % function valid = check_plot_constants(resdat, consts) %<<<1
 
-% -------------------------------- others %<<<1
-function job = load_job(job) %<<<1
-% if input is string, loads job file. if input is job structure, do nothing.
-% this function ensures job structure is loaded
-    if ~isstruct(job)
-        if ~exist(job, 'file')
-            error(err_msg_gen(8, job))% jobfn does not exist
-        end % if % ~exist(job)
-        load(job);
-    end % if % isstruct(job)
-end % function % load_job(job)
+% -------------------------------- LUT %<<<1
+function [lut] = make_lut(ndres, ndresc, ndaxes, varlist, ax, qu) %<<<1
+% Simple generator of multidim lookup table (LUT)
+    % check input variables
+    % XXX do it: ax = check_gen_ax(ax);
+    % XXX do it: qu = check_gen_qu(qu);
 
-function D = remove_c_r_fields(D) %<<<1
-% removes fields .r and .c from all quantities in D - usefull for spacesaving
-    Qnames = fieldnames(D);
-    for i = 1:length(Qnames);
-        if isfield(D.(Qnames{i}), 'c')
-            D.(Qnames{i}) = rmfield(D.(Qnames{i}), 'c');
+    % get axes in the user ax parameter, i.e. find axes of the LUT:
+    tmpQs = fieldnames(ax);
+    for j = 1:numel(tmpQs)
+        tmpfs = fieldnames(ax.(tmpQs{j}));
+        for k = 1:numel(tmpfs);
+            ax_Qs{end+1} = tmpQs{j};
+            ax_fs{end+1} = tmpfs{k};
+            ax_names{end+1} = [tmpQs{j} "." tmpfs{k}];
+        end % for k = 1:numel(tmpfs{k});
+    end % for j = 1:numel(tmpQs)
+
+    % check if variated axes are properly defined in ax parameter
+    ax_names = cell(0);
+    ax_Q = cell(0);
+    ax_f = cell(0);
+    Qax = fieldnames(ax);
+    for j = 1:numel(Qax)
+        fax = fieldnames(ax.(Qax{j}));
+        for k = 1:numel(fax)
+            ax_names = [ax_names [Qax{j} '.' fax{k}]];
+            ax_Q = [ax_Q Qax{j}];
+            ax_f = [ax_f fax{k}];
         end
-        if isfield(D.(Qnames{i}), 'r')
-            D.(Qnames{i}) = rmfield(D.(Qnames{i}), 'r');
+    end
+
+    for j = 1:numel(ax_names)
+        tmp = strcmpi(ax_names{j}, varlist.names);
+        if ~any(tmp)
+            err_msg_gen(120, ax_names{j}); % Q not defined in ax
         end
+    end % for j = 1:numel(ax_names)
+
+    % get quantities in qu parameter, i.e. results of the LUT:
+    tmpQs = fieldnames(qu);
+    for j = 1:numel(tmpQs)
+        tmpfs = fieldnames(qu.(tmpQs{j}));
+        for k = 1:numel(tmpfs);
+            qu_Qs{end+1} = tmpQs{j};
+            qu_fs{end+1} = tmpfs{k};
+            qu_names{end+1} = [tmpQs{j} "." tmpfs{k}];
+        end % for k = 1:numel(tmpfs{k});
+    end % for j = 1:numel(tmpQs)
+
+    % check if quantities in qu are in results:
+    for j = 1:numel(qu_names)
+        if isfield(ndres, qu_Qs{j})
+            if not(isfield(ndres.(qu_Qs{j}), qu_fs{j}))
+                error_msg_gen(121, qu_names{j}); % Q in qu not in results
+            end % if isfield(ndres.(qu_Qs{j}), qu_fs{j})
+        elseif isfield(ndresc{1}, qu_Qs{j})
+            % ndres contain result as matrix of cells (vectors or more), this will be harder:
+            % TODO
+            error('not finished');
+        else
+            error_msg_gen(121, qu_names{j}); % Q in qu not in results
+        end
+    end % for j = 1:numel(ax_names)
+
+    % create lut structure:
+    % make axes part %<<<2
+    % pair quantities of ax and quantities of ndaxes
+    for j = 1:numel(ax_names)
+        for k = 1:numel(ndaxes.names)
+            if strcmp(ax_names{j}, ndaxes.names{k})
+                ax.(ax_Q{j}).(ax_f{j}).values = ndaxes.values{k}(:);
+            end
+        end % for
     end % for
-end % function % remove_c_r_fields(D)
+    lut.ax = ax;
+    % make results part %<<<2
+    % add definition of quantities
+    lut.qu = qu;
+    % add N-dimensional matrices (variation results)
+    for j = 1:numel(qu_names)
+        % result (data) matrix:
+        lut.qu.(qu_Qs{j}).(qu_fs{j}).data = ndres.(qu_Qs{j}).(qu_fs{j});
+        % scaling values for compatibility with previous scripts (remove?!)
+        lut.qu.(qu_Qs{j}).(qu_fs{j}).data_scale = 1;
+        lut.qu.(qu_Qs{j}).(qu_fs{j}).data_offset = 1;
+        lut.qu.(qu_Qs{j}).(qu_fs{j}).data_mode = 'double';
+    end % for j = 1:numel(qu_names)
+end % function [lut] = make_lut(ndres, ndresc, ndaxes, varlist, ax, qu)
 
+function [ndres, ndresc] = reshape_results(job) %<<<1
+% load and reshape results into a n-dimensional matrix with marked axes
+% this helps for selecting data for plotting and further analysis
+    for j = 1:numel(job.resultfns)
+        % load data %<<<2
+        if exist(job.resultfns{j}, 'file')
+            tmp = load(job.resultfns{j});
+            resdata{j} = tmp.DO;
+            % DI is not saved into results, this could save a lot of space
+        else
+            error(err_msg_gen(93, job.resultfns{j}, jobfn)); % resultfns does not exist
+        end % if
+    end % for j = 1:job.resultfns
+    % reshape results to ndim matrix:
+    % (axes of ndimres are job.varlist.names)
+    if job.varlist.n > 1
+        % reshape got sense only if more than 1 variated quantity
+        ndresc = reshape(resdata, job.varlist.dimsz(:));
+    end % if job.varlist.n > 1
+    % process all fields in resdata and make particular ndimensional matrices:
+    Qs = fieldnames(resdata{1});
+    for j = 1:numel(Qs)
+        Q = Qs{j};
+        fs = fieldnames(resdata{1}.(Q));
+        for k = 1:numel(fs)
+            f = fs{k};
+            if isscalar(resdata{1}.(Q).(f))
+                tmp = [[[resdata{:}].(Q)].(f)];
+            else
+                tmp = {[[resdata{:}].(Q)].(f)};
+            end % if isscalar(resdata{1}.(Q).(f))
+            if job.varlist.n > 1
+                % reshape got sense only if more than 1 variated quantity
+                ndres.(Q).(f) = reshape(tmp, job.varlist.dimsz(:));
+            end % if job.varlist.n > 1
+        end % for k = 1:numel(fs)
+    end % for j = 1:numel(flds)
+
+    % save reshaped results:
+    save('-v7', job.fullresultfn, 'ndres', 'ndresc');
+end % function reshape_results()
+
+function [ndaxes] = make_ndaxes(job) %<<<1
+    for j = 1:length(job.varlist.Q)
+        tmp = job.datainvar.(job.varlist.Q{j}).(job.varlist.f{j});
+        dims = ones(1, j);
+        dims(end) = numel(tmp);
+        % because reshape requires at least two dimensions as input:
+        if numel(dims) < 2
+            dims(2) = 1;
+        end
+        % at least 2 dimensions!!!! XXXXXXXXXXXXXXX
+        ndaxes.values{end+1} = reshape(tmp, dims(:));
+        ndaxes.Q{end+1} = job.varlist.Q{j};
+        ndaxes.f{end+1} = job.varlist.f{j};
+        ndaxes.names{end+1} = job.varlist.names{j};
+    end
+end % function [ndaxes] = make_ndaxes(job)
+
+% -------------------------------- unified message/error functions %<<<1
 function disp_msg(varargin) %<<<1
     % generates display message, so all messages are at one place and visually unified
 
@@ -1250,7 +1389,11 @@ function msg = err_msg_gen(varargin) %<<<1
             case 9 % one input - mode
                 msg = ['Unknown mode (first argument) `' varargin{2} '`. Please read QWTBVAR documentation.'];
             case 10
-                msg = 'Input `consts` must be structures of variables.';
+                msg = 'Input `plotset` must be a valid structure. PLease read QWTBVAR documentation.';
+            case 11
+                msg = 'Input `axset` must be a valid structure. Please read QWTBVAR documentation.';
+            case 12
+                msg = 'Input `quset` must be a valid structure. Please read QWTBVAR documentation.';
             % ------------------- calculation settings errors 30-59: %<<<2
             case 30 % one input - calcset.var.dir
                 msg = ['The value of field `var.dir` in calculation settings structure must be a string with folder, but it does not exist and attempt to create it failed. Requested folder is: `' varargin{2} '`.'];
@@ -1274,14 +1417,19 @@ function msg = err_msg_gen(varargin) %<<<1
             case 65 % two inputs - field, Qname
                 msg = ['The differing Field `' varargin{2} '` of quantity `' varargin{3} '` has one dimension of different size, but size of this dimension in `datain` is not one.'];
             % ------------------- output data errors 90-119: %<<<2
-            case 90 % two inputs - var, resultfn
+            case 90 % two inputs - var, resultfns
                 msg = ['Quantity `' varargin{2} '` was not found in result file `' varargin{3} '`.'];
             case 91 % one input - algid
                 msg = ['Quantity `' varargin{3} '` is not scalar.'];
-            case 92 % two inputs - f, Q, resultfn
+            case 92 % two inputs - f, Q, resultfns
                 msg = ['Requested field `' varargin{2} '` is missing in quantity `' varargin{3} '` in result file `' varargin{3} '`.'];
-            case 93 % one input - resultfn
+            case 93 % one input - resultfns
                 msg = ['Result file `' varargin{2} '` referenced in job file `' varargin{3} '` does not exist.'];
+            % ------------------- lut errors 120-140: %<<<2
+            case 120 % one input - undefined Q
+                msg = ['Quantity `' varargin{2} '` is missing in definition of LUT axes (in )`ax` parameter).'];
+            case 121 % one input - missing Q in results 
+                msg = ['Quantity `' varargin{2} '` in `qu` parameter was not found in the results.'];
             otherwise
                 msg = err_msg_gen(-3, errid);
                 msg_generated = 1;
@@ -1325,6 +1473,103 @@ function msg = err_msg_gen(varargin) %<<<1
         end
     end % if % msg_generated
 end % err_msg_gen
+
+% -------------------------------- utilities %<<<1
+function [Q, f] = parse_Q_f(str) %<<<1
+% parse string into quantity Q and field f
+% possible strings:
+% Q; Q.; Q.f;
+% bad strings:
+% .; .f; Q.f.X;
+    Q = '';
+    f = '';
+    % find dot:
+    id = strfind(str, '.');
+    if isempty(id)
+        % only quantity in the string
+        Q = str;
+        return;
+    end % if % isempty(id)
+    if numel(id) > 1
+        error(err_msg_gen(7)); % bad varx/vary/varz
+    end % if % numel(id) > 1)
+    if id < 2
+        % there is missing Q, because '.' is on first place
+        error(err_msg_gen(7)); % bad varx/vary/varz
+    end % if % id < 2
+    % there is quantity in string:
+    Q = str(1:id-1);
+    % there could be field in the string ('a'(5:4) gives empty string, so no
+    % possible error can happen):
+    f = str(id+1:end);
+end % function % [Q f] = parse_Q_f
+
+function job = load_job(job) %<<<1
+% if input is string, loads job file. if input is job structure, do nothing.
+% this function ensures job structure is loaded
+    if ~isstruct(job)
+        if ~exist(job, 'file')
+            error(err_msg_gen(8, job))% jobfn does not exist
+        end % if % ~exist(job)
+        load(job);
+    end % if % isstruct(job)
+end % function % load_job(job)
+
+function D = remove_c_r_fields(D) %<<<1
+% removes fields .r and .c from all quantities in D - usefull for spacesaving
+    Qnames = fieldnames(D);
+    for i = 1:length(Qnames);
+        if isfield(D.(Qnames{i}), 'c')
+            D.(Qnames{i}) = rmfield(D.(Qnames{i}), 'c');
+        end
+        if isfield(D.(Qnames{i}), 'r')
+            D.(Qnames{i}) = rmfield(D.(Qnames{i}), 'r');
+        end
+    end % for
+end % function % remove_c_r_fields(D)
+
+function job = generate_results_filenames(job) %<<<1
+% generate filenames of result files
+    % final result filename:
+    job.fullresultfn = fullfile(job.calcset.var.dir, [job.calcset.var.fnprefix '_QV_final_res.mat']);
+    if job.calcset.var.cleanfiles
+        delete(job.fullresultfn)
+        disp_msg(7, job.fullresultfn); % result deleted
+    end % if job.calcset.var.cleanfiles
+
+    % partial result filenames:
+    resfnstart = fullfile(job.calcset.var.dir, [job.calcset.var.fnprefix '_QV_res_']);
+    resfntemplate = ['%0' num2str(ceil(log10(job.count))+1, '%0d') 'd.mat'];
+    for i = 1:job.count
+        % whole string is not in sprintf to prevent sprintf to escape path: dir/subdir
+        job.resultfns{i} = [resfnstart sprintf(resfntemplate, i)];
+        if job.calcset.var.cleanfiles
+            if exist(job.resultfns{i}, 'file')
+                delete(job.resultfns{i});
+                disp_msg(7, job.resultfns{i}); % result deleted
+            end % if % exist(job.resultfns{i}, 'file')
+        end % if % calcset.var.cleanfiles
+    end % for % i = 1:job.count
+end % function generate_results_filenames
+
+function prepare_calculation_directory(calcset) %<<<1
+% prepare directory for job files and temporary calculation files
+    if ~exist(calcset.var.dir, 'dir')
+        mkdir(calcset.var.dir);
+    end % if % ~exist(calcset.var.dir)
+    if ~exist(calcset.var.dir, 'dir')
+        error(err_msg_gen(30, calcset.var.dir)); % not a folder
+    end % if % ~exist(calcset.var.dir, 'dir')
+end % function prepare_calculation_directory(calcset)
+
+function job = init_filenames(job, calcset) %<<<1
+    % prepare directory for job files and temporary calculation files
+    prepare_calculation_directory(calcset)
+    % generate filenames of result files
+    job = generate_results_filenames(job);
+    % generate main job file name
+    job.jobfn = fullfile(calcset.var.dir, [calcset.var.fnprefix '_QV_job.mat']);
+end % function init_filenames(calcset)
 
 % drawEllipse copied from geometry package from octave forge %<<<1
 %% Copyright (C) 2004-2011 David Legland <david.legland@grignon.inra.fr>
