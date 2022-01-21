@@ -22,7 +22,7 @@ function varargout = qwtb(varargin)
 % 2DO what if path to alg_ already exist!?
 % 2DO remove .par from datain on output
 
-% Internal documentaion %<<<1
+% Internal documentation %<<<1
 % paths - structure with fields: %<<<2
 %   paths.orig      - value of path() before calling qwtb
 %   paths.changed   - nonzero if value of path() was changed
@@ -1353,6 +1353,8 @@ function dataout = general_mcm(alginfo, datain, calcset) %<<<1
     % multi station code --------------------------- %<<<2
     elseif strcmpi(method, 'multistation') 
         % 2DO
+        % XXX missing
+        error('multistation not implemented')
     else
         % calcset.mcm.method has unknown value. this shouldn't happen, calcset is already checked:
         error(err_msg_gen(-7, method));

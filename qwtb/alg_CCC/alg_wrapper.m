@@ -212,6 +212,7 @@ else
     end
 end
 fid = fopen(datafile, 'w'); 
+% XXX if cannot open datafile, solve error
 fprintf(fid, '%s', s);
 fclose(fid);
 
