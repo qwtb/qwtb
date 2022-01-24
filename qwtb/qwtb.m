@@ -23,6 +23,21 @@ function varargout = qwtb(varargin)
 % 2DO remove .par from datain on output
 
 % Internal documentaion %<<<1
+% Inputs/outputs scheme: %<<<2
+%   mode        ||o|i  ||   out1  | out2 | out3 || in1 | in2       | in3  |
+%   ------------||-|---||---------|------|------||-----|-----------|------|
+%   alg_info    ||2|0  || alginfo | CS   |      ||     |           |      |
+%   test        ||0|2  ||         |      |      || ID  | 'test'    |      |
+%   example     ||0|2  ||         |      |      || ID  | 'example' |      |
+%   addpath     ||0|2  ||         |      |      || ID  | 'addpath' |      |
+%   rempath     ||0|2  ||         |      |      || ID  | 'rempath' |      |
+%   info        ||1|2  || alginfo |      |      || ID  | 'info'    |      |
+%   license     ||1|2  || license |      |      || ID  | 'license' |      |
+%   calculate   ||3|2/3|| DO      | DI   | CS   || ID  | DI        | [CS] |
+%
+%   (o|i - number of output|input arguments, outX - output arguments, inX -
+%   input arguments, DO - dataout, DI - datain, CS - calculation settings)
+
 % paths - structure with fields: %<<<2
 %   paths.orig      - value of path() before calling qwtb
 %   paths.changed   - nonzero if value of path() was changed
