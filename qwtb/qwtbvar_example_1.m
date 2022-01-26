@@ -1,5 +1,6 @@
 clear all
 
+% === Inputs
 DI.x.v = 0;
 DI.y.v = 0;
 DI.a.v = 1;
@@ -27,42 +28,59 @@ CS.checkinputs = 1;
 %variationsettings:
 CS.var.dir = 'qwtbvarexample';
 CS.var.cleanfiles = 1;
-CS.var.method = 'multicore';
+% CS.var.method = 'multicore';
+CS.var.method = 'singlecore';
 CS.var.procno = 4;
 
+% === Calculation
 [jobfn] = qwtbvar('calc', 'qwtbvar_example_process', DI, DIvar, CS);
-keyboard
 
+% === Plotting
 consts.a.v = 1;
 % 3 dimensional plot:
-qwtbvar('plot3D', jobfn, 'x', 'y', 'z', consts);
+% qwtbvar('plot3D', jobfn, 'x', 'y', 'z', consts);
 % [H x y]=qwtbvar('plot2D', jobfn, 'x', 'y'); % , consts);
 
-% Look Up Table
-ax.a.v.min_ovr = 0.95;
-ax.a.v.max_ovr = 1.05;
-ax.a.v.min_lim = 'error';
-ax.a.v.max_lim = 'error';
-ax.a.v.scale = 'lin';
-ax.a.u.min_ovr = 0.95;
-ax.a.u.max_ovr = 1.05;
-ax.a.u.min_lim = 'error';
-ax.a.u.max_lim = 'error';
-ax.a.u.scale = 'lin';
-ax.x.v.min_ovr = 0.95;
-ax.x.v.max_ovr = 1.05;
-ax.x.v.min_lim = 'error';
-ax.x.v.max_lim = 'error';
-ax.x.v.scale = 'lin';
-ax.y.v.min_ovr = 0.95;
-ax.y.v.max_ovr = 1.05;
-ax.y.v.min_lim = 'error';
-ax.y.v.max_lim = 'error';
-ax.y.v.scale = 'lin';
+% === Look Up Table
+axset.a.v.min_ovr = 1.05;
+axset.a.v.max_ovr = 1.05;
+axset.a.v.min_lim = 'error';
+axset.a.v.max_lim = 'error';
+axset.a.v.scale = 'lin';
+axset.a.u.min_ovr = 1.05;
+axset.a.u.max_ovr = 1.05;
+axset.a.u.min_lim = 'error';
+axset.a.u.max_lim = 'error';
+axset.a.u.scale = 'lin';
+axset.x.v.min_ovr = 1.05;
+axset.x.v.max_ovr = 1.05;
+axset.x.v.min_lim = 'error';
+axset.x.v.max_lim = 'error';
+axset.x.v.scale = 'lin';
+axset.y.v.min_ovr = 1.05;
+axset.y.v.max_ovr = 1.05;
+axset.y.v.min_lim = 'error';
+axset.y.v.max_lim = 'error';
+axset.y.v.scale = 'lin';
 
-qu.z.v.scale = 'lin';
-qu.z.v.mult = 1;
+rqset.z.v.scale = 'lin';
+rqset.z.v.mult = 1;
 
-lut = qwtbvar('lut', jobfn, ax, qu);
+lut = qwtbvar('lut', jobfn, axset, rqset);
+
+% === Interpolation
+ipoint.a.v = 1.5;
+ipoint.a.u = 0;
+ipoint.x.v = 0;
+ipoint.y.v = 0;
+
+clear ival;
+for j = 1:numel(DIvar.x.v)
+    ipoint.x.v = DIvar.x.v(j);
+    for k = 1:numel(DIvar.y.v)
+        ipoint.y.v = DIvar.y.v(k);
+        ival(k, j) = qwtbvar('interp', lut, ipoint).z.v;
+    end
+end
 
 % vim settings modeline: vim: foldmarker=%<<<,%>>> fdm=marker fen ft=matlab textwidth=80 tabstop=4 shiftwidth=4

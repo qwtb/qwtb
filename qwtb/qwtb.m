@@ -209,6 +209,10 @@ function [alginfo, paths] = get_all_alg_info(paths) %<<<1
         if is_alg_dir(algdir)
             addpath(algdir);
             tmp = alg_info();
+            % Add generator if missing
+            if ~isfield(tmp, 'generator')
+                tmp.generator = '';
+            end % XXX this is not systematic, if there are optional arguments in alginfo, there must be function check_and_gen_info or something like that
             % Add fullpath of the algorithm into info structure: 
             tmp.fullpath = algdir;
             msg = check_alginfo(tmp);
@@ -364,6 +368,7 @@ function [dataout, datain, calcset, paths] = check_and_run_alg(algid, datain, ca
         dataout = general_mcm(alginfo, datain, calcset);
     else
         % no general MCM, just call wrapper:
+        % XXX if calcset as input into qwtb is set to [], than qwtb do not check if all quantities exists!
         dataout = alg_wrapper(datain, calcset);
     end
 
@@ -434,7 +439,9 @@ function msg = check_alginfo(alginfo) %<<<1
 % else returns description of what is wrong
 
     % check number of fields %<<<2
-    if ~(length(fieldnames(alginfo)) == 11)
+    L = length(fieldnames(alginfo));
+    % 11 fields without generator info, 12 with the generator
+    if ~(L == 11 || L == 12)
         msg = 'some fields are missing or redundant';
 
     % check fields %<<<2
