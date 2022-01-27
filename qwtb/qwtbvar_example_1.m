@@ -42,29 +42,28 @@ consts.a.v = 1;
 % [H x y]=qwtbvar('plot2D', jobfn, 'x', 'y'); % , consts);
 
 % === Look Up Table
-axset.a.v.min_ovr = 1.05;
-axset.a.v.max_ovr = 1.05;
+axset.a.v.min_ovr = min(DIvar.a.v)-0.1;
+axset.a.v.max_ovr = max(DIvar.a.v)+0.1;
 axset.a.v.min_lim = 'error';
 axset.a.v.max_lim = 'error';
 axset.a.v.scale = 'lin';
-axset.a.u.min_ovr = 1.05;
-axset.a.u.max_ovr = 1.05;
+axset.a.u.min_ovr = min(DIvar.a.u);
+axset.a.u.max_ovr = max(DIvar.a.u);
 axset.a.u.min_lim = 'error';
 axset.a.u.max_lim = 'error';
 axset.a.u.scale = 'lin';
-axset.x.v.min_ovr = 1.05;
-axset.x.v.max_ovr = 1.05;
-axset.x.v.min_lim = 'error';
-axset.x.v.max_lim = 'error';
+axset.x.v.min_ovr = min(DIvar.x.v)-3;
+axset.x.v.max_ovr = max(DIvar.x.v)+3;
+axset.x.v.min_lim = 'const';
+axset.x.v.max_lim = 'const';
 axset.x.v.scale = 'lin';
-axset.y.v.min_ovr = 1.05;
-axset.y.v.max_ovr = 1.05;
-axset.y.v.min_lim = 'error';
-axset.y.v.max_lim = 'error';
+axset.y.v.min_ovr = min(DIvar.y.v)-3;
+axset.y.v.max_ovr = max(DIvar.y.v)+3;
+axset.y.v.min_lim = 'const';
+axset.y.v.max_lim = 'const';
 axset.y.v.scale = 'lin';
 
 rqset.z.v.scale = 'lin';
-rqset.z.v.mult = 1;
 
 lut = qwtbvar('lut', jobfn, axset, rqset);
 
@@ -74,13 +73,15 @@ ipoint.a.u = 0;
 ipoint.x.v = 0;
 ipoint.y.v = 0;
 
-clear ival;
-for j = 1:numel(DIvar.x.v)
-    ipoint.x.v = DIvar.x.v(j);
-    for k = 1:numel(DIvar.y.v)
-        ipoint.y.v = DIvar.y.v(k);
-        ival(k, j) = qwtbvar('interp', lut, ipoint).z.v;
+x = -7:0.5:7;
+y = -7:0.5:7;
+for j = 1:numel(x)
+    ipoint.x.v = x(j);
+    for k = 1:numel(y)
+        ipoint.y.v = y(k);
+        ival(j, k) = qwtbvar('interp', lut, ipoint).z.v;
     end
 end
+mesh(ival)
 
 % vim settings modeline: vim: foldmarker=%<<<,%>>> fdm=marker fen ft=matlab textwidth=80 tabstop=4 shiftwidth=4

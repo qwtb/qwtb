@@ -240,43 +240,58 @@ function varargout = qwtbvar(varargin)
 % .calcplan.XXXaxes.names   - axes of meshgrid
 % Description of the resulting n-dimensional matrices
 % ndres.Q.f             - n-dimensional matrix, only if output quantity Q.f was scalar
+% % XXX add:
+% ndres.<Q>
+% ndres.<f>
+% ndres.<names>
+%       
 % ndresc                - n-dimensional cell with result structures
 %   ndresc{x,y,...}.Q.f - result structure for dimension values x,y,...
 
 % res.ndaxes        - axes values of ndim result
 
-% Description of the LUT structure %<<<2
+% Description of the axset structure %<<<2
+%   same as lut.ax structure without .val and .def
+
+% Description of the rqset structure %<<<2
+%   same as lut.rq structure, only .val is added by QWTBVAR by loading
+%   job result
+
+% Description of the lut structure %<<<2
 %   .ax         - axis of the LUT
 %       .<Q>    - LUT axis quantity name, variated quantity
 %               (char, e.g. 'x', 'y')
 %           .<f>- field name
 %               (char, e.g. 'v' as value, 'u' as uncertainty)
-%               .values     - value of the axis Q.f
-%                   (float, vector of variated values)
+%               .val        - values of the axis Q.f
+%                   (numeric, vector of variated values)
+%               .def        - default value of the axis Q.f, based on DI input during variations
+%                   % XXX 2DO, reserved for future
+%                   (numeric, scalar of variated values)
 %               .scale      - scale of the axis, this helps for interpolation
-%                   (char, 'log10u16' or 'real')
-%               .max_lim    - maximum limit
-%                   (float, scalar)
-%               .max_ovr    - maximum over range % XXX change to percent of range
-%                   (float, scalar)
-%               .min_lim    - minimum limit
-%                   (float, scalar)
+%                   (char, 'lin', 'log')
+%               .max_ovr    - maximum over range, absolute value
+%                   (numeric, scalar)
 %               .min_ovr    - minimum over range
-%                   (float, scalar)
+%                   (numeric, scalar)
+%               .max_lim    - what to do if max_ovr is exceeded
+%               .min_lim    - what to do if min_ovr is exceeded
+%                   (char, 'error', 'const')
+%                       'error' - do error,
+%                       'const' - constant value equal to edge value of axis
 %   .ax_names   - quantity-field names of LUT axes
-%               (cell of chars, e.g. 'x.v', 'y.u')
+%                   (cell of chars, e.g. 'x.v', 'y.u')
 %   .ax_Q       - quantities of LUT axes
-%               (cell of chars, e.g. {'x', 'y'})
+%                   (cell of chars, e.g. {'x', 'y'})
 %   .ax_f       - fields of LUT axes
-%               (cell of chars, e.g. {'v', 'v'})
+%                   (cell of chars, e.g. {'v', 'v'})
 %   .rq         - resulting quantities of the LUT
 %       .<Q>    - result quantity name (e.g. 'z')
 %           .<f>- field name (e.g. 'v' as value, 'u' as uncertainty)
-%               .data           - values
-%               .data_mode      - (real)type of data
-%               .data_offset    - (0) for future use
-%               .data_scale     - (1) for future use
-%               .mult           - (1) for future use
+%               .val        - values
+%                   (numeric, matrix)
+%               .scale      -
+%                   (char, 'lin','log')
 %   .rq_names   - quantity-field names of LUT results
 %               (cell of chars, e.g. 'z.v')
 %   .rq_Q       - quantities of LUT results
@@ -368,12 +383,12 @@ function varargout = qwtbvar(varargin)
         % setting up and starting lut compilation
         if nargin == 2
             jobfn = varargin{2};
-            axset = check_gen_axset();
-            rqset = check_gen_rqset();
+            axset = check_gen_axset(struct());
+            rqset = check_gen_rqset(struct());
         elseif nargin == 3
             jobfn = varargin{2};
             axset = check_gen_axset(varargin{3});
-            rqset = check_gen_rqset();
+            rqset = check_gen_rqset(struct());
         elseif nargin == 4
             jobfn = varargin{2};
             axset = check_gen_axset(varargin{3});
@@ -398,7 +413,7 @@ function varargout = qwtbvar(varargin)
         % interpolation of lut
         if nargin == 3
             lutfn = varargin{2};
-            ipoint = check_gen_ipoint(varargin{3});
+            ipoint = varargin{3}; % ipoint has to be checked later, when LUT is loaded
         else
             error(err_msg_gen(6)); % bad call
         end
@@ -533,16 +548,18 @@ function lut = main_lut(jobfn, axset, rqset) %<<<1
     % load calculation settings:
     job = load_job(jobfn);
     % reshape results into n-dimensional matrix
-    [ndres, ndresc] = reshape_results(job);
-    [job.ndaxes] = make_ndaxes(job);
+    [ndres, ndresc] = reshape_results(job); %XXX this takes filename!
+    [job.ndaxes] = make_ndaxes(job); %XXX but this takes structure!
     % make lut
     lut = make_lut(ndres, ndresc, job.ndaxes, job.varlist, axset, rqset);
-end % lut = main_lut(jobfn, axset, quset) %<<<1
+end % main_lut
 
-function ival = main_interp(lutfn, ipoint)
+function ival = main_interp(lutfn, ipoint) %<<<1
 % interpolate value based on lut and ax values
-    % load lut
+    % ensure lut is loaded
     lut = load_lut(lutfn);
+    % check ipoint
+    ipoint = check_gen_ipoint(lut, ipoint);
     % calculate interpolation weight matrix
     w = interp_weights(lut, ipoint);
     % interpolate values
@@ -696,25 +713,135 @@ function plotset = check_gen_plotset(plotset) %<<<1
 end % function plotset = check_gen_plotset
 
 function axset = check_gen_axset(axset) %<<<1
+% check input structure axset - lut axis settings
     if isempty(axset)
         axset = struct();
-        warning('FINISH ME')
     end
-end % function axset = check_gen_axset
+    % for all quantities and fields of quantities, check existence and values of
+    % subfields, add default values for missing subfields
+    [Qs, fs, names] = get_Qs_fs_names(axset);
+    for j = 1:numel(names)
+            f = axset.(Qs{j}).(fs{j});
+
+            if isfield(f, 'scale') %<<<2
+                if ischar(f.scale)
+                    if not(strcmpi(f.scale, 'lin') || strcmpi(f.scale, 'log'))
+                        error(err_msg_gen(124, 'axset', [names{j} '.scale'], f.scale, '`lin` or `log`')) % bad value
+                    end
+                else
+                    error(err_msg_gen(123, 'axset', [names{j} '.scale'], class(f.scale), 'char')) % bad type
+                end % ischar
+            else
+                % set default value of axis scale:
+                axset.(Qs{j}).(fs{j}).scale = 'lin';
+            end % if isfield scale
+
+            if isfield(f, 'max_lim') %<<<2
+                if ischar(f.max_lim)
+                    if not(strcmpi(f.max_lim, 'error') || strcmpi(f.max_lim, 'const'))
+                        error(err_msg_gen(124, 'axset', [names{j} '.max_lim'], f.max_lim, '`error` or `const`')) % bad value
+                    end
+                else
+                    error(err_msg_gen(123, 'axset', [names{j} '.max_lim'], class(f.max_lim), 'char')) % bad type
+                end % ischar
+            else
+                % set default value of axis scale:
+                axset.(Qs{j}).(fs{j}).max_lim = 'error';
+            end % if isfield max_lim
+
+            if isfield(f, 'min_lim') %<<<2
+                if ischar(f.min_lim)
+                    if not(strcmpi(f.min_lim, 'error') || strcmpi(f.min_lim, 'const'))
+                        error(err_msg_gen(124, 'axset', [names{j} '.min_lim'], f.min_lim, '`error` or `const`')) % bad value
+                    end
+                else
+                    error(err_msg_gen(123, 'axset', [names{j} '.min_lim'], class(f.min_lim), 'char')) % bad type
+                end % ischar
+            else
+                % set default value of axis scale:
+                axset.(Qs{j}).(fs{j}).min_lim = 'error';
+            end % if isfield min_lim
+
+            if isfield(f, 'min_ovr') %<<<2
+                if isnumeric(f.min_ovr)
+                    if not(isscalar(f.min_ovr))
+                        error(err_msg_gen(125, 'axset', [names{j} '.min_ovr'])) % bad size
+                    end
+                else
+                    error(err_msg_gen(123, 'axset', [names{j} '.min_ovr'], class(f.min_ovr), 'numeric')) % bad type
+                end % ischar
+            else
+                % set default value of axis scale
+                % becaues job result is not yet fully loaded, set it to NaN and
+                % funcion make_lut will fill it to proper value
+                axset.(Qs{j}).(fs{j}).min_ovr = NaN;
+            end % if isfield min_lim
+
+            if isfield(f, 'max_ovr') %<<<2
+                if isnumeric(f.max_ovr)
+                    if not(isscalar(f.max_ovr))
+                        error(err_msg_gen(125, 'axset', [names{j} '.max_ovr'])) % bad size
+                    end
+                else
+                    error(err_msg_gen(123, 'axset', [names{j} '.max_ovr'], class(f.max_ovr), 'numeric')) % bad type
+                end % ischar
+            else
+                % set default value of axis scale
+                % becaues job result is not yet fully loaded, set it to NaN and
+                % funcion make_lut will fill it to proper value
+                axset.(Qs{j}).(fs{j}).max_ovr = NaN;
+            end % if isfield max_lim
+    end % for j 1..names
+end % function check_gen_axset
 
 function rqset = check_gen_rqset(rqset) %<<<1
+% check input structure rqset - result quantity settings 
     if isempty(rqset)
         rqset = struct();
-        warning('FINISH ME')
     end
+    [Qs, fs, names] = get_Qs_fs_names(rqset);
+    % for all quantities and fields of quantities, check existence and values of
+    % fields, add default values for missing field
+    for j = 1:numel(names)
+        f = rqset.(Qs{j}).(fs{j});
+
+        if isfield(f, 'scale') %<<<2
+            if ischar(f.scale)
+                if not(strcmpi(f.scale, 'lin') || strcmpi(f.scale, 'log'))
+                    error(err_msg_gen(124, 'rqset', [names{j} '.scale'], f.scale, '`lin` or `log`')) % bad value
+                end
+            else
+                error(err_msg_gen(123, 'rqset', [names{j} '.scale'], class(f.scale), 'char')) % bad type
+            end % ischar
+        else
+            % set default value of axis scale:
+            axset.(Qs{j}).(fs{j}).scale = 'lin';
+        end % if isfield scale
+
+    end % for j 1..names
 end % function check_gen_rqset
 
-function ipoint = check_gen_ipoint(ipoint) %<<<1
- % XXX here should check only if all axis values are set, other fields are not necessary
+function ipoint = check_gen_ipoint(lut, ipoint) %<<<1
+% check input structure ipoint - interpolation point
+% checks if ipoint defines values for all LUT axes
+ % XXX 2DO in future - generate values of missing ipoint axes from lut.ax.Q.f.def
     if isempty(ipoint)
-        ipoint = struct();
-        warning('FINISH ME')
+        error(err_msg_gen(16)) % ipoint must be struct
     end
+    for j = 1:numel(lut.ax_Q)
+        ok = 0;
+        if isfield(ipoint, lut.ax_Q{j})
+            if isfield(ipoint.(lut.ax_Q{j}), lut.ax_f{j})
+                ok = 1;
+                if ~isscalar(ipoint.(lut.ax_Q{j}).(lut.ax_f{j}))
+                    error(err_msg_gen(141, lut.ax_names{j})) % ipoint not scalar
+                end
+            end
+        end
+        if not(ok)
+            error(err_msg_gen(140, lut.ax_names{j})) % missing Q.f in ipoint
+        end
+    end % for j
 end % function check_gen_ipoint
 
 % -------------------------------- variation %<<<1
@@ -1189,105 +1316,75 @@ function valid = check_plot_constants(resdata, consts) %<<<1
             end % if strcmp(constnames{j}, DInames{k})
         end % for k = 1:numel(DInames)
     end % for j = 1:numel(constnames)
-end % function valid = check_plot_constants(resdat, consts) %<<<1
+end % function check_plot_constants
 
 % -------------------------------- LUT %<<<1
 function [lut] = make_lut(ndres, ndresc, ndaxes, varlist, axset, rqset) %<<<1
 % Simple generator of multidim lookup table (LUT)
-    % check input variables
-    % XXX do it: ax = check_gen_axset(ax);
-    % XXX do it: rq = check_gen_rqset(rq);
+    lut = struct();
 
+    % check axes %<<<2
     % get axes in the user ax parameter, i.e. find axes of the LUT:
-    tmpQs = fieldnames(axset);
-    for j = 1:numel(tmpQs)
-        tmpfs = fieldnames(axset.(tmpQs{j}));
-        for k = 1:numel(tmpfs);
-            ax_Qs{end+1} = tmpQs{j};
-            ax_fs{end+1} = tmpfs{k};
-            ax_names{end+1} = [tmpQs{j} "." tmpfs{k}];
-        end % for k = 1:numel(tmpfs{k});
-    end % for j = 1:numel(tmpQs)
-
-    % check if variated axes are properly defined in ax parameter
-    ax_names = cell(0);
-    ax_Q = cell(0);
-    ax_f = cell(0);
-    Qax = fieldnames(axset);
-    for j = 1:numel(Qax)
-        fax = fieldnames(axset.(Qax{j}));
-        for k = 1:numel(fax)
-            ax_names = [ax_names [Qax{j} '.' fax{k}]];
-            ax_Q = [ax_Q Qax{j}];
-            ax_f = [ax_f fax{k}];
-        end
-    end
-    % XXX difference between ax_Q and ax_Qs, ax_f and ax_fs?
-
-    for j = 1:numel(ax_names)
-        tmp = strcmpi(ax_names{j}, varlist.names);
+    [axset_Qs, axset_fs, axset_names] = get_Qs_fs_names(axset);
+    % check if all axes in ndaxes are defined in user axset
+    for j = 1:numel(ndaxes.names)
+        tmp = strcmpi(ndaxes.names{j}, axset_names);
         if ~any(tmp)
-            err_msg_gen(120, ax_names{j}); % Q not defined in ax
+            err_msg_gen(120, ndaxes.names{j}); % Q not defined in axset
         end
-    end % for j = 1:numel(ax_names)
-
-    % get quantities in rq parameter, i.e. results of the LUT:
-    tmpQs = fieldnames(rqset);
-    for j = 1:numel(tmpQs)
-        tmpfs = fieldnames(rqset.(tmpQs{j}));
-        for k = 1:numel(tmpfs);
-            rq_Qs{end+1} = tmpQs{j};
-            rq_fs{end+1} = tmpfs{k};
-            rq_names{end+1} = [tmpQs{j} "." tmpfs{k}];
-        end % for k = 1:numel(tmpfs{k});
-    end % for j = 1:numel(tmpQs)
-
-    % check if quantities in rq are in results:
-    for j = 1:numel(rq_names)
-        if isfield(ndres, rq_Qs{j})
-            if not(isfield(ndres.(rq_Qs{j}), rq_fs{j}))
-                error_msg_gen(121, rq_names{j}); % Q in rq not in results
-            end % if isfield(ndres.(rq_Qs{j}), rq_fs{j})
-        elseif isfield(ndresc{1}, rq_Qs{j})
-            % ndres contain result as matrix of cells (vectors or more), this will be harder:
-            % TODO
-            error('not finished');
-        else
-            error_msg_gen(121, rq_names{j}); % Q in rq not in results
-        end
-    end % for j = 1:numel(ax_names)
-
-    % make axes part %<<<2
-    % pair quantities of ax and quantities of ndaxes
-    for j = 1:numel(ax_names)
+    end % for j
+    % make axes %<<<2
+    % pair quantities of axset and quantities of ndaxes
+    for j = 1:numel(axset_names)
         for k = 1:numel(ndaxes.names)
-            if strcmp(ax_names{j}, ndaxes.names{k})
-                axset.(ax_Q{j}).(ax_f{j}).values = ndaxes.values{k}(:);
+            if strcmp(axset_names{j}, ndaxes.names{k})
+                axset.(axset_Qs{j}).(axset_fs{j}).val = ndaxes.values{k};
+                % check and fill NaNs in .max_ovr and .min_ovr when
+                % check_gen_axset was run, the job was not yet loaded so it
+                % couldn't be filled
+                if isnan(axset.(axset_Qs{j}).(axset_fs{j}).min_ovr)
+                    axset.(axset_Qs{j}).(axset_fs{j}).min_ovr = min(axset.(axset_Qs{j}).(axset_fs{j}).val);
+                end
+                if isnan(axset.(axset_Qs{j}).(axset_fs{j}).max_ovr)
+                    axset.(axset_Qs{j}).(axset_fs{j}).max_ovr = max(axset.(axset_Qs{j}).(axset_fs{j}).val);
+                end
             end
         end % for
     end % for
-    % create lut structure:
+    % add axes to lut %<<<2
+    % add axis info into lut structure:
     lut.ax = axset;
-    lut.ax_names = ax_names;
-    lut.ax_Q = ax_Q;
-    lut.ax_f = ax_f;
+    lut.ax_names = axset_names;
+    lut.ax_Q = axset_Qs;
+    lut.ax_f = axset_fs;
+        
+    % check results %<<<2
+    % get quantities in rq parameter, i.e. results of the LUT:
+    [rqset_Qs, rqset_fs, rqset_names] = get_Qs_fs_names(rqset);
+    % Qs and fs are taken from ndres (not ndresc) because QWTBVAR can
+    % interpolate only scalars
+    [ndres_Qs, ndres_fs, ndres_names] = get_Qs_fs_names(ndres);
+    % check if quantities in rqset are in results:
+    for j = 1:numel(rqset_names)
+        tmp = strcmpi(rqset_names{j}, ndres_names);
+        if ~any(tmp)
+            err_msg_gen(121, rqset_names{j}); % Q in rq not in results
+        end
+    end % for j
 
-    % make results part %<<<2
+    % make results %<<<2
     % add definition of quantities
     lut.rq = rqset;
     % add N-dimensional matrices (variation results)
-    for j = 1:numel(rq_names)
+    for j = 1:numel(rqset_names)
         % result (data) matrix:
-        lut.rq.(rq_Qs{j}).(rq_fs{j}).data = ndres.(rq_Qs{j}).(rq_fs{j});
-        % scaling values for compatibility with previous scripts (remove?!)
-        % XXX filling reserved fields for the future
-        lut.rq.(rq_Qs{j}).(rq_fs{j}).data_scale = 1;
-        lut.rq.(rq_Qs{j}).(rq_fs{j}).data_offset = 1;
-        lut.rq.(rq_Qs{j}).(rq_fs{j}).data_mode = 'real';
+        lut.rq.(rqset_Qs{j}).(rqset_fs{j}).val = ndres.(rqset_Qs{j}).(rqset_fs{j});
     end % for j = 1:numel(qu_names)
-    lut.rq_names = rq_names;
-    lut.rq_Q = rq_Qs;
-    lut.rq_f = rq_fs;
+
+    % add results to lut %<<<2
+    lut.rq_names = rqset_names;
+    lut.rq_Q = rqset_Qs;
+    lut.rq_f = rqset_fs;
 end % function make_lut
 
 function [ndres, ndresc] = reshape_results(job) %<<<1
@@ -1351,50 +1448,46 @@ end % function [ndaxes] = make_ndaxes(job)
 
 % -------------------------------- interpolation %<<<1
 function w = interp_weights(lut, ipoint) %<<<1
-    % number and properties of axes in lut and especially ipoint must be same and already checked! XXX ensure
+% calculate weights matrix for interpolation based on interpolation point
 
-    % dimensions of the results (use first result quantity):
-    adims = size(lut.rq.(lut.rq_Q{1}).(lut.rq_f{1}).data);
+    % dimensions of the results (use first result quantity from LUT):
+    adims = size(lut.rq.(lut.rq_Q{1}).(lut.rq_f{1}).val);
         
-    % --- create interpolation weight-matrix ---
     % create interpolation weigth matrix:
-    %  note: at this point same w. for all elements
+    %  note: at this point same weight for all axes
     w = ones(adims);
     
-    % for each axis of dependence:
+    % for each LUT axis:
     for a = 1:numel(lut.ax_names);
-        % get axis setup:
+        % actual LUT axis setup:
         cax = lut.ax.(lut.ax_Q{a}).(lut.ax_f{a});
-        % get axis values:
-        vax = cax.values(:);
-        
-        % get interpolation value of the actual axis from ipoint (interpolation point):
+        % actual LUT axis values:
+        vax = cax.val(:);
+        % get interpolation value for the actual LUT axis from ipoint (interpolation point):
         ai = ipoint.(lut.ax_Q{a}).(lut.ax_f{a});
-        
-        % limit interp. value to valid range:
-        if ai < cax.min_ovr*min(vax)
+
+        % check axis limits, coerce interp. point to valid range
+        if ai < cax.min_ovr
             % required axis value too low:
-            if strcmpi(cax.min_lim,'error')
-                % XXX error generator
-                error(sprintf('Uncertainty estimator: Required interpolation value of axis ''%s'' is too low! Range of estimator data is not sufficient to estimate the uncertainty.', lut.ax_names{a}));
-            elseif strcmpi(cax.min_lim,'const')
+            if strcmpi(cax.min_lim, 'error')
+                error(err_msg_gen(142, num2str(ai), lut.ax_names{a}, num2str(cax.min_ovr), num2str(cax.max_ovr)))
+            elseif strcmpi(cax.min_lim, 'const')
                 % limit interpolation value 'ai' to the nearest axis spot:
                 ai = min(vax);
             else
-                % XXX error generator
-                error(sprintf('Uncertainty estimator: Required interpolation value of axis ''%s'' is too low and the corrective action ''%s'' is not recognized! Range of estimator data is not sufficient to estimate the uncertainty.',lut.ax_names{a},cax.min_lim));
+                % unknown min_lim value
+                error(err_msg_gen(122, ['ax.' lut.ax_names{a} '.min_lim'], cax.min_lim))
             end
-        elseif ai > cax.max_ovr*max(vax)
-            % required axis value too low:
-            if strcmpi(cax.max_lim,'error')
-                % XXX error generator
-                error(sprintf('Uncertainty estimator: Required interpolation value of axis ''%s'' is too high! Range of estimator data is not sufficient to estimate the uncertainty.',lut.ax_names{a}));
+        elseif ai > cax.max_ovr
+            % required axis value too high:
+            if strcmpi(cax.max_lim, 'error')
+                error(err_msg_gen(142, num2str(ai), lut.ax_names{a}, num2str(min(cax.val)), num2str(max(cax.values))))
             elseif strcmpi(cax.max_lim,'const')
                 % limit interpolation value 'ai' to the nearest axis spot:
                 ai = max(vax);
             else
-                % XXX error generator
-                error(sprintf('Uncertainty estimator: Required interpolation value of axis ''%s'' is too high and the corrective action ''%s'' is not recognized! Range of estimator data is not sufficient to estimate the uncertainty.',lut.ax_names{a}));
+                % unknown max_lim value
+                error(err_msg_gen(122, ['ax.' lut.ax_names{a} '.min_lim'], cax.max_lim))
             end            
         end
 
@@ -1404,13 +1497,12 @@ function w = interp_weights(lut, ipoint) %<<<1
             vax = log10(vax);
             ai = log10(ai);
         elseif ~strcmpi(cax.scale,'lin')
-            % XXX error generator
-            error(sprintf('Uncertainty estimator: Interpolation mode of axis ''%s'' is unknown! Possibly incorrect lookup data.',lut.ax_names{a}));
+            % unknown scale value
+            error(err_msg_gen(122, ['ax.' lut.ax_names{a} '.scale'], cax.scale))
         end
 
         % create axis interpolation mask:
         wa = zeros(size(vax));
-        % zeros, collumn vector
         
         % descending axis values?
         is_descend = any(diff(vax) < 0);
@@ -1461,7 +1553,6 @@ function w = interp_weights(lut, ipoint) %<<<1
         
         % combine the mask with previous axes:
         w = bsxfun(@times,w,wa);            
-        % for iteration 3: w = zeros, but w(6,6,1)=w(6,6,2)=0.5
     end
 end % function interp_weight
 
@@ -1472,55 +1563,32 @@ function val = interp_val(lut, w) %<<<1
         % quantity name:
         q_name = lut.rq_names{k};
         
-        % load quantity record:
+        % get quantity and its value:
         rq = lut.rq.(lut.rq_Q{k}).(lut.rq_f{k});
-        
-        data = rq.data;
+        value = rq.val;
 
-        % XXX data decoding is not yet supported in qwtbvar
-        % % decode data:
-        % if strcmpi(rq.data_mode,'log10u16')
-        %     % decode log()+uint16 format:
-        %     data = 10.^(double(rq.data)*rq.data_scale + rq.data_offset);
-        % elseif strcmpi(rq.data_mode,'real')
-        %     % unscaled data:
-        %     data = double(rq.data);
-        % else
-        %     # XXX error_msg
-        %     error(sprintf('Uncertainty estimator: Precalculated values of quantity ''%s'' stored in unknown format ''%s''! Possibly invalid lookup table content.',q_name,rq.data_mode));
-        % end
-        %
-        % % convert quantity before interpolation:
-        % is_log = 0;
-        % if isfield(rq,'scale') && strcmpi(rq.scale,'log')
-        %     is_log = 1;
-        %     data = log10(data);
-        % elseif isfield(rq,'scale') && ~strcmpi(rq.scale,'lin')
-        %     # XXX error_msg
-        %     error(sprintf('Uncertainty estimator: Precalculated values of quantity ''%s'' cannot be coverted to ''%s'' - unknown operation (only ''lin'' or ''log'')! Possibly invalid lookup table content.',q_name,rq.scale));
-        % end
+        % linearize logarithmic quantity before interpolation for better results:
+        is_log = 0;
+        if strcmpi(rq.scale, 'log')
+            is_log = 1;
+            value = log10(value);
+        elseif ~strcmpi(rq.scale, 'lin')
+            % bad value of rq.scale
+            error(err_msg_gen(122, ['rq.' lut.rq_names{k} '.scale'], rq.scale))
+        end
 
-        % interpolate using the weight mask:
-        data = data.*w;
-        data = sum(data(:))/sum(w(:));
-        
-        % XXX data decoding is not supported in qwtbvar
-        % % convert back to state before interp.:
-        % if is_log
-        %     data = 10^data;
-        % end
-        % % XXX data multiplication is not supported in qwtbvar
-        % % multiply the data by mult-factor:
-        % if isfield(rq,'mult')
-        %     data = data*rq.mult;
-        % end
-        
+        value = value.*w;
+        value = sum(value(:))/sum(w(:));
+
+        % return back to unlog value
+        if is_log
+            data = 10^data;
+        end
+
         % store interpolated quantity:
-        val.(lut.rq_Q{k}).(lut.rq_f{k}) = data;
-    
+        val.(lut.rq_Q{k}).(lut.rq_f{k}) = value;
     end
 end % function interp_val
-
 
 % -------------------------------- unified message/error functions %<<<1
 function disp_msg(varargin) %<<<1
@@ -1657,6 +1725,8 @@ function msg = err_msg_gen(varargin) %<<<1
                 msg = ['Job file `' varargin{2} '` does not contain variable `job`.'];
             case 15 % one input - lutfn
                 msg = ['LUT file `' varargin{2} '` does not contain variable `lut`.'];
+            case 16
+                msg = ['Input `ipoint` must be a valied structure. Please read QWTBVAR documentation.'];
             % ------------------- calculation settings errors 30-59: %<<<2
             case 30 % one input - calcset.var.dir
                 msg = ['The value of field `var.dir` in calculation settings structure must be a string with folder, but it does not exist and attempt to create it failed. Requested folder is: `' varargin{2} '`.'];
@@ -1688,11 +1758,26 @@ function msg = err_msg_gen(varargin) %<<<1
                 msg = ['Requested field `' varargin{2} '` is missing in quantity `' varargin{3} '` in result file `' varargin{3} '`.'];
             case 93 % one input - resultfns
                 msg = ['Result file `' varargin{2} '` referenced in job file `' varargin{3} '` does not exist.'];
-            % ------------------- lut errors 120-140: %<<<2
+            % ------------------- lut errors 120-139: %<<<2
             case 120 % one input - undefined Q
-                msg = ['Quantity `' varargin{2} '` is missing in definition of LUT axes (in )`axset` parameter).'];
+                msg = ['Quantity `' varargin{2} '` is missing in definition of LUT axes in `axset` parameter).'];
             case 121 % one input - missing Q in results 
                 msg = ['Quantity `' varargin{2} '` in `rqset` parameter was not found in the results.'];
+            case 122 % two inputs - bad lut parameter, parameter value
+                msg = ['LUT parameter `' varargin{2} '` has incorrect value `' varargin{3} '`. Probably corrupted LUT data.'];
+            case 123 % 4 inputs - axset/rqset, parameter name, actual type, correct type
+                msg = ['Input `' varargin{2} '`, parameter `' varargin{3} '` has incorrect class `' varargin{4} '`, expected class is `' varargin{5} '`.'];
+            case 124 % 4 inputs - axset/rqset, parameter name, actual value, correct value
+                msg = ['Input `' varargin{2} '`, parameter `' varargin{3} '` has incorrect value `' varargin{4} '`, expected value(s) are: ' varargin{5} '.'];
+            case 125 % 2 inputs - axset/rqset, parameter name
+                msg = ['Input `' varargin{2} '`, parameter `' varargin{3} '` must be a scalar, vector LUT axes are not supported.'];
+            % ------------------- interpolation errors 140-159: %<<<2
+            case 140 % one input - lut axis name
+                msg = ['Interpolation point does not contain value for LUT axis `' varargin{2} '`.'];
+            case 141 % one input - lut axis name
+                msg = ['Value of interpolation point at axis `' varargin{2} '` must be a scalar, vector LUT axes are not supported.'];
+            case 142 % four inputs - ipoint value, lut axis name, lut axis low/high value
+                msg = ['Value `' varargin{2} '` of interpolation point `' varargin{3} '` is exceeding span of LUT axis with overrange (' varargin{4} ' to ' varargin{5} ').'];
             otherwise
                 msg = err_msg_gen(-3, errid);
                 msg_generated = 1;
@@ -1738,6 +1823,27 @@ function msg = err_msg_gen(varargin) %<<<1
 end % err_msg_gen
 
 % -------------------------------- utilities %<<<1
+function [Qs, fs, names] = get_Qs_fs_names(stru) %<<<1
+% finds all fields and subfields of supposedly Quantities and fields (x.v, y.u, etc.)
+% create a list of Qs, fs and names:
+%   Qs = {'x','x','y'}
+%   fs = {'v','u','v'}
+%   names = {'x.v','x.u','y.v'}
+    Qs = {};
+    fs = {};
+    names = {};
+
+    fQ = fieldnames(stru);
+    for j = 1:numel(fQ)
+        ff = fieldnames(stru.(fQ{j}));
+        for k = 1:numel(ff)
+            Qs{end+1} = fQ{j};
+            fs{end+1} = ff{k};
+            names{end+1} = [fQ{j} '.' ff{k}];
+        end
+    end
+end % function get_Qs_fs_names
+
 function [Q, f] = parse_Q_f(str) %<<<1
 % parse string into quantity Q and field f
 % possible strings:
