@@ -12,20 +12,8 @@ DIvar.x.v = [-5  -2   0   2   5];
 DIvar.y.v = [-5; -3; -1;  1;  3;  5];
 
 CS.verbose = 1;
-CS.unc = 'mcm';
-CS.loc = 0.6827;
-CS.cor.req = 0;
-CS.cor.gen = 0;
-CS.dof.req = 0;
-CS.dof.gen = 0;
-CS.mcm.repeats = 1e3;
-CS.mcm.verbose = 1;
-CS.mcm.method = 'singlecore';
-CS.mcm.procno = 6;
-CS.mcm.tmpdir = '.';
-CS.mcm.randomize = 1;
-CS.checkinputs = 1;
 %variationsettings:
+CS.mcm.repeats = 1e3;
 CS.var.dir = 'qwtbvarexample';
 CS.var.cleanfiles = 1;
 % CS.var.method = 'multicore';

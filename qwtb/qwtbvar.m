@@ -326,11 +326,11 @@ function varargout = qwtbvar(varargin)
             error(err_msg_gen(6)); % bad call
         end
         % check rest:
-        if ~ischar(jobfn)
+        if ~ischar(varargin{2})
             error(err_msg_gen(1)); % bad jobfn
         end
         % return job filename:
-        varargout{1} = main_cont(varargin{1});
+        varargout{1} = main_cont(varargin{2});
 
     % check mode 'job' %<<<2
     elseif strcmpi('job', deblank(varargin{1}))
@@ -502,7 +502,10 @@ end % function % qwtbvar
 
 function jobfn = main_cont(jobfn) %<<<1
     % continuation of unfinished calculation
-    job = run_calculation(jobfn);
+    job = load_job(jobfn)
+    job = run_calculations(job);
+    % finalize
+    job = finish_calculations(job);
     jobfn = job.jobfn;
 end
 
@@ -513,33 +516,11 @@ end
 
 function jobfn = main_calc(algid, datain, datainvar, calcset) %<<<1
     % setting up and starting calculation
-    % initialize variable 'job'
-    job = init_job_structure(algid, datain, datainvar, calcset);
-    % find out variation parameters and their dimensions
-    [job.varlist] = make_varlist(datain, datainvar);
-    % create calculation plan
-    [job.calcplan] = make_calculation_plan(job.varlist);
-    job.count = job.calcplan.count; % XXX casem zrusit job.count, neni potreba
-    % display number of variations/calculations:
-    disp_msg(2, num2str(job.count));
-
-    % initialize filenames and directory
-    job = init_filenames(job, calcset);
-
-    % ensure job main file exists
-    if exist(job.jobfn, 'file')
-        if calcset.var.cleanfiles
-            delete(job.jobfn)
-            disp_msg(8, job.jobfn); % job deleted
-            save('-v7', job.jobfn, 'job');
-        else % if calcset.var.cleanfiles
-            disp_msg(1, job.jobfn); % jobfn already exist
-        end % if % calcset.var.cleanfiles
-    else
-        save('-v7', job.jobfn, 'job');
-    end % if % ~exist(calcset.var.dir, 'dir')
+    job = prepare_calculations(algid, datain, datainvar, calcset);
     % do calculation
-    job = run_calculation(job);
+    job = run_calculations(job);
+    % finalize
+    job = finish_calculations(job);
     jobfn = job.jobfn;
 end
 
@@ -547,11 +528,14 @@ function lut = main_lut(jobfn, axset, rqset) %<<<1
 % setting up and starting lut compilation
     % load calculation settings:
     job = load_job(jobfn);
-    % reshape results into n-dimensional matrix
-    [ndres, ndresc] = reshape_results(job); %XXX this takes filename!
-    [job.ndaxes] = make_ndaxes(job); %XXX but this takes structure!
     % make lut
-    lut = make_lut(ndres, ndresc, job.ndaxes, job.varlist, axset, rqset);
+    % load result
+    if exist(job.fullresultfn, 'file')
+        load(job.fullresultfn);
+        lut = make_lut(job.ndres, job.ndresc, job.ndaxes, job.varlist, axset, rqset);
+    else
+        error(err_msg_gen(93, job.fullresultfn, jobfn)); % resultfns does not exist
+    end
 end % main_lut
 
 function ival = main_interp(lutfn, ipoint) %<<<1
@@ -995,7 +979,36 @@ end % function % variate_datain
 %     disp_msg(6, toc(time_start)); % all calculations finished
 % end % function % run_calculation
 
-function job = run_calculation(job) %<<<1
+function job = prepare_calculations(algid, datain, datainvar, calcset) %<<<1
+% prepare all needed for new calculation
+    % initialize variable 'job'
+    job = init_job_structure(algid, datain, datainvar, calcset);
+    % find out variation parameters and their dimensions
+    [job.varlist] = make_varlist(datain, datainvar);
+    % create calculation plan
+    [job.calcplan] = make_calculation_plan(job.varlist);
+    job.count = job.calcplan.count; % XXX casem zrusit job.count, neni potreba
+    % display number of variations/calculations:
+    disp_msg(2, num2str(job.count));
+
+    % initialize filenames and directory
+    job = init_filenames(job, calcset);
+
+    % ensure job main file exists
+    if exist(job.jobfn, 'file')
+        if calcset.var.cleanfiles
+            delete(job.jobfn)
+            disp_msg(8, job.jobfn); % job deleted
+            save('-v7', job.jobfn, 'job');
+        else % if calcset.var.cleanfiles
+            disp_msg(1, job.jobfn); % jobfn already exist
+        end % if % calcset.var.cleanfiles
+    else
+        save('-v7', job.jobfn, 'job');
+    end % if % ~exist(calcset.var.dir, 'dir')
+end % function prepare_calculations
+
+function job = run_calculations(job) %<<<1
 % calculate all variations, singlecore/multicore/multistaion processing
 % XXX full description
     % XXX use ! runmulticore from package multicore, the same in qwtb!
@@ -1003,7 +1016,7 @@ function job = run_calculation(job) %<<<1
     % run parallel processing
     % XXX check calculation settings for parallel processing
     % XXX add direct run of job qwtbvar('job', job_ids)
-    % XXX divide job_ids into chunks and run parallel calculation of function calculate_job
+    % XXX divide job_ids into chunks and run parallel calculation of function calculate_job - just use multicore
     % generate ids of jobs:
     job_ids = job.calcplan.job_ids;
     if job.calcset.var.chunks_per_proc == 0
@@ -1043,7 +1056,7 @@ function job = run_calculation(job) %<<<1
     else
         error('some results failed'); % XXX fix to stdandardized error
     end % if all(res)
-end % function job = run_calculation(job)
+end % function job = run_calculations(job)
 
 function resstat = calculate_job(job, job_ids) %<<<1
 % calculate one or more jobs designated by job_ids XXX full description
@@ -1101,6 +1114,13 @@ function job = init_job_structure(algid, datain, datainvar, calcset) %<<<1
     job.calcset = calcset;
 end % function job = init_job_structure()
 
+function job = finish_calculations(job) %<<<1
+    % reshape results into n-dimensional matrix
+    [job.ndres, job.ndresc] = reshape_results(job); %XXX this takes filename!
+    [job.ndaxes] = make_ndaxes(job); %XXX but this takes structure!
+    % save reshaped results:
+    save('-v7', job.fullresultfn, 'job');
+end % function finish_calculations
 % -------------------------------- plotting %<<<1
 function [X, Y, Z] = get_plotdata(jobfn, varx, vary, varz, consts) %<<<1
 % XXX ZASTARALE?!
@@ -1424,9 +1444,6 @@ function [ndres, ndresc] = reshape_results(job) %<<<1
             end % if job.varlist.n > 1
         end % for k = 1:numel(fs)
     end % for j = 1:numel(flds)
-
-    % save reshaped results:
-    save('-v7', job.fullresultfn, 'ndres', 'ndresc');
 end % function reshape_results()
 
 function [ndaxes] = make_ndaxes(job) %<<<1
@@ -1756,8 +1773,8 @@ function msg = err_msg_gen(varargin) %<<<1
                 msg = ['Quantity `' varargin{3} '` is not scalar.'];
             case 92 % two inputs - f, Q, resultfns
                 msg = ['Requested field `' varargin{2} '` is missing in quantity `' varargin{3} '` in result file `' varargin{3} '`.'];
-            case 93 % one input - resultfns
-                msg = ['Result file `' varargin{2} '` referenced in job file `' varargin{3} '` does not exist.'];
+            case 93 % two inputs - resultfns, jobfile
+                msg = ['Result file `' varargin{2} '` referenced in job file `' varargin{3} '` does not exist. Maybe calculations have not finished yet. Try running `qwtbvar(' char(39) 'cont' char(39) ', ' char(39) varargin{3} char(39) ')` to finish calculations.'];
             % ------------------- lut errors 120-139: %<<<2
             case 120 % one input - undefined Q
                 msg = ['Quantity `' varargin{2} '` is missing in definition of LUT axes in `axset` parameter).'];
