@@ -29,6 +29,7 @@ function varargout = qwtb(varargin)
 %   alg_info    ||2|0  || alginfo | CS   |      ||     |           |      |
 %   test        ||0|2  ||         |      |      || ID  | 'test'    |      |
 %   example     ||0|2  ||         |      |      || ID  | 'example' |      |
+%   generate    ||3|2  || DO      | DI   | CS   || ID  | 'gen'     | [DI] |
 %   addpath     ||0|2  ||         |      |      || ID  | 'addpath' |      |
 %   rempath     ||0|2  ||         |      |      || ID  | 'rempath' |      |
 %   info        ||1|2  || alginfo |      |      || ID  | 'info'    |      |
@@ -73,6 +74,14 @@ function varargout = qwtb(varargin)
             elseif strcmpi(varargin{2}, 'example')
                 % run example of the algorithm in user space
                 paths = run_alg_example(algid, paths);
+            elseif strcmpi(varargin{2}, 'gen')
+                % generates DI for using the algorithm
+                if nargin > 2
+                    datain = varargin{3};
+                else
+                    datain = struct();
+                end
+                [paths, varargout{1}, varargout{2}, varargout{3}]= run_alg_generator(algid, datain, paths);
             elseif strcmpi(varargin{2}, 'addpath')
                 % add algorithm path to path()
                 ensure_alg_path(algid, paths);
@@ -209,10 +218,6 @@ function [alginfo, paths] = get_all_alg_info(paths) %<<<1
         if is_alg_dir(algdir)
             addpath(algdir);
             tmp = alg_info();
-            % Add generator if missing
-            if ~isfield(tmp, 'generator')
-                tmp.generator = '';
-            end % XXX this is not systematic, if there are optional arguments in alginfo, there must be function check_and_gen_info or something like that
             % Add fullpath of the algorithm into info structure: 
             tmp.fullpath = algdir;
             msg = check_alginfo(tmp);
@@ -311,6 +316,7 @@ end % path_rem_all_algdirs
 
 % -------------------------------- algorithm related functions %<<<1
 function [dataout, datain, calcset, paths] = check_and_run_alg(algid, datain, calcset, paths) %<<<1
+% XXX if calcset as input into qwtb is set to [], than qwtb do not check if all quantities exists!
 % checks data, settings and calls wrapper
     % check if it is valid algorithm:
     if ~is_alg_dir(algpath(algid))
@@ -368,7 +374,6 @@ function [dataout, datain, calcset, paths] = check_and_run_alg(algid, datain, ca
         dataout = general_mcm(alginfo, datain, calcset);
     else
         % no general MCM, just call wrapper:
-        % XXX if calcset as input into qwtb is set to [], than qwtb do not check if all quantities exists!
         dataout = alg_wrapper(datain, calcset);
     end
 
@@ -417,6 +422,24 @@ function paths = run_alg_example(algid, paths) %<<<1
     end
 end % run_alg_example function
 
+function [paths, dataout, datain, calcset] = run_alg_generator(algid, datain, paths) %<<<1
+% Runs alg_generate of algorithm algid.
+    % check if it is valid algorithm:
+    if ~is_alg_dir(algpath(algid))
+        error(err_msg_gen(90, algid)); % alg not found
+    end
+    paths = ensure_alg_path(algid, paths);
+    if ~exist('alg_generator.m','file')
+        % XXX make this error?
+        disp(['QWTB: generator for algorithm `' algid '` is not implemented']);
+    else
+        % prepare standard calculation setting:
+        calcset = check_gen_calcset();
+        % call the test:
+        dataout = alg_generator(datain, calcset);
+    end % if exist
+end % run_alg_example function
+
 function [license]= show_license(algid) %<<<1
 % Display license of specified algorithm.
 % Does not alter paths.
@@ -439,9 +462,7 @@ function msg = check_alginfo(alginfo) %<<<1
 % else returns description of what is wrong
 
     % check number of fields %<<<2
-    L = length(fieldnames(alginfo));
-    % 11 fields without generator info, 12 with the generator
-    if ~(L == 11 || L == 12)
+    if ~(length(fieldnames(alginfo)) == 11)
         msg = 'some fields are missing or redundant';
 
     % check fields %<<<2
@@ -1197,23 +1218,23 @@ function [reqQ, reqQdesc, optQ, optQdesc, reqQG, reqQGdesc, optQG, optQGdesc, pa
     ind = ind(:,1);
     Qlist = transpose({Qlist{ind,1}; Qlist{ind,2}});
 
-    function coc = add_to_coc(coc, id1, value) %<<<2
-    % Matlab (contrary to GNU Octave) cannot do this operation: c{N}{end+1} on
-    % empty cell of cells (c = {}) or on non-initialized cell in a cell
-    % (c={1:L}, L < N).
-    % Therefore this stupid function/hack is required:
-        if isempty(coc)
-            tmp{1} = value;
-            coc{id1} = tmp;
-        elseif size(coc, 2) < id1;
-            tmp{1} = value;
-            coc{id1} = tmp;
-        else
-            coc{id1}{end+1} = value;
-        end
-    end
-
 end % function parse_alginfo_inputs(alginfo)
+
+function coc = add_to_coc(coc, id1, value) %<<<2
+% Matlab (contrary to GNU Octave) cannot do this operation: c{N}{end+1} on
+% empty cell of cells (c = {}) or on non-initialized cell in a cell
+% (c={1:L}, L < N).
+% Therefore this stupid function/hack is required:
+    if isempty(coc)
+        tmp{1} = value;
+        coc{id1} = tmp;
+    elseif size(coc, 2) < id1;
+        tmp{1} = value;
+        coc{id1} = tmp;
+    else
+        coc{id1}{end+1} = value;
+    end
+end
 
 function errmsg = check_Q_present(datain, alginfo, reqQ, reqQdesc, reqQG, reqQGdesc) %<<<1
 % checks if quantities present in datain meet requirements according required,
