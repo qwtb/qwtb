@@ -23,6 +23,22 @@ function varargout = qwtb(varargin)
 % 2DO remove .par from datain on output
 
 % Internal documentation %<<<1
+% Inputs/outputs scheme: %<<<2
+%   mode        ||o|i  ||   out1  | out2 | out3 || in1 | in2       | in3  |
+%   ------------||-|---||---------|------|------||-----|-----------|------|
+%   alg_info    ||2|0  || alginfo | CS   |      ||     |           |      |
+%   test        ||0|2  ||         |      |      || ID  | 'test'    |      |
+%   example     ||0|2  ||         |      |      || ID  | 'example' |      |
+%   generate    ||3|2  || DO      | DI   | CS   || ID  | 'gen'     | [DI] |
+%   addpath     ||0|2  ||         |      |      || ID  | 'addpath' |      |
+%   rempath     ||0|2  ||         |      |      || ID  | 'rempath' |      |
+%   info        ||1|2  || alginfo |      |      || ID  | 'info'    |      |
+%   license     ||1|2  || license |      |      || ID  | 'license' |      |
+%   calculate   ||3|2/3|| DO      | DI   | CS   || ID  | DI        | [CS] |
+%
+%   (o|i - number of output|input arguments, outX - output arguments, inX -
+%   input arguments, DO - dataout, DI - datain, CS - calculation settings)
+
 % paths - structure with fields: %<<<2
 %   paths.orig      - value of path() before calling qwtb
 %   paths.changed   - nonzero if value of path() was changed
@@ -58,6 +74,14 @@ function varargout = qwtb(varargin)
             elseif strcmpi(varargin{2}, 'example')
                 % run example of the algorithm in user space
                 paths = run_alg_example(algid, paths);
+            elseif strcmpi(varargin{2}, 'gen')
+                % generates DI for using the algorithm
+                if nargin > 2
+                    datain = varargin{3};
+                else
+                    datain = struct();
+                end
+                [paths, varargout{1}, varargout{2}, varargout{3}]= run_alg_generator(algid, datain, paths);
             elseif strcmpi(varargin{2}, 'addpath')
                 % add algorithm path to path()
                 ensure_alg_path(algid, paths);
@@ -292,6 +316,7 @@ end % path_rem_all_algdirs
 
 % -------------------------------- algorithm related functions %<<<1
 function [dataout, datain, calcset, paths] = check_and_run_alg(algid, datain, calcset, paths) %<<<1
+% XXX if calcset as input into qwtb is set to [], than qwtb do not check if all quantities exists!
 % checks data, settings and calls wrapper
     % check if it is valid algorithm:
     if ~is_alg_dir(algpath(algid))
@@ -395,6 +420,24 @@ function paths = run_alg_example(algid, paths) %<<<1
         % access to the example variables after end of script:
         evalin('base', 'alg_example');
     end
+end % run_alg_example function
+
+function [paths, dataout, datain, calcset] = run_alg_generator(algid, datain, paths) %<<<1
+% Runs alg_generate of algorithm algid.
+    % check if it is valid algorithm:
+    if ~is_alg_dir(algpath(algid))
+        error(err_msg_gen(90, algid)); % alg not found
+    end
+    paths = ensure_alg_path(algid, paths);
+    if ~exist('alg_generator.m','file')
+        % XXX make this error?
+        disp(['QWTB: generator for algorithm `' algid '` is not implemented']);
+    else
+        % prepare standard calculation setting:
+        calcset = check_gen_calcset();
+        % call the test:
+        dataout = alg_generator(datain, calcset);
+    end % if exist
 end % run_alg_example function
 
 function [license]= show_license(algid) %<<<1
@@ -1175,23 +1218,23 @@ function [reqQ, reqQdesc, optQ, optQdesc, reqQG, reqQGdesc, optQG, optQGdesc, pa
     ind = ind(:,1);
     Qlist = transpose({Qlist{ind,1}; Qlist{ind,2}});
 
-    function coc = add_to_coc(coc, id1, value) %<<<2
-    % Matlab (contrary to GNU Octave) cannot do this operation: c{N}{end+1} on
-    % empty cell of cells (c = {}) or on non-initialized cell in a cell
-    % (c={1:L}, L < N).
-    % Therefore this stupid function/hack is required:
-        if isempty(coc)
-            tmp{1} = value;
-            coc{id1} = tmp;
-        elseif size(coc, 2) < id1;
-            tmp{1} = value;
-            coc{id1} = tmp;
-        else
-            coc{id1}{end+1} = value;
-        end
-    end
-
 end % function parse_alginfo_inputs(alginfo)
+
+function coc = add_to_coc(coc, id1, value) %<<<2
+% Matlab (contrary to GNU Octave) cannot do this operation: c{N}{end+1} on
+% empty cell of cells (c = {}) or on non-initialized cell in a cell
+% (c={1:L}, L < N).
+% Therefore this stupid function/hack is required:
+    if isempty(coc)
+        tmp{1} = value;
+        coc{id1} = tmp;
+    elseif size(coc, 2) < id1;
+        tmp{1} = value;
+        coc{id1} = tmp;
+    else
+        coc{id1}{end+1} = value;
+    end
+end
 
 function errmsg = check_Q_present(datain, alginfo, reqQ, reqQdesc, reqQG, reqQGdesc) %<<<1
 % checks if quantities present in datain meet requirements according required,
