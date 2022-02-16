@@ -6,19 +6,29 @@ function alginfo = alg_info() %<<<1
 
 alginfo.id = 'SFDR';
 alginfo.name = 'Spurious Free Dynamic Range';
-alginfo.desc = 'Calculates Spurious Free Dynamic Range of an ADC. A FFT method with Blackman windowing is used to calculate a spectrum and SFDR is estimated in decibels relative to carrier amplitude. ADC has to sample a pure sine wave. SFDR is calculated according IEEE Std 1057-2007';
-alginfo.citation = 'Implementation: Virosztek, T., Pálfi V., Renczes B., Kollár I., Balogh L., Sárhegyi A., Márkus J., Bilau Z. T., ADCTest project site: http://www.mit.bme.hu/projects/adctest 2000-2014';
-alginfo.remarks = 'Based on the ADCTest Toolbox v4.3, November 25, 2014.';
-alginfo.license = 'UNKNOWN';
+alginfo.desc = 'Calculates Spurious Free Dynamic Range of a signal based on an amplitude spectrum.';
+alginfo.citation = 'Implementation: Martin Sira';
+alginfo.remarks = 'Samples are expected in quantity `y`, and algorithm `SP-WFFT` is used to calculate the amplitude spectrum. Alternatively a spectrum can be directly delivered in quantity `A`, use of blackman DFT window is expected.';
+alginfo.license = 'MIT';
 
 alginfo.inputs(1).name = 'y';
 alginfo.inputs(1).desc = 'Sampled values';
-alginfo.inputs(1).alternative = 0;
+alginfo.inputs(1).alternative = 1;
 alginfo.inputs(1).optional = 0;
 alginfo.inputs(1).parameter = 0;
 
-alginfo.outputs(1).name = 'SFDRdBc';
-alginfo.outputs(1).desc = 'Spurious Free Dynamic Range in decibels relative to carrier (dBc)';
+alginfo.inputs(2).name = 'A';
+alginfo.inputs(2).desc = 'Amplitude spectrum';
+alginfo.inputs(2).alternative = 1;
+alginfo.inputs(2).optional = 0;
+alginfo.inputs(2).parameter = 0;
+
+
+alginfo.outputs(1).name = 'SFDR';
+alginfo.outputs(1).desc = 'Spurious Free Dynamic Range, relative to carrier (V/V)';
+
+alginfo.outputs(2).name = 'SFDRdBc';
+alginfo.outputs(2).desc = 'Spurious Free Dynamic Range, relative to carrier, in decibel (dB)';
 
 alginfo.providesGUF = 0;
 alginfo.providesMCM = 0;
