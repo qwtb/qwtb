@@ -4,26 +4,23 @@ function dataout = alg_wrapper(datain, calcset)
 % See also qwtb
 
 % Format input data --------------------------- %<<<1
-% ProcessFFTTest definition is:
-% function testresults = ProcessFFTTest(dsc)
-dsc.data = datain.y.v;
-
-% some data required by algorithm but not affecting result:
-dsc.NoB = 10;
-dsc.name = 'tst';
-dsc.comment = {['comment']};
-dsc.model = 'MatlabSim';
-dsc.serial = 'N/A';
-dsc.channel = 1;
-dsc.simulation = 1;
+if ~isfield(datain, 'A')
+    % spectrum is missing, lets call algorithm SP-WFFT to calculate it
+    if ~isfield(datain, 'fs') || ~isfield(datain, 'Ts') || ~isfield(datain, 't')
+        % timing data is missing but required by SP-WFFT algorithm, so add
+        % something, because the actual value is irrelevant:
+        datain.fs.v = 1;
+        datain.window.v = 'blackman';
+    end
+    specDO = qwtb('SP-WFFT',datain, calcset);
+    dataout.A = specDO.A;
+end
 
 % Call algorithm ---------------------------  %<<<1
-testresults = ProcessFFTTest(dsc);
+dataout.SFDR.v = spec_to_SFDR(dataout.A.v);
+dataout.SFDRdBc.v = 20*log10(dataout.SFDR.v);
 
 % Format output data:  --------------------------- %<<<1
-% ProcessFFTTest definition is:
-% function testresults = ProcessFFTTest(dsc)
-dataout.SFDRdBc.v = testresults{1}.FFT.SFDRdBc;
 
 end % function
 
