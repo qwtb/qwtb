@@ -1599,7 +1599,7 @@ function val = interp_val(lut, w) %<<<1
 
         % return back to unlog value
         if is_log
-            data = 10^data;
+            value = 10^value;
         end
 
         % store interpolated quantity:
