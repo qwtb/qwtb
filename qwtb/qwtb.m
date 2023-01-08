@@ -432,11 +432,13 @@ function [paths, dataout, datain, calcset] = run_alg_generator(algid, datain, pa
     if ~exist('alg_generator.m','file')
         % XXX make this error?
         disp(['QWTB: generator for algorithm `' algid '` is not implemented']);
+        dataout = [];
+        calcset = [];
     else
         % prepare standard calculation setting:
         calcset = check_gen_calcset();
         % call the test:
-        dataout = alg_generator(datain, calcset);
+        [dataout, datain] = alg_generator(datain, calcset);
     end % if exist
 end % run_alg_example function
 
