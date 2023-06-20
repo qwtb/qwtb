@@ -1,0 +1,61 @@
+This is LICENSE of the NPL's Software to Support ISO/TS 28037:2010(E). It does not cover files
+alg_info.m, alg_test.m, alg_example.m, alg_wrapper.m. Files TS28037_GDR1_function.m,
+TS28037_WLS1_function.m and TS28037_WLS3_function.m are modified files and also not part of the
+following LICENSE.
+
+SOFTWARE USER LICENCE AGREEMENT
+
+This User Licence Agreement (Ref: MSC/L/15/007) is between NPL Management Ltd (here-
+inafter referred to as “NPL”) and you, the “User”, either acting on behalf of your organisation
+or yourself.
+
+It is hereby agreed that the User will be permitted to use NPL’s Software to Support ISO/TS
+28037:2010(E) (hereinafter referred to as the “Software”) free of charge for the express purpose
+of their own use in accordance with the following terms and conditions of this Agreement:
+
+Copyright
+
+Copyright ownership of the Software is vested in the Crown. The User may only
+make one copy of the Software, and any associated written material, as a back up.
+
+Performance of the Software
+
+The Software is provided “as is” without warranty of any kind. NPL will use its rea-
+sonable endeavours to resolve any reported problems found in running the Software,
+but NPL does not guarantee to fix any problems in the Software or to provide any
+updates or patches by a particular date.
+NPL further disclaims all implied warranties including, without limitation, any im-
+plied warranties of merchantability or of fitness for a particular purpose. The entire
+risk arising out of the use or performance of the Software and documentation remains
+with the User.
+
+Other Restrictions
+
+The User will not rent, lease, sublicense, transfer, resell the Software (either in whole
+or in part) or use it for commercial purposes without NPL’s prior written permission.
+
+No Liability for Consequential Damages
+
+To the maximum extent permitted by applicable law, in no event shall NPL or
+its suppliers be liable for any damages whatsoever (including, without limitation,
+damages for loss of business profits, business interruption, loss of business information
+or other pecuniary loss) arising out of the use or inability to use the Software.
+
+Assignment
+
+NPL will be fully entitled to assign or novate this Agreement to the Department of
+Business, Innovation and Skills or any party nominated by the Department.
+
+
+The User hereby understands that any use of NPL’s Software to Support ISO/TS
+28037:2010(E) (including small or unlimited use) will be entirely subject to the
+terms of this Licence Agreement.
+
+The User also understands that they will NOT make use of (or be permitted to
+gain access to) NPL’s Software to Support ISO/TS 28037:2010(E) if they are unable
+to accept and/or comply to the terms of this Licence Agreement unless a written
+agreement is obtained from NPL.
+
+
+NPL Management Ltd is a company registered in England and Wales, company number 2937881, whose
+registered office is at Hampton Road, Teddington, TW11 0LW
