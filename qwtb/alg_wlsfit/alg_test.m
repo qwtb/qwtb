@@ -48,6 +48,7 @@ DI.n.v = 1;
 
 % Call algorithm %<<<2
 CS.unc = 'guf';
+CS.verbose = 0;
 DO = qwtb('wlsfit',DI,CS);
 
 % Check results %<<<2
@@ -136,7 +137,7 @@ DI = rmfield(DI, 'w');
 % Call algorithm %<<<2
 % No y uncertainty, so CS must not be set to none:
 CS.unc = 'none';
-DO = qwtb('wlsfit',DI);
+DO = qwtb('wlsfit', DI, CS);
 
 % Check results %<<<2
 % reference values obtained by running the code itself, so it is not a real

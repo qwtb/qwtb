@@ -31,20 +31,22 @@ if isfield(datain, 'w') || ~isempty(datain.y.u)
     if isfield(datain, 'w')
         % weights defined, use them instead of uncertainties of y:
         w = datain.w.v;
+        dataout.model.v = 'Weighted Least Squares, weights based on w';
         if calcset.verbose
             disp('QWTB: wlsfit wrapper: Weights are defined -> WLS fitting will be based on weights instead of y uncertainties.')
-            dataout.model.v = 'Weighted Least Squares, weights based on w';
         end
     else
-        disp('QWTB: wlsfit wrapper: Using WLS fitting based on y uncertainties.')
-        dataout.model.v = 'Weighted Least Squares, weights based on u(y)';
         w = datain.y.u;
+        dataout.model.v = 'Weighted Least Squares, weights based on u(y)';
+        if calcset.verbose
+            disp('QWTB: wlsfit wrapper: Using WLS fitting based on y uncertainties.')
+        end
     end
 else
     WLS = 0;
+    dataout.model.v = 'Ordinary Least Squares';
     if calcset.verbose
         disp('QWTB: wlsfit wrapper: No y uncertainties nor weights -> using OLS fitting')
-        dataout.model.v = 'Ordinary Least Squares';
     end
 endif  
 
