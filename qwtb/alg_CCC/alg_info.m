@@ -46,8 +46,8 @@ alginfo.outputs(3).desc = 'Fitted values y';
 alginfo.outputs(4).name = 'func';
 alginfo.outputs(4).desc = 'Inline function constructed for exponents with parameters `x` and `coefs.v`';
 
-alginfo.outputs(4).name = 'model';
-alginfo.outputs(4).desc = 'Model used for calculation.';
+alginfo.outputs(5).name = 'model';
+alginfo.outputs(5).desc = 'Model used for calculation.';
 
 alginfo.providesGUF = 1;
 alginfo.providesMCM = 0;

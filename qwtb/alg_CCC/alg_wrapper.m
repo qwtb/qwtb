@@ -42,17 +42,18 @@ function dataout = alg_wrapper(datain, calcset)
 % Static variables  --------------------------- %<<<1
 % algorithm related: %<<<2
 % directory of this algorithm:
-curalgdir = 'alg_CCC';
+curalgdir = fileparts(mfilename('fullpath'));
+curalgdirname = 'alg_CCC';
 % possible exponents values accepted by CCC algorithm:
 possibleexps = [-5 -4 -3 -2 -1 -0.5 0 0.5 1 2 3 4 5];
 
 % executable and MCR: %<<<2
 % unix executable:
-unixbinary = ['./' curalgdir filesep 'run_CCC_SoftwareNoGUI.sh'];
+unixbinary = ['./' curalgdirname filesep 'run_CCC_SoftwareNoGUI.sh'];
 % windows executable:
-windowsbinary = [curalgdir filesep 'CCC_SoftwareNoGUI.exe'];
+windowsbinary = [curalgdirname filesep 'CCC_SoftwareNoGUI.exe'];
 % file with path to matlab runtime
-runtimepathfile = [curalgdir filesep 'path_to_matlab_runtime.txt'];
+runtimepathfile = [curalgdirname filesep 'path_to_matlab_runtime.txt'];
 % required matlab Compiler Runtime version description:
 mcr_ver = 'R2013a (8.1) 32-bit';
 % general Matlab Compiler Runtime web address:
@@ -65,9 +66,9 @@ mcr_dll = 'mclmcrrt8_1.dll';
 
 % source code handling: %<<<2
 % directory of the source code if present:
-src_code_dir = [curalgdir filesep 'CCC'];
+src_code_dir = fullfile(curalgdir, 'CCC');
 % filename of source code main function:
-src_code = [src_code_dir filesep 'CCC_SoftwareNoGUI.m'];
+src_code = fullfile(src_code_dir, 'CCC_SoftwareNoGUI.m');
 
 % error messages: %<<<2
 % missing algorithm output:
@@ -172,8 +173,8 @@ end
 % % % end
 
 % set temporary file names: %<<<2
-datafile = [curalgdir filesep 'tmp.txt'];
-outputfile = [curalgdir filesep 'tmp.res'];
+datafile = fullfile(curalgdir, 'tmp.txt');
+outputfile = fullfile(curalgdir, 'tmp.res');
 if exist(datafile, 'file') == 2
     delete(datafile);
 end
