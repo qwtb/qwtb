@@ -3,11 +3,13 @@ function alg_test(calcset) %<<<1
 %
 % See also qwtb
 
+CS.verbose = 0;
+
 % Test proper results for odd and even samples --------------------------- %<<<1
 DI.t.v = [0:1/3:1];
 DI.t.v = DI.t.v(1:end-1);
 DI.y.v = sin(2*pi*1*DI.t.v+1);
-DO = qwtb('SP-WFFT', DI);
+DO = qwtb('SP-WFFT', DI, CS);
 assert(all(abs(DO.f.v - [0 1]) < 1e-14));
 assert(all(abs(DO.A.v - [0 1]) < 1e-14));
 assert(all(abs(DO.ph.v(2) - 1) < 1e-14));
@@ -16,7 +18,7 @@ clear DI
 DI.t.v=[0:1/4:1];
 DI.t.v = DI.t.v(1:end-1);
 DI.y.v=sin(2*pi*1*DI.t.v+1);
-DO = qwtb('SP-WFFT', DI);
+DO = qwtb('SP-WFFT', DI, CS);
 assert(all(abs(DO.f.v - [0 1 2]) < 1e-14));
 assert(all(abs(DO.A.v - [0 1 0]) < 1e-14));
 assert(all(abs(DO.ph.v(2)   - 1) < 1e-14));
@@ -34,11 +36,53 @@ for i = 1:length(fnom)
     DI.y.v = DI.y.v + Anom(i).*sin(2.*pi.*fnom(i).*DI.t.v + pnom(i));
 end
 DI.y.v = DI.y.v + 2;
-DO = qwtb('SP-WFFT', DI);
+DO = qwtb('SP-WFFT', DI, CS);
 assert(all(abs(DO.A.v(1)  -   2) < 1e-14));
 assert(all(abs(DO.A.v(2)  -   1) < 1e-14));
 assert(all(abs(DO.A.v(9)  - 0.5) < 1e-14));
 assert(all(abs(DO.A.v(16) - 0.3) < 1e-14));
+
+% Test windowing - all possible windows --------------------------- %<<<1
+available_windows = {
+    'barthann', ...
+    'bartlett', ...
+    'blackman', ...
+    'blackmanharris', ...
+    'blackmannuttall', ...
+    'bohman', ...
+    'cheb', ...
+    'flattop_matlab', ...
+    'flattop_SFT3F', ...
+    'flattop_SFT4F', ...
+    'flattop_SFT5F', ...
+    'flattop_SFT3M', ...
+    'flattop_SFT4M', ...
+    'flattop_SFT5M', ...
+    'flattop_248D', ...
+    'flattop_248D', ...
+    'gaussian', ...
+    'hamming', ...
+    'hanning', ...
+    'kaiser', ...
+    'nuttall', ...
+    'parzen', ...
+    'rect', ...
+    'triang', ...
+    'tukey', ...
+    'welch', ...
+};
+
+DI.cheb_att.v = 200;
+DI.gaussian_width.v = 2;
+DI.kaiser_att.v = 1e2;
+DI.tukey_ratio.v = 1;
+for current_window = available_windows
+    DI.window.v = current_window{1};
+    DO = qwtb('SP-WFFT', DI, CS);
+    % Very crude test just to know that applied window have not generated error.
+    % Some windows (gaussian) generate large errors with nominal settings.
+    assert(DO.A.v(16) > 0.25);
+end
 
 % Test windowing - cheb window --------------------------- %<<<1
 clear DI
@@ -47,10 +91,10 @@ DI.t.v = [0 : 1/DI.fs.v : 1];
 DI.t.v = DI.t.v(1:end-1);
 DI.y.v = sin(2.*pi.*10.*DI.t.v);
 DI.window.v = 'cheb';
-DO = qwtb('SP-WFFT', DI);
+DO = qwtb('SP-WFFT', DI, CS);
 assert (abs(DO.A.v(11)   - 1) < 1e-4);
 DI.cheb_att.v = 200;
-DO = qwtb('SP-WFFT', DI);
+DO = qwtb('SP-WFFT', DI, CS);
 assert (abs(DO.A.v(11)   - 1) < 1e-7);
 
 % Test windowing - gaussian window --------------------------- %<<<1
@@ -60,10 +104,10 @@ DI.t.v = [0 : 1/DI.fs.v : 1];
 DI.t.v = DI.t.v(1:end-1);
 DI.y.v = sin(2.*pi.*10.*DI.t.v);
 DI.window.v = 'gaussian';
-DO = qwtb('SP-WFFT', DI);
+DO = qwtb('SP-WFFT', DI, CS);
 assert (abs(DO.A.v(11) - 0.956) < 1e-3)
 DI.gaussian_width.v = 2;
-DO = qwtb('SP-WFFT', DI);
+DO = qwtb('SP-WFFT', DI, CS);
 assert (abs(DO.A.v(11) - 0.385) < 1e-3)
 
 % Test windowing - kaiser window --------------------------- %<<<1
@@ -73,10 +117,10 @@ DI.t.v = [0 : 1/DI.fs.v : 1];
 DI.t.v = DI.t.v(1:end-1);
 DI.y.v = sin(2.*pi.*10.*DI.t.v);
 DI.window.v = 'kaiser';
-DO = qwtb('SP-WFFT', DI);
+DO = qwtb('SP-WFFT', DI, CS);
 assert (abs(DO.A.v(12) - 0.012) < 1e-3)
 DI.kaiser_att.v = 1e2;
-DO = qwtb('SP-WFFT', DI);
+DO = qwtb('SP-WFFT', DI, CS);
 assert (abs(DO.A.v(12) - 0.952) < 1e-3)
 
 % Test windowing - tukey window --------------------------- %<<<1
@@ -86,10 +130,10 @@ DI.t.v = [0 : 1/DI.fs.v : 1];
 DI.t.v = DI.t.v(1:end-1);
 DI.y.v = sin(2.*pi.*10.*DI.t.v);
 DI.window.v = 'tukey';
-DO = qwtb('SP-WFFT', DI);
+DO = qwtb('SP-WFFT', DI, CS);
 assert (abs(DO.A.v(12) - 0.283) < 1e-3)
 DI.tukey_ratio.v = 1;
-DO = qwtb('SP-WFFT', DI);
+DO = qwtb('SP-WFFT', DI, CS);
 assert (abs(DO.A.v(12)  - 0.5) < 1e-3)
 
 % Test windowing and zero padding --------------------------- %<<<1
@@ -100,10 +144,10 @@ DI.t.v = DI.t.v(1:end-1);
 DI.y.v = sin(2.*pi.*10.*DI.t.v);
 DI.window.v = 'cheb';
 DI.fft_padding.v = 10.*length(DI.y.v);
-DO = qwtb('SP-WFFT', DI);
+DO = qwtb('SP-WFFT', DI, CS);
 assert (abs(DO.A.v(101) -  1) < 1e-4)
 DI.cheb_att.v = 200;
-DO = qwtb('SP-WFFT', DI);
+DO = qwtb('SP-WFFT', DI, CS);
 assert (abs(DO.A.v(101) -  1) < 1e-7)
 
 % Check alternative inputs --------------------------- %<<<1
@@ -113,17 +157,17 @@ t=[0:1/fs:1];
 t = t(1:end-1);
 DI.y.v=sin(2*pi*1*t+1);
 DI.fs.v = fs;
-DO = qwtb('SP-WFFT', DI);
+DO = qwtb('SP-WFFT', DI, CS);
 assert(all(abs(DO.A.v - [0 1 0]) < 1e-14));
 
 DI = rmfield(DI, 'fs');
 DI.Ts.v = 1/fs;
-DO = qwtb('SP-WFFT', DI);
+DO = qwtb('SP-WFFT', DI, CS);
 assert(all(abs(DO.A.v - [0 1 0]) < 1e-14));
 
 DI = rmfield(DI, 'Ts');
 DI.t.v = t;
-DO = qwtb('SP-WFFT', DI);
+DO = qwtb('SP-WFFT', DI, CS);
 assert(all(abs(DO.A.v - [0 1 0]) < 1e-14));
 % 
 end % function
