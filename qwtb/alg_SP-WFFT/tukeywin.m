@@ -57,7 +57,7 @@ function w = tukeywin(m, r)
       w = ones (m, 1);
     case 1,
       % Hanning window
-      w = hanning (m);
+      w = hanning_shadow (m);
     otherwise
       % cosine-tapered window
       % split to two lines because of matlab compatibility:

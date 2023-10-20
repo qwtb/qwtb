@@ -239,9 +239,28 @@ else
                 L = L + 1;
         end
         switch win
-                case {'bartlett' 'blackman' 'blackmanharris' 'blackmannuttall' 'hamming' 'hanning' 'triang'}
+            % Because basic Matlab does not implement even basic windowing
+            % functions, relevant scripts were copied from GNU Octave.
+            % Unfortunately this generates a lot of warning messages in GNU
+            % Octave:
+            %   warning: function /.../something.m shadows a core library function
+            % Because it is hard to switch off these warnings, functions were
+            % renamed to something_shadow versions to prevent warning messages.
+                case {'blackmanharris' 'blackmannuttall' 'triang'}
                 % windows without additional argument or special treatment:
                         w = feval(win, L);
+                case 'blackman'
+                    % use local script of blackman window:
+                    w = blackman_shadow(L);
+                case 'bartlett'
+                    % use local script of bartlett window:
+                    w = bartlett_shadow(L);
+                case 'hamming'
+                    % use local script of hamming window:
+                    w = hamming_shadow(L);
+                case 'hanning'
+                    % use local script of hanning window:
+                    w = hanning_shadow(L);
                 case {'barthann' 'bohman' 'nuttall' 'parzen' 'rect' 'welch'}
                 % windows needed to add 'win' to get function name:
                         w = feval([win 'win'], L);

@@ -1,8 +1,8 @@
-function c = hanning(m)
-% -- Function File: hanning (M)
-%     Return the filter coefficients of a Hanning window of length M.
+function c = hamming_shadow(m)
+% -- Function File: hamming (M)
+%     Return the filter coefficients of a Hamming window of length M.
 %
-%     For a definition of this window type, see e.g., A. V. Oppenheim &
+%     For a definition of the Hamming window, see e.g., A. V. Oppenheim &
 %     R. W. Schafer, 'Discrete-Time Signal Processing'.
 
 % Copyright (C) 1995-2013 Andreas Weingessel
@@ -24,36 +24,36 @@ function c = hanning(m)
 % <http://www.gnu.org/licenses/>.
 
 % Author: AW <Andreas.Weingessel@ci.tuwien.ac.at>
-% Description: Coefficients of the Hanning window
+% Description: Coefficients of the Hamming window
 
   if (nargin ~= 1)
     print_usage ();
   end
 
   if not( (isscalar (m) && (m == fix (m)) && (m > 0)))
-    error ('hanning: M has to be an integer > 0');
+    error ('hamming: M has to be an integer > 0');
   end
 
   if (m == 1)
     c = 1;
   else
     m = m - 1;
-    c = 0.5 - 0.5 * cos (2 * pi * (0 : m)' / m);
+    c = 0.54 - 0.46 * cos (2 * pi * (0:m)' / m);
   end
 
 end
 
-%!assert (hanning (1), 1);
-%!assert (hanning (2), zeros (2,1));
-%!assert (hanning (16), fliplr (hanning (16)));
-%!assert (hanning (15), fliplr (hanning (15)));
+%!assert (hamming (1), 1)
+%!assert (hamming (2), (0.54 - 0.46)*ones (2,1))
+%!assert (hamming (16), fliplr (hamming (16)))
+%!assert (hamming (15), fliplr (hamming (15)))
 %!test
 %! N = 15;
-%! A = hanning (N);
-%! assert (A(ceil (N/2)), 1);
+%! A = hamming (N);
+%! assert (A (ceil (N/2)), 1);
 
-%!error hanning ()
-%!error hanning (0.5)
-%!error hanning (-1)
-%!error hanning (ones (1,4))
+%!error hamming ()
+%!error hamming (0.5)
+%!error hamming (-1)
+%!error hamming (ones (1,4))
 

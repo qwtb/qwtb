@@ -1,4 +1,4 @@
-function c = bartlett(m)
+function c = bartlett_shadow(m)
 % -- Function File: bartlett (M)
 %     Return the filter coefficients of a Bartlett (triangular) window of
 %     length M.
