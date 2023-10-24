@@ -1,5 +1,5 @@
-function [f, amp, ph, w] = ampphspectrum(y, fs, verbose, plottype, win, winparam, padding)
-% [f, amp, ph, w] = ampphspectrum (y, fs, [verbose, plottype, win, winparam, padding]
+function [f, amp, ph, noise_rms, SNR, SNRdB, NL, NLD, SD, w, NENBW, ENBW] = ampphspectrum(y, fs, verbose, plottype, win, winparam, padding)
+% [f, amp, ph, noise_rms, SNR, SNRdB, NL, NLD, SD, w, NENBW, ENBW] = ampphspectrum(y, fs, verbose, plottype, win, winparam, padding)
 %
 % Calcualtes amplitude and phase spectrum by means of discrete fourier
 % transformation of vector of sampled values |y| with sampling
@@ -32,6 +32,20 @@ function [f, amp, ph, w] = ampphspectrum(y, fs, verbose, plottype, win, winparam
 % deg - y-axis of phase spectrum is in degrees
 % rad - (nominal) y-axis of phase spectrum is in radians.
 %
+% Outputs:
+% f - vector of spectrum frequencies
+% amp - vector of spectrum amplitudes
+% ph - vector of spectrum phases
+% noise_rms = RMS noise amplitude
+% SNR - signal to noise ratio
+% SNRdB - signal to noise ratio in decibels
+% NL - average spectral noise level
+% NLD - average spectral denstity noise level
+% SD - spectral density, to get power spectral density: PSD = SD.^2;
+% w - vector of window coefficients
+% NENBW - Normalized Equivalent Noise BandWidth
+% ENBW - Effective Noise BandWidth
+%
 % Example with signal of frequency 1 Hz, sampled by 50 Hz 
 % frequency, two harmonic components at 1 and 8 Hz and one
 % interharmonic component at 15.5 Hz with various
@@ -41,10 +55,10 @@ function [f, amp, ph, w] = ampphspectrum(y, fs, verbose, plottype, win, winparam
 % x=[0:1/fs:1/fr];
 % x = x(1:end-1);
 % y=sin(2*pi*fr*x+1)+0.5*sin(2*pi*8*fr*x+2)+0.3*sin(2*pi*15.5*fr*x+3);
-% [f,amp,ph,w]=ampphspectrum(y,fs,1, 'log deg');
+% [f,amp,ph]=ampphspectrum(y,fs,1, 'log deg');
 % 
 
-% Copyright (C) 2017 Martin Šíra
+% Copyright (C) 2023 Martin Šíra
 %
 % This program is free software; you can redistribute it and/or modify
 % it under the terms of the GNU General Public License as published by
@@ -61,7 +75,7 @@ function [f, amp, ph, w] = ampphspectrum(y, fs, verbose, plottype, win, winparam
 
 % Author: Martin Šíra <msira@cmi.cz>
 % Created: 2013-02-27
-% Modified: 2019-08-05
+% Modified: 2021-10-24
 % Version: 1.5
 
 % texinfo for octave:
@@ -98,7 +112,23 @@ function [f, amp, ph, w] = ampphspectrum(y, fs, verbose, plottype, win, winparam
 % ## @item deg - y-axis of phase spectrum is in degrees,
 % ## @item rad - (nominal) y-axis of phase spectrum is in radians.
 % ## @end table
-% ## 
+% ##
+% ## Outputs:
+% ## @table @keywords
+% ## @item f - vector of spectrum frequencies
+% ## @item amp - vector of spectrum amplitudes. To get log scale: =20*log10(amp);
+% ## @item ph - vector of spectrum phases
+% ## @item noise_rms = RMS noise amplitude
+% ## @item SNR - signal to noise ratio
+% ## @item SNRdB - signal to noise ratio in decibels
+% ## @item NL - average spectral noise level
+% ## @item NLD - average spectral denstity noise level
+% ## @item SD - spectral density, to get power spectral density: PSD = SD.^2;
+% ## @item w - vector of window coefficients
+% ## @item NENBW - Normalized Equivalent Noise BandWidth
+% ## @item ENBW - Effective Noise BandWidth
+% ## @end table
+% ##
 % ## Example with signal of frequency 1 Hz, sampled by frequency 50 samples/s. Two harmonic components at 1 and 8 Hz and one
 % ## interharmonic component at 15.5 Hz with various amplitudes and phases:
 % ## 
@@ -106,7 +136,7 @@ function [f, amp, ph, w] = ampphspectrum(y, fs, verbose, plottype, win, winparam
 % ## fr=1; fs=50;
 % ## x=[0:1/fs:1/fr](1:end-1);
 % ## y=sin(2*pi*fr*x+1)+0.5*sin(2*pi*8*fr*x+2)+0.3*sin(2*pi*15.5*fr*x+3);
-% ## [f,amp,ph,w]=ampphspectrum(y,fs,1, 'log deg');
+% ## [f,amp,ph]=ampphspectrum(y,fs,1, 'log deg');
 % ## @end example
 % ## 
 % ## See demo for more detailed example.
@@ -165,7 +195,8 @@ function [f, amp, ph, w] = ampphspectrum(y, fs, verbose, plottype, win, winparam
                 w = reshape(w, size(y));
                 y = w.*y;
         end
-        normalisation_factor = sum(w);
+        normalisation_factor = sum(w);       % Normalization sum
+        normalisation_factor_sq = sum(w.^2); % Normalization sum for power spectrum
 
         % ---- zero padding ---- %<<<1
         if padding
@@ -199,6 +230,39 @@ function [f, amp, ph, w] = ampphspectrum(y, fs, verbose, plottype, win, winparam
                 f = f';
                 w = w';
         end
+
+        % ---- Noise bandwidths ---- %<<<1
+         % Normalized Equivalent Noise BandWidth:
+        NENBW = N * normalisation_factor_sq / (normalisation_factor^2);
+        % Effective Noise BandWidth:
+        ENBW = fs * normalisation_factor_sq / (normalisation_factor^2);
+
+        % ---- Amplitude spectral density ---- %<<<1
+        SD = normalisation_factor .* amp ./ sqrt(2 .* fs .* normalisation_factor_sq);
+
+        % ---- Highest peak ---- %<<<1
+        % Find amplitude, frequency and phase of highest peak. This code is not
+        % perfect, because it neglects window widening of the DC value. One way
+        % would be to calculate FFT without DC offset, but this would mean
+        % calculate second time. The second method is to get width of the
+        % window function and mask first points of the spectra. But the window
+        % functions are not ready for this.
+        % XXX 2DO finish
+        [amp_peak, id] = max(amp(3:end));
+        f_peak = f(id);
+        ph_peak = ph(id);
+
+        % ---- Noise levels ---- %<<<1
+        % average spectral density noise level:
+        NLD = median(SD);
+        % average spectral noise level:
+        NL = NLD.*sqrt(2*ENBW);
+        % RMS noise amplitude:
+        noise_rms = NLD.*sqrt(max(f));
+        % signal to noise ratio:
+        SNR = (amp_peak./sqrt(2))./noise_rms;
+        % signal to noise ratio in decibells:
+        SNRdB = 20*log10(SNR);
 
         % ---- verbose - plot ---- %<<<1
         % plot figures in the case of verbose:

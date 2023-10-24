@@ -83,6 +83,33 @@ alginfo.outputs(3).desc = 'Phase spectrum';
 alginfo.outputs(4).name = 'w';
 alginfo.outputs(4).desc = 'Window coefficients';
 
+alginfo.outputs(5).name = 'noise_rms';
+alginfo.outputs(5).desc = 'RMS noise amplitude';
+
+alginfo.outputs(6).name = 'SNR';
+alginfo.outputs(6).desc = 'Signal to noise ratio';
+
+alginfo.outputs(7).name = 'SNRdB';
+alginfo.outputs(7).desc = 'Signal to noise ratio in decibels';
+
+alginfo.outputs(8).name = 'NL';
+alginfo.outputs(8).desc = 'Average spectral noise level';
+
+alginfo.outputs(9).name = 'NLD';
+alginfo.outputs(9).desc = 'Average spectral density noise level';
+
+alginfo.outputs(10).name = 'SD';
+alginfo.outputs(10).desc = 'Spectral density';
+
+alginfo.outputs(11).name = 'w';
+alginfo.outputs(11).desc = 'Window coefficients';
+
+alginfo.outputs(12).name = 'NENBW';
+alginfo.outputs(12).desc = 'Normalized Equivalent Noise BandWidth';
+
+alginfo.outputs(13).name = 'ENBW';
+alginfo.outputs(13).desc = 'Effective Noise BandWidth';
+
 alginfo.providesGUF = 0;
 alginfo.providesMCM = 0;
 

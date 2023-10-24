@@ -150,6 +150,25 @@ DI.cheb_att.v = 200;
 DO = qwtb('SP-WFFT', DI, CS);
 assert (abs(DO.A.v(101) -  1) < 1e-7)
 
+% Test all other outputs using bartlett window --------------------------- %<<<1
+clear DI
+DI.fs.v = 1e6;
+DI.t.v = [0 : 1/DI.fs.v : 10];
+DI.t.v = DI.t.v(1:end-1);
+DI.y.v = normrnd(0, 1e-6, size(DI.t.v)) + sin(2.*pi.*10.*DI.t.v);
+DI.window.v = 'bartlett';
+DO = qwtb('SP-WFFT', DI, CS);
+assert (DO.noise_rms.v < 1e-6);
+assert (DO.SNR.v > 10^(115/20));
+assert (DO.SNR.v < 10^(125/20));
+assert (abs(DO.SNRdB.v - 120) < 5);
+assert (abs(DO.NL.v - 6.0e-10) < 0.5e-10);
+assert (abs(DO.NLD.v - 1.17e-9) <  0.01e-9);
+assert (numel(DO.A.v) == numel(DO.SD.v));
+assert (numel(DO.w.v) == numel(DI.y.v));
+assert (abs(DO.NENBW.v - 1.333333) < 1e-5);
+assert (abs(DO.ENBW.v - 0.1333333) < 1e-5);
+
 % Check alternative inputs --------------------------- %<<<1
 clear DI
 fs = 4;
