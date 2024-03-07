@@ -446,7 +446,7 @@ function varargout = qwtbvar(varargin)
         if ~ischar(vary)
             error(err_msg_gen(7)); % bad varx/vary/varz
         end
-        if ~isstruct(consts)
+        if ~isstruct(plotset)
             error(err_msg_gen(10)); % bad plotset
         end
         if nargout == 2
@@ -556,7 +556,8 @@ function [H, X, Y] = main_plot2D(do_plot, jobfn, varx, vary, consts) %<<<1
     [X, Y] = get_plotdata(jobfn, varx, vary, '', consts); % XXX consts
     % make plot or return data:
     if do_plot
-        H = plot_2D(jobfn, varx, vary, X, Y, consts); % XXX consts
+        % H = plot_2D(jobfn, varx, vary, X, Y, consts); % XXX consts (add?)
+        H = plot_2D(jobfn, varx, vary, X, Y);
     else
         H = [];
     end
@@ -1073,7 +1074,7 @@ function resstat = calculate_job(job, job_ids) %<<<1
         else
             if exist(job.resultfns{job_id}, 'file')
                 % job result exist, display message and quit
-                disp_msg(4, job.resultfns{i}); %result exist
+                disp_msg(4, job.resultfns{j}); %result exist
             else
                 % calculate
                 alginfo = qwtb();
@@ -1116,7 +1117,7 @@ end % function job = init_job_structure()
 
 function job = finish_calculations(job) %<<<1
     % reshape results into n-dimensional matrix
-    [job.ndres, job.ndresc] = reshape_results(job); %XXX this takes filename!
+    [job.ndres, job.ndresc] = reshape_results(job); %XXX this takes filename! (but now it already takes structure, so maybe old note?)
     [job.ndaxes] = make_ndaxes(job); %XXX but this takes structure!
     % save reshaped results:
     save('-v7', job.fullresultfn, 'job');
@@ -1410,6 +1411,7 @@ end % function make_lut
 function [ndres, ndresc] = reshape_results(job) %<<<1
 % load and reshape results into a n-dimensional matrix with marked axes
 % this helps for selecting data for plotting and further analysis
+% XXX issue - if only 1 variated quantity, funcion do not return ndresc and error happens
     for j = 1:numel(job.resultfns)
         % load data %<<<2
         if exist(job.resultfns{j}, 'file')
@@ -1425,6 +1427,9 @@ function [ndres, ndresc] = reshape_results(job) %<<<1
     if job.varlist.n > 1
         % reshape got sense only if more than 1 variated quantity
         ndresc = reshape(resdata, job.varlist.dimsz(:));
+    else
+        % XXX Missing line!
+        ndresc = resdata; % XXX is this one correct? I have no idea
     end % if job.varlist.n > 1
     % process all fields in resdata and make particular ndimensional matrices:
     Qs = fieldnames(resdata{1});
@@ -1441,12 +1446,21 @@ function [ndres, ndresc] = reshape_results(job) %<<<1
             if job.varlist.n > 1
                 % reshape got sense only if more than 1 variated quantity
                 ndres.(Q).(f) = reshape(tmp, job.varlist.dimsz(:));
+            else
+                %XXX missing line here!
+                ndres.(Q).(f) = tmp; % XXX is this one correct? I have no idea
             end % if job.varlist.n > 1
         end % for k = 1:numel(fs)
     end % for j = 1:numel(flds)
 end % function reshape_results()
 
 function [ndaxes] = make_ndaxes(job) %<<<1
+    % initiate variable:
+    ndaxes.values = {};
+    ndaxes.Q = {};
+    ndaxes.f = {};
+    ndaxes.names = {};
+    % construct axes:
     for j = 1:length(job.varlist.Q)
         tmp = job.datainvar.(job.varlist.Q{j}).(job.varlist.f{j});
         dims = ones(1, j);
