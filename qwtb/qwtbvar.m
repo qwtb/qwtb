@@ -872,7 +872,8 @@ function [calcplan] = make_calculation_plan(varlist) %<<<1
 
     % total number of calculations
     % (e.g. if dimension sizes of variated Q.f{1}, Q.f{2} are 2,3, than count = 6)
-    calcplan.count = prod(varlist.dimsz(:));
+    % (matlab must obtain *row* vector in second argument
+    calcplan.count = prod(varlist.dimsz(:)');
     % this is for simplification of lines in this function:
     C = calcplan.count;
     % number of variated Q.f:
@@ -907,7 +908,8 @@ function [calcplan] = make_calculation_plan(varlist) %<<<1
     calcplan.job_ids = 1:C;
     if varlist.n > 1
         % reshape got sense only if more than 1 variated quantity
-        calcplan.ndimjobids = reshape(calcplan.job_ids, varlist.dimsz(:));
+        % (matlab must obtain *row* vector in second argument
+        calcplan.ndimjobids = reshape(calcplan.job_ids, varlist.dimsz(:)');
     end % if varlist.n > 1
 end % function [calcplan] = make_calculation_plan(varlist)
 
@@ -1426,7 +1428,8 @@ function [ndres, ndresc] = reshape_results(job) %<<<1
     % (axes of ndimres are job.varlist.names)
     if job.varlist.n > 1
         % reshape got sense only if more than 1 variated quantity
-        ndresc = reshape(resdata, job.varlist.dimsz(:));
+        % (matlab must obtain *row* vector in second argument
+        ndresc = reshape(resdata, job.varlist.dimsz(:)');
     else
         % XXX Missing line!
         ndresc = resdata; % XXX is this one correct? I have no idea
@@ -1439,13 +1442,24 @@ function [ndres, ndresc] = reshape_results(job) %<<<1
         for k = 1:numel(fs)
             f = fs{k};
             if isscalar(resdata{1}.(Q).(f))
-                tmp = [[[resdata{:}].(Q)].(f)];
+                % before matlabization:
+                % tmp = [[[resdata{:}].(Q)].(f)];
+                % matlab compatible method:
+                tmp = [resdata{:}];
+                tmp = [tmp.(Q)];
+                tmp = [tmp.(f)];
             else
-                tmp = {[[resdata{:}].(Q)].(f)};
+                % before matlabization:
+                % tmp = {[[resdata{:}].(Q)].(f)};
+                % matlab compatible method:
+                tmp = [resdata{:}];
+                tmp = [tmp.(Q)];
+                tmp = {tmp.(f)};
             end % if isscalar(resdata{1}.(Q).(f))
             if job.varlist.n > 1
                 % reshape got sense only if more than 1 variated quantity
-                ndres.(Q).(f) = reshape(tmp, job.varlist.dimsz(:));
+                % (matlab must obtain *row* vector in second argument
+                ndres.(Q).(f) = reshape(tmp, job.varlist.dimsz(:)');
             else
                 %XXX missing line here!
                 ndres.(Q).(f) = tmp; % XXX is this one correct? I have no idea
@@ -1470,7 +1484,8 @@ function [ndaxes] = make_ndaxes(job) %<<<1
             dims(2) = 1;
         end
         % at least 2 dimensions!!!! XXXXXXXXXXXXXXX
-        ndaxes.values{end+1} = reshape(tmp, dims(:));
+        % second reshape argument must be row because of matlab:
+        ndaxes.values{end+1} = reshape(tmp, dims(:)');
         ndaxes.Q{end+1} = job.varlist.Q{j};
         ndaxes.f{end+1} = job.varlist.f{j};
         ndaxes.names{end+1} = job.varlist.names{j};
@@ -2124,6 +2139,112 @@ function varargout = drawEllipse(varargin)
   % return handles if required
   if nargout > 0
       varargout = {h};
+  end
+
+end
+
+
+% function  postpad copied from from octave and matlabified %<<<1
+% ########################################################################
+% ##
+% ## Copyright (C) 1994-2022 The Octave Project Developers
+% ##
+% ## See the file COPYRIGHT.md in the top-level directory of this
+% ## distribution or <https://octave.org/copyright/>.
+% ##
+% ## This file is part of Octave.
+% ##
+% ## Octave is free software: you can redistribute it and/or modify it
+% ## under the terms of the GNU General Public License as published by
+% ## the Free Software Foundation, either version 3 of the License, or
+% ## (at your option) any later version.
+% ##
+% ## Octave is distributed in the hope that it will be useful, but
+% ## WITHOUT ANY WARRANTY; without even the implied warranty of
+% ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% ## GNU General Public License for more details.
+% ##
+% ## You should have received a copy of the GNU General Public License
+% ## along with Octave; see the file COPYING.  If not, see
+% ## <https://www.gnu.org/licenses/>.
+% ##
+% ########################################################################
+% 
+% ## -*- texinfo -*-
+% ## @deftypefn  {} {} postpad (@var{x}, @var{l})
+% ## @deftypefnx {} {} postpad (@var{x}, @var{l}, @var{c})
+% ## @deftypefnx {} {} postpad (@var{x}, @var{l}, @var{c}, @var{dim})
+% ## Append the scalar value @var{c} to the vector @var{x} until it is of length
+% ## @var{l}.  If @var{c} is not given, a value of 0 is used.
+% ##
+% ## If @code{length (@var{x}) > @var{l}}, elements from the end of @var{x} are
+% ## removed until a vector of length @var{l} is obtained.
+% ##
+% ## If @var{x} is a matrix, elements are appended or removed from each row.
+% ##
+% ## If the optional argument @var{dim} is given, operate along this dimension.
+% ##
+% ## If @var{dim} is larger than the dimensions of @var{x}, the result will have
+% ## @var{dim} dimensions.
+% ## @seealso{prepad, cat, resize}
+% ## @end deftypefn
+
+function y = postpad (x, l, c, dim)
+
+  if (nargin < 2)
+    print_usage ();
+  end
+
+  if (nargin < 3 || isempty (c))
+    c = 0;
+  else
+    if (not(isscalar (c)))
+      error ("postpad: third argument must be empty or a scalar");
+    end
+  end
+
+  nd = ndims (x);
+  sz = size (x);
+  if (nargin < 4)
+    % ## Find the first non-singleton dimension.
+    % octave version:
+    % (dim = find (sz > 1, 1)) || (dim = 1);
+    % matlabified version:
+    dim = find (sz > 1, 1)
+    if isempty(dim)
+        dim = 1;
+    end
+  else
+    if (not(isscalar (dim) && dim == fix (dim) && dim >= 1))
+      error ("postpad: DIM must be an integer and a valid dimension");
+    end
+  end
+
+  if (not(isscalar (l)) || l < 0)
+    error ("postpad: second argument must be a positive scaler");
+  end
+
+  if (dim > nd)
+    sz(nd+1:dim) = 1;
+  end
+
+  d = sz(dim);
+
+  if (d == l)
+    % ## This optimization makes sense because the function is used to match
+    % ## the length between two vectors not knowing a priori is larger, and
+    % ## allow for:
+    % ##    ml = max (numel (v1), numel (v2));
+    % ##    v1 = postpad (v1, ml);
+    % ##    v2 = postpad (v2, ml);
+    y = x;
+  elseif (d >= l)
+    idx = repmat ({':'}, nd, 1);
+    idx{dim} = 1:l;
+    y = x(idx{:});
+  else
+    sz(dim) = l - d;
+    y = cat (dim, x, c(ones (sz)));
   end
 
 end

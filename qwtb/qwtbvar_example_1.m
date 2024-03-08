@@ -67,7 +67,8 @@ for j = 1:numel(x)
     ipoint.x.v = x(j);
     for k = 1:numel(y)
         ipoint.y.v = y(k);
-        ival(j, k) = qwtbvar('interp', lut, ipoint).z.v;
+        tmp = qwtbvar('interp', lut, ipoint);
+        ival(j, k) = tmp.z.v;
     end
 end
 mesh(ival)
