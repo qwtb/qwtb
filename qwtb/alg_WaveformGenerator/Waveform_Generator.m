@@ -142,7 +142,7 @@ if ~strcmp(src.fMod.type,'')
                 src.fMod.f,...
                 signal.time(acquis.n+1:acquis.N),...
                 src.fMod.ncycle);
-endif
+end
 % harmonics:
 srcth.freq = src.harm.rank'.*srcth.freq;
 
@@ -157,7 +157,7 @@ if ~strcmp(src.phaMod.type,'')
                 src.phaMod.f,...
                 signal.time(acquis.n+1:acquis.N),...
                 src.phaMod.ncycle);
-endif
+end
 % harmonics:
 signalpha = repmat(signalpha, [length(src.harm.rank), 1]);
 
@@ -172,7 +172,7 @@ if ~strcmp(src.magMod.type,'')
                 src.magMod.f,...
                 signal.time(acquis.n+1:acquis.N),...
                 src.magMod.ncycle);
-endif
+end
 % harmonics:
 srcth.mag = src.harm.mag'./src.harm.mag(1).*srcth.mag;
 
@@ -188,7 +188,7 @@ for i = 1:length(src.harm.rank)           %corrected sync
         signal.y = signal.y + srcth.mag(i,:) .* cos(phase + signalpha(i,:)*pi/180);
         %Instantaneous phase not wrapped        
         srcth.pha(i,:) = phase*180/pi+signalpha(i,:);  
-endfor
+end
 
 % --- Generatation of interharmonics %<<<1
 if length(src.inter.freq)>= 1
@@ -197,8 +197,8 @@ if length(src.inter.freq)>= 1
                         2*pi*src.inter.freq(i) * signal.time...
                         + src.inter.pha(i)*2*pi/360 ...
                         );
-        endfor
-endif
+        end
+end
 
 % --- Generation of white noise %<<<1
 signal.y = signal.y + src.noise * randn(1, length(signal.time));
@@ -222,8 +222,8 @@ j = 1;
 for i = src.harm.rank
         ref.harmmag(i, :) = srcth.mag(j, ref.index);
         ref.harmpha(i, :) = srcth.pha(j, ref.index);
-        j++;
-endfor
+        j = j + 1;
+end
 
 % srcth.freq/mag/pha should also contain only main component
 % to keep compatibility with previous versions
@@ -252,7 +252,7 @@ srcth.thd_k1 = sqrt(sum(src.harm.mag(2:end).^2))./src.harm.mag(1);
 if isempty(srcth.thd_k1)
         % in the case of missing higher harmonics:
         srcth.thd_k1 = 0;
-endif
+end
 
 ref.thd_k1 = srcth.thd_k1;
 
