@@ -1638,12 +1638,22 @@ end % function interp_val
 
 % -------------------------------- unified message/error functions %<<<1
 function disp_msg(varargin) %<<<1
+    persistent isOctave
+    if isempty(isOctave)
+        isOctave = exist('OCTAVE_VERSION') ~= 0;
+    end
     % generates display message, so all messages are at one place and visually unified
 
     % escape codes for colours:
-    ANSIwhiteonred = [char(27) '[37;41;1m'];
-    ANSInormal = [char(27) '[0m'];
-    ANSIwhiteongreen = [char(27) '[37;42;1m'];
+    if isOctave
+        ANSIwhiteonred = [char(27) '[37;41;1m'];
+        ANSInormal = [char(27) '[0m'];
+        ANSIwhiteongreen = [char(27) '[37;42;1m'];
+    else
+        ANSIwhiteongreen = '<strong>';
+        ANSIwhiteonred = '<strong>';
+        ANSInormal = '</strong>';
+    end
 
     try
         switch varargin{1}
@@ -1671,7 +1681,6 @@ function disp_msg(varargin) %<<<1
         end % switch
     catch ERR
         % try to catch index out of bound error, i.e. not enough input arguments (varargin out of bounds):
-        isOctave = exist('OCTAVE_VERSION') ~= 0;
         if isOctave
             if strcmpi(ERR.identifier, 'Octave:index-out-of-bounds')
                 % throw internal QWTB error:
@@ -1700,6 +1709,11 @@ function msg = err_msg_gen(varargin) %<<<1
     % negative - QWTBVAR internal errors, just continued negative integer sequence
     % 0 - empty output (no error)
     % positive - user errors
+
+    persistent isOctave
+    if isempty(isOctave)
+        isOctave = exist('OCTAVE_VERSION') ~= 0;
+    end
 
     % check inputs: %<<<2
     if (nargin < 1)
@@ -1830,7 +1844,6 @@ function msg = err_msg_gen(varargin) %<<<1
         end %>>>2
     catch ERR
         % try to catch index out of bound error, i.e. not enough input arguments (varargin out of bounds):
-        isOctave = exist('OCTAVE_VERSION') ~= 0;
         if isOctave
             if strcmpi(ERR.identifier, 'Octave:index-out-of-bounds')
                 % throw internal QWTB error:
@@ -2210,7 +2223,7 @@ function y = postpad (x, l, c, dim)
     % octave version:
     % (dim = find (sz > 1, 1)) || (dim = 1);
     % matlabified version:
-    dim = find (sz > 1, 1)
+    dim = find (sz > 1, 1);
     if isempty(dim)
         dim = 1;
     end
