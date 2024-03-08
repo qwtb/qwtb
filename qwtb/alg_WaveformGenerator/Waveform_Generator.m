@@ -132,7 +132,7 @@ srcth.time = signal.time;
 
 % --- Frequency of source %<<<1
 % fundamental:
-srcth.freq = ones(src.harm.rank, acquis.N) * src.f0;
+srcth.freq = ones(1, acquis.N) * src.f0;
 if ~strcmp(src.fMod.type,'')
         % source waveform frequency is modulated:
         srcth.freq(acquis.n+1:acquis.N) = modulate(...
