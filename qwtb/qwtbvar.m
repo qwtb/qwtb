@@ -1276,7 +1276,7 @@ function [Q, unc] = get_variable(data, Qn, fn, Q, unc, resfn) %<<<1
     end
     % check size of data to plot:
     if ~isscalar(tmpQ.v)
-        error(err_msg_gen(91, [Qn '.' fn])); % var not scalar
+        error(err_msg_gen(91, Qn, fn)); % var not scalar
     end
 
     if isfield(tmpQ, fn)
