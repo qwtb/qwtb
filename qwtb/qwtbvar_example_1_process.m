@@ -1,4 +1,4 @@
-function [DO, DI, CS] = qwtbvar_example_process(DI, CS)
+function [DO, DI, CS] = qwtbvar_example_1_process(DI, CS)
 % calculates hyperparaboloid
 % input quantities: x, y, a, b
 

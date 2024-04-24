@@ -100,30 +100,36 @@ function varargout = qwtbvar(varargin)
 % Internal documentation:  %<<<1
 
 % Inputs/outputs scheme: %<<<2
-%   mode        |o|i|   out1  | out2  | out3  | out4  |  in1     | in2   | in3   | in4       | in5     | in6    |
-%   ------------|-|-|---------|-------|-------|-------|----------|-------|-------|-----------|---------|--------|
-%   continue    |1|2|   jobfn |       |       |       | 'cont'   | jobfn |       |           |         |        |
+%   mode        |o|i|   out1  | out2  | out3  | out4  ||  in1     | in2   | in3   | in4       | in5     | in6    |
+%   ------------|-|-|---------|-------|-------|-------||----------|-------|-------|-----------|---------|--------|
+%   continue    |1|2|   jobfn |       |       |       || 'cont'   | jobfn |       |           |         |        |
 %
-%   do job      |1|3|   jobfn |       |       |       | 'job'    | jobfn | jobids|           |         |        | %XXX add to help
+%   do job      |1|3|   jobfn |       |       |       || 'job'    | jobfn | jobids|           |         |        | %XXX add to help
 %
-%   calculate   |1|4|   jobfn |       |       |       | 'calc'   | algid | datain| datainvar |         |        | %XXX add this possibility
-%   calculate   |1|5|   jobfn |       |       |       | 'calc'   | algid | datain| datainvar | calcset |        |
+%   calculate   |1|4|   jobfn |       |       |       || 'calc'   | algid | datain| datainvar |         |        | %XXX add this possibility
+%   calculate   |1|5|   jobfn |       |       |       || 'calc'   | algid | datain| datainvar | calcset |        |
 %
-%   make LUT    |1|3|   lutfn |       |       |       | 'lut'    | jobfn | axset | rqset     |         |        | %XXX add to help
+%   make LUT    |1|3|   lutfn |       |       |       || 'lut'    | jobfn | axset | rqset     |         |        | %XXX add to help
 %
-%   interp LUT  |1|3|   lutfn |       |       |       | 'interp' | lutfn | ax    |           |         |        | %XXX add to help
+%   interp LUT  |1|3|   lutfn |       |       |       || 'interp' | lutfn | ax    |           |         |        | %XXX add to help
 %
-%   2D plot     |-|4|   -     | -     | -     | -     | 'plot2D' | jobfn | varx  | vary      |         |        |
-%   2D plot     |-|5|   -     | -     | -     | -     | 'plot2D' | jobfn | varx  | vary      | consts  |        |
-%   2D plot     |1|-|   H     |       |       |       | -        | -     | -     | -         | -       |        |
-%   2D plot     |2|-|   x     | y     |       |       | -        | -     | -     | -         | -       |        |
-%   2D plot     |3|-|   H     | x     | y     |       | -        | -     | -     | -         | -       |        |
+%   get results |3|2|   ndres | ndresc| ndaxes|       || 'result' | jobfn |                         return whole ndres/ndresc/ndaxes, returns cells if needed
+%   get results |3|3|   ndres | ndresc| ndaxes|       || 'result' | jobfn | consts                  return slices, returns cells if needed
 %
-%   3D plot     |-|5|   H     | -     | -     | -     | 'plot3D' | jobfn | varx  | vary      | varz    |
-%   3D plot     |-|6|   H     | -     | -     | -     | 'plot3D' | jobfn | varx  | vary      | varz    | consts |
-%   3D plot     |1|-|   H     |       |       |       | -        | -     | -     | -         | -       | -      |
-%   3D plot     |3|-|   x     | y     | z     |       | -        | -     | -     | -         | -       | -      |
-%   3D plot     |4|-|   H     | x     | y     | z     | -        | -     | -     | -         | -       | -      |
+            % XXX obsolete %   get results |3|4|   ndres | ndresc| ndaxes|       || 'result' | jobfn | consts| varx      | vary    |        |        | return only requested variables, warn if insufficient consts, should be able to take in 's.v(1,5)'
+            % XXX obsolete %  get results |3|5|   ndres | ndresc| ndaxes|       || 'result' | jobfn | consts| varx      | vary    | varz   |        | return only requested variables, warn if insufficient consts
+%
+%   2D plot     |-|4|   -     | -     | -     | -     || 'plot2D' | jobfn | varx  | vary      |         |        |
+%   2D plot     |-|5|   -     | -     | -     | -     || 'plot2D' | jobfn | varx  | vary      | consts  |        |
+%   2D plot     |1|-|   H     |       |       |       || -        | -     | -     | -         | -       |        |
+%   2D plot     |2|-|   x     | y     |       |       || -        | -     | -     | -         | -       |        |
+%   2D plot     |3|-|   H     | x     | y     |       || -        | -     | -     | -         | -       |        |
+%
+%   3D plot     |-|5|   H     | -     | -     | -     || 'plot3D' | jobfn | varx  | vary      | varz    |
+%   3D plot     |-|6|   H     | -     | -     | -     || 'plot3D' | jobfn | varx  | vary      | varz    | consts |
+%   3D plot     |1|-|   H     |       |       |       || -        | -     | -     | -         | -       | -      |
+%   3D plot     |3|-|   x     | y     | z     |       || -        | -     | -     | -         | -       | -      |
+%   3D plot     |4|-|   H     | x     | y     | z     || -        | -     | -     | -         | -       | -      |
 %
 %   (o|i - number of output|input arguments, outX - output arguments, inX -
 %   input arguments, H - handle to output figure)
@@ -144,7 +150,8 @@ function varargout = qwtbvar(varargin)
 % job.varlist       - structure with list of variated quantities, see lower
 % job.calcplan      - structure with calculation plan, see lower
 
-% job - list of variated quantities %<<<3
+% job.varlist - list of variated quantities %<<<3
+%  Needed to create job.calcplan.
 %   List of variated quantities:
 % .varlist.Q{}      - list of quantity names to be variated
 %                       Example: 'a','a','x','y'
@@ -163,11 +170,11 @@ function varargout = qwtbvar(varargin)
 %                    dimsz = [2 3]; prod() of this denotes number of
 %                    variations)
 %                       Example: [2 3 5 6]
-% .varlist.n        - number of parameters to variate (numel(.Q), that is
-%                     the same as numel(.f) or numel(.names))
+% .varlist.n        - number of parameters to variate (numel(job.varlist.Q), that is
+%                     the same as numel(job.varlist.f) or numel(job.varlist.names))
 %                       Example: 4
 
-% job - calculation plan %<<<3
+% job.calcplan - calculation plan %<<<3
 % (values for particular calculation jobs)
 % .calcplan.count        - number of calculations
 %                           Example: 180 (=2*3*5*6)
@@ -239,7 +246,7 @@ function varargout = qwtbvar(varargin)
 % .calcplan.XXXaxes.f    - axes of meshgrid
 % .calcplan.XXXaxes.names   - axes of meshgrid
 % Description of the resulting n-dimensional matrices
-% ndres.Q.f             - n-dimensional matrix, only if output quantity Q.f was scalar
+% ndres.Q.f             - n-dimensional matrix, not only if output quantity Q.f was scalar
 % % XXX add:
 % ndres.<Q>
 % ndres.<f>
@@ -308,7 +315,7 @@ function varargout = qwtbvar(varargin)
 % -------------------------------- main function %<<<1
 % main qwtbvar function %<<<1
 % parse input parameters, make basic type checks of inputs and run sub function
-% main_something
+% called main_something.
     % check basic things %<<<2
     if nargin < 2
         % always at least 2 input arguments are required
@@ -420,6 +427,21 @@ function varargout = qwtbvar(varargin)
         % return interpolated value(s):
         varargout{1} = main_interp(lutfn, ipoint);
 
+    % check mode 'result' %<<<2
+    elseif strcmpi('result', deblank(varargin{1}))
+        % returns ndres, ndresc, ndaxes
+        if nargin == 2
+            % return all results
+            jobfn = varargin{2};
+            [varargout{1}, varargout{2}, varargout{3}] = main_result(jobfn, []);
+        elseif nargin == 3
+            % return results sliced according consts
+            jobfn = varargin{2};
+            consts = varargin{3};
+            [varargout{1}, varargout{2}, varargout{3}] = main_result(jobfn, consts);
+        else
+            error(err_msg_gen(6)); % bad call
+        end
     % check mode 'plot2D' %<<<2
     elseif strcmpi('plot2D', deblank(varargin{1}))
         % plotting of 2D data
@@ -427,12 +449,12 @@ function varargout = qwtbvar(varargin)
             jobfn = varargin{2};
             varx = varargin{3};
             vary = varargin{4};
-            plotset = check_gen_plotset();
+            consts = [];
         elseif nargin == 5
             jobfn = varargin{2};
             varx = varargin{3};
             vary = varargin{4};
-            plotset = check_gen_plotset(varargin{5});
+            consts = varargin{5};
         else
             error(err_msg_gen(6)); % bad call
         end
@@ -446,13 +468,13 @@ function varargout = qwtbvar(varargin)
         if ~ischar(vary)
             error(err_msg_gen(7)); % bad varx/vary/varz
         end
-        if ~isstruct(plotset)
-            error(err_msg_gen(10)); % bad plotset
+        if ~isstruct(consts)
+            error(err_msg_gen(10)); % bad consts
         end
         if nargout == 2
-            [tmp, varargout{1}, varargout{2}] = main_plot2D(0, jobfn, varx, vary, plotset);
+            [tmp, varargout{1}, varargout{2}] = main_plot(0, jobfn, varx, vary, [], consts);
         else
-            [varargout{1}, varargout{2}, varargout{3}] = main_plot2D(1, jobfn, varx, vary, plotset);
+            [varargout{1}, varargout{2}, varargout{3}] = main_plot(1, jobfn, varx, vary, [], consts);
         end
 
     % check mode 'plot3D' %<<<2
@@ -463,13 +485,13 @@ function varargout = qwtbvar(varargin)
             varx = varargin{3};
             vary = varargin{4};
             varz = varargin{5};
-            plotset = check_gen_plotset();
+            consts = [];
         elseif nargin == 6
             jobfn = varargin{2};
             varx = varargin{3};
             vary = varargin{4};
             varz = varargin{5};
-            plotset = check_gen_plotset(varargin{6});
+            consts = varargin{6};
         else
             error(err_msg_gen(6)); % bad call
         end
@@ -490,9 +512,9 @@ function varargout = qwtbvar(varargin)
             error(err_msg_gen(10)); % bad consts
         end
         if nargout == 3
-            [tmp, varargout{1}, varargout{2}, varargout{3}] = main_plot3D(0, jobfn, varx, vary, varz, plotset);
+            [tmp, varargout{1}, varargout{2}, varargout{3}] = main_plot(0, jobfn, varx, vary, varz, consts);
         else
-            [varargout{1}, varargout{2}, varargout{3}, varargout{4}] = main_plot3D(1, jobfn, varx, vary, varz, plotset);
+            [varargout{1}, varargout{2}, varargout{3}, varargout{4}] = main_plot(1, jobfn, varx, vary, varz, consts);
         end
     else % unknown mode %<<<2
         % checking value of mode (first argument) failed
@@ -528,14 +550,10 @@ function lut = main_lut(jobfn, axset, rqset) %<<<1
 % setting up and starting lut compilation
     % load calculation settings:
     job = load_job(jobfn);
+    % load final result
+    job = load_final_result(job);
     % make lut
-    % load result
-    if exist(job.fullresultfn, 'file')
-        load(job.fullresultfn);
-        lut = make_lut(job.ndres, job.ndresc, job.ndaxes, job.varlist, axset, rqset);
-    else
-        error(err_msg_gen(93, job.fullresultfn, jobfn)); % resultfns does not exist
-    end
+    lut = make_lut(job.ndres, job.ndresc, job.ndaxes, job.varlist, axset, rqset);
 end % main_lut
 
 function ival = main_interp(lutfn, ipoint) %<<<1
@@ -550,28 +568,75 @@ function ival = main_interp(lutfn, ipoint) %<<<1
     ival = interp_val(lut, w);
 end % function main_interp
 
-function [H, X, Y] = main_plot2D(do_plot, jobfn, varx, vary, consts) %<<<1
-% plotting of 2D data
-    % get data to plot:
-    [X, Y] = get_plotdata(jobfn, varx, vary, '', consts); % XXX consts
-    % make plot or return data:
+function [ndres_out, ndresc_out, ndaxes_out] = main_result(jobfn, consts, varx, vary, varz) %<<<1
+    % load calculation settings:
+    job = load_job(jobfn);
+    % load final result
+    job = load_final_result(job);
+
+    % if ( isempty(consts) && isempty(varx) ) XXX outdated
+    if ( isempty(consts) && isempty(varx) )
+        % if no constants defined, just return whole result:
+        ndres_out = job.ndres;
+        ndresc_out = job.ndresc;
+        ndaxes_out = job.ndaxes;
+    % elseif isempty(varx) %XXX outdated
+    else
+        % Make slice based on consts:
+        [ndresc_out, ndaxes_out] = slice_ndresc_and_ndaxes(job, consts);
+        ndres_out = CoS_to_SoC(ndresc_out);
+    end % if isempty(consts)
+    % Squeezing of the data is not performed to keep values of all axes.
+end % function main_result
+
+function [H, X, Y, Z] = main_plot(do_plot, jobfn, varx, vary, varz, consts) %<<<1
+% getting data for 2D plot and/or plotting of 2D data
+    % load job file:
+    job = load_job(jobfn);
+    % load final job file with results:
+    job = load_final_result(job);
+    % Remove varx/vary from consts:
+    % (E.g. user supply varx in consts, but he wants dependence on varx so it
+    % has to be removed from consts otherwise the slicing would do too much work)
+    to_remove = {varx};
+    if not(isempty(varz))
+        to_remove{end+1} = vary;
+    end
+    consts_fixed = remove_Q_f(consts, to_remove);
+    % slice out matrices:
+    [ndresc_sliced, ndaxes_sliced] = slice_ndresc_and_ndaxes(job, consts_fixed);
+    % XXX warning if constst do not slice fully for 2D/3D, warning here or
+    % somewhere else
+    [ndres_sliced] = CoS_to_SoC(ndresc_sliced);
+    % Get constant names:
+    [~, ~, constnames] = get_Qs_fs_names(consts_fixed);
+    % Check that consts covers all remaining axes
+    [d] = setdiff(job.varlist.names, constnames);
+    if not(isempty(d))
+        % XXX add PROPER warning that data will be concatenated!
+        % XXX Does not trigger properly. even if data should be concatenated, the
+        % message is not shown. or if all axes are covered, the message is
+        % shown.
+        % warning('CONCATENATION of the data')
+    end % if
+
+    % Get plot data:
+    [X, Y, Z] = get_plot_data(job, ndres_sliced, ndresc_sliced, ndaxes_sliced, varx, vary, varz);
+
+    % Create string for title
+    plottitle = sprintf('%s\n%s', jobfn, consts_to_string(consts_fixed));
+
+    % Make plot or return data:
     if do_plot
-        % H = plot_2D(jobfn, varx, vary, X, Y, consts); % XXX consts (add?)
-        H = plot_2D(jobfn, varx, vary, X, Y);
+        if isempty(varz)
+            % H = plot_2D(jobfn, varx, vary, X, Y, consts); % XXX consts (add?)
+            H = plot_2D(jobfn, X, Y, plottitle);
+        else
+            H = plot_3D(jobfn, X, Y, Z, plottitle);
+        end % if isempty(varz)
     else
         H = [];
     end
-end
-
-function [H, X, Y, Z] = main_plot3D(do_plot, jobfn, varx, vary, varz, consts) %<<<1
-        % get data to plot:
-        [X, Y, Z] = get_plotdata(jobfn, varx, vary, varz, consts); % XXX consts
-        % make plot or return data:
-        if do_plot
-            H = plot_3D(jobfn, varx, vary, varz, X, Y, Z, consts); % XXX consts
-        else
-            H = [];
-        end
 end
 
 % -------------------------------- check input data %<<<1
@@ -691,11 +756,6 @@ function calcset = check_gen_calcset(varargin) %<<<1
         calcset.var.chunks_per_proc = 1;
     end
 end % function % check_gen_calcset
-
-function plotset = check_gen_plotset(plotset) %<<<1
-    plotset = struct();
-    warning('FINISH ME')
-end % function plotset = check_gen_plotset
 
 function axset = check_gen_axset(axset) %<<<1
 % check input structure axset - lut axis settings
@@ -939,49 +999,6 @@ function datainout = variate_datain(job, calcno) %<<<1
     end % for
 end % function % variate_datain
 
-% function job = run_calculation(job) %<<<1
-% XXX ZASTARALE
-% % calculate all variations
-%     % load data for calculation
-%     job = load_job(job);
-%
-%     alginfo = qwtb();
-%     is_qwtb_alg = 1;
-%     if ~any(strcmp({alginfo.id}, job.algid))
-%         % it is not qwtb algorithm, but function
-%         is_qwtb_alg = 0;
-%     end
-%
-%     % make variation calculation %<<<2
-%     time_start = tic();
-%     for i = 1:job.count
-%         % variate quantitites:
-%         DI = variate_datain(job, i);
-%         disp_msg(3, i, job.count, job.resultfns{i}); % calculating result no
-%         if exist(job.resultfns{i}, 'file')
-%             disp_msg(4, job.resultfns{i}); %result exist
-%         else % if exist(job.resultfns{i})
-%             if is_qwtb_alg
-%                 % call QWTB:
-%                 [DO, DI, CS] = qwtb(job.algid, DI, job.calcset);
-%             else
-%                 % call user function:
-%                 [DO, DI, CS] = feval(job.algid, DI, job.calcset);
-%             end
-%             % do not check qwtb inputs somewhere?!! XXX
-%             if job.calcset.var.smalloutput
-%                 % remove large data from quantities (Q.c and Q.r)
-%                 DI = remove_c_r_fields(DI);
-%                 DO = remove_c_r_fields(DO);
-%             end % if % job.calcset.var.smalloutput
-%             save('-v7', job.resultfns{i}, 'DO', 'DI', 'CS');
-%             disp_msg(5, job.resultfns{i}) % result saved
-%         end % if % exist(job.resultfns{i})
-%     end % for % i = 1:job.count
-%     % display final message
-%     disp_msg(6, toc(time_start)); % all calculations finished
-% end % function % run_calculation
-
 function job = prepare_calculations(algid, datain, datainvar, calcset) %<<<1
 % prepare all needed for new calculation
     % initialize variable 'job'
@@ -1118,228 +1135,313 @@ function job = init_job_structure(algid, datain, datainvar, calcset) %<<<1
 end % function job = init_job_structure()
 
 function job = finish_calculations(job) %<<<1
-    % reshape results into n-dimensional matrix
-    [job.ndres, job.ndresc] = reshape_results(job); %XXX this takes filename! (but now it already takes structure, so maybe old note?)
-    [job.ndaxes] = make_ndaxes(job); %XXX but this takes structure!
-    % save reshaped results:
+    % load results
+    resdata = load_result_files(job);
+    % reshape results into n-dimensional matrix and create axes:
+    [job.ndres, job.ndresc, job.ndaxes] = reshape_results_create_ndaxes(job, resdata);
+    % save final reshaped results:
     save('-v7', job.fullresultfn, 'job');
 end % function finish_calculations
+
 % -------------------------------- plotting %<<<1
-function [X, Y, Z] = get_plotdata(jobfn, varx, vary, varz, consts) %<<<1
-% XXX ZASTARALE?!
-% loads and extracts all data needed for plotting
-
-        % initialize %<<<2
-        % prepare output variables
-        X.v = [];
-        X.u = [];
-        Y.v = [];
-        Y.u = [];
-        Z.v = [];
-        Z.u = [];
-        % prepare uncertainty settings:
-        xunc = 0; % plot x uncertainties?
-        yunc = 0; % plot y uncertainties?
-        zunc = 0; % plot z uncertainties?
-
-        % parse input variables %<<<2
-        [Qx, fx] = parse_Q_f(varx);
-        if isempty(fx)
-            % if field was missing, plot .v with .u
-            fx = 'v';
-            xunc = 1;   % do uncertainties
-        end % if % isempty(fx)
-        [Qy, fy] = parse_Q_f(vary);
-        if isempty(fy)
-            % if field was missing, plot .v with .u
-            fy = 'v';
-            yunc = 1;   % do uncertainties
-        end % if % isempty(fy)
-        if isempty(varz)
-            Qz = []; fz = [];   % only 2D data required
-            % (there is [] and not '' because field with empty string is valid
-            % and can be constructed: a.('') = 5. However isfield(a,[]) results
-            % in 0 and that is ok.
-        else
-            [Qz, fz] = parse_Q_f(varz);
-            if isempty(fz)
-                % if field was missing, plot .v with .u
-                fz = 'v';
-                zunc = 1;   % do uncertainties
-            end % if % isempty(fz)
-        end % if % isempty(varz)
-
-        % load job file: %<<<2
-        job = load_job(jobfn);
-
-        % get results data %<<<2
-        % go through all jobs. this is not ideal method! improve! %XXX
-        % (because what if some jobs have variated other parameters? but the
-        % other outputs can be affected also! and this will now show in the
-        % figure as multiple results for single x)
-        % it should be done in this way to look at calcplan.Q and load only required values
-        for i = 1:length(job.resultfns)
-            % load data %<<<2
-            if exist(job.resultfns{i}, 'file')
-                resdata = load(job.resultfns{i});
-            else
-                error(err_msg_gen(93, job.resultfns{i}, jobfn)); % resultfns does not exist
-            end % if
-            % check if values of constants in the result data are the required
-            % ones:
-            if check_plot_constants(resdata, consts)
-                % get variables
-                [X, xunc] = get_variable(resdata, Qx, fx, X, xunc, job.resultfns{i});
-                [Y, yunc] = get_variable(resdata, Qy, fy, Y, yunc, job.resultfns{i});
-                if ~isempty(varz)
-                    % varz only if required: %<<<2
-                    [Z, zunc] = get_variable(resdata, Qz, fz, Z, zunc, job.resultfns{i});
-                end % if % ~isempty(vary)
-            end % check_plot_constants(resdat, consts)
-        end % for % i = 1:length(job.resultfns)
-
-        % clear possible partial uncertainties %<<<2
-        % (if uncertainty was not found in some job result, it was disabled)
-        if ~xunc
-            X.u = [];
-        end % if % ~xunc
-        if ~yunc
-            Y.u = [];
-        end % if % ~yunc
-        if ~zunc
-            Z.u = [];
-        end % if % ~zunc
-           
-end % function % get_plotdata;
-
-function H = plot_2D(jobfn, varx, vary, X, Y) %<<<1
+function H = plot_2D(jobfn, X, Y, plottitle) %<<<1
 % plots 2D figure with possible x/y/xy errorbars
 % returns handle to the figure
-        figure
-        hold on
-        if isempty(X.u) && isempty(Y.u)
-            H = plot(X.v, Y.v, '-xb');
+
+    % format data
+    x = squeeze(X.v(:));
+    y = squeeze(Y.v(:));
+    xu = squeeze(X.u(:));
+    yu = squeeze(Y.u(:));
+
+    % Plotting
+    figure
+    hold on
+    if isempty(xu) && isempty(yu)
+        H = plot(x, y, '-xb');
+    else
+        if isempty(yu)
+            H = errorbar(x, y, xu, ">rx-");
+            set(Hc(1),'color','r'); % change color of data
+            set(Hc(2),'color','g'); % change color of errorbars
+        elseif isempty(xu)
+            H = errorbar(x, y, yu, "~rx-");
+            Hc = get(H, 'Children');
+            set(Hc(1),'color','r'); % change color of data
+            set(Hc(2),'color','g'); % change color of errorbars
         else
-            if isempty(Y.u)
-                H = errorbar(X.v, Y.v, X.u, ">rx-");
-                set(Hc(1),'color','r'); % change color of data
-                set(Hc(2),'color','g'); % change color of errorbars
-            elseif isempty(X.u)
-                H = errorbar(X.v, Y.v, Y.u, "~rx-");
-                Hc = get(H, 'Children');
-                set(Hc(1),'color','r'); % change color of data
-                set(Hc(2),'color','g'); % change color of errorbars
-            else
-                % errorbar is making cluttered figures, ellipses are better
-                % H = errorbar(X.v, Y.v, X.u, Y.u, "~>rx-");
-                drawEllipse(X.v, Y.v, X.u, Y.u, 'g-', 'HandleVisibility', 'off');
-                H = plot(X.v, Y.v, 'x-r');
-            end % if
-            % set blue color of the main line (uncertainties will stay red):
-        end % if % isempty(X.u) && isempty(Y.u)
-        % add labels
-        xlabel(varx, 'interpreter', 'none');
-        ylabel(vary, 'interpreter', 'none');
-        title(jobfn, 'interpreter', 'none');
-        hold off
+            % errorbar is making cluttered figures, ellipses are better
+            % H = errorbar(x, y, xu, yu, "~>rx-");
+            drawEllipse(x, y, xu, yu, 'g-', 'HandleVisibility', 'off');
+            H = plot(x, y, 'x-r');
+        end % if
+        % set blue color of the main line (uncertainties will stay red):
+    end % if % isempty(xu) && isempty(yu)
+    % add labels
+    xlabel(X.lbl, 'interpreter', 'none');
+    ylabel(Y.lbl, 'interpreter', 'none');
+    title(plottitle, 'interpreter', 'none');
+    hold off
+    % consts into title XXX
 end % function % plot_2D
 
-function H = plot_3D(jobfn, varx, vary, varz, X, Y, Z) %<<<1
+function H = plot_3D(jobfn, X, Y, Z, plottitle) %<<<1
 % plots 3D figure with possible x/y/z errorbars % XXX not working yet
 % returns handle to the figure
 % XXX no idea how to plot 3D surface plots with x uncertainties, only by
 % using multilines in single plot
-    H = scatter3(X.v, Y.v, Z.v, [], Z.v);
-    % add labels
-    xlabel(varx, 'interpreter', 'none');
-    ylabel(vary, 'interpreter', 'none');
-    zlabel(varz, 'interpreter', 'none');
-    title(jobfn, 'interpreter', 'none');
+
+    % Remove singleton dimensions
+    X.v = squeeze(X.v);
+    Y.v = squeeze(Y.v);
+    Z.v = squeeze(Z.v);
+
+    % Fix axis dimensions to be ready for plotting
+    % From surface help: "rows (Z) must be the same as length (Y) and columns
+    % (Z) must be the same as length (X)"
+    nX = numel(X.v);
+    nY = numel(Y.v);
+    s1 = size(Z.v, 1);
+    s2 = size(Z.v, 2);
+    s3 = size(Z.v, 3);
+    if (nX == s1 && nY == s2)
+        tmp = X;
+        X = Y;
+        Y = tmp;
+        % X.v = X.v(:);
+        % Y.v = Y.v(:)';
+    elseif (nX == s2 && nY == s1)
+        % all ok
+    else
+        error('bad dimensions of matrix to plot') % XXX improve error
+    end
+
+    % Make mesh and plot
+    figure
+    [XX, YY] = meshgrid(X.v, Y.v);
+    H = mesh(XX, YY, Z.v);
+
+    % Add plot labels
+    xlabel(X.lbl, 'interpreter', 'none');
+    ylabel(Y.lbl, 'interpreter', 'none');
+    zlabel(Z.lbl, 'interpreter', 'none');
+    title(plottitle, 'interpreter', 'none');
 end % function % plot_3D
 
-function [Q, unc] = get_variable(data, Qn, fn, Q, unc, resfn) %<<<1
-% Finds variable in loaded job result data, checks dimensions and adds them to
-% the accumulator
-% data - content of job result
-% Qn - string with quantitiy name
-% fn - string, name of quantity field
-% Q - struct, accumulator for quantity values
-% unc - numeric, if uncertainty will be displayed or not
-% resfn - filename of actual job result
-    % find Q in input or output cells: %<<<2
-    if isfield(data.DI, Qn)
-        tmpQ = data.DI.(Qn);
-    elseif isfield(data.DO, Qn)
-        tmpQ = data.DO.(Qn);
-    else
-        error(err_msg_gen(90, [Qn '.' fn], resfn)); % var not found in output data.
-    end
-    % check size of data to plot:
-    if ~isscalar(tmpQ.v)
-        error(err_msg_gen(91, Qn, fn)); % var not scalar
-    end
+function [X, Y, Z] = get_plot_data(job, ndres_sliced, ndresc_sliced, ndaxes_sliced, varx, vary, varz) %<<<1
+% Obtains data for plotting from defined ndres, ndaxes and
+% job.datain/job.datainvar.
+% Outputs data in plotting form, i.e. shape of data is in vectors.
+% Outputs also neded labels if variables were not scalar.
 
-    if isfield(tmpQ, fn)
-        % get fields
-        % XXX this expects correct dimensions of Q, but if user function is
-        % failed, this results in incomprehensible error
-        Q.v(end+1) = tmpQ.(fn);
-        if unc && isfield(tmpQ, 'u')
-            % get uncertainty only if exist and is required
-            % XXX this expects correct dimensions of Q, but if user
-            % function is failed, this results in incomprehensible error
-            Q.u(end+1) = tmpQ.u;
+    % initialize %<<<2
+    % prepare output variables
+    X.v = [];
+    X.u = [];
+    X.lbl = [];
+    Y.v = [];
+    Y.u = [];
+    Y.lbl = [];
+    Z.v = [];
+    Z.u = [];
+    Z.lbl = [];
+    % prepare uncertainty settings:
+    % (uncertainty bars is not the same as uncertainty! user could ask for
+    % plotting uncertainty as the main value! - i.e. dependence of y.u on x.u)
+    xuncbar = 0; % plot uncertainty bars for x?
+    yuncbar = 0; % plot uncertainty bars for y?
+    zuncbar = 0; % plot uncertainty bars for z?
+
+    % Parse input variables %<<<2
+    % User input can be only 'Q', then Q.v will be plotted.
+    [Qx, fx] = parse_Q_f(varx);
+    % If .f not supplied, select value (.v):
+    if isempty(fx)
+        % if field was missing, plot .v with .u
+        fx = 'v';
+        varx = [Qx '.v'];
+        xuncbar = 1;   % do uncertainty bars
+    end % if % isempty(fx)
+    if strcmp(fx, 'u')
+        xuncbar = 0;
+    end
+    [Qy, fy] = parse_Q_f(vary);
+    if isempty(fy)
+        % if field was missing, plot .v with .u
+        fy = 'v';
+        vary = [Qy '.v'];
+        yuncbar = 1;   % do uncertainty bars
+    end % if % isempty(fy)
+    if strcmp(fy, 'u')
+        yuncbar = 0;
+    end
+    if isempty(varz)
+        Qz = []; fz = [];   % only 2D data required
+        % (there is [] and not '' because field with empty string is valid
+        % and can be constructed: a.('') = 5. However isfield(a,[]) results
+        % in 0 and that is ok.
+        zuncbar = 0;
+    else
+        [Qz, fz] = parse_Q_f(varz);
+        if isempty(fz)
+            % if field was missing, plot .v with .u
+            fz = 'v';
+            varz = [Qz '.v'];
+            zuncbar = 1;   % do uncertainty bars
+        end % if % isempty(fz)
+        if strcmp(fz, 'u')
+            zuncbar = 0;
+        end
+    end % if % isempty(varz)
+
+    % Get varx %<<<2
+    % Check if varx is in varied data, i.e. ndaxes:
+    % (find the axis)
+    tmp = find(strcmp(ndaxes_sliced.names, varx));
+    if not(isempty(tmp))
+        % varx is in ndaxes:
+        X.v = ndaxes_sliced.values{tmp};
+        X.dim = tmp;
+        % Take uncertainties from datainvar
+        % What if uncertainties are varied? how to find proper value?
+        % if uncertainty is in ndaxes, take proper value from sliced. if not, it
+        % is constant and take from datain
+        if xuncbar
+            % XXX FINISH ME! missing xuncbars!
+            X.u = [];
+        end % if
+        % 2DO XXXXXXXXX
+    else
+        % Check if varx is in datain:
+        var_in_DI = 0;
+        if isfield(job.datain, Q)
+            if isfield(job.datain.(Q), fx)
+                 % Results are not varied by this dimension. User asks for constant axis.
+                 % Add some warning? XXX
+                X.v = job.datain.(Q).(f);
+                var_in_DI = 1;
+                X.dim = 0;
+                if xuncbar
+                    if isfield(job.datain.(Q), 'u');
+                        X.u = job.datain.(Q).u;
+                    else
+                        X.u = [];
+                    end % if
+                end % if
+            end % if
+        end % if
+        if not(var_in_DI)
+            % Variable not found in ndaxes nor in datain
+            error(err_msg_gen(90, varx, job.fullresultfn)); % var not found in input data.
+        end % if
+    end % if
+
+    % Get vary %<<<2
+    if isempty(varz)
+        % vary should be in output data:
+        if not(isfield(ndresc_sliced{1}, Qy))
+            error(err_msg_gen(90, [Qy '.' fy], job.fullresultfn)); % var not found in output data.
+            if not(isfield(ndresc_sliced{1}.(Qy), fy))
+                error(err_msg_gen(90, [Qy '.' fy], job.fullresultfn)); % var not found in output data.
+            end % if
+        end % if
+        Y.v = ndres_sliced.(Qy).(fy); % XXX ndres or ndresc?
+        if yuncbar
+            if isfield(ndres_sliced.(Qy), 'u');
+                Y.u = ndres_sliced.(Qy).u;
+            else
+                Y.u = [];
+            end
+        end
+    else % if isempty(varz)
+        % Check if vary is in varied data, i.e. ndaxes:
+        tmp = find(strcmp(ndaxes_sliced.names, vary));
+        if not(isempty(tmp))
+            % vary is in ndaxes:
+            Y.v = ndaxes_sliced.values{tmp};
+            % Take uncertainties from datainvar
+            % are uncertainties varied? how to find proper value?
+            if yuncbar
+                % XXX finish me
+                Y.u = [];
+            end % if
+            % 2DO XXXXXXXXX
         else
-            % disable getting of uncertainties:
-            unc = 0; % XXX make a message about it to the user!
-        end % if % unc
-    else
-        error(err_msg_gen(92, fn, Qn, resfn)); % var is missing field
-    end % if % isfield(tmpQ, f)
-end % function [Q, unc] = get_variable(data, Qn, fn, Q, unc, resfn) %<<<1
+            % Check if variable is in datain:
+            if isfield(job.datain, Qy)
+                if isfield(job.datain.(Qy), fy)
+                    Y.v = job.datain.(Qy).(fy);
+                    if xuncbar
+                        Y.u = job.datain.(Qy).u;
+                    end % if
+                end % if
+            else
+                % Variable not found
+                error(err_msg_gen(90, varx, job.fullresultfn)); % var not found in input data.
+            end % if
+        end % if
+    end % if isempty(varz)
 
-function valid = check_plot_constants(resdata, consts) %<<<1
-% Finds quantities from 'consts' in job results data 'resdata' and finds if
-% values are the same. Usefull for selecting data for plotting.
-    % suppose job result data are valid:
-    valid = 1;
-    constnames = fieldnames(consts);
-    DInames = fieldnames(resdata.DI);
-    % loop through all constants and all result quantities
-    for j = 1:numel(constnames)
-        for k = 1:numel(DInames)
-            % check if consant exist in result quantity
-            if strcmp(constnames{j}, DInames{k})
-                % check if value should be compared
-                if isfield(constnames{j}, 'v')
-                    % if constant contains value, but result quantity do not
-                    % contains value, result is not valid
-                    if ~isfield(DINames{k}, 'v')
-                        valid = 0;
-                    else
-                        % check actual number of value:
-                        if ~(constnames{j}.v ~= DInames{k})
-                            valid = 0;
-                        end
-                    end
-                end % if isfield(constnames{j}, 'v')
-                % check if uncertainty should be compared
-                if isfield(constnames{j}, 'u')
-                    % if constant contains uncertainty, but result quantity do not
-                    % contains uncertainty, result is not valid
-                    if ~isfield(DINames{k}, 'u')
-                        valid = 0;
-                    else
-                        % check actual number of uncertainty:
-                        if ~(constnames{j}.v ~= DInames{k})
-                            valid = 0;
-                        end
-                    end
-                end % if isfield(constnames{j}, 'u')
-            end % if strcmp(constnames{j}, DInames{k})
-        end % for k = 1:numel(DInames)
-    end % for j = 1:numel(constnames)
-end % function check_plot_constants
+    % Get varz %<<<2
+    if not(isempty(varz))
+        % varz should be in output data:
+        if not(isfield(ndresc_sliced{1}, Qz))
+            error(err_msg_gen(90, [Qz '.' fz], job.fullresultfn)); % var not found in output data.
+            if not(isfield(ndresc_sliced{1}.(Qz), fz))
+                error(err_msg_gen(90, [Qz '.' fz], job.fullresultfn)); % var not found in output data.
+            end % if
+        end % if
+        Z.v = ndres_sliced.(Qz).(fz); % XXX ndres or ndresc?
+        if zuncbar
+            % XXX FINISH ME
+            % Z.u = ndres_sliced.(Qz).u;
+            Z.u = [];
+        end
+    end % if not(isempty(varz))
+
+    % Add labels %<<<2
+    X.lbl = varx;
+    Y.lbl = vary;
+    Z.lbl = varz;
+
+    % Check:
+    if isempty(varz)
+        if not(prod(size(X.v)) == prod(size(Y.v)))
+            % XXX this needs better descriptions:
+            warning('Numel of axes does not correspond with data matrix') % - XXX this is the same warning as the "CONCATENATION of the data"
+        end
+    else
+        if not(prod(size(X.v))*prod(size(Y.v)) == prod(size(Z.v)))
+            % XXX this needs better descriptions:
+            warning('Numel of axes does not correspond with data matrix') % - XXX this is the same warning as the "CONCATENATION of the data"
+        end
+    end % if isempty(varz)
+
+end % function ndresc_to_variables()
+
+function constsstr = consts_to_string(consts) %<<<1
+% Creates string with consts values to be used in a plot title.
+    constsstr = '';
+    Qs = fieldnames(consts);
+    for j = 1:numel(Qs)
+        Q = Qs{j};
+        fs = fieldnames(consts.(Q));
+        for k = 1:numel(fs)
+            f = fs{k};
+            if isscalar(consts.(Q).(f))
+                valuestr = sprintf('%g', consts.(Q).(f));
+            else
+                valuestr = sprintf('[%g, %g', consts.(Q).(f)(1), consts.(Q).(f)(2));
+                if numel(consts.(Q).(f)) > 2
+                    valuestr = [valuestr '...'];
+                else
+                    valuestr = [valuestr ']'];
+                end % if
+            end % if isscalar
+            constsstr = sprintf('%s\n%s.%s=%s', constsstr, Q, f, valuestr);
+        end % for k
+    end % for j
+end % function constsstr = consts_to_string(consts)
 
 % -------------------------------- LUT %<<<1
 function [lut] = make_lut(ndres, ndresc, ndaxes, varlist, axset, rqset) %<<<1
@@ -1410,87 +1512,85 @@ function [lut] = make_lut(ndres, ndresc, ndaxes, varlist, axset, rqset) %<<<1
     lut.rq_f = rqset_fs;
 end % function make_lut
 
-function [ndres, ndresc] = reshape_results(job) %<<<1
-% load and reshape results into a n-dimensional matrix with marked axes
-% this helps for selecting data for plotting and further analysis
-% XXX issue - if only 1 variated quantity, funcion do not return ndresc and error happens
-    for j = 1:numel(job.resultfns)
-        % load data %<<<2
-        if exist(job.resultfns{j}, 'file')
-            tmp = load(job.resultfns{j});
-            resdata{j} = tmp.DO;
-            % DI is not saved into results, this could save a lot of space
-        else
-            error(err_msg_gen(93, job.resultfns{j}, jobfn)); % resultfns does not exist
-        end % if
-    end % for j = 1:job.resultfns
-    % reshape results to ndim matrix:
+function [ndres, ndresc, ndaxes] = reshape_results_create_ndaxes(job, resdata) %<<<1
+% Reshape results into a n-dimensional matrices and create axes of the matrices.
+% This helps for selecting data for plotting and further analysis
+%
+% ndres is structure with Q.f, where .f is matrix for scalar outputs or cell for nonscalar outputs)
+%
+% ndresc is cell with structures Q.f, where .f is scalar/matrix according to the
+% output
+
+    % create n-dimensional cell %<<<2
+    % Get only output data:
+    for j = 1:numel(resdata)
+        ndresc{j} = resdata{j}.DO;
+    end
+    % Reshape results to proper size
+    % If only 1 variated quantity, no reshaping needed.
     % (axes of ndimres are job.varlist.names)
     if job.varlist.n > 1
         % reshape got sense only if more than 1 variated quantity
         % (matlab must obtain *row* vector in second argument
-        ndresc = reshape(resdata, job.varlist.dimsz(:)');
-    else
-        % XXX Missing line!
-        ndresc = resdata; % XXX is this one correct? I have no idea
+        % XXX what if reshape do not reshape according ndaxis created elsewhere?
+        % dimsz should ensure it!? or not?
+        ndresc = reshape(ndresc, job.varlist.dimsz(:)');
     end % if job.varlist.n > 1
-    % process all fields in resdata and make particular ndimensional matrices:
-    Qs = fieldnames(resdata{1});
-    for j = 1:numel(Qs)
-        Q = Qs{j};
-        fs = fieldnames(resdata{1}.(Q));
-        for k = 1:numel(fs)
-            f = fs{k};
-            if isscalar(resdata{1}.(Q).(f))
-                % before matlabization:
-                % tmp = [[[resdata{:}].(Q)].(f)];
-                % matlab compatible method:
-                tmp = [resdata{:}];
-                tmp = [tmp.(Q)];
-                tmp = [tmp.(f)];
-            else
-                % before matlabization:
-                % tmp = {[[resdata{:}].(Q)].(f)};
-                % matlab compatible method:
-                tmp = [resdata{:}];
-                tmp = [tmp.(Q)];
-                tmp = {tmp.(f)};
-            end % if isscalar(resdata{1}.(Q).(f))
-            if job.varlist.n > 1
-                % reshape got sense only if more than 1 variated quantity
-                % (matlab must obtain *row* vector in second argument
-                ndres.(Q).(f) = reshape(tmp, job.varlist.dimsz(:)');
-            else
-                %XXX missing line here!
-                ndres.(Q).(f) = tmp; % XXX is this one correct? I have no idea
-            end % if job.varlist.n > 1
-        end % for k = 1:numel(fs)
-    end % for j = 1:numel(flds)
-end % function reshape_results()
+    % convert ndresc to structure of cells:
+    ndres = CoS_to_SoC(ndresc);
 
-function [ndaxes] = make_ndaxes(job) %<<<1
-    % initiate variable:
-    ndaxes.values = {};
-    ndaxes.Q = {};
-    ndaxes.f = {};
-    ndaxes.names = {};
-    % construct axes:
-    for j = 1:length(job.varlist.Q)
-        tmp = job.datainvar.(job.varlist.Q{j}).(job.varlist.f{j});
-        dims = ones(1, j);
-        dims(end) = numel(tmp);
-        % because reshape requires at least two dimensions as input:
-        if numel(dims) < 2
-            dims(2) = 1;
-        end
-        % at least 2 dimensions!!!! XXXXXXXXXXXXXXX
-        % second reshape argument must be row because of matlab:
-        ndaxes.values{end+1} = reshape(tmp, dims(:)');
-        ndaxes.Q{end+1} = job.varlist.Q{j};
-        ndaxes.f{end+1} = job.varlist.f{j};
-        ndaxes.names{end+1} = job.varlist.names{j};
-    end
-end % function [ndaxes] = make_ndaxes(job)
+    % Create ndaxes %<<<2
+    % Structure ndaxes holds information on axes of n-dimensional matrices.
+    % Add names, Q, f (copy of job.varlist):
+    ndaxes.names = job.varlist.names;
+    ndaxes.Q = job.varlist.Q;
+    ndaxes.f = job.varlist.f;
+    % Suppose all axes are scalar:
+    allaxesscalar = 1;
+    % Go trhough all variated quantities:
+    for j = 1:numel(job.varlist.dimsz)
+        % Actual variated quantity:
+        Q = ndaxes.Q{j};
+        f = ndaxes.f{j};
+        % Prepare slice according dimension of actual variated quantity:
+        C = repmat({1},1,ndims(job.calcplan.ndimjobids));
+        C{j} = ':';
+        % Make slice. idxs contains indexes of results where ony one quantity
+        % was varied. This will be used to copy values of variated quantities.
+        % (ndaxes could have been created during calculate_job subfunction, but
+        % this way is more safe because it takes actual results)
+        idxs = job.calcplan.ndimjobids(C{:});
+        % Suppose actual axis is scalar:
+        isscalaraxis = 1;
+        % Go through all values of actually variated quantity/axis
+        for k = 1:numel(idxs)
+            % Assign value of axis:
+            ndaxes.valuesc{j}{k} = resdata{idxs(k)}.DI.(Q).(f);
+            % Check if axis is still purely scalar:
+            if not(all(size(ndaxes.valuesc{j}{k}) == 1))
+                isscalaraxis = 0;
+            end % if
+        end % for k = 1:numel(idx)
+        % Resize axis into proper dimension (first axis to first dimension
+        % etc.):
+        C = repmat({1}, 1, ndims(job.calcplan.ndimjobids));
+        C{j} = job.varlist.dimsz(j);
+        ndaxes.valuesc{j} = reshape(ndaxes.valuesc{j}, C{:});
+        % If actual axis is not scalar, than all axes are not scalar:
+        if not(isscalaraxis)
+            allaxesscalar = 0;
+        else
+            % If scalar axis, convert cell to simple matrix:
+            % (this keep dimensions)
+            ndaxes.values{j} = cell2mat(ndaxes.valuesc{j});
+        end % if
+    end % for j = 1:numel(job.varlist.dimsz)
+
+    % XXX Create n-dimensional matrices %<<<2
+    % CoS_to_SoC(ndaxes.valuesc); XXX tohle nefunguje protoze ta funkce je jen
+    % pro Q.f strukturu!
+
+end % function reshape_results()
 
 % -------------------------------- interpolation %<<<1
 function w = interp_weights(lut, ipoint) %<<<1
@@ -1498,11 +1598,11 @@ function w = interp_weights(lut, ipoint) %<<<1
 
     % dimensions of the results (use first result quantity from LUT):
     adims = size(lut.rq.(lut.rq_Q{1}).(lut.rq_f{1}).val);
-        
+
     % create interpolation weigth matrix:
     %  note: at this point same weight for all axes
     w = ones(adims);
-    
+
     % for each LUT axis:
     for a = 1:numel(lut.ax_names);
         % actual LUT axis setup:
@@ -1774,7 +1874,7 @@ function msg = err_msg_gen(varargin) %<<<1
             case 9 % one input - mode
                 msg = ['Unknown mode (first argument) `' varargin{2} '`. Please read QWTBVAR documentation.'];
             case 10
-                msg = 'Input `plotset` must be a valid structure. PLease read QWTBVAR documentation.';
+                msg = 'Input `consts` must be a valid structure. PLease read QWTBVAR documentation.';
             case 11
                 msg = 'Input `axset` must be a valid structure. Please read QWTBVAR documentation.';
             case 12
@@ -1815,7 +1915,7 @@ function msg = err_msg_gen(varargin) %<<<1
             case 91 % one input - algid
                 msg = ['Quantity `' varargin{3} '` is not scalar.'];
             case 92 % two inputs - f, Q, resultfns
-                msg = ['Requested field `' varargin{2} '` is missing in quantity `' varargin{3} '` in result file `' varargin{3} '`.'];
+                % This number is empty
             case 93 % two inputs - resultfns, jobfile
                 msg = ['Result file `' varargin{2} '` referenced in job file `' varargin{3} '` does not exist. Maybe calculations have not finished yet. Try running `qwtbvar(' char(39) 'cont' char(39) ', ' char(39) varargin{3} char(39) ')` to finish calculations.'];
             % ------------------- lut errors 120-139: %<<<2
@@ -1892,15 +1992,17 @@ function [Qs, fs, names] = get_Qs_fs_names(stru) %<<<1
     fs = {};
     names = {};
 
-    fQ = fieldnames(stru);
-    for j = 1:numel(fQ)
-        ff = fieldnames(stru.(fQ{j}));
-        for k = 1:numel(ff)
-            Qs{end+1} = fQ{j};
-            fs{end+1} = ff{k};
-            names{end+1} = [fQ{j} '.' ff{k}];
+    if not(isempty(stru))
+        fQ = fieldnames(stru);
+        for j = 1:numel(fQ)
+            ff = fieldnames(stru.(fQ{j}));
+            for k = 1:numel(ff)
+                Qs{end+1} = fQ{j};
+                fs{end+1} = ff{k};
+                names{end+1} = [fQ{j} '.' ff{k}];
+            end
         end
-    end
+    end % if not(isempty(stru))
 end % function get_Qs_fs_names
 
 function [Q, f] = parse_Q_f(str) %<<<1
@@ -1947,6 +2049,27 @@ function job = load_job(job) %<<<1
     end % if % isstruct(job)
     % XXX what if job is not struct nor string. where is job checked?
 end % function % load_job(job)
+
+function job = load_final_result(job) %<<<1
+% loads data from file with final result
+    if not(exist(job.fullresultfn, 'file'))
+        error(err_msg_gen(93, jobfn, jobfn)); % resultfns does not exist
+    end % if
+    % load result
+    load(job.fullresultfn);
+end % function resdata = load_final_result(job)
+
+function resdata = load_result_files(job) %<<<1
+% loads all particular results into resdata cell of structures
+    for j = 1:numel(job.resultfns)
+        % load data
+        if exist(job.resultfns{j}, 'file')
+            resdata{j} = load(job.resultfns{j});
+        else
+            error(err_msg_gen(93, job.resultfns{j}, jobfn)); % resultfns does not exist
+        end % if
+    end % for j = 1:job.resultfns
+end % function resdata = load_result_files(job)
 
 function lut = load_lut(lut) %<<<1
 % if input is string, loads lut file. if input is lut structure, do nothing.
@@ -2021,6 +2144,129 @@ function job = init_filenames(job, calcset) %<<<1
     % generate main job file name
     job.jobfn = fullfile(calcset.var.dir, [calcset.var.fnprefix '_QV_job.mat']);
 end % function init_filenames(calcset)
+
+function [ndresc_slice, ndaxes_out] = slice_ndresc_and_ndaxes(job, consts) %<<<1
+    % make slice of a n-dimensional cell of results according constants in the
+    % consts structure.
+
+    % const.names must exist, be correct, nonrepeating
+    % const.values must be one value of actual axis
+
+    % XXX maybe fix ndaxes_out and remove axes that were used in slicing? or
+    % only set values to which the axes were sliced?
+
+    if isempty(consts)
+        ndresc_slice = job.ndresc;
+        ndaxes_out = job.ndaxes;
+    else
+        % Convert consts Q and f into strings with relevant values.
+        constsnames = {};
+        constsvalues = {};
+        constsQs = fieldnames(consts);
+        for j = 1:numel(constsQs)
+            constsfs = fieldnames(consts.(constsQs{j}));
+            for k = 1:numel(constsfs)
+                constsnames{end+1} = [constsQs{j} '.' constsfs{k}]; % composed quantity.field
+                constsvalues{end+1} = consts.(constsQs{j}).(constsfs{k});
+            end % for k
+        end % for j
+        % Now constsnames contains Q.fs as strings, and constsvalues contains
+        % relevant values.
+
+        % Create intial structure with dimension indexes and parameters for the
+        % subsref function:
+        idx.type = "()";
+        idx.subs = repmat({":"}, 1, ndims(job.ndresc));
+
+        % Prepare output axes that will match sliced matrix:
+        ndaxes_out = job.ndaxes;
+
+        % Go through Q.f in consts and try to find matching axis and related
+        % axis value to fill out idx structure for subsref slicing function.
+        [axname, constindex, axisindex] = intersect(constsnames, job.ndaxes.names);
+        % For all axes that are same for const and axis:
+        for j = 1:numel(axisindex) % axisindex and constindex got same sizes
+            % Index of actual axis:
+            actual_axis_id = axisindex(j);
+            % Get actual axis:
+            actual_axis = squeeze(job.ndaxes.valuesc{actual_axis_id});
+            % Actual value of actual axis where slice will be taken from constants:
+            slice_at_axis_value = constsvalues{constindex(j)};
+            % Now find value for actual axis equal to value in consts:
+            for actual_axis_value_id = 1:numel(actual_axis)
+                % Get actual value of actual axis:
+                actual_axis_value = actual_axis{actual_axis_value_id};
+                % For all values in axis
+                % check if sizes match:
+                if all( size(actual_axis_value) == size(slice_at_axis_value) )
+                    % check if values match:
+                    % This compares double to double!
+                    if all(all( actual_axis_value == slice_at_axis_value ))
+                        % Set index of actual axis(dimension) to proper value of
+                        % actual axis to make a slice at:
+                        idx.subs{actual_axis_id} = actual_axis_value_id;
+                        % Set new values of axes for output:
+                        ndaxes_out.valuesc{actual_axis_id} = ndaxes_out.valuesc{actual_axis_id}(actual_axis_value_id);
+                    end % if
+                end % if
+            end % for actual_axis_value_id = 1:numel(actual_axis)
+        end % for j = 1:numel(IB)
+
+        % Now make slice of the n-dimensional matrix
+        ndresc_slice = subsref(job.ndresc, idx);
+
+    end % if isempty(consts)
+end % function ndresc_slice = slice_ndresc(ndresc, consts)
+
+function [stru_out] = remove_Q_f(stru, Qfcell) %<<<1
+% remove Q.f from structure. Q.f is in input Qfcell, that is cell of
+% strings.
+    stru_out = stru;
+    if not(isempty(stru))
+        Qs = fieldnames(stru);
+        for j = 1:numel(Qs)
+            Q = Qs{j};
+            fs = fieldnames(stru.(Qs{j}));
+            for k = 1:numel(fs)
+                f = fs{k};
+                if any(strcmp([Q '.' f], Qfcell))
+                    stru_out.(Q) = rmfield(stru_out.(Q), f);
+                end % if
+            end % for k
+            % Check if some fields are left in current Q, if not, remove
+            % whole Q:
+            if isempty( fieldnames(stru_out.(Q)) )
+                stru_out = rmfield(stru_out, Q);
+            end % if
+        end % for j
+    end % if not(isempty(stru))
+end % function remove_Q_f
+
+function [SoC] = CoS_to_SoC(CoS); %<<<1
+% converts cell of structures CoS (e.g. job.ndresc) with quantities and fields
+% to a structure of quantities and fields with values/cells SoC (e.g.
+% job.ndres). If structure in SoC is scalar, than cell is converted to matrix of
+% appropriate size.
+    % sizes of cells:
+    sz = size(CoS);
+    Qs = fieldnames(CoS{1});
+    for j = 1:numel(Qs)
+        Q = Qs{j};
+        fs = fieldnames(CoS{1}.(Q));
+        for k = 1:numel(fs)
+            f = fs{k};
+            % (in two lines because of matlab:)
+            tmp = [CoS{:}];
+            tmp = [tmp.(Q)];
+            tmp = {tmp.(f)};
+            SoC.(Q).(f) = reshape(tmp, sz);
+            if isscalar(SoC.(Q).(f){1})
+                % Scalar Q.f
+                SoC.(Q).(f) = cell2mat(SoC.(Q).(f));
+            end % if
+        end % for k = 1:numel(fs)
+    end % for j = 1:numel(Qs)
+end % function [SoC] = ndres_to_ndresc(CoS);
 
 % drawEllipse copied from geometry package from octave forge %<<<1
 %% Copyright (C) 2004-2011 David Legland <david.legland@grignon.inra.fr>
