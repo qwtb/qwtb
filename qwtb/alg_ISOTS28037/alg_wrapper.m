@@ -52,8 +52,9 @@ end
 % Format input data --------------------------- %<<<1
 % forward evaluation values:
 if ~isfield(datain, 'xhat')
-    datain.xhat.v = [];
-    datain.xhat.u = [];
+    % if forward evaluation values are not set, use input x values for interpolation:
+    datain.xhat.v = datain.x.v;
+    datain.xhat.u = datain.x.u;
 end
 % optional parameter tolerance:
 if not(isfield(datain, 'tol'))
