@@ -568,25 +568,17 @@ function ival = main_interp(lutfn, ipoint) %<<<1
     ival = interp_val(lut, w);
 end % function main_interp
 
-function [ndres_out, ndresc_out, ndaxes_out] = main_result(jobfn, consts, varx, vary, varz) %<<<1
+function [ndres_out, ndresc_out, ndaxes_out] = main_result(jobfn, consts) %<<<1
+    % Squeezing of the data is not performed to keep values of all axes.
+
     % load calculation settings:
     job = load_job(jobfn);
     % load final result
     job = load_final_result(job);
 
-    % if ( isempty(consts) && isempty(varx) ) XXX outdated
-    if ( isempty(consts) && isempty(varx) )
-        % if no constants defined, just return whole result:
-        ndres_out = job.ndres;
-        ndresc_out = job.ndresc;
-        ndaxes_out = job.ndaxes;
-    % elseif isempty(varx) %XXX outdated
-    else
-        % Make slice based on consts:
-        [ndresc_out, ndaxes_out] = slice_ndresc_and_ndaxes(job, consts);
-        ndres_out = CoS_to_SoC(ndresc_out);
-    end % if isempty(consts)
-    % Squeezing of the data is not performed to keep values of all axes.
+    % Make slice based on consts:
+    [ndresc_out, ndaxes_out] = slice_ndresc_and_ndaxes(job, consts);
+    ndres_out = CoS_to_SoC(ndresc_out);
 end % function main_result
 
 function [H, X, Y, Z] = main_plot(do_plot, jobfn, varx, vary, varz, consts) %<<<1
@@ -2148,13 +2140,12 @@ end % function init_filenames(calcset)
 function [ndresc_slice, ndaxes_out] = slice_ndresc_and_ndaxes(job, consts) %<<<1
     % make slice of a n-dimensional cell of results according constants in the
     % consts structure.
+    % axes in ndaxes_out are set to values to which the axes were sliced
 
     % const.names must exist, be correct, nonrepeating
     % const.values must be one value of actual axis
 
-    % XXX maybe fix ndaxes_out and remove axes that were used in slicing? or
-    % only set values to which the axes were sliced?
-
+    % trivial case:
     if isempty(consts)
         ndresc_slice = job.ndresc;
         ndaxes_out = job.ndaxes;
