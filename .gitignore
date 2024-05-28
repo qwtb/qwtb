@@ -12,3 +12,6 @@ qwtb_doc/*.toc
 qwtb/alg_CCC/CCC/
 qwtb/alg_CCC/tmp.res
 qwtb/alg_CCC/tmp.txt
+
+qwtb/qwtbvar_example_2_calculation_data/
+qwtb/qwtbvar_example_1_calculation_data/

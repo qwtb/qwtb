@@ -41,7 +41,7 @@ function [DO, DI, CS] = qwtbvar_example_2_process(DI, CS)
     % acceleration vector:
     Gx =  0;
     uGx = 0;
-    Gy =  9.8067;
+    Gy =  -9.8067; % negative because falling down
     uGy = 0.0001;
 
     DI.v.v = DI.v.v(:)'; % ensure row vector - is it needed? QWTB does it on its own.
@@ -65,8 +65,8 @@ function [DO, DI, CS] = qwtbvar_example_2_process(DI, CS)
             % randomize time vector:
             t = normrnd(DI.t.v(j), DI.t.u(j), CS.mcm.repeats, 1);
             % calculate coordinates:
-            sx = vx.*t - 0.5.*gx.*(t.^2);
-            sy = vy.*t - 0.5.*gy.*(t.^2);
+            sx = vx.*t + 0.5.*gx.*(t.^2);
+            sy = vy.*t + 0.5.*gy.*(t.^2);
             DO.s.v(j, 1) = mean(sx);
             DO.s.v(j, 2) = mean(sy);
             % calculate coordinate uncertainties:
@@ -75,6 +75,8 @@ function [DO, DI, CS] = qwtbvar_example_2_process(DI, CS)
         end % for
         % uncertainty of acceleration
         DO.a.u = [std(gx) std(gy)];
+        % uncertainty of final distance from start:
+        DO.range.u = sqrt(sum(DO.s.u(end, :).^2, 2));
     else
         gx = Gx;
         gy = Gx;
@@ -86,6 +88,8 @@ function [DO, DI, CS] = qwtbvar_example_2_process(DI, CS)
     end
     % value of acceleration
     DO.a.v = [mean(gx) mean(gy)];
+    % final distance from start:
+    DO.range.v = sqrt(sum(DO.s.v(end, :).^2, 2));
 end % function DO = qwtbvar_example_process2(DI)
 
 %!test
