@@ -12,7 +12,7 @@
 % obrazky:
 \usepackage{graphicx}                   % to insert pictures
 \usepackage{grffile}                    % enables spaces in picture file names
-\grffilesetup{ multidot=false, babel=false, encoding, inputencoding=utf8, filenameencoding=utf8, space=true}
+% \grffilesetup{ multidot=false, babel=false, encoding, inputencoding=utf8, filenameencoding=utf8, space=true}
 \newcommand*{\FILEDOT}{.}                   % if picture file name containt dot (e.g. aaa.bbb.pdf), then TeX considers rest as filename extension, so dot must be written as follows: \includegraphics{aaa\FILEDOT bbb.eps}
 % rest:
 \usepackage[pdftex,
@@ -32,6 +32,7 @@
 % lstlisting settings %<<<1 ----------------------------------------------------
 \usepackage{listings}                   % for source code formatting
 \input{code_highlight_settings.tex}     % user defined code formatting
+\newcommand{\li}[1]{\lstinline{#1}}     % instead of long \lstinline, just write \li
 
 % bibliography settings %<<<1 ----------------------------------------------------
 \usepackage[english]{babel} % main language of the document must be last
@@ -127,14 +128,27 @@
 \end{center}
 
 \bigskip
-\noindent QWTB is a toolbox for evaluation of measured data. QWTB consist of data
+\noindent {\bf QWTB} is a toolbox for evaluation of measured data. QWTB consist of data
 processing algorithms from very different sources and unificating application interface. The toolbox
 gives the possibility to use different data processing algorithms with one set of data and removes
 the need to reformat data for every particular algorithm. Toolbox is extensible. The toolbox
 can variate input data and calculate uncertainties by means of Monte Carlo Method
 (MCM)~\cite{JCGM2008}.
 
-Toolbox was realized within the EMRP-Project SIB59 Q-Wave. The EMRP is jointly funded by the EMRP
+\bigskip
+\noindent {\bf QWTBLVLib} is a set of \labview Virtual Instruments (VI) forming a library and
+providing an easy link between \labview and QWTB.
+
+\bigskip
+\noindent {\bf Simple QWTB GUI} is a fully working example of using
+QWTBLVLib written in \labview and forms a graphical user interface to QWTB.
+
+\bigskip
+\noindent {\bf QWTBvar} is a script to variate input quantities, multiply run algorithm inside
+of QWTB, and deliver or plot results. It can be also used to precalculate results and interpolate.
+
+\bigskip
+\noindent Toolbox was realized within the EMRP-Project SIB59 Q-Wave. The EMRP is jointly funded by the EMRP
 par- ticipating countries within EURAMET and the European Union.
 
 \vfill
@@ -144,7 +158,7 @@ par- ticipating countries within EURAMET and the European Union.
 
 
 \chapter{Installation} %<<<1 ----------------------------------------
-\section{QWTB} %<<<2 ----------------------------------------
+\section{QWTB \& QWTBvar} %<<<2 ----------------------------------------
 The toolbox can be downloaded either as a~{\sc git} repository or as a zip archive containing
 documentation and a {\tt qwtb} directory containing all scripts and algorithms. Extract
 archive into a directory of your selection {\tt YourDirectory}.
@@ -196,7 +210,7 @@ toolbox to apply a selected algorithm on the data and review results. Toolbox wi
 \end{enumerate}
 
 Another algorithm can be used immediately on the same data. User interface of the toolbox is represented
-by the function \lstinline{qwtb} defined in the file {\tt qwtb.m}.
+by the function \li{qwtb} defined in the file {\tt qwtb.m}.
 
 \section{Toolbox use} %<<<2 ------------------------------
 The toolbox is used in several modes according to a number and character of input arguments.
@@ -207,7 +221,7 @@ alginfo = qwtb()
 \end{lstlisting}
 
 With no input arguments, toolbox returns informations of all available algorithms. Result array
-\lstinline{alginfo} contains structures for every algorithm found in the same directory as
+\li{alginfo} contains structures for every algorithm found in the same directory as
 \texttt{qwtb.m}. Format of structures is defined in~\ref{structalginfo}.
 
 This call can be also used to get \emph{standard} calculation settings used in the toolbox:
@@ -221,7 +235,7 @@ For use of calcset, see next chapter.
 dataout = qwtb('algid', datain)
 \end{lstlisting}
 
-The algorithm is selected by first input argument \lstinline{algid}. It is a string with
+The algorithm is selected by first input argument \li{algid}. It is a string with
 designator of the algorithm, according structrue~\ref{structalginfo}.
 
 The second input argument is the user data. Data have to be formatted in a structure with fields
@@ -231,13 +245,13 @@ The output variable is the structure with fields named as quantities.
 
 In this case, standard calculation settings are used. If the user specifies calculation settings
 in structure according~\ref{structcalcset}, it can be used as third input argument
-\lstinline{calcset}:
+\li{calcset}:
 
 \begin{lstlisting}
 dataout = qwtb('algid', datain, calcset)
 \end{lstlisting}
 
-For some calculation settings some fields of \lstinline{datain} or \lstinline{calcset} are generated
+For some calculation settings some fields of \li{datain} or \li{calcset} are generated
 automatically. To review automatically generated fields, user can get these structure in second and
 third output argument:
 
@@ -253,9 +267,9 @@ Algorithm can have implemented an example of the use. This can be run by followi
 qwtb('algid', 'example')
 \end{lstlisting}
 
-The algorithm is selected by first input argument \lstinline{algid}. It is a string with
+The algorithm is selected by first input argument \li{algid}. It is a string with
 designator of the algorithm, according structrue~\ref{structalginfo}. The second argument is a
-string. Toolbox will run a script \lstinline{alg_example.m} located in a algorithm directory.
+string. Toolbox will run a script \li{alg_example.m} located in a algorithm directory.
 
 After finish user can review input and output data or resulted figures if any.
 
@@ -266,9 +280,9 @@ Algorithm can have implemented a self test. This can be run by following syntax:
 qwtb('algid', 'test')
 \end{lstlisting}
 
-The algorithm is selected by first input argument \lstinline{algid}. It is a string with
+The algorithm is selected by first input argument \li{algid}. It is a string with
 designator of the algorithm, according structrue~\ref{structalginfo}. The second argument is a
-string. Toolbox will run a script \lstinline{alg_test.m} located in a algorithm directory.
+string. Toolbox will run a script \li{alg_test.m} located in a algorithm directory.
 
 Test should prepare data, run algorithm and check results. If implementation of algorithm
 behaves incorrectly, an error will occur.
@@ -331,7 +345,7 @@ File contains a function with definition:
 function alginfo = alg_info()
 \end{lstlisting}
 
-The output \lstinline{alginfo} is a structure with informations about the algorithm. Structure is
+The output \li{alginfo} is a structure with informations about the algorithm. Structure is
 defined in~\ref{structalginfo}.
 
 File is mandatory. If file is missing in algorithm directory, QWTB will not recognize this
@@ -345,17 +359,17 @@ File contains a function with definition:
 function dataout = alg_wrapper(datain, calcset)
 \end{lstlisting}
 
-The input \lstinline{datain} is a structure with input data (see %XXX
-), \lstinline{calcset} is a structure with definition of calculation settings
+The input \li{datain} is a structure with input data (see %XXX
+), \li{calcset} is a structure with definition of calculation settings
 (see~\ref{structcalcset}).
-) and \lstinline{dataout} is a structure containing output data (see %XXX
+) and \li{dataout} is a structure containing output data (see %XXX
 ).
 
 The wrapper does following:
 \begin{enumerate}
-        \item Formats input data structure \lstinline{datain} into variables wuitable for algorithm.
+        \item Formats input data structure \li{datain} into variables wuitable for algorithm.
         \item Runs the algorithm.
-        \item Format results of the algorithm into data structure \lstinline{dataout}.
+        \item Format results of the algorithm into data structure \li{dataout}.
 \end{enumerate}
 
 File is mandatory. If file is missing in algorithm directory, QWTB will not recognize this
@@ -369,8 +383,8 @@ File contains a function with following definition:
 function alg_test(calcset)
 \end{lstlisting}
 
-Test should generate sample data, run algorithm and check results by a function \lstinline{assert}.
-QWTB will provide a standard calculation settings structure \lstinline{calcset}
+Test should generate sample data, run algorithm and check results by a function \li{assert}.
+QWTB will provide a standard calculation settings structure \li{calcset}
 (see~\ref{structcalcset}), which is used as a function input variable.
 
 This file is not mandatory, however is recommended.
@@ -383,7 +397,7 @@ conform to the publishing markup defined in Matlab documentation. See matlab hel
 \emph{Publishing markup}). The QWTB runs this script in base context, thus all variables defined in
 the example script will be accessible to the user.
 
-To create a documentation of the QWTB, function \lstinline{publish} is applied to the example script
+To create a documentation of the QWTB, function \li{publish} is applied to the example script
 and resulting file is attached to the documentation file.
 
 \subsection{Overall flow chart} %<<<3 ----------------------------------------
@@ -398,7 +412,7 @@ files required or recommended by the toolbox.
 \section{Algorithm informations structure} %<<<2 ------------------------------
 \label{structalginfo}
 Structure defines properties and possibilities of the algorithm. All fields are mandatory but
-\lstinline{.fullpath}.
+\li{.fullpath}.
 
 \begin{tightdesc}
         \item [\textsf{.id}] --- Designator of the algorithm.
@@ -460,10 +474,10 @@ String. Short description of input quantity.
 Integer. Index of group of alternative quantities. If several input quantities has the same index,
 QWTB requires only one of quantities in the group. If set to zero, quantity is not part of any group.
 
-For example, suppose a sampling time \lstinline{Ts} and sampling frequency \lstinline{fs} has the same
-index. The algorithm requires \lstinline{fs}, but the wrapper can calculate \lstinline{fs} 
-from \lstinline{Ts}. User can supply only \lstinline{fs} to run the algorithm. But he can also supply
-only the \lstinline{Ts} and the wrapper calculates \lstinline{fs} from \lstinline{Ts} and runs the algorithm. The
+For example, suppose a sampling time \li{Ts} and sampling frequency \li{fs} has the same
+index. The algorithm requires \li{fs}, but the wrapper can calculate \li{fs} 
+from \li{Ts}. User can supply only \li{fs} to run the algorithm. But he can also supply
+only the \li{Ts} and the wrapper calculates \li{fs} from \li{Ts} and runs the algorithm. The
 wrapper should always notice the user that some quantity was calculated from other one. If user
 supplies both, the wrapper should choose the quantity most suitable for the algorithm.
 
@@ -535,32 +549,32 @@ Standard uncertainty of the quantity. Dimensions are the same as of the value fi
 \label{structquantityd}
 Degrees of freedom the uncertainty according GUM Uncertainty Framework. Dimensions are the same as of the value field.
 
-This field is automatically generated by the toolbox if missing, required and \lstinline{calcset.dof.gen}
+This field is automatically generated by the toolbox if missing, required and \li{calcset.dof.gen}
 is set to nonzero. The value will be set to 50.
 
 \subsection{\textsf{.c}} %<<<3 ------------------------------
 \label{structquantityc}
 Correlation matrix for quantity. 2DO XXX.
 
-This field can be automatically generated by the toolbox if missing, required and \lstinline{calcset.cor.gen}
+This field can be automatically generated by the toolbox if missing, required and \li{calcset.cor.gen}
 is set to nonzero. The value will be set to 0.
 
 \subsection{\textsf{.r}} %<<<3 ------------------------------
 \label{structquantityr}
 Randomized uncertainties according Monte Carlo method. In the case of scalar quantity it is
-\emph{column} vector of length equal to \lstinline{calcset.mcm.repeats}. For a vector quantity it is a matrix with number
+\emph{column} vector of length equal to \li{calcset.mcm.repeats}. For a vector quantity it is a matrix with number
 of columns equal to length of value of the quantity and number of rows equal to
-\lstinline{calcset.mcm.repeats}. For a matrix quantity it is a matrix with three dimensions, first
+\li{calcset.mcm.repeats}. For a matrix quantity it is a matrix with three dimensions, first
 two equal to the dimensions of value quantity, third dimension equal to
-\lstinline{calcset.mcm.repeats}.
+\li{calcset.mcm.repeats}.
 
 This field is required if Monte Carlo uncertainty calculation is required. In this case it can be
-automatically generated by the toolbox if missing and \lstinline{calcset.mcm.randomize} is set to
+automatically generated by the toolbox if missing and \li{calcset.mcm.randomize} is set to
 boolean. The pdf will be normal, sigma will be equal to the standard uncertainty of the quantity.
 
 \subsection{Quantity structure examples} %<<<3 ------------------------------
 Example of scalar quantity of mean value 1, standard uncertainty 0.1, degrees of freedom 9, correlation has no
-sense for scalar quantity, and radnomized matrix has number of elements equal to \lstinline{calcset.mcm.randomize}.
+sense for scalar quantity, and radnomized matrix has number of elements equal to \li{calcset.mcm.randomize}.
 \begin{eqnarray*}
         \text{\textsf{.v}:} &(1)\\
         \text{\textsf{.u}:} &(0.1)\\
@@ -574,7 +588,7 @@ sense for scalar quantity, and radnomized matrix has number of elements equal to
         \end{pmatrix}\\
 \end{eqnarray*}
 
-Example of vector quantity with $i$ elements, $M$ is equal to \lstinline{calcset.mcm.randomize} (only symbolic representation):
+Example of vector quantity with $i$ elements, $M$ is equal to \li{calcset.mcm.randomize} (only symbolic representation):
 \begin{eqnarray*}
         \text{\textsf{.v}:} & (v_1, v_2, \dots, v_i) \\
         \text{\textsf{.u}:} & (u_1, u_2, \dots, u_i) \\
@@ -591,7 +605,7 @@ Example of vector quantity with $i$ elements, $M$ is equal to \lstinline{calcset
                                         \end{array}\right) \\
 \end{eqnarray*}
 
-Example of matrix quantity with $i$ times $j$ elements, $M$ is equal to \lstinline{calcset.mcm.randomize} (only symbolic representation):
+Example of matrix quantity with $i$ times $j$ elements, $M$ is equal to \li{calcset.mcm.randomize} (only symbolic representation):
 \begin{eqnarray*}
         \text{\textsf{.v}:} & \left(    \begin{array}{ccc}
                                                 v_{11}  & \hdots & v_{1j} \\
@@ -641,6 +655,13 @@ Structure defines calculation methods.
         \item [\textsf{.mcm.procno}] ---  (0) Number of processors to use.
         \item [\textsf{.mcm.tmpdir}] ---  ('.') Directory for temporary data.
         \item [\textsf{.mcm.randomize}] ---  (1) Randomized uncertainties are generated automatically if missing.
+        \item [\textsf{.var.dir}] ---  ('VAR') Only for QWTBvar: Directory for calculations.
+        \item [\textsf{.var.fnprefix}] ---  ('var') Only for QWTBvar: Prefix for filenames.
+        \item [\textsf{.var.cleanfiles}] ---  ('0') Only for QWTBvar: Removes files from previous calculations.
+        \item [\textsf{.var.smalloutput}] ---  ('1') Only for QWTBvar: Minimize size of output files.
+        \item [\textsf{.var.method}] ---  ('singlecore') Only for QWTBvar: Parallelization method ('multicore', 'multistation').
+        \item [\textsf{.var.procno}] ---  (1) Only for QWTBvar: Number of processors to use.
+        \item [\textsf{.var.chunks\_per\_proc}] --- (1) Only for QWTBvar: Number of calculation jobs per process.
 \end{tightdesc}
 
 \subsection{\textsf{.strict}} %<<<3 ------------------------------
@@ -758,6 +779,48 @@ Structure sets handling of Monte Carlo calculation of uncertainties. Structure h
         generated automatically if missing, but only if uncertainty calculation method is set to
         'mcm' (Monte Carlo) to prevent large memory usage.
 \end{tightdesc}
+
+\subsection{\textsf{.var}} %<<<3 ------------------------------
+\label{structcalcsetvar}
+Structure sets properties only for QWTBvar. Structure has following fields:
+\begin{tightdesc}
+        \item [\textsf{.dir}] ---  String, default value 'VAR'. All files
+        needed for QWTBvar calculations will be saved into the selected
+        directory. If path does not exist, it is created.
+        \item [\textsf{.fnprefix}] ---  String, default value 'var'. All file
+        names needed for QWTBvar calculations will start with this prefix.
+        \item [\textsf{.cleanfiles}] ---  Boolean, default value 0. Job files
+            and results from previous QWTBvar calculation will be deleted. Do
+            not use if continuation of previously interrupted calculation is
+            required.
+        \item [\textsf{.smalloutput}] ---  Boolean, default value 1. If set,
+            QWTBvar will not save all results of the calculations. Fields
+            \li{.c} and \li{.r} of the input and output quantities will be
+            removed to minimize size of files with results. Check algorithms if
+            these fields are needed.
+        \item [\textsf{.method}] ---  String, default value 'singlecore'. Parallelization method used for 
+        QWTBvar calculations. Only three values are possible:
+        \begin{tightdesc}
+                \item [\textsf{'singlecore'}] ---  No parallelization, all is calculated on one CPU core.
+                \item [\textsf{'multicore'}] ---  Calculation is divided into cores of one computer.
+                \item [\textsf{'multistation'}] ---  Calculation is distributed on several computers.
+        \end{tightdesc}
+        Not all methods are possible to use on all computers. 'singlecore' is always possible to
+        use. 'multicore' use parfor in Matlab or parcellfun in GNU Octave. 'multistation' use %XXX
+        Be carefull when setting this parameter together with Monte Carlo
+        calculations. Bad settings can result in very large number of
+        processes.
+        \item [\textsf{.procno}] ---  Zero or positive integer, default value 0. Number of CPU cores exploitable
+        by the parallelization method \textsf{'multicore'}. If set to zero, all available CPU cores will be used. If
+        desktop computer is used, it is good practice to set to number of CPU cores minus one, so
+        the computer can be used by other task also. 
+        Works only in \octave.
+        \item [\textsf{.chunks\_per\_proc}] --- Positive non-zero integer,
+        default value 1. Specifies number of calculations proceeded by one
+        process. Higher number decreases number of job files on the disk and
+        usage of the disk by the system.
+\end{tightdesc}
+
 
 %\section{qwtb.m subfunctions list} %<<<2 ----------------------------------------
 %Short list and descriptions of subfunctions in {\tt qwtb.m} file:
@@ -916,6 +979,322 @@ To add a new algorithm, several steps have to be done.
 
 \end{enumerate}
 
+\chapter{QWTBvar} %<<<1 ----------------------------------------
+QWTBvar is a script used to variate input quantities, run algorithm or user
+function for all combinations of inputs, and evaluate or plot results.
+
+User have to define values of input quantities, values of variated input
+quantities and algorithm or user function to run.
+
+After finish of the calculations, user can obtain results, plot them, or
+convert the results to Look up table (LUT). LUT can be used to interpolate
+results and quickly estimate outputs without calculating the results again.
+
+\section{QWTBvar use} %<<<2 ----------------------------------------
+\subsection{Run calculation}
+\label{S:QWTBvar:calc}
+The main usage is repeated run of QWTB calling algorithm \li{algid}:
+\begin{lstlisting}
+[jobfn] = qwtbvar('calc', 'algid', datain, datainvar, [calcset])
+\end{lstlisting}
+The structure \li{datain} contains nominal values of input quantities,
+the same as when using QWTB, see~\ref{structalginfo}.
+
+The structure \li{datainvar} contains multiple values of input quantities that
+will be variated for different runs of QWTB (see \ref{S:QWTBvar:datainvar}).
+
+If \li{datainvar} contains more input quantities, QWTBvar will make all
+possible permutations.
+
+Settings for the calculations is defined in \li{calcset}
+(see~\ref{structcalcset}). For QWTBvar, only sub-structure \li{calcset.var} is
+important. The rest is transferred to QWTB.
+
+The output \li{jobfn} is a path to a file with stored informations
+needed to perform calculations.
+
+\subsection{Continue interrupted calculation}
+\label{S:QWTBvar:cont}
+\begin{lstlisting}
+[jobfn] = QWTBVAR('cont', jobfn)
+\end{lstlisting}
+Continues interrupted calculation according calculation plan \li{jobfn}.
+QWTBvar will read all settings and calculation plan, check what is already
+calculated and will finish calculations.
+
+\subsection{Calculate particular job}
+\label{S:QWTBvar:job}
+\begin{lstlisting}
+[jobfn] = QWTBVAR('job', jobfn, jobids)
+\end{lstlisting}
+Mostly internal use. Calculates actual calculation job or multiple calculation
+jobs listed in \li{jobids}. This is useful for distribution of the work for
+parallel processing.
+
+\subsection{Get result}
+\label{S:QWTBvar:result}
+\begin{lstlisting}
+[ndres, ndresc, ndaxes, consts] = QWTBVAR('result', jobfn, [consts])
+\end{lstlisting}
+Obtain calculated output quantities from calculation \li{jobfn}.
+Optionally, the varied input quantities can be set to the values in
+\li{const} and output matrices will be sliced.
+
+Output \li{ndres} contains structure of n-dimensional matrices with
+output quantities. Output \li{ndresc} contains cell of structures with particular results.
+Output \li{ndaxes} contains values for dimensions (axes) of
+\li{ndres} and \li{ndresc}. These \emph{axes} are the same as the
+varied quantities. See~\ref{S:QWTBvar:ndres} and~\ref{S:QWTBvar:consts}.
+
+\subsection{Plot result in 2D}
+\label{S:QWTBvar:plot2D}
+\begin{lstlisting}
+[H, x, y] = QWTBVAR('plot2D', jobfn, varx, vary, [consts])
+\end{lstlisting}
+Plots dependence of output quantity \li{vary} on varied input quantity
+\li{varx} in 2-dimensional plot, based on results in \li{jobfn}.
+Fills in properly title and axes labels. If results contain more varied
+quantities than \li{varx}, multiple dependences are plotted.
+If only one dependence is sought, the values of other varied input quantities
+can be defined in \li{consts}.
+
+Output \li{H} is a handle to the figure. Outputs \li{x} and \li{y} are
+structures containing the plotted values and relevant labels
+(see~\ref{S:QWTBvar:plotdata}).
+
+\subsection{Plot result in 3D}
+\label{S:QWTBvar:plot3D}
+\begin{lstlisting}
+[H, x, y, z] = QWTBVAR('plot3D', jobfn, varx, vary, [consts])
+\end{lstlisting}
+Plots dependence of output quantity \li{vary} on varied input quantity
+\li{varx} in 3-dimensional plot, based on results in \li{jobfn}.
+Fills in properly title and axes labels. If results contain more varied
+quantities than \li{varx}, multiple dependences are plotted.
+If only one dependence is sought, the values of other varied input quantities
+can be defined in \li{consts}.
+
+Output \li{H} is a handle to the figure. Outputs \li{x}, \li{y} and \li{z} are
+structures containing the plotted values and relevant labels
+(see~\ref{S:QWTBvar:plotdata}).
+
+
+\subsection{Create look-up table}
+\label{S:QWTBvar:lut}
+\begin{lstlisting}
+[lut] = QWTBVAR('lut', jobfn, axset, rqset)
+\end{lstlisting}
+Create look-up table based on the results of the job specified in input
+\li{jobfn}.
+Settings of the axis are defined in structure \li{axset}.
+Settings of the output quantity are defined in structure \li{rqset}.
+QWTBvar will create a n-dimensional look-up table of the results. Number of
+dimensions is equal to the number of varied inputs. Interpolation methods for
+all varied quantities (axes) has to be defined together with description of
+boundary cases.
+
+\subsection{Interpolate look-up table}
+\label{S:QWTBvar:interp}
+\begin{lstlisting}
+[ival] = QWTBVAR('interp', lut, ipoint)
+[ival] = QWTBVAR('interp', lutfn, ipoint)
+\end{lstlisting}
+Interpolate output quantity \li{Q} at point \li{ipoint} using
+look-up table \li{lutfn}.
+
+\section{QWTBvar workflow}
+\begin{enumerate}
+    \item Select either QWTB algorithm or a user-defined script \li{'algid'}.
+    \item Create new structure with all needed input quantities and set values \li{datain}.
+    \item Create new structure with varied input quantities \li{datainvar} and set a range of values.
+    \item Run calculation of all results using \ref{S:QWTBvar:calc}.
+    \item If calculation was interrupted, continue using \ref{S:QWTBvar:cont}.
+    \item Obtain results of the calculation using \ref{S:QWTBvar:result}.
+    \item Plot results of the calculation using \ref{S:QWTBvar:plot2D} or \ref{S:QWTBvar:plot3D}.
+    \item Prepare a look-up table using \ref{S:QWTBvar:lut}.
+    \item Interpolate output quantity without actual calculation using \ref{S:QWTBvar:interp}.
+\end{enumerate}
+
+\section{Structure with varied quantities \tt datainvar}
+\label{S:QWTBvar:datainvar}
+Structure \li{datainvar} should contain only the quantities that should be varied by QWTBvar.
+Every field of the quantity in
+\li{datainvar} (e.g. \li{.v}, \li{.u} etc.) must contain
+one more dimension than the value of the same quantity in \li{datain}. If
+input quantity in \li{datainvar} is a vector, than input quantity in
+\li{datain} must be scalar. Matrix in \li{datainvar} means
+\li{datain} contains vector, etc.
+
+QWTBvar will slice the input quantity in \li{datainvar} and one after
+another set this sliced value into input quantity \li{datain}.
+
+\subsection{Example with scalar quantity}
+Consider scalar input quantity \li{x}:
+\begin{eqnarray*}
+    \text{\textsf{.v}:} & (v_1)\\
+    \text{\textsf{.u}:} & (u_1)\\
+\end{eqnarray*}
+If only value of the input quantity \li{x} should be varied, than
+\li{datainvar} must be of following:
+\begin{eqnarray*}
+    \text{\textsf{.v}:} & (v_1, v_2, \dots, v_i)\\
+    \text{\textsf{.u}:} & (u_1)\\
+\end{eqnarray*}
+QWTBvar will do $i$ calculations (or more if other quantities will be varied).
+
+If only uncertainty of the input quantity \li{x} should be varied, than
+\li{datainvar} must be of following:
+\begin{eqnarray*}
+    \text{\textsf{.v}:} & (v_1)\\
+    \text{\textsf{.u}:} & (u_1, u_2, \dots, u_j)\\
+\end{eqnarray*}
+QWTBvar will do $j$ calculations (or more if other quantities will be varied).
+
+If both value and uncertainty has to be varied by QWTBvar:
+\begin{eqnarray*}
+    \text{\textsf{.v}:} & (v_1, v_2, \dots, v_i)\\
+    \text{\textsf{.u}:} & (u_1, u_2, \dots, u_j)\\
+\end{eqnarray*}
+For the last case, the QWTBvar will do $i\times j$ calculations (or more if other quantities will be varied).
+
+\subsection{Example with vector quantity}
+Consider scalar input quantity \li{x}:
+\begin{eqnarray*}
+    \text{\textsf{.v}:} & (v_1, v_2, \dots, v_i)\\
+\end{eqnarray*}
+\li{datainvar} must be of following:
+\begin{eqnarray*}
+    \text{\textsf{.v}:} & \left(    \begin{array}{ccc}
+                                            v_{11}  & \hdots & v_{1j} \\
+                                            \vdots  & \ddots & \vdots \\
+                                            v_{i1}  & \hdots & v_{ij} \\
+                                    \end{array}\right) \\
+\end{eqnarray*}
+QWTBvar will do $j$ calculations.
+
+\section{Outputs of QWTBvar {\tt ndres}, {\tt ndresc}, {\tt ndaxis}}
+\label{S:QWTBvar:ndres}
+The outputs of the QWTBvar calculations are the output quantities of the used
+algorithm or user function. The outputs are in a form of n-dimensional
+matrices, where every dimension of the matrix is related to one varied input
+quantity.
+
+\subsection{\tt ndres}
+Structure \li{ndres} contains all output quantities as matrices.
+
+As an example, consider calculation with varied input quantities \li{x.v} ($i$ elements),
+\li{y.v} ($j$ elements), \li{a.v} ($k$ elements), \li{a.u} ($l$ elements), and
+scalar output quantity \li{z.v}. QWTBvar proceeded $i\times j\times k\times l$
+calculations.
+
+The \li{ndres} structure contains field of quantity \li{z}, that contains field value \li{.v},
+that contains 4-dimensional matrix $Z$:
+\begin{equation}
+    \text{\textsf{ndres.z.v}} = \underset{i\times j\times k\times l}{Z},
+\end{equation}
+where dimensions of the $Z$ are $i,j,k,l$.
+If the output quantity $z$ is not scalar, but vector or more, the \li{ndres.z.v} contains a cell of dimensions $i,j,k,l$.
+
+\subsection{\tt ndresc}
+The \li{ndresc} cell contains cell of structures. Each cell element
+contains a structure with all output quantities. 
+
+For the previous example, the
+size of the cell \li{ndresc} dimensions are $i,j,k,l$. Each cell element
+\li{ndresc{i,j,k,l}} contains a structure with value of \li{z.v}:
+\begin{equation}
+    \text{\textsf{ndresc\{i,j,k,l\}.z.v}} = Z_{i,j,k,l} .
+\end{equation}
+
+\subsection{\tt ndaxes}
+This structure describes dimensions of n-dimensional matrix \li{ndres} or 
+n-dimensional cell \li{ndresc}.
+
+Fields of the structure are:
+\begin{description}[itemsep=-0.5em]
+    \item [\textsf{.names}] --- Full names of varied quantities.
+    \item [\textsf{.values}] --- Values of varied quantities in a matrix.
+    \item [\textsf{.valuesc}] --- Values of varied quantities in a cell. 
+    \item [\textsf{.Q}] --- Names of varied quantities.
+    \item [\textsf{.f}] --- Fields of varied quantities.
+\end{description}
+
+\subsubsection{\textsf{.names}}
+Cell of strings. Full names of varied quantities. Example:
+\begin{lstlisting}
+    ndaxes.names = {'x.v', 'y.v', 'a.v', 'a.u'}
+\end{lstlisting}
+
+\subsubsection{\textsf{.values}}
+Cell of values of the varied quantities. The values are matrix for scalar
+values, cells for other (in the last case the quantity \li{.values} is
+identical to a \li{.valuesc}). First value of \li{.values} cell represent a
+varied quantity listed first in \li{.names} etc.
+
+\subsubsection{\textsf{.valuesc}}
+Cell of cells with values of the varied quantities. First value of \li{.values}
+cell represent a varied quantity listed first in \li{.names} etc.
+
+\subsubsection{\textsf{.Q}}
+Cell of strings. Quantity name of the varied quantity. Part of the \li{.names}. Example:
+\begin{lstlisting}
+    ndaxes.Q = {'x', 'y', 'a', 'a'}
+\end{lstlisting}
+
+\subsubsection{\textsf{.f}}
+Cell of strings. Field name of the varied quantity. Part of the \li{.names}. Example:
+\begin{lstlisting}
+    ndaxes.Q = {'v', 'v', 'v', 'u'}
+\end{lstlisting}
+
+\section{Structure with constants \tt consts}
+\label{S:QWTBvar:consts}
+The structure is used to limit the results in the outputs to a selected subset.
+The results are sliced through the n-dimensional matrices at points selected in
+\li{consts}. The structure should contain one or more quantities in the same
+way as in \li{datain}. The quantities and values of the quantities has to be
+one of the \li{datainvar}.
+
+Example: consider calculations proceeded with following \li{datainvar}:
+\begin{lstlisting}
+datainvar.a.v = [1 2];
+datainvar.a.u = [0 0.25 0.5];
+datainvar.x.v = [-5  -2   0   2   5];
+datainvar.y.v = [-5; -3; -1;  1;  3;  5];
+\end{lstlisting}
+
+The output quantities got dimensions $2\times 3\times 5\times 6$.
+Following value of \li{consts}
+\begin{lstlisting}
+consts.a.v = 1;
+consts.x.v = -2;
+\end{lstlisting}
+limit output results and/or figures to dimensions $3\times 6$.
+
+\section{Output structure with plot data}
+\label{S:QWTBvar:plotdata}
+The outputs of the QWTBvar, when used in mode \li{'plot2D'} or \li{'plot3D'}
+(see~\ref{S:QWTBvar:plot2D} or~\ref{S:QWTBvar:plot3D}), 
+is a structure with following fields:
+\begin{description}[itemsep=-0.5em]
+    \item [\textsf{.name}] --- Full name of the plotted quantity.
+    \item [\textsf{.data}] --- Values of the plotted quantity.
+    \item [\textsf{.bars}] --- Values of the plotted error bars.
+    \item [\textsf{.lbl}] --- Label of the axis.
+    \item [\textsf{.ticklbl}] --- Labels for plot ticks.
+    \item [\textsf{.Q}] --- Name of the plotted quantity.
+    \item [\textsf{.f}] --- Field of the plotted quantity.
+    \item [\textsf{.uncbar}] --- Nonzero if error bars are to be plotted.
+\end{description}
+
+\section{Structure for look-up table axis properties \tt axset}
+2DO % XXX 
+\section{Structure for look-up table XXXxxxxxxxxxxxx \tt rqset}
+2DO % XXX 
+\section{Structure for look-up table interpolation \tt ipoint}
+2DO % XXX 
+
+
 \chapter{Licensing} %<<<1 ----------------------------------------
 \label{ch-license}
 Every algorithm has its own license. License of every algorithm is placed in the directory of the
@@ -1053,3 +1432,11 @@ reviewed in window {\tt Output quantities}.
 \end{document}
 
 % vim settings: vim:foldmarker=%<<<,%>>> fdm=marker fen
+% \chapter{Simple example of QWTBvar use} %<<<1 ----------------------------------
+% 2DO XXX
+% % \input{qwtb_examples_published/qwtbvar_example_1.tex}
+% This example is shown in a file \li{qwtbvar_example_1.m}.
+%
+%
+% \chapter{Complex example of QWTBvar use with non-scalar quantities} %<<<1 ----------------------------------
+% 2DO XXX

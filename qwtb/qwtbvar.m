@@ -1,22 +1,30 @@
 function varargout = qwtbvar(varargin)
 % NOT FINISHED, IN DEVELOPEMENT PHASE - XXX fix for new possibilities
 % QWTBVAR: Variator for  Q-Wave Toolbox
-%   [jobfn] = QWTBVAR(algid, datain, datainvar, calcset)
+%   [jobfn] = QWTBVAR(algid, datain, datainvar, [calcset])
 %       Variates inputs 'datain' according 'datainvar' and applies them one
 %       by one into QWTB with settings 'calcset'. Returns path to the
 %       calculation plan 'jobfn'.
-%   [jobfn] = QWTBVAR(jobfn)
+%   [jobfn] = QWTBVAR('cont', jobfn)
 %       Continues interrupted calculation according calculation plan 'jobfn'.
-%   [H] = QWTBVAR(jobfn, varx, vary)
-%   [H, x, y] = QWTBVAR(jobfn, varx, vary)
-%       Plots 'vary' vs 'varx' from results of calculation described in 'jobfn'.
-%   [H] = QWTBVAR(jobfn, varx, vary, varz)
-%   [H, x, y, z] = QWTBVAR(jobfn, varx, vary, varz)
-%       Plots 'varz' vs 'varx' and 'vary' from results of calculation
-%       described in 'jobfn'.
-%   [x, y] = QWTBVAR(jobfn, varx, vary)
-%   [x, y, z] = QWTBVAR(jobfn, varx, vary, varz)
-%       Returns only data, the plot is not generated.
+%   [jobfn] = QWTBVAR('job', jobfn, jobids)
+%       Calculate particular jobs defined in 'jobids' according to the
+%       calculation plan 'jobfn'.
+%   [ndres, ndresc, ndaxes, consts] = QWTBVAR('result', jobfn, [consts])
+%       Returns calculated results, sliced according to 'consts', as
+%       n-dimensional matrices 'ndres', or n-dimensional cell of results
+%       'ndresc', with description of dimensions in 'ndaxes'.
+%   [H, x, y] = QWTBVAR('plot2D', jobfn, varx, vary, [consts])
+%       Plots 'vary' vs 'varx' from results of calculation described in 'jobfn',
+%       and sliced according to the 'consts'.
+%   [H, x, y, z] = QWTBVAR('plot3D', jobfn, varx, vary, varz, [consts])
+%       Plots 'varz' vs 'vary' and 'varx' from results of calculation described
+%       in 'jobfn', and sliced according to the 'consts'.
+%   [lut] = QWTBVAR('lut', jobfn, axset, rqset)
+%       Creates a look-up table from results 'jobfn', according to axes settings
+%       in 'axset' and 'rqset'.
+%   [ival] = QWTBVAR('interp', lut, ipoint)
+%       Interpolate look-up table at point 'ipoint' and returns value 'ival'.
 %
 %   Inputs:
 %   'algid' - id of an algorithm, as in QWTB. For available algorithms, run
@@ -33,7 +41,8 @@ function varargout = qwtbvar(varargin)
 %   Outputs: 
 %   'jobfn' - path and name of a file containing description of the calculation
 %   'H' - handle to the 2D/3D figure
-%   'x', 'y', 'z' - vectors of the requested values used for plot.
+%   'x', 'y', 'z' - values used for plot. Structures with values, error bars,
+%   labels etc.
 %
 %   Variated data:
 %   This structure should contain only quantities (Q) with fields (f) that
@@ -79,11 +88,11 @@ function varargout = qwtbvar(varargin)
 %   'chunks_per_proc' - (1) number of calculation jobs for one process
 %
 %   Plotting
-%   The script tries to plot requested data. Using QWTBVAR('somepath',
-%   'x','y') will plot 2D figure with uncertainties for both x and y axes,
-%   if results file contained it. Using QWTBVAR('somepath', 'x.v','y.u')
-%   will plot 2D figure with dependence of uncertainty of y on value of x.
-%   The same apply to the 3D plotting.
+%   The script tries to plot requested data. Using QWTBVAR('plot2D', 'somepath',
+%   'x','y') will plot 2D figure with uncertainties for both x and y axes, if
+%   results file contained it. Using QWTBVAR('plot2D', 'somepath', 'x.v','y.u')
+%   will plot 2D figure with dependence of uncertainty of y on value of x. The
+%   same apply to the 3D plotting.
 %
 %   User function
 %   'algid' does not have to be full QWTB algorithm but can be a user
@@ -100,36 +109,21 @@ function varargout = qwtbvar(varargin)
 % Internal documentation:  %<<<1
 
 % Inputs/outputs scheme: %<<<2
-%   mode        |o|i|   out1  | out2  | out3  | out4  ||  in1     | in2   | in3   | in4       | in5     | in6    |
-%   ------------|-|-|---------|-------|-------|-------||----------|-------|-------|-----------|---------|--------|
-%   continue    |1|2|   jobfn |       |       |       || 'cont'   | jobfn |       |           |         |        |
-%
-%   do job      |1|3|   jobfn |       |       |       || 'job'    | jobfn | jobids|           |         |        | %XXX add to help
-%
-%   calculate   |1|4|   jobfn |       |       |       || 'calc'   | algid | datain| datainvar |         |        | %XXX add this possibility
-%   calculate   |1|5|   jobfn |       |       |       || 'calc'   | algid | datain| datainvar | calcset |        |
-%
-%   make LUT    |1|3|   lutfn |       |       |       || 'lut'    | jobfn | axset | rqset     |         |        | %XXX add to help
-%
-%   interp LUT  |1|3|   lutfn |       |       |       || 'interp' | lutfn | ax    |           |         |        | %XXX add to help
-%
-%   get results |3|2|   ndres | ndresc| ndaxes| consts|| 'result' | jobfn |                         return whole ndres/ndresc/ndaxes, returns cells if needed
-%   get results |3|3|   ndres | ndresc| ndaxes| consts|| 'result' | jobfn | consts                  return slices, returns cells if needed
-%
-            % XXX obsolete %   get results |3|4|   ndres | ndresc| ndaxes|       || 'result' | jobfn | consts| varx      | vary    |        |        | return only requested variables, warn if insufficient consts, should be able to take in 's.v(1,5)'
-            % XXX obsolete %  get results |3|5|   ndres | ndresc| ndaxes|       || 'result' | jobfn | consts| varx      | vary    | varz   |        | return only requested variables, warn if insufficient consts
-%
-%   2D plot     |-|4|   -     | -     | -     | -     || 'plot2D' | jobfn | varx  | vary      |         |        |
-%   2D plot     |-|5|   -     | -     | -     | -     || 'plot2D' | jobfn | varx  | vary      | consts  |        |
-%   2D plot     |1|-|   H     |       |       |       || -        | -     | -     | -         | -       |        |
-%   2D plot     |2|-|   x     | y     |       |       || -        | -     | -     | -         | -       |        |
-%   2D plot     |3|-|   H     | x     | y     |       || -        | -     | -     | -         | -       |        |
-%
-%   3D plot     |-|5|   H     | -     | -     | -     || 'plot3D' | jobfn | varx  | vary      | varz    |
-%   3D plot     |-|6|   H     | -     | -     | -     || 'plot3D' | jobfn | varx  | vary      | varz    | consts |
-%   3D plot     |1|-|   H     |       |       |       || -        | -     | -     | -         | -       | -      |
-%   3D plot     |3|-|   x     | y     | z     |       || -        | -     | -     | -         | -       | -      |
-%   3D plot     |4|-|   H     | x     | y     | z     || -        | -     | -     | -         | -       | -      |
+%   mode        |o|i|   out1  | out2  | out3  | out4  ||  in1     | in2   | in3   | in4      | in5    | in6   |
+%   ------------|-|-|---------|-------|-------|-------||----------|-------|-------|----------|--------|-------|
+%   continue    |1|2|   jobfn |       |       |       || 'cont'   | jobfn |       |          |        |       |
+%   do job      |1|3|   jobfn |       |       |       || 'job'    | jobfn | jobids|          |        |       |
+%   calculate   |1|4|   jobfn |       |       |       || 'calc'   | algid | datain| datainvar|        |       |
+%   calculate   |1|5|   jobfn |       |       |       || 'calc'   | algid | datain| datainvar| calcset|       |
+%   get result  |4|2|   ndres | ndresc| ndaxes| consts|| 'result' | jobfn |       |          |        |       |
+%   get result  |4|3|   ndres | ndresc| ndaxes| consts|| 'result' | jobfn | consts|          |        |       |
+%   2D plot     |3|4|   H     | x     | y     |       || 'plot2D' | jobfn | varx  | vary     |        |       |
+%   2D plot     |3|5|   H     | x     | y     |       || 'plot2D' | jobfn | varx  | vary     | consts |       |
+%   3D plot     |4|5|   H     | x     | y     | z     || 'plot3D' | jobfn | varx  | vary     | varz   |       |
+%   3D plot     |4|6|   H     | x     | y     | z     || 'plot3D' | jobfn | varx  | vary     | varz   | consts|
+%   make LUT    |1|4|   lut   |       |       |       || 'lut'    | jobfn | axset | rqset    |        |       |
+%   interp LUT  |1|3|   ival  |       |       |       || 'interp' | lut   | ipoint|          |        |       |
+%   interp LUT  |1|3|   ival  |       |       |       || 'interp' | lutfn | ipoint|          |        |       |
 %
 %   (o|i - number of output|input arguments, outX - output arguments, inX -
 %   input arguments, H - handle to output figure)
@@ -322,7 +316,7 @@ function varargout = qwtbvar(varargin)
         error(err_msg_gen(6)); % bad call
     end
     if ~ischar(varargin{1})
-        % first argument is not char, mode is unknown
+        % if first argument is not char, mode is unknown
         error(err_msg_gen(9, char(varargin{1}))); % bad mode
     end
 
@@ -345,7 +339,7 @@ function varargout = qwtbvar(varargin)
         if nargin ~= 3
             error(err_msg_gen(6)); % bad call
         end
-        if ~ischar(jobfn)
+        if ~ischar(jobfn) % XXX where comes jobfn from?! THIS IS ERROR
             error(err_msg_gen(1)); % bad jobfn
         end
         % return job filename:
@@ -413,19 +407,19 @@ function varargout = qwtbvar(varargin)
         if ~isstruct(rqset)
             error(err_msg_gen(12)); % bad rqset
         end
-        % return lut filename:
+        % return lut:
         varargout{1} = main_lut(jobfn, axset, rqset);
 
     elseif strcmpi('interp', deblank(varargin{1})) %<<<2
         % interpolation of lut
         if nargin == 3
-            lutfn = varargin{2};
-            ipoint = varargin{3}; % ipoint has to be checked later, when LUT is loaded
+            lut = varargin{2};
+            ipoint = varargin{3}; % ipoint is checked later
         else
             error(err_msg_gen(6)); % bad call
         end
         % return interpolated value(s):
-        varargout{1} = main_interp(lutfn, ipoint);
+        varargout{1} = main_interp(lut, ipoint);
 
     % check mode 'result' %<<<2
     elseif strcmpi('result', deblank(varargin{1}))
@@ -442,6 +436,7 @@ function varargout = qwtbvar(varargin)
         else
             error(err_msg_gen(6)); % bad call
         end
+
     % check mode 'plot2D' %<<<2
     elseif strcmpi('plot2D', deblank(varargin{1}))
         % plotting of 2D data
@@ -517,7 +512,7 @@ function varargout = qwtbvar(varargin)
         else
             makeplot = 1;
         end
-        [tmp, varargout{1}, varargout{2}, varargout{3}] = main_plot(makeplot, jobfn, varx, vary, varz, consts);
+        [varargout{1}, varargout{2}, varargout{3}, varargout{4}] = main_plot(makeplot, jobfn, varx, vary, varz, consts);
     else % unknown mode %<<<2
         % checking value of mode (first argument) failed
         error(err_msg_gen(9, varargin{1})); % bad mode
@@ -534,7 +529,7 @@ function jobfn = main_cont(jobfn) %<<<1
 end
 
 function jobfn = main_job(jobfn, job_ids) %<<<1
-    % calculating one or more particualr jobs, for internal use mainly
+    % calculating one or more particular jobs, for internal use mainly
     jobfn = calculate_job(jobfn, job_ids);
 end
 
@@ -587,7 +582,7 @@ function [ndres, ndresc, ndaxes, consts] = main_result(jobfn, consts) %<<<1
 end % function main_result
 
 function [H, X, Y, Z] = main_plot(do_plot, jobfn, varx, vary, varz, consts) %<<<1
-% getting data for 2D plot and/or plotting of 2D data
+% getting data for 2/3D plot and/or plotting of 2/3D data
     % load job file:
     job = load_job(jobfn);
     % load final job file with results:
@@ -2744,5 +2739,8 @@ end
 
 %% Testing
 % XXX test with all inputs/outputs, all types of plotting with/out constants
+
+%% Demo
+% XXX demo runs qwtbvar_example_1?
 
 % vim settings modeline: vim: foldmarker=%<<<,%>>> fdm=marker fen ft=matlab textwidth=80 tabstop=4 shiftwidth=4
