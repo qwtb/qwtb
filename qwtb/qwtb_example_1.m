@@ -1,4 +1,6 @@
 %% Simple example of the QWTB use
+
+%% Overview
 % Sample data are simulated. QWTB is used to apply two different algorithms on the
 % same data. Uncertainty of the results is calculated by means of Monte Carlo
 % Method.
@@ -47,8 +49,8 @@ DI.fs.u = 1e-3;
 % Run PSFE algorithm on input data |DI| and with calculattion settings |CS|.
 DO = qwtb('PSFE',DI,CS);
 %%
-% Result is displayed as a histogram of calculated frequency.
-figure; hist(DO.f.r,50);
+% Result is displayed as a histogram of calculated frequency (error from mean value multiplied by 1e6)
+figure; hist((DO.f.r - mean(DO.f.r)).*1e6, 50);
 %%
-% One can see the histogram is not Gaussian function. To get correct
-% uncertainties, a shortest coverage interval has to be used.
+% One can see the histogram maybe is, maybe is not a Gaussian function. To get
+% correct uncertainties, a shortest coverage interval has to be calculated.

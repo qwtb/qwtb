@@ -5,6 +5,7 @@ INPUTSOURCE = QWTB-Tb_doc
 pdf:
 	rm -rf $(INPUTSOURCE).log $(INPUTSOURCE).aux $(INPUTSOURCE).toc $(INPUTSOURCE).bbl $(INPUTSOURCE).bbg *.out $(INPUTSOURCE).blg $(INPUTSOURCE)-blx.bib
 	rm -rf $(INPUTSOURCE).bcf $(INPUTSOURCE).run.xml $(INPUTSOURCE).tex.blg 
+	rm -rf $(INPUTSOURCE).fdb_latexmk $(INPUTSOURCE).fls $(INPUTSOURCE).ptc $(INPUTSOURCE).synctex.gz
 	pdflatex $(INPUTSOURCE).tex
 	biber $(INPUTSOURCE)
 	pdflatex $(INPUTSOURCE).tex
@@ -19,6 +20,7 @@ pdf:
 onlytb:
 	rm -rf $(INPUTSOURCE).log $(INPUTSOURCE).aux $(INPUTSOURCE).toc $(INPUTSOURCE).bbl $(INPUTSOURCE).bbg *.out $(INPUTSOURCE).blg $(INPUTSOURCE)-blx.bib
 	rm -rf $(INPUTSOURCE).bcf $(INPUTSOURCE).run.xml $(INPUTSOURCE).tex.blg 
+	rm -rf $(INPUTSOURCE).fdb_latexmk $(INPUTSOURCE).fls $(INPUTSOURCE).ptc $(INPUTSOURCE).synctex.gz
 	pdflatex $(INPUTSOURCE).tex
 	biber $(INPUTSOURCE)
 	pdflatex $(INPUTSOURCE).tex
@@ -36,6 +38,7 @@ onlyalg:
 clean:
 	rm -rf $(INPUTSOURCE).log $(INPUTSOURCE).aux $(INPUTSOURCE).toc $(INPUTSOURCE).bbl $(INPUTSOURCE).bbg *.out $(INPUTSOURCE).blg $(INPUTSOURCE)-blx.bib
 	rm -rf $(INPUTSOURCE).bcf $(INPUTSOURCE).run.xml $(INPUTSOURCE).tex.blg 
+	rm -rf $(INPUTSOURCE).fdb_latexmk $(INPUTSOURCE).fls $(INPUTSOURCE).ptc $(INPUTSOURCE).synctex.gz
 	rm -rf QWTB-Alg_doc.log QWTB-Alg_doc.aux QWTB-Alg_doc.toc QWTB-Alg_doc.bbl QWTB-Alg_doc.bbg *.out QWTB-Alg_doc.blg QWTB-Alg_doc-blx.bib
 	rm -rf QWTB-Alg_doc.bcf QWTB-Alg_doc.run.xml QWTB-Alg_doc.tex.blg 
 

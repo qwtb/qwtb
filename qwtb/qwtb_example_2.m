@@ -1,5 +1,8 @@
-%% Example of the QWTB use
-% Data are simulated, QWTB is used with different algorithms.
+%% Long example of the QWTB use
+
+%% Overview
+% Data are simulated, QWTB is used to estimate quanties using different
+% algorithms.
 
 %% Generate ideal data
 % Sample data are generated, representing 1 second of sine waveform of nominal

@@ -9,11 +9,14 @@
 \usepackage{calc}                   % provides \widthof
 \usepackage{enumitem}                   % provides \begin{description} with settings []
 \usepackage{color}                   % provides coloured text
+% content:
+\usepackage{titletoc}                   % multiple contents for examples
 % obrazky:
 \usepackage{graphicx}                   % to insert pictures
 \usepackage{grffile}                    % enables spaces in picture file names
 % \grffilesetup{ multidot=false, babel=false, encoding, inputencoding=utf8, filenameencoding=utf8, space=true}
 \newcommand*{\FILEDOT}{.}                   % if picture file name containt dot (e.g. aaa.bbb.pdf), then TeX considers rest as filename extension, so dot must be written as follows: \includegraphics{aaa\FILEDOT bbb.eps}
+
 % rest:
 \usepackage[pdftex,
             unicode,
@@ -116,8 +119,11 @@
         {\Large \url{https://qwtb.github.io/qwtb/}}
 \end{center}
 \newpage
-
-\tableofcontents
+% Start main table of contents
+% (it has to be separated from local tables of contents in the examples)
+\startcontents[maintoc]
+% Print main table of contents
+\printcontents[maintoc]{}{0}{\section*{Contents}\setcounter{tocdepth}{2}}
 
 \chapter{Introduction} %<<<1 ------------------------------
 \bigskip
@@ -974,7 +980,7 @@ To add a new algorithm, several steps have to be done.
         zerrppm = (DO.z.v - sqrt(U)/sqrt(U) .* 1e6
         \end{lstlisting} %>>>3
 
-        \item Check and test everything. Send your contribution to qwtb authors. Ask them to
+        \item Check and test everything. Send your contribution to QWTB authors. Ask them to
         generate a new documentation. Celebrate.
 
 \end{enumerate}
@@ -1055,12 +1061,25 @@ Plots dependence of output quantity \li{vary} on varied input quantity
 \li{varx} in 2-dimensional plot, based on results in \li{jobfn}.
 Fills in properly title and axes labels. If results contain more varied
 quantities than \li{varx}, multiple dependences are plotted.
-If only one dependence is sought, the values of other varied input quantities
+If only single dependence is sought, the values of other varied input quantities
 can be defined in \li{consts}.
 
 Output \li{H} is a handle to the figure. Outputs \li{x} and \li{y} are
 structures containing the plotted values and relevant labels
 (see~\ref{S:QWTBvar:plotdata}).
+
+As an example, consider calculation with varied input quantities \li{x.v},
+\li{y.v}, \li{a.v}, \li{a.u} and scalar output quantity \li{z.v}. Plotting all
+dependencies of \li{z.v} on \li{x.v} results in too many plot lines, as shown
+in following figure on the left. However setting the \li{consts} variable to
+carry values of \li{a.v}, \li{a.u} and \li{y.v}, only one line is plotted, as
+shown in figure on the right:
+
+\begin{center}
+    \includegraphics[width=0.45\textwidth]{sources/QWTBvar_plot2D_no_consts.pdf}
+    \hfill
+    \includegraphics[width=0.45\textwidth]{sources/QWTBvar_plot2D_w_consts.pdf}
+\end{center}
 
 \subsection{Plot result in 3D}
 \label{S:QWTBvar:plot3D}
@@ -1424,19 +1443,47 @@ reviewed in window {\tt Output quantities}.
 }
 
 \chapter{Simple example of QWTB use} %<<<1 ----------------------------------
+% Stop main table of contents. The example will start its own local TOC.
+\stopcontents[maintoc]
 \input{qwtb_examples_published/qwtb_example_1.tex}
+% Resume main TOC
+\resumecontents[maintoc]
 
 \chapter{Long example of QWTB use} %<<<1 ----------------------------------
+% Stop main table of contents. The example will start its own local TOC.
+\stopcontents[maintoc]
 \input{qwtb_examples_published/qwtb_example_2.tex}
+% Resume main TOC
+\resumecontents[maintoc]
+
+\chapter{Simple example of QWTBvar use} %<<<1 ----------------------------------
+\section{The example}
+% Stop main table of contents. The example will start its own local TOC.
+\stopcontents[maintoc]
+\input{qwtb_examples_published/qwtbvar_example_1.tex}
+% Resume main TOC
+\resumecontents[maintoc]
+\section{The varied function \texttt{qwtbvar\_example\_1\_process.m}}
+\lstinputlisting{../qwtb/qwtbvar_example_1_process.m}
+
+\chapter{Complex example of QWTBvar use} %<<<1 ----------------------------------
+\section{The example}
+% Stop main table of contents. The example will start its own local TOC.
+\stopcontents[maintoc]
+\input{qwtb_examples_published/qwtbvar_example_2.tex}
+% Resume main TOC
+\resumecontents[maintoc]
+\section{The varied function \texttt{qwtbvar\_example\_2\_process.m}}
+\lstinputlisting{../qwtb/qwtbvar_example_2_process.m}
 
 \end{document}
 
 % vim settings: vim:foldmarker=%<<<,%>>> fdm=marker fen
-% \chapter{Simple example of QWTBvar use} %<<<1 ----------------------------------
 % 2DO XXX
 % % \input{qwtb_examples_published/qwtbvar_example_1.tex}
 % This example is shown in a file \li{qwtbvar_example_1.m}.
 %
 %
+
 % \chapter{Complex example of QWTBvar use with non-scalar quantities} %<<<1 ----------------------------------
 % 2DO XXX
