@@ -965,6 +965,8 @@ function [calcplan] = make_calculation_plan(varlist) %<<<1
         % reshape got sense only if more than 1 variated quantity
         % (matlab must obtain *row* vector in second argument
         calcplan.ndimjobids = reshape(calcplan.job_ids, varlist.dimsz(:)');
+    else
+        calcplan.ndimjobids = calcplan.job_ids(:);
     end % if varlist.n > 1
 end % function [calcplan] = make_calculation_plan(varlist)
 
@@ -2741,6 +2743,6 @@ end
 % XXX test with all inputs/outputs, all types of plotting with/out constants
 
 %% Demo
-% XXX demo runs qwtbvar_example_1?
+% XXX test with all inputs/outputs, all types of plotting with/out constants
 
 % vim settings modeline: vim: foldmarker=%<<<,%>>> fdm=marker fen ft=matlab textwidth=80 tabstop=4 shiftwidth=4
