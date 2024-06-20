@@ -143,6 +143,7 @@ function varargout = qwtbvar(varargin)
 % job.calcset       - calculation settings (input of qwtbvar)
 % job.varlist       - structure with list of variated quantities, see lower
 % job.calcplan      - structure with calculation plan, see lower
+% job.is_qwtb_alg   - if algorithm (input algid) is a user function or qwtb algorithm
 
 % job.varlist - list of variated quantities %<<<3
 %  Needed to create job.calcplan.
@@ -1011,6 +1012,14 @@ function job = prepare_calculations(algid, datain, datainvar, calcset) %<<<1
     % initialize filenames and directory
     job = init_filenames(job, calcset);
 
+    % find out if qwtb algorithm or user function:
+    alginfo = qwtb();
+    job.is_qwtb_alg = 1;
+    if ~any(strcmp({alginfo.id}, job.algid))
+        % it is not qwtb algorithm, but a user function:
+        job.is_qwtb_alg = 0;
+    end
+
     % ensure job main file exists
     if exist(job.jobfn, 'file')
         if calcset.var.cleanfiles
@@ -1092,18 +1101,12 @@ function resstat = calculate_job(job, job_ids) %<<<1
                 % job result exist, display message and quit
                 disp_msg(4, job.resultfns{j}); %result exist
             else
-                % calculate
-                alginfo = qwtb();
-                is_qwtb_alg = 1;
-                if ~any(strcmp({alginfo.id}, job.algid))
-                    % it is not qwtb algorithm, but function
-                    is_qwtb_alg = 0;
-                end
-                % make variation calculation
+                % Calculate
                 % variate quantitites:
                 DI = variate_datain(job, job_id);
                 disp_msg(3, job_id, job.count, job.resultfns{job_id}); % calculating result no
-                if is_qwtb_alg
+                % algorithm user function or QWTB alg?
+                if job.is_qwtb_alg
                     % call QWTB:
                     [DO, DI, CS] = qwtb(job.algid, DI, job.calcset);
                 else
