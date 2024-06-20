@@ -2415,21 +2415,25 @@ function [ndresc ndaxes] = general_permute(ndresc, ndaxes, Qfnames)
         error('internal')
     end % if
 
-    ndresc = permute(ndresc, dimensions);
-    ndaxes.names   = ndaxes.names(dimensions);
-    ndaxes.Q       = ndaxes.Q(dimensions);
-    ndaxes.f       = ndaxes.f(dimensions);
-    % Order of ndaxes.valuesc to match .names, .Q, and .f:
-    ndaxes.valuesc = ndaxes.valuesc(dimensions);
-    % Particular axes in ndaxes.valuesc must be also properly transposed. (So
-    % the axes are varied in the same dimension as the dimension it describes,
-    % e.g. if axis describes 3rd axis, than it is not row, not collumn but page
-    % vector)
-    for j = 1:numel(ndaxes.valuesc)
-        ndaxes.valuesc{j} = permute(ndaxes.valuesc{j}, dimensions);
-    end % for j
-    % convert ndaxes.valuesc to ndaxes.values:
-    ndaxes = ndaxes_valuesc_to_values(ndaxes);
+    if numel(ndaxes.names) > 1
+        % do permutation only if more than one axis exist:
+        ndresc = permute(ndresc, dimensions);
+        ndaxes.names   = ndaxes.names(dimensions);
+        ndaxes.Q       = ndaxes.Q(dimensions);
+        ndaxes.f       = ndaxes.f(dimensions);
+        % Order of ndaxes.valuesc to match .names, .Q, and .f:
+        ndaxes.valuesc = ndaxes.valuesc(dimensions);
+        % Particular axes in ndaxes.valuesc must be also properly transposed. (So
+        % the axes are varied in the same dimension as the dimension it describes,
+        % e.g. if axis describes 3rd axis, than it is not row, not collumn but page
+        % vector)
+        for j = 1:numel(ndaxes.valuesc)
+            ndaxes.valuesc{j} = permute(ndaxes.valuesc{j}, dimensions);
+        end % for j
+        % convert ndaxes.valuesc to ndaxes.values:
+        ndaxes = ndaxes_valuesc_to_values(ndaxes);
+    end % numel(ndaxes.names) > 1
+
 end % function [ndresc ndaxes] = general_permute(ndresc, ndaxes, varA, varB, varC)
 
 function [stru_out] = remove_Q_f(stru, Qfcell) %<<<1
