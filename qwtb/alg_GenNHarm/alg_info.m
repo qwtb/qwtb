@@ -5,9 +5,9 @@ function alginfo = alg_info() %<<<1
 
 alginfo.id = 'GenNHarm';
 alginfo.name = 'Basic signal generator';
-alginfo.desc = 'An algorithm for generating sampled waveforms with multiple harmonic or interharmonic components, noise level and quantization.';
+alginfo.desc = 'An algorithm for generating sampled waveforms with multiple harmonic or interharmonic components and noise level.';
 alginfo.citation = 'N/A';
-alginfo.remarks = 'If sampling time |Ts| is not supplied, wrapper will calculate |Ts| from sampling frequency |fs| or if not supplied, mean of differences of time series |t| is used to calculate |Ts|.';
+alginfo.remarks = 'If times of samples |t| are not defined, wrapper will calculate |t| from number of samples |L| and sampling frequency |fs| or sampling period |Ts|. Vectors |f|, |A|, |ph|, |O| defines harmonic frequencies. If |f|, |A|, |ph|, |O| are scalar, and |thd_k1|>0 and |nharm|>1, than harmonics are added to the signal to make required |thd_k1|.';
 alginfo.license = 'MIT License';
 
 alginfo.inputs(1).name = 'Ts';
@@ -31,7 +31,7 @@ alginfo.inputs(3).parameter = 0;
 alginfo.inputs(4).name = 'L';
 alginfo.inputs(4).desc = 'Number of samples';
 alginfo.inputs(4).alternative = 0;
-alginfo.inputs(4).optional = 0;
+alginfo.inputs(4).optional = 1;
 alginfo.inputs(4).parameter = 0;
 
 alginfo.inputs(5).name = 'f';
@@ -58,20 +58,29 @@ alginfo.inputs(5).alternative = 0;
 alginfo.inputs(5).optional = 0;
 alginfo.inputs(5).parameter = 1;
 
-alginfo.inputs(5).name = 'THD';
-alginfo.inputs(5).desc = 'Total harmonic distortion';
+alginfo.inputs(5).name = 'thd_k1';
+alginfo.inputs(5).desc = 'Total harmonic distortion. Relevant only if A,f,ph,O are scalar.';
 alginfo.inputs(5).alternative = 0;
-alginfo.inputs(5).optional = 0;
+alginfo.inputs(5).optional = 1;
 alginfo.inputs(5).parameter = 1;
 
 alginfo.inputs(5).name = 'nharm';
 alginfo.inputs(5).desc = 'Number of harmonics';
 alginfo.inputs(5).alternative = 0;
-alginfo.inputs(5).optional = 0;
+alginfo.inputs(5).optional = 1;
+alginfo.inputs(5).parameter = 1;
+
+alginfo.inputs(5).name = 'noise';
+alginfo.inputs(5).desc = 'Noise level of the signal';
+alginfo.inputs(5).alternative = 0;
+alginfo.inputs(5).optional = 1;
 alginfo.inputs(5).parameter = 1;
 
 alginfo.outputs(1).name = 'y';
 alginfo.outputs(1).desc = 'Samples';
+
+alginfo.outputs(1).name = 'thd_k1';
+alginfo.outputs(1).desc = 'Total harmonic distortion';
 
 alginfo.providesGUF = 0;
 alginfo.providesMCM = 0;

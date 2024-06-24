@@ -14,38 +14,44 @@ function DO = alg_wrapper(DI, CS) %<<<1
 % nharm - max number of harms
 % noise,...
 
+% Format input data ---------------------------  %<<<1
+% Check/generate time series:
 if isfield(DI, 't')
     DO.t.v = DI.t.v;
 else
+    if not(isfield(DI, 'L'))
+        error('QWTB: GenNHarm wrapper: if time series is not supplied, number of samples L together with sampling frequency fs or sampling period Ts is required to calculate time series.')
+    end
     if isfield(DI, 'Ts')
         Ts = DI.Ts.v;
+        if CS.verbose
+            disp('QWTB: GenNHarm wrapper: time series was calculated from sampling period and number of samples.')
+        end
     elseif isfield(DI, 'fs')
         Ts = 1/DI.fs.v;
         if CS.verbose
-            disp('QWTB: GenNHarm wrapper: sampling time was calculated from sampling frequency')
+            disp('QWTB: GenNHarm wrapper: time series was calculated from sampling frequency and number of samples.')
         end
     end
-    DO.t.v = [0 : Ts : DI.L.v.*Ts];
+    DO.t.v = [0 : Ts : (DI.L.v - 1).*Ts];
 end
 
-% make waveform ---------------------------  %<<<1
-    % time series:
-    DO.t.u = ones(size(DO.t.v)).*1e-10;
-    % amplitudes:
-    A = (DI.A.v .* DI.THD.v)^(1/DI.nharm.v);
-    A = [DI.A.v repmat(A, 1, DI.nharm.v - 1)];
-    % harm indexes:
-    Hi = [1:1:DI.nharm.v];
-    % phases
-    ph = repmat(DI.ph.v, 1, DI.nharm.v);
-    O = repmat(DI.O.v, 1, DI.nharm.v);
-    % sampled values:
-    DO.y.v = A'.*sin(2.*pi.*DI.f.v.*Hi'.*DO.t.v + DI.ph.v') + DI.O.v';
-    DO.y.v = sum(DO.y.v, 1);
-    % add noise to the data:
-    DO.y.v = DO.y.v + normrnd(0,DI.noise.v,size(DO.y.v));
-    % uncertainties of every sample:
-    DO.y.u = ones(size(DO.y.v)).*1e-5;
-end % function
+% Check thd_k1 and nharm
+if not(isfield(DI, 'thd_k1'))
+    DI.thd_k1.v = 0;
+end
+if not(isfield(DI, 'nharm'))
+    DI.nharm.v = 0;
+end
+if not(isfield(DI, 'noise'))
+    DI.noise.v = 0;
+end
+
+% Call algorithm ---------------------------  %<<<1
+% algorithm use only .v fields:
+[DO.y, DO.thd_k1] = GenNHarm(DO.t, DI.f, DI.A, DI.ph, DI.O, DI.thd_k1, DI.nharm, DI.noise);
+
+% Format output data ---------------------------  %<<<1
+% -
 
 % vim settings modeline: vim: foldmarker=%<<<,%>>> fdm=marker fen ft=octave textwidth=80 tabstop=4 shiftwidth=4
