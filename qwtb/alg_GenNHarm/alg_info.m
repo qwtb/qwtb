@@ -7,7 +7,7 @@ alginfo.id = 'GenNHarm';
 alginfo.name = 'Basic signal generator';
 alginfo.desc = 'An algorithm for generating sampled waveforms with multiple harmonic or interharmonic components and noise level.';
 alginfo.citation = 'N/A';
-alginfo.remarks = 'If times of samples |t| are not defined, wrapper will calculate |t| from number of samples |L| and sampling frequency |fs| or sampling period |Ts|. Vectors |f|, |A|, |ph|, |O| defines harmonic frequencies. If |f|, |A|, |ph|, |O| are scalar, and |thd_k1|>0 and |nharm|>1, than harmonics are added to the signal to make required |thd_k1|.';
+alginfo.remarks = 'If times of samples |t| are not defined, wrapper will calculate |t| from: sampling frequency |fs| or sampling period |Ts|, and from: number of samples |L| or number of main signal periods |M|. Vectors |f|, |A|, |ph|, |O| defines harmonic frequencies. First value is the main signal component. If |f|, |A|, |ph|, |O| are scalar, and |thd_k1|>0 and |nharm|>1, than harmonics are added to the signal to make required |thd_k1|.';
 alginfo.license = 'MIT License';
 
 alginfo.inputs(1).name = 'Ts';
@@ -30,7 +30,13 @@ alginfo.inputs(3).parameter = 0;
 
 alginfo.inputs(4).name = 'L';
 alginfo.inputs(4).desc = 'Number of samples';
-alginfo.inputs(4).alternative = 0;
+alginfo.inputs(4).alternative = 2;
+alginfo.inputs(4).optional = 1;
+alginfo.inputs(4).parameter = 0;
+
+alginfo.inputs(4).name = 'M';
+alginfo.inputs(4).desc = 'Number of main signal component periods';
+alginfo.inputs(4).alternative = 2;
 alginfo.inputs(4).optional = 1;
 alginfo.inputs(4).parameter = 0;
 

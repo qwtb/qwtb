@@ -19,9 +19,6 @@ function DO = alg_wrapper(DI, CS) %<<<1
 if isfield(DI, 't')
     DO.t.v = DI.t.v;
 else
-    if not(isfield(DI, 'L'))
-        error('QWTB: GenNHarm wrapper: if time series is not supplied, number of samples L together with sampling frequency fs or sampling period Ts is required to calculate time series.')
-    end
     if isfield(DI, 'Ts')
         Ts = DI.Ts.v;
         if CS.verbose
@@ -33,7 +30,34 @@ else
             disp('QWTB: GenNHarm wrapper: time series was calculated from sampling frequency and number of samples.')
         end
     end
-    DO.t.v = [0 : Ts : (DI.L.v - 1).*Ts];
+    isfieldL = isfield(DI, 'L');
+    if isfieldL
+        L = DI.L.v;
+    else
+        L = NaN;
+    end
+    isfieldM = isfield(DI, 'M');
+    if isfieldM
+        M = DI.M.v;
+    else
+        M = NaN;
+    end
+    if isfieldL && not(isnan(L)) && not(L < 1) && not(isempty(L))
+        % number of samples supplied
+        DO.t.v = [0 : Ts : (L - 1).*Ts];
+        if CS.verbose
+            disp('QWTB: GenNHarm wrapper: time series was calculated from number of samples.')
+        end
+    elseif isfieldM && not(isnan(M)) && not(M < 0) && not(isempty(M))
+        % number of main signal periods supplied
+        T = M./DI.f.v(1);
+        DO.t.v = [0 : Ts : T - Ts];
+        if CS.verbose
+            disp('QWTB: GenNHarm wrapper: time series was calculated from number of main signal component periods.')
+        end
+    else
+        error('QWTB: GenNHarm wrapper: if time series t is not supplied, algorithm requires one of these combinations to generate time series: (fs or Ts with L), or (fs or Ts with M), where fs is sampling frequency, Ts is sampling period, L is number of samples, M is number of signal periods.');
+    end
 end
 
 % Check thd_k1 and nharm

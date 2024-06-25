@@ -34,6 +34,12 @@ DI.Ts.v = 1/4;
 DO = qwtb('GenNHarm', DI, CS);
 assert(DO.y.v, [0 1 0 -1], 1e-15);
 
+% Check alternative inputs L/M --------------------------- %<<<1
+DI = rmfield(DI, 'L');
+DI.M.v = 2;
+DO = qwtb('GenNHarm', DI, CS);
+assert(DO.y.v, [0 1 0 -1], 1e-15);
+
 % Check alternative inputs thd_kt/nharm --------------------------- %<<<1
 DI = [];
 DI.fs.v = 1e3;

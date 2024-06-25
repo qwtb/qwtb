@@ -28,6 +28,21 @@ figure
 plot(DO.t.v, DO.y.v, '-');
 xlabel('t (s)'), ylabel('amplitude (V)')
 
+%% Generate simple sine waveform using number of periods
+% Consider we want to simulate 2.5 periods of a sine waveform.
+DI = [];
+DI.fs.v = 1e3;
+DI.M.v = 2.5;
+DI.f.v = [1];
+DI.A.v = [1];
+DI.ph.v = [0];
+DI.O.v = [0];
+DI.noise.v = 0;
+DO = qwtb('GenNHarm', DI);
+figure
+plot(DO.t.v, DO.y.v, '-');
+xlabel('t (s)'), ylabel('amplitude (V)')
+
 %% Generate waveform with automatically calculated harmonics
 % Consider waveform with 10 harmonic components, while the amplitudes of the
 % harmonics will be calculated based on the supplied THD_k1 value. The |f|,
