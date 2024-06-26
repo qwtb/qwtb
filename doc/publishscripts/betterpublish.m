@@ -11,7 +11,7 @@
 %
 % Tested with Octave version 9.1.0
 
-function outstr = betterpublish(instr, imgprefix)
+function outstr = betterpublish(instr, imgprefix, change_rank)
 % the order of following commands IS important. It uses a set of regular
 % expression substitutes.
 
@@ -22,11 +22,13 @@ instr = regexprep(instr, '.*\\tableofcontents\n\\vspace\*{4em}', tmp, 'dotall');
 % And replace \end{document} by end of local table of contents:
 instr = regexprep(instr, '\\end{document}', '\\stopcontents[localtoc]', 'dotexceptnewline');
 
-% % Change rank of sub/sub/sections for better integration into main document.
-% % subsection -> subsubsection
-% instr = regexprep(instr, '\\subsection(.*)', '\\subsubsection$1', 'dotexceptnewline');
-% % section -> subsection
-% instr = regexprep(instr, '\\section(.*)', '\\subsection$1', 'dotexceptnewline');
+if change_rank
+    % Change rank of sub/sub/sections for better integration into main document.
+    % subsection -> subsubsection
+    instr = regexprep(instr, '\\subsection(.*)', '\\subsubsection$1', 'dotexceptnewline');
+    % section -> subsection
+    instr = regexprep(instr, '\\section(.*)', '\\subsection$1', 'dotexceptnewline');
+end
 
     % Matlab leftover:
     % % change texttt{http...} to hyperref package link:

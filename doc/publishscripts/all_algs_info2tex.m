@@ -19,16 +19,14 @@ for i = 1:length(infos) % for all info: %<<<1
     % add proper header:
     fprintf(fid, '\\begin{tightdesc}\n');
     % add basic informations:
-    fprintf(fid, '\\item [Id:] %s\n', infos(i).id);
+    fprintf(fid, '\\item [Id:] %s\n', texify(infos(i).id));
     fprintf(fid, '\\item [Name:] %s\n', infos(i).name);
-    % convert _ to \_:
-    tmp = strrep(infos(i).desc, '_', '\_');
-    fprintf(fid, '\\item [Description:] %s\n', tmp);
+    fprintf(fid, '\\item [Description:] %s\n', texify(infos(i).desc));
     tmp = infos(i).citation;
     % match urls in citation field and format urls:
     [S, E, TE, M, T, NM, SP] = regexp (tmp, 'https?://\S+');
     if ~isempty(M)
-        tmp = [];
+        tmp = '';
         for j = 1:length(M)
             tmp = [tmp SP{j} '\url{' strrep(M{j},'&','\&') '}'];
         end
@@ -36,12 +34,8 @@ for i = 1:length(infos) % for all info: %<<<1
     end
     % add other informations
     fprintf(fid, '\\item [Citation:] %s\n', tmp);
-    % convert _ to \_:
-    tmp = strrep(infos(i).remarks, '_', '\_');
-    fprintf(fid, '\\item [Remarks:] %s\n', tmp);
-    % convert _ to \_:
-    tmp = strrep(infos(i).license, '_', '\_');
-    fprintf(fid, '\\item [License:] %s\n', tmp);
+    fprintf(fid, '\\item [Remarks:] %s\n', texify(infos(i).remarks));
+    fprintf(fid, '\\item [License:] %s\n', texify(infos(i).license));
     % add informations about uncertainty calculation:
     if infos(i).providesGUF
         tmp = 'yes';
@@ -58,17 +52,17 @@ for i = 1:length(infos) % for all info: %<<<1
     % add list and descriptions of all input quantities: %<<<2
     % XXX this function does not differ optional/nonoptional parameters?
     [reqQ, reqQdesc, optQ, optQdesc, reqQG, reqQGdesc, optQG, optQGdesc, parQ, Qlist] = parse_alginfo_inputs(infos(i));
-    % convert _ to \_:
-    reqQ      = cellfun(@strrep, reqQ     , repmat({'_'}, size(reqQ     )), repmat({'\_'}, size(reqQ     )), 'UniformOutput', 0);
-    reqQdesc  = cellfun(@strrep, reqQdesc , repmat({'_'}, size(reqQdesc )), repmat({'\_'}, size(reqQdesc )), 'UniformOutput', 0);
-    optQ      = cellfun(@strrep, optQ     , repmat({'_'}, size(optQ     )), repmat({'\_'}, size(optQ     )), 'UniformOutput', 0);
-    optQdesc  = cellfun(@strrep, optQdesc , repmat({'_'}, size(optQdesc )), repmat({'\_'}, size(optQdesc )), 'UniformOutput', 0);
-    reqQG     = cellfun(@strrep, reqQG    , repmat({'_'}, size(reqQG    )), repmat({'\_'}, size(reqQG    )), 'UniformOutput', 0);
-    reqQGdesc = cellfun(@strrep, reqQGdesc, repmat({'_'}, size(reqQGdesc)), repmat({'\_'}, size(reqQGdesc)), 'UniformOutput', 0);
-    optQG     = cellfun(@strrep, optQG    , repmat({'_'}, size(optQG    )), repmat({'\_'}, size(optQG    )), 'UniformOutput', 0);
-    optQGdesc = cellfun(@strrep, optQGdesc, repmat({'_'}, size(optQGdesc)), repmat({'\_'}, size(optQGdesc)), 'UniformOutput', 0);
-    parQ      = cellfun(@strrep, parQ     , repmat({'_'}, size(parQ     )), repmat({'\_'}, size(parQ     )), 'UniformOutput', 0);
-    Qlist     = cellfun(@strrep, Qlist    , repmat({'_'}, size(Qlist    )), repmat({'\_'}, size(Qlist    )), 'UniformOutput', 0);
+    % ensure readability by latex:
+    reqQ      = cellfun(@texify, reqQ     , 'UniformOutput', 0);
+    reqQdesc  = cellfun(@texify, reqQdesc , 'UniformOutput', 0);
+    optQ      = cellfun(@texify, optQ     , 'UniformOutput', 0);
+    optQdesc  = cellfun(@texify, optQdesc , 'UniformOutput', 0);
+    reqQG     = cellfun(@texify, reqQG    , 'UniformOutput', 0);
+    reqQGdesc = cellfun(@texify, reqQGdesc, 'UniformOutput', 0);
+    optQG     = cellfun(@texify, optQG    , 'UniformOutput', 0);
+    optQGdesc = cellfun(@texify, optQGdesc, 'UniformOutput', 0);
+    parQ      = cellfun(@texify, parQ     , 'UniformOutput', 0);
+    Qlist     = cellfun(@texify, Qlist    , 'UniformOutput', 0);
     % input quantites:
     fprintf(fid, '\\item [Input Quantities] \\rule{0em}{0em}\n    \\begin{tightdesc}');
         % required quantities: %<<<3
@@ -99,23 +93,23 @@ for i = 1:length(infos) % for all info: %<<<1
             fprintf(fid, '%s', tmp);
         end
         % optional quantities: %<<<3
-        tmp = [];
+        tmp = '';
         % prepare all optional grouped quantities
         for j = 1:length(optQG)
             for k = 1:length(optQG{j})
                 if k == 1
-                    tmp = [tmp '\textsf{' optQG{j}{k} '}'];
+                    tmp = [tmp '\textsf{' num2str(optQG{j}{k}) '}'];
                 else
-                    tmp = [tmp ' or \textsf{' optQG{j}{k} '}'];
+                    tmp = [tmp ' or \textsf{' num2str(optQG{j}{k}) '}'];
                 end
             end
         end
         % write all optional quantities
         for j = 1:length(optQ)
             if (j == 1 && isempty(tmp))
-                tmp = [tmp '\textsf{' optQ{j} '}'];
+                tmp = [tmp '\textsf{' num2str(optQ{j}) '}'];
             else
-                tmp = [tmp ',\enspace \textsf{' optQ{j} '}'];
+                tmp = [tmp ',\enspace \textsf{' num2str(optQ{j}) '}'];
             end
         end
         % write prepared to the file:
@@ -124,13 +118,13 @@ for i = 1:length(infos) % for all info: %<<<1
             fprintf(fid, '%s', tmp);
         end
         % parameter quantities: %<<<3
-        tmp = [];
+        tmp = '';
         % prepare all parameters:
         for j = 1:length(parQ)
             if j > 1
                 tmp = [tmp ',\enspace '];
             end
-            tmp = [tmp '\textsf{' parQ{j} '}'];
+            tmp = [tmp '\textsf{' num2str(parQ{j}) '}'];
         end
         % write prepared to the file:
         if ~isempty(tmp)
@@ -151,7 +145,7 @@ for i = 1:length(infos) % for all info: %<<<1
     ind = ind(:,1);
     Qlist = {Qlist{ind,1}; Qlist{ind,2}}';
     for j = 1:size(Qlist,1);
-        fprintf(fid, '\n        \\item[\\textsf{%s}] -- %s', Qlist{j,1}, Qlist{j,2});
+        fprintf(fid, '\n        \\item[\\textsf{%s}] -- %s', texify(Qlist{j,1}), texify(Qlist{j,2}));
     end
     fprintf(fid, '\n    \\end{tightdesc}\n');
     fprintf(fid, '\\end{tightdesc}\n');

@@ -1,6 +1,6 @@
-%% Script runs octave command `publish` on all qwtb examples
-% properly works only in Matlab, GNU Octave has some errors (4.0)
-% requires epstopdf, therefore probably only matlab in linux can do this
+%% script runs GNU Octave command `publish` on all qwtb examples
+% properly works in GNU Octave. See previous versions to get a script working
+% with Matlab
 clear all
 
 %% Settings
@@ -51,7 +51,7 @@ for PAEi = 1:length(PAEfn)
     PAEcfn = fullfile(publishpath, [NAME '.tex']);
 
     % reformat Octave latex output
-    PAEstr = betterpublish(fileread(PAEcfn), publishprefix);
+    PAEstr = betterpublish(fileread(PAEcfn), publishprefix, 0);
     % save changed content to the file
     PAEfid = fopen(PAEcfn, 'w');
     fprintf(PAEfid, '%s', PAEstr);
