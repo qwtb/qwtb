@@ -1,168 +1,133 @@
-
-% This LaTeX was auto-generated from an M-file by MATLAB.
-% To make changes, update the M-file and republish this document.
-
-%%% \documentclass{article}
-%%% \usepackage{graphicx}
-%%% \usepackage{color}
-
-%%% \sloppy
-%%% \definecolor{lightgray}{gray}{0.5}
-\setlength{\parindent}{0pt}
-
-%%% \begin{document}
-
-    
-    
-\subsection*{Ratio of signal to noise and distortion and Effective number of bits (time space)}
-
-\begin{par}
-Example for algorithm SINAD-ENOB.
-\end{par} \vspace{1em}
-\begin{par}
-Algorithm calculates Ratio of signal to noise and distortion and Effective number of bits in time space. First signal is generated, then estimates of signal parameters are calculated by Four parameter sine wave fitting and next SINAD and ENOB are calculated. This example do not take into account a quantisation noise.
-\end{par} \vspace{1em}
-
-\subsubsection*{Contents}
-
-\begin{itemize}
-\setlength{\itemsep}{-1ex}
-   \item Generate sample data
-   \item Calculate estimates of signal parameters
-   \item Copy results to inputs
-   \item Calculate SINAD and ENOB
-   \item Display results:
-\end{itemize}
+\startcontents[localtoc]
+\printcontents[localtoc]{}{0}{\subsection*{Contents}\setcounter{tocdepth}{2}}
 
 
+
+\phantomsection
+\addcontentsline{toc}{section}{Generate sample data}
 \subsubsection*{Generate sample data}
 
-\begin{par}
-Two quantities are prepared: \lstinline{t} and \lstinline{y}, representing 1 second of sinus waveform of nominal frequency 1 kHz, nominal amplitude 1 V, nominal phase 1 rad and offset 1 V sampled at sampling frequency 10 kHz.
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+
+Two quantities are prepared: \texttt{t} and \texttt{y}, representing 1 second of sinus waveform of nominal
+frequency 1 kHz, nominal amplitude 1 V, nominal phase 1 rad and offset 1 V sampled at sampling
+frequency 10 kHz.
+
+\begin{lstlisting}
 DI = [];
 Anom = 2; fnom = 100; phnom = 1; Onom = 0.2;
 DI.t.v = [0:1/1e4:1-1/1e4];
 DI.y.v = Anom*sin(2*pi*fnom*DI.t.v + phnom) + Onom;
 \end{lstlisting}
-\begin{par}
+
+
 Add a noise with normal distribution probability:
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+\begin{lstlisting}
 noisestd = 1e-4;
 DI.y.v = DI.y.v + noisestd.*randn(size(DI.y.v));
 \end{lstlisting}
-\begin{par}
+
+
 Lets make an estimate of frequency 0.2 percent higher than nominal value:
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+\begin{lstlisting}
 DI.fest.v = 100.2;
 \end{lstlisting}
 
 
+\phantomsection
+\addcontentsline{toc}{section}{Calculate estimates of signal parameters}
 \subsubsection*{Calculate estimates of signal parameters}
 
-\begin{par}
-Use QWTB to apply algorithm \lstinline{FPNLSF} to data \lstinline{DI}.
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+
+Use QWTB to apply algorithm \texttt{FPNLSF} to data \texttt{DI}.
+
+\begin{lstlisting}
 CS.verbose = 1;
 DO = qwtb('FPNLSF', DI, CS);
 \end{lstlisting}
-
-        \begin{lstlisting}[style=output]
+\begin{lstlisting}[language={},xleftmargin=5pt,frame=none]
 QWTB: no uncertainty calculation
 Fitting started
-
-Local minimum found.
-
-Optimization completed because the size of the gradient is less than
-the default value of the function tolerance.
-
-
-
 Fitting finished
-\end{lstlisting} \color{black}
-    
 
+\end{lstlisting}
+
+
+\phantomsection
+\addcontentsline{toc}{section}{Copy results to inputs}
 \subsubsection*{Copy results to inputs}
 
-\begin{par}
-Take results of \lstinline{FPNLSF} and put them as inputs \lstinline{DI}.
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+
+Take results of \texttt{FPNLSF} and put them as inputs \texttt{DI}.
+
+\begin{lstlisting}
 DI.f = DO.f;
 DI.A = DO.A;
 DI.ph = DO.ph;
 DI.O = DO.O;
 \end{lstlisting}
-\begin{par}
-Suppose the signal was sampled by a 20 bit digitizer with full scale range \lstinline{FSR} of 6 V (+- 3V). (The signal is not quantised, so the quantization noise is not present. Thus the simulation and results are not fully correct.):
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+
+Suppose the signal was sampled by a 20 bit digitizer with full scale range \texttt{FSR} of 6 V (+- 3V). (The
+signal is not quantised, so the quantization noise is not present. Thus the simulation and results
+are not fully correct.):
+
+\begin{lstlisting}
 DI.bitres.v = 20;
 DI.FSR.v = 3;
 \end{lstlisting}
 
 
+\phantomsection
+\addcontentsline{toc}{section}{Calculate SINAD and ENOB}
 \subsubsection*{Calculate SINAD and ENOB}
 
-\begin{lstlisting}[style=mcode]
+\begin{lstlisting}
 DO = qwtb('SINAD-ENOB', DI, CS);
 \end{lstlisting}
-
-        \begin{lstlisting}[style=output]
+\begin{lstlisting}[language={},xleftmargin=5pt,frame=none]
 QWTB: no uncertainty calculation
-\end{lstlisting} \color{black}
-    
 
+\end{lstlisting}
+
+
+\phantomsection
+\addcontentsline{toc}{section}{Display results:}
 \subsubsection*{Display results:}
 
-\begin{par}
+
+
 Results are:
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+\begin{lstlisting}
 SINADdB = DO.SINADdB.v
 ENOB = DO.ENOB.v
 \end{lstlisting}
+\begin{lstlisting}[language={},xleftmargin=5pt,frame=none]
+SINADdB = 82.936
+ENOB = 13.068
 
-        \begin{lstlisting}[style=output]
-
-SINADdB =
-
-   82.9229
+\end{lstlisting}
 
 
-ENOB =
+Theoretical value of SINADdB is 20*log10(Anom./(noisestd.*sqrt(2))). Theoretical value of ENOB is
+log2(DI.range.v./(noisestd.*sqrt(12))). Absolute error of results are:
 
-   13.0657
-
-\end{lstlisting} \color{black}
-    \begin{par}
-Theoretical value of SINADdB is 20*log10(Anom./(noisestd.*sqrt(2))). Theoretical value of ENOB is log2(DI.range.v./(noisestd.*sqrt(12))). Absolute error of results are:
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+\begin{lstlisting}
 SINADdBtheor = 20*log10(Anom./(noisestd.*sqrt(2)));
 ENOBtheor = log2(DI.FSR.v./(noisestd.*sqrt(12)));
 SINADerror = SINADdB - SINADdBtheor
 ENOBerror = ENOB - ENOBtheor
 \end{lstlisting}
+\begin{lstlisting}[language={},xleftmargin=5pt,frame=none]
+SINADerror = -0.074709
+ENOBerror = -0.012410
 
-        \begin{lstlisting}[style=output]
-
-SINADerror =
-
-   -0.0874
-
-
-ENOBerror =
-
-   -0.0145
-
-\end{lstlisting} \color{black}
-    
+\end{lstlisting}
 
 
-%%% \end{document}
-    
+\stopcontents[localtoc]

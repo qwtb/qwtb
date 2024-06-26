@@ -1,101 +1,86 @@
-
-% This LaTeX was auto-generated from an M-file by MATLAB.
-% To make changes, update the M-file and republish this document.
-
-%%% \documentclass{article}
-%%% \usepackage{graphicx}
-%%% \usepackage{color}
-
-%%% \sloppy
-%%% \definecolor{lightgray}{gray}{0.5}
-\setlength{\parindent}{0pt}
-
-%%% \begin{document}
-
-    
-    
-\subsection*{testG}
-
-\begin{par}
-Example for algorithm testG. Algorithm is usefull only for testing QWTB toolbox. It calculates maximal and minimal value of the record. GUF is calculated by wrapper.
-\end{par} \vspace{1em}
-\begin{par}
-See also \lstinline{qwtb}
-\end{par} \vspace{1em}
-
-\subsubsection*{Contents}
-
-\begin{itemize}
-\setlength{\itemsep}{-1ex}
-   \item Generate sample data
-   \item Call algorithm
-   \item Plot results
-\end{itemize}
+\startcontents[localtoc]
+\printcontents[localtoc]{}{0}{\subsection*{Contents}\setcounter{tocdepth}{2}}
 
 
+
+\phantomsection
+\addcontentsline{toc}{section}{Generate sample data}
 \subsubsection*{Generate sample data}
 
-\begin{par}
-Two quantities are prepared: \lstinline{x} and \lstinline{y}.
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+
+Two quantities are prepared: \texttt{x} and \texttt{y}.
+
+\begin{lstlisting}
 x = []; y = [];
 x.v = [1:20];
 y.v = [1:14 13:-1:8];
 \end{lstlisting}
-\begin{par}
+
+
 All uncertainties are set to 1.
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+\begin{lstlisting}
 x.u = x.v.*0 + 1;
 y.u = y.v.*0 + 1;
 \end{lstlisting}
-\begin{par}
+
+
 Set degrees of freedom.
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+\begin{lstlisting}
 x.d = x.v.*0 + 60;
 y.d = y.v.*0 + 9;
 \end{lstlisting}
-\begin{par}
-Quantities are put into data input structure \lstinline{DI}.
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+
+Quantities are put into data input structure \texttt{DI}.
+
+\begin{lstlisting}
 DI = [];
 DI.x = x;
 DI.y = y;
 \end{lstlisting}
-\begin{par}
-Create calculation settings \lstinline{CS} and set uncertainty calculation method to GUM uncertainty framework.
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+
+Create calculation settings \texttt{CS} and set uncertainty calculation method to GUM uncertainty
+framework.
+
+\begin{lstlisting}
 CS = [];
 CS.unc = 'guf';
 \end{lstlisting}
 
 
+\phantomsection
+\addcontentsline{toc}{section}{Call algorithm}
 \subsubsection*{Call algorithm}
 
-\begin{par}
-Use QWTB to apply algorithm \lstinline{testG} to data \lstinline{DI} with calculation settings \lstinline{CS}.
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+
+Use QWTB to apply algorithm \texttt{testG} to data \texttt{DI} with calculation settings \texttt{CS}.
+
+\begin{lstlisting}
 DO = qwtb('testG', DI, CS);
 \end{lstlisting}
-
-        \begin{lstlisting}[style=output]
+\begin{lstlisting}[language={},xleftmargin=5pt,frame=none]
 QWTB: default correlation matrix generated for quantity `x`
 QWTB: default correlation matrix generated for quantity `y`
 QWTB: uncertainty calculation by means of wrapper or algorithm
-\end{lstlisting} \color{black}
-    
 
+\end{lstlisting}
+
+
+\phantomsection
+\addcontentsline{toc}{section}{Plot results}
 \subsubsection*{Plot results}
 
-\begin{par}
-Plot input data and calculated maximal and minimal values as a red and green lines with uncertainties represented by dashed lines.
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+
+Plot input data and calculated maximal and minimal values as a red and green lines with
+uncertainties represented by dashed lines.
+
+\begin{lstlisting}
 figure
 hold on
 errorbar(DI.x.v, DI.y.v, DI.y.u, 'xb')
@@ -111,12 +96,9 @@ ylabel('quantity y')
 title('input data and results of testG algorithm')
 hold off
 \end{lstlisting}
-
 \begin{center}
-\includegraphics[width=0.7\textwidth]{algs_examples_published/testG_alg_example_01.pdf}
+\includegraphics[width=0.7\textwidth]{algs_examples_published/testG_alg_example-1.pdf}
 \end{center}
 
 
-
-%%% \end{document}
-    
+\stopcontents[localtoc]

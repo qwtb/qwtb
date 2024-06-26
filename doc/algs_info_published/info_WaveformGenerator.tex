@@ -1,0 +1,34 @@
+\begin{tightdesc}
+\item [Id:] WaveformGenerator
+\item [Name:] 
+\item [Description:] Complex waveform generator with harmonics, interharmonics, modulation abilities, reference output and reference values for phasor measurement units.
+\item [Citation:] First version of the algorithm: U. Pogliano, J.-P. Braun, B. Voljc, and R. Lapuh, ‘Software Platform for PMU Algorithm Testing’, IEEE Transactions on Instrumentation and Measurement, vol. 62, no. 6, pp. 1400–1406, Jun. 2013, doi: 10.1109/TIM.2013.2239051.
+\item [Remarks:] If sampling time |Ts| is not supplied, wrapper will calculate |Ts| from sampling frequency |fs| or if not supplied, mean of differences of time series |t| is used to calculate |Ts|. First frequency in |f| is considered as the main signal frequency. Modulation is not yet ready.
+\item [License:] MIT License
+\item [Provides GUF:] no
+\item [Provides MCM:] no
+\item [Input Quantities] \rule{0em}{0em}
+    \begin{tightdesc}
+    \item [Required:] 
+        \textsf{Ts} or \textsf{fs} or \textsf{t},\enspace \textsf{L},\enspace \textsf{f},\enspace \textsf{A},\enspace \textsf{ph}
+    \item [Optional:] 
+        \textsf{l},\enspace \textsf{Fs}
+    \item [Descriptions:] \rule{0em}{0em}
+        \begin{tightdesc}
+            \item[\textsf{A}] -- Amplitude of signal components
+            \item[\textsf{Fs}] -- PMU frames per second
+            \item[\textsf{L}] -- Number of samples
+            \item[\textsf{Ts}] -- Sampling time
+            \item[\textsf{f}] -- Frequency of signal components
+            \item[\textsf{fs}] -- Sampling frequency
+            \item[\textsf{l}] -- Number of samples before t=0
+            \item[\textsf{ph}] -- Phase of signal components
+            \item[\textsf{t}] -- Time series
+        \end{tightdesc}
+    \end{tightdesc}
+\item [Output Quantities:] \rule{0em}{0em}
+    \begin{tightdesc}
+        \item[\textsf{t}] -- Time stamps
+        \item[\textsf{y}] -- Samples
+    \end{tightdesc}
+\end{tightdesc}

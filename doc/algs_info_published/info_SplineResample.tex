@@ -1,0 +1,39 @@
+\begin{tightdesc}
+\item [Id:] SplineResample
+\item [Name:] resampling name
+\item [Description:] Splines are used to resample sampled data to a new sampling frequency.
+\item [Citation:] no citation
+\item [Remarks:] no remark
+\item [License:] no license
+\item [Provides GUF:] no
+\item [Provides MCM:] no
+\item [Input Quantities] \rule{0em}{0em}
+    \begin{tightdesc}
+    \item [Required:] 
+        \textsf{Ts} or \textsf{fs} or \textsf{t},\enspace \textsf{y},\enspace \textsf{fest}
+    \item [Optional:] 
+        \textsf{method},\enspace \textsf{D}
+    \item [Parameters:] 
+        \textsf{method},\enspace \textsf{D}
+    \item [Descriptions:] \rule{0em}{0em}
+        \begin{tightdesc}
+            \item[\textsf{D}] -- Denominator to reduce resampled bandwidth
+            \item[\textsf{Ts}] -- Sampling period
+            \item[\textsf{fest}] -- Estimate of fundamental component frequency
+            \item[\textsf{fs}] -- Sampling frequency
+            \item[\textsf{method}] -- Method of resampling: `keepN`, `minimizefs`, `poweroftwo`
+            \item[\textsf{t}] -- Time series
+            \item[\textsf{y}] -- Sampled values
+        \end{tightdesc}
+    \end{tightdesc}
+\item [Output Quantities:] \rule{0em}{0em}
+    \begin{tightdesc}
+        \item[\textsf{Pf}] -- Integer upsampling factor
+        \item[\textsf{Qf}] -- Integer decimation factor
+        \item[\textsf{Ts}] -- Sampling period after resampling, equal to fsest.
+        \item[\textsf{fs}] -- Sampling frequency after resampling, equal to fsest.
+        \item[\textsf{method}] -- Method of resampling.
+        \item[\textsf{t}] -- Time series after resampling, equal to test
+        \item[\textsf{y}] -- Resampled samples
+    \end{tightdesc}
+\end{tightdesc}

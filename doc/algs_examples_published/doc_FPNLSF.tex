@@ -1,150 +1,91 @@
-
-% This LaTeX was auto-generated from an M-file by MATLAB.
-% To make changes, update the M-file and republish this document.
-
-%%% \documentclass{article}
-%%% \usepackage{graphicx}
-%%% \usepackage{color}
-
-%%% \sloppy
-%%% \definecolor{lightgray}{gray}{0.5}
-\setlength{\parindent}{0pt}
-
-%%% \begin{document}
-
-    
-    
-\subsection*{Four parameter sine wave fitting}
-
-\begin{par}
-Example for algorithm FPNLSF.
-\end{par} \vspace{1em}
-\begin{par}
-FPNLSF is an algorithm for estimating the frequency, amplitude, and phase of the sine waveform. The algorithm use least squares method. Algorithm requires good estimate of frequency.
-\end{par} \vspace{1em}
-
-\subsubsection*{Contents}
-
-\begin{itemize}
-\setlength{\itemsep}{-1ex}
-   \item Generate sample data
-   \item Call algorithm
-   \item Display results
-\end{itemize}
+\startcontents[localtoc]
+\printcontents[localtoc]{}{0}{\subsection*{Contents}\setcounter{tocdepth}{2}}
 
 
+
+\phantomsection
+\addcontentsline{toc}{section}{Generate sample data}
 \subsubsection*{Generate sample data}
 
-\begin{par}
-Two quantities are prepared: \lstinline{t} and \lstinline{y}, representing 1 second of sinus waveform of nominal frequency 1 kHz, nominal amplitude 1 V, nominal phase 1 rad and offset 1 V sampled at sampling frequency 10 kHz.
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+
+Two quantities are prepared: \texttt{t} and \texttt{y}, representing 1 second of sinus waveform of nominal
+frequency 1 kHz, nominal amplitude 1 V, nominal phase 1 rad and offset 1 V sampled at sampling
+frequency 10 kHz.
+
+\begin{lstlisting}
 DI = [];
 Anom = 2; fnom = 100; phnom = 1; Onom = 0.2;
 DI.t.v = [0:1/1e4:1-1/1e4];
 DI.y.v = Anom*sin(2*pi*fnom*DI.t.v + phnom) + Onom;
 \end{lstlisting}
-\begin{par}
+
+
 Lets make an estimate of frequency 0.2 percent higher than nominal value:
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+\begin{lstlisting}
 DI.fest.v = 100.2;
 \end{lstlisting}
 
 
+\phantomsection
+\addcontentsline{toc}{section}{Call algorithm}
 \subsubsection*{Call algorithm}
 
-\begin{par}
-Use QWTB to apply algorithm \lstinline{FPNLSF} to data \lstinline{DI}.
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+
+Use QWTB to apply algorithm \texttt{FPNLSF} to data \texttt{DI}.
+
+\begin{lstlisting}
 CS.verbose = 1;
 DO = qwtb('FPNLSF', DI, CS);
 \end{lstlisting}
-
-        \begin{lstlisting}[style=output]
+\begin{lstlisting}[language={},xleftmargin=5pt,frame=none]
 QWTB: no uncertainty calculation
 Fitting started
-
-Local minimum found.
-
-Optimization completed because the size of the gradient is less than
-the default value of the function tolerance.
-
-
-
 Fitting finished
-\end{lstlisting} \color{black}
-    
 
+\end{lstlisting}
+
+
+\phantomsection
+\addcontentsline{toc}{section}{Display results}
 \subsubsection*{Display results}
 
-\begin{par}
+
+
 Results is the amplitude, frequency and phase of sampled waveform.
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+\begin{lstlisting}
 A = DO.A.v
 f = DO.f.v
 ph = DO.ph.v
 O = DO.O.v
 \end{lstlisting}
+\begin{lstlisting}[language={},xleftmargin=5pt,frame=none]
+A = 2.0000
+f = 100.000
+ph = 1.0000
+O = 0.2000
 
-        \begin{lstlisting}[style=output]
-
-A =
-
-    2.0000
-
-
-f =
-
-   100
+\end{lstlisting}
 
 
-ph =
-
-    1.0000
-
-
-O =
-
-    0.2000
-
-\end{lstlisting} \color{black}
-    \begin{par}
 Errors of estimation in parts per milion:
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+\begin{lstlisting}
 Aerrppm = (DO.A.v - Anom)/Anom .* 1e6
 ferrppm = (DO.f.v - fnom)/fnom .* 1e6
 pherrppm = (DO.ph.v - phnom)/phnom .* 1e6
 Oerrppm = (DO.O.v - Onom)/Onom .* 1e6
 \end{lstlisting}
+\begin{lstlisting}[language={},xleftmargin=5pt,frame=none]
+Aerrppm = -7.7716e-10
+ferrppm = -4.0927e-08
+pherrppm = 5.6228e-06
+Oerrppm = -4.1217e-08
 
-        \begin{lstlisting}[style=output]
-
-Aerrppm =
-
-   4.8894e-07
-
-
-ferrppm =
-
-     0
+\end{lstlisting}
 
 
-pherrppm =
-
-   4.8850e-09
-
-
-Oerrppm =
-
-  -1.1102e-08
-
-\end{lstlisting} \color{black}
-    
-
-
-%%% \end{document}
-    
+\stopcontents[localtoc]

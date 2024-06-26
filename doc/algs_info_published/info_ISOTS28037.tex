@@ -1,0 +1,36 @@
+\begin{tightdesc}
+\item [Id:] ISOTS28037
+\item [Name:] NPL’s Software to Support ISO/TS 28037:2010(E)
+\item [Description:] NPL’s Software to Support ISO/TS 28037:2010(E) software implements the algorithms described in the ISO Technical Specification "Determination and use of straight-line calibration functions" and has been developed by the National Physical Laboratory (NPL) in the United Kingdom. The software is available as a compressed ZIP folder from the web sites of NPL at www.npl.co.uk/mathematics-scientific-computing/software-support-for-metrology/software-downloads-(ssfm) and the International Organization for Standardization at standards.iso.org/iso/ts/28037/. Downloadable at https://www.npl.co.uk/resources/software/iso-ts-28037-2010e
+\item [Citation:] \url{https://standards.iso.org/iso/ts/28037/,} \url{https://www.npl.co.uk/resources/software/iso-ts-28037-2010e}
+\item [Remarks:] Implements methods WSL, GDR. GMR nor GGMR are not implemented.
+\item [License:] NPL license
+\item [Provides GUF:] yes
+\item [Provides MCM:] no
+\item [Input Quantities] \rule{0em}{0em}
+    \begin{tightdesc}
+    \item [Required:] 
+        \textsf{x},\enspace \textsf{y}
+    \item [Optional:] 
+        \textsf{tol},\enspace \textsf{xhat}
+    \item [Parameters:] 
+        \textsf{tol}
+    \item [Descriptions:] \rule{0em}{0em}
+        \begin{tightdesc}
+            \item[\textsf{tol}] -- Tolerance for convergence of iterative method GDR. Iterations stops when increments of parameters a, b is smaller than tol*norm([a b]).
+            \item[\textsf{x}] -- Independent variable
+            \item[\textsf{xhat}] -- Independent variable values to be (extra/inter)polated (forward evaluated).
+            \item[\textsf{y}] -- Dependent variable
+        \end{tightdesc}
+    \end{tightdesc}
+\item [Output Quantities:] \rule{0em}{0em}
+    \begin{tightdesc}
+        \item[\textsf{chisq}] -- 95 % quantile of chi-squared distribution
+        \item[\textsf{coefs}] -- Fitted coefficients
+        \item[\textsf{exponents}] -- Exponents of polynomial used to fit, for now only [0 1] possible
+        \item[\textsf{func}] -- Inline function constructed for exponents with parameters `x` and `coefs.v`
+        \item[\textsf{model}] -- Model used for calculation.
+        \item[\textsf{model\_rejected}] -- If 1, straight-line model is rejected. Estimated as chi\_sq\_obs > chi\_sq.
+        \item[\textsf{yhat}] -- Fitted values y
+    \end{tightdesc}
+\end{tightdesc}

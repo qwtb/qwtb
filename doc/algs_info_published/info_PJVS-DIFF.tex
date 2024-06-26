@@ -1,0 +1,43 @@
+\begin{tightdesc}
+\item [Id:] PJVS-DIFF
+\item [Name:] Amplitude from PJVS differential measurement
+\item [Description:] Calculates amplitude of main signal component from differentiall measurements using Programmable Josephson Voltage Standard.
+\item [Citation:] Implementation: Martin Sira
+\item [Remarks:] Sampling, PJVS and DUT signals has to be coherent.
+\item [License:] MIT
+\item [Provides GUF:] no
+\item [Provides MCM:] no
+\item [Input Quantities] \rule{0em}{0em}
+    \begin{tightdesc}
+    \item [Required:] 
+        \textsf{fs} or \textsf{Ts} or \textsf{t},\enspace \textsf{f},\enspace \textsf{y},\enspace \textsf{Uref},\enspace \textsf{fseg}
+    \item [Optional:] 
+        \textsf{Rs},\enspace \textsf{Re},\enspace \textsf{Ms},\enspace \textsf{Me},\enspace \textsf{plots},\enspace \textsf{data\_folder}
+    \item [Parameters:] 
+        \textsf{Uref},\enspace \textsf{fseg},\enspace \textsf{Rs},\enspace \textsf{Re},\enspace \textsf{Ms},\enspace \textsf{Me},\enspace \textsf{plots},\enspace \textsf{data\_folder}
+    \item [Descriptions:] \rule{0em}{0em}
+        \begin{tightdesc}
+            \item[\textsf{Me}] -- PJVS remove at record end (samples)
+            \item[\textsf{Ms}] -- PJVS remove at record beginning (samples)
+            \item[\textsf{Re}] -- PJVS remove after PJVS step (samples)
+            \item[\textsf{Rs}] -- PJVS remove before PJVS step (samples)
+            \item[\textsf{Ts}] -- Sampling time
+            \item[\textsf{Uref}] -- PJVS reference values (V)
+            \item[\textsf{data\_folder}] -- Path where the plots will be saved.
+            \item[\textsf{f}] -- Signal frequency
+            \item[\textsf{fs}] -- Sampling frequency
+            \item[\textsf{fseg}] -- Frequency of PJVS segments (Hz)
+            \item[\textsf{plots}] -- Algorithm will plot figures if nonzero. Values are 1 (only basic figures) to 4 (plot all).
+            \item[\textsf{t}] -- Time series
+            \item[\textsf{y}] -- Sampled voltage
+        \end{tightdesc}
+    \end{tightdesc}
+\item [Output Quantities:] \rule{0em}{0em}
+    \begin{tightdesc}
+        \item[\textsf{U}] -- RMS voltage of whole signal
+        \item[\textsf{U\_fft}] -- Amplitude from FFT calculation
+        \item[\textsf{U\_fft\_l}] -- Amplitude of noise 1 frequency bin to the left of the main signal.
+        \item[\textsf{U\_fft\_r}] -- Amplitude of noise 1 frequency bin to the right of the main signal.
+        \item[\textsf{U\_t}] -- RMS voltage per signal period
+    \end{tightdesc}
+\end{tightdesc}

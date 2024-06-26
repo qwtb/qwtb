@@ -1,0 +1,31 @@
+\begin{tightdesc}
+\item [Id:] GenNHarm
+\item [Name:] Basic signal generator
+\item [Description:] An algorithm for generating sampled waveforms with multiple harmonic or interharmonic components and noise level.
+\item [Citation:] N/A
+\item [Remarks:] If times of samples |t| are not defined, wrapper will calculate |t| from: sampling frequency |fs| or sampling period |Ts|, and from: number of samples |L| or number of main signal periods |M|. Vectors |f|, |A|, |ph|, |O| defines harmonic frequencies. First value is the main signal component. If |f|, |A|, |ph|, |O| are scalar, and |thd\_k1|>0 and |nharm|>1, than harmonics are added to the signal to make required |thd\_k1|.
+\item [License:] MIT License
+\item [Provides GUF:] no
+\item [Provides MCM:] no
+\item [Input Quantities] \rule{0em}{0em}
+    \begin{tightdesc}
+    \item [Required:] 
+        \textsf{Ts} or \textsf{fs} or \textsf{t}
+    \item [Optional:] 
+        \textsf{M},\enspace \textsf{noise}
+    \item [Parameters:] 
+        \textsf{noise}
+    \item [Descriptions:] \rule{0em}{0em}
+        \begin{tightdesc}
+            \item[\textsf{M}] -- Number of main signal component periods
+            \item[\textsf{Ts}] -- Sampling time
+            \item[\textsf{fs}] -- Sampling frequency
+            \item[\textsf{noise}] -- Noise level of the signal
+            \item[\textsf{t}] -- Time series
+        \end{tightdesc}
+    \end{tightdesc}
+\item [Output Quantities:] \rule{0em}{0em}
+    \begin{tightdesc}
+        \item[\textsf{thd\_k1}] -- Total harmonic distortion
+    \end{tightdesc}
+\end{tightdesc}

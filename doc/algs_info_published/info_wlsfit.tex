@@ -1,0 +1,34 @@
+\begin{tightdesc}
+\item [Id:] wlsfit
+\item [Name:] Weighted Least Square Fitting Algortihm
+\item [Description:] Least Square fitting algortihm using ordinary (OLS) or weighted (WLS) fitting on a n-positive polynomial order. If uncertainty of |y| is defined, WLS is used. If value of |w| is defined, it is used instead of unc. of |y|. If no |w| nor unc. of |y|, OLS is used.
+\item [Citation:] 
+\item [Remarks:] Implemented by Ricardo Iuzzolino, Estefania Luna, INTI
+\item [License:] MIT License
+\item [Provides GUF:] yes
+\item [Provides MCM:] no
+\item [Input Quantities] \rule{0em}{0em}
+    \begin{tightdesc}
+    \item [Required:] 
+        \textsf{x},\enspace \textsf{y},\enspace \textsf{n}
+    \item [Optional:] 
+        \textsf{w}
+    \item [Parameters:] 
+        \textsf{n},\enspace \textsf{w}
+    \item [Descriptions:] \rule{0em}{0em}
+        \begin{tightdesc}
+            \item[\textsf{n}] -- Degree of the polynomial for the regression (n>0)
+            \item[\textsf{w}] -- Weigths - if defined, y.u is replaced by weights. If not defined, y.u is used as weghts.
+            \item[\textsf{x}] -- Reference values
+            \item[\textsf{y}] -- Observed or measured values, y.u is used as weights for the case of WLS
+        \end{tightdesc}
+    \end{tightdesc}
+\item [Output Quantities:] \rule{0em}{0em}
+    \begin{tightdesc}
+        \item[\textsf{coefs}] -- Fitted coefficients
+        \item[\textsf{exponents}] -- Exponents of polynomial used to fit
+        \item[\textsf{func}] -- Anonymous function constructed for exponents with parameters `x` and `coefs.v`
+        \item[\textsf{model}] -- Model used for calculation.
+        \item[\textsf{yhat}] -- Fitted values y
+    \end{tightdesc}
+\end{tightdesc}

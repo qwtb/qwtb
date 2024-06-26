@@ -1,44 +1,19 @@
-
-% This LaTeX was auto-generated from an M-file by MATLAB.
-% To make changes, update the M-file and republish this document.
-
-%%% \documentclass{article}
-%%% \usepackage{graphicx}
-%%% \usepackage{color}
-
-%%% \sloppy
-%%% \definecolor{lightgray}{gray}{0.5}
-\setlength{\parindent}{0pt}
-
-%%% \begin{document}
-
-    
-    
-\subsection*{3-point interpolated DFT frequency estimator}
-
-\begin{par}
-Example for algorithm iDFT3p.
-\end{par} \vspace{1em}
-\begin{par}
-iDFT3p is an algorithm for estimating the frequency, amplitude, phase and offset of the fundamental component using interpolated discrete Fourier transform. Rectangular or Hann window can be used for DFT.'; See also Krzysztof Duda: Interpolation algorithms of DFT for parameters estimation of sinusoidal and damped sinusoidal signals. In S. M. Salih, editor, Fourier Transform - Signal Processing, chapter 1, pages 3-32, InTech, 2012. \url{http://www.intechopen.com/books/fourier-transform-signal-processing/interpolated-dft} Implemented by Rado Lapuh, 2016.';
-\end{par} \vspace{1em}
-
-\subsubsection*{Contents}
-
-\begin{itemize}
-\setlength{\itemsep}{-1ex}
-   \item Generate sample data
-   \item Call algorithm
-   \item Display results
-\end{itemize}
+\startcontents[localtoc]
+\printcontents[localtoc]{}{0}{\subsection*{Contents}\setcounter{tocdepth}{2}}
 
 
+
+\phantomsection
+\addcontentsline{toc}{section}{Generate sample data}
 \subsubsection*{Generate sample data}
 
-\begin{par}
-Two quantities are prepared: \lstinline{Ts} and \lstinline{y}, representing 0.5 second of sinus waveform of nominal frequency 100 Hz, nominal amplitude 1 V and nominal phase 1 rad, sampled with sampling time 0.1 ms, with offset 0.1 V. The sampling is not coherent.
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+
+Two quantities are prepared: \texttt{Ts} and \texttt{y}, representing 0.5 second of sinus waveform of nominal
+frequency 100 Hz, nominal amplitude 1 V and nominal phase 1 rad, sampled with sampling time 0.1
+ms, with offset 0.1 V. The sampling is not coherent.
+
+\begin{lstlisting}
 DI = [];
 Anom = 1; fnom = 100; phnom = 1; Onom = 0.1;
 DI.Ts.v = 1e-4;
@@ -47,100 +22,76 @@ DI.y.v = Anom*sin(2*pi*fnom*t + phnom) + Onom;
 \end{lstlisting}
 
 
+\phantomsection
+\addcontentsline{toc}{section}{Call algorithm}
 \subsubsection*{Call algorithm}
 
-\begin{par}
-First a rectangular window will be selected to estimate main signal properties. Use QWTB to apply algorithm \lstinline{iDFT3p} to data \lstinline{DI} and put results into \lstinline{DOr}.
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+
+First a rectangular window will be selected to estimate main signal properties. Use QWTB to apply
+algorithm \texttt{iDFT3p} to data \texttt{DI} and put results into \texttt{DOr}.
+
+\begin{lstlisting}
 DI.window.v = 'rectangular';
 DOr = qwtb('iDFT3p', DI);
 \end{lstlisting}
-
-        \begin{lstlisting}[style=output]
+\begin{lstlisting}[language={},xleftmargin=5pt,frame=none]
 QWTB: no uncertainty calculation
-\end{lstlisting} \color{black}
-    \begin{par}
-Next a Hann window will be selected to estimate main signal properties Results will be put into \lstinline{DOh}.
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+\end{lstlisting}
+
+
+Next a Hann window will be selected to estimate main signal properties Results will be put into \texttt{DOh}.
+
+\begin{lstlisting}
 DI.window.v = 'Hann';
 DOh = qwtb('iDFT3p', DI);
 \end{lstlisting}
-
-        \begin{lstlisting}[style=output]
+\begin{lstlisting}[language={},xleftmargin=5pt,frame=none]
 QWTB: no uncertainty calculation
-\end{lstlisting} \color{black}
-    
 
+\end{lstlisting}
+
+
+\phantomsection
+\addcontentsline{toc}{section}{Display results}
 \subsubsection*{Display results}
 
-\begin{par}
-Results is the amplitude, frequency and phase of sampled waveform. For rectangular window, the error from nominal in parts per milion is:
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+
+Results is the amplitude, frequency and phase of sampled waveform. For rectangular window, the
+error from nominal in parts per milion is:
+
+\begin{lstlisting}
 f_re = (DOr.f.v - fnom)./fnom .* 1e6
 A_re = (DOr.A.v - Anom)./Anom .* 1e6
 ph_re = (DOr.ph.v - phnom)./phnom .* 1e6
 O_re = (DOr.O.v - Onom)./Onom .* 1e6
 \end{lstlisting}
+\begin{lstlisting}[language={},xleftmargin=5pt,frame=none]
+f_re = 0.016607
+A_re = 41.257
+ph_re = 88.368
+O_re = 1682.6
 
-        \begin{lstlisting}[style=output]
-
-f_re =
-
-    0.0166
-
-
-A_re =
-
-   41.2567
+\end{lstlisting}
 
 
-ph_re =
-
-   88.3681
-
-
-O_re =
-
-   1.6826e+03
-
-\end{lstlisting} \color{black}
-    \begin{par}
 For Hann window:
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+\begin{lstlisting}
 f_he = (DOh.f.v - fnom)./fnom .* 1e6
 A_he = (DOh.A.v - Anom)./Anom .* 1e6
 ph_he = (DOh.ph.v - phnom)./phnom .* 1e6
 O_he = (DOh.O.v - Onom)./Onom .* 1e6
 \end{lstlisting}
+\begin{lstlisting}[language={},xleftmargin=5pt,frame=none]
+f_he = -3.7790e-06
+A_he = 3.9702e-07
+ph_he = 6.2737
+O_he = -0.6862
 
-        \begin{lstlisting}[style=output]
-
-f_he =
-
-  -3.7790e-06
-
-
-A_he =
-
-   3.9679e-07
+\end{lstlisting}
 
 
-ph_he =
-
-    6.2737
-
-
-O_he =
-
-   -0.6862
-
-\end{lstlisting} \color{black}
-    
-
-
-%%% \end{document}
-    
+\stopcontents[localtoc]

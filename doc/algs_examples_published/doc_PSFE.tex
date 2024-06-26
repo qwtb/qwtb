@@ -1,131 +1,85 @@
-
-% This LaTeX was auto-generated from an M-file by MATLAB.
-% To make changes, update the M-file and republish this document.
-
-%%% \documentclass{article}
-%%% \usepackage{graphicx}
-%%% \usepackage{color}
-
-%%% \sloppy
-%%% \definecolor{lightgray}{gray}{0.5}
-\setlength{\parindent}{0pt}
-
-%%% \begin{document}
-
-    
-    
-\subsection*{Phase Sensitive Frequency Estimator}
-
-\begin{par}
-Example for algorithm PSFE.
-\end{par} \vspace{1em}
-\begin{par}
-PSFE is an algorithm for estimating the frequency, amplitude, and phase of the fundamental component in harmonically distorted waveforms. The algorithm minimizes the phase difference between the sine model and the sampled waveform by effectively minimizing the influence of the harmonic components. It uses a three-parameter sine-fitting algorithm for all phase calculations. The resulting estimates show up to two orders of magnitude smaller sensitivity to harmonic distortions than the results of the four-parameter sine fitting algorithm.
-\end{par} \vspace{1em}
-\begin{par}
-See also Lapuh, R., "Estimating the Fundamental Component of Harmonically Distorted Signals From Noncoherently Sampled Data," Instrumentation and Measurement, IEEE Transactions on , vol.64, no.6, pp.1419,1424, June 2015, doi: 10.1109/TIM.2015.2401211, URL: \url{http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7061456&isnumber=7104190}'
-\end{par} \vspace{1em}
-
-\subsubsection*{Contents}
-
-\begin{itemize}
-\setlength{\itemsep}{-1ex}
-   \item Generate sample data
-   \item Call algorithm
-   \item Display results
-\end{itemize}
+\startcontents[localtoc]
+\printcontents[localtoc]{}{0}{\subsection*{Contents}\setcounter{tocdepth}{2}}
 
 
+
+\phantomsection
+\addcontentsline{toc}{section}{Generate sample data}
 \subsubsection*{Generate sample data}
 
-\begin{par}
-Two quantities are prepared: \lstinline{Ts} and \lstinline{y}, representing 1 second of sinus waveform of nominal frequency 100 Hz, nominal amplitude 1 V and nominal phase 1 rad, sampled with sampling time 0.1 ms.
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+
+Two quantities are prepared: \texttt{Ts} and \texttt{y}, representing 1 second of sinus
+waveform of nominal frequency 100 Hz, nominal amplitude 1 V and nominal phase
+1 rad, sampled with sampling time 0.1 ms.
+
+\begin{lstlisting}
 DI = [];
 Anom = 1; fnom = 100; phnom = 1;
 DI.Ts.v = 1e-4;
 t = [0:DI.Ts.v:1-DI.Ts.v];
 DI.y.v = Anom*sin(2*pi*fnom*t + phnom);
 \end{lstlisting}
-\begin{par}
+
+
 Add noise:
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+\begin{lstlisting}
 DI.y.v = DI.y.v + 1e-3.*randn(size(DI.y.v));
 \end{lstlisting}
 
 
+\phantomsection
+\addcontentsline{toc}{section}{Call algorithm}
 \subsubsection*{Call algorithm}
 
-\begin{par}
-Use QWTB to apply algorithm \lstinline{PSFE} to data \lstinline{DI}.
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+
+Use QWTB to apply algorithm \texttt{PSFE} to data \texttt{DI}.
+
+\begin{lstlisting}
 DO = qwtb('PSFE', DI);
 \end{lstlisting}
-
-        \begin{lstlisting}[style=output]
+\begin{lstlisting}[language={},xleftmargin=5pt,frame=none]
 QWTB: no uncertainty calculation
-\end{lstlisting} \color{black}
-    
 
+\end{lstlisting}
+
+
+\phantomsection
+\addcontentsline{toc}{section}{Display results}
 \subsubsection*{Display results}
 
-\begin{par}
+
+
 Results is the amplitude, frequency and phase of sampled waveform.
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+\begin{lstlisting}
 f = DO.f.v
 A = DO.A.v
 ph = DO.ph.v
 \end{lstlisting}
+\begin{lstlisting}[language={},xleftmargin=5pt,frame=none]
+f = 100.000
+A = 1.0000
+ph = 1.0000
 
-        \begin{lstlisting}[style=output]
-
-f =
-
-  100.0000
-
-
-A =
-
-    1.0000
+\end{lstlisting}
 
 
-ph =
-
-    1.0000
-
-\end{lstlisting} \color{black}
-    \begin{par}
 Errors of estimation in parts per milion:
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+\begin{lstlisting}
 ferrppm = (DO.f.v - fnom)/fnom .* 1e6
 Aerrppm = (DO.A.v - Anom)/Anom .* 1e6
 pherrppm = (DO.ph.v - phnom)/phnom .* 1e6
 \end{lstlisting}
+\begin{lstlisting}[language={},xleftmargin=5pt,frame=none]
+ferrppm = -0.014954
+Aerrppm = 3.6938
+pherrppm = 25.678
 
-        \begin{lstlisting}[style=output]
-
-ferrppm =
-
-    0.0082
-
-
-Aerrppm =
-
-   -4.5238
+\end{lstlisting}
 
 
-pherrppm =
-
-   12.4392
-
-\end{lstlisting} \color{black}
-    
-
-
-%%% \end{document}
-    
+\stopcontents[localtoc]

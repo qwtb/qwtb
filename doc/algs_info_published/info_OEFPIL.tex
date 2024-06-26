@@ -1,0 +1,28 @@
+\begin{tightdesc}
+\item [Id:] OEFPIL
+\item [Name:] Optimum Estimate of Function Parameters by Iterated Linearization
+\item [Description:] Optimum Estimate of Function Parameters by Iterated Linearization is a software for estimating the parameters of a nonlinear function using iterated linearization via Taylor series. Method is based on Kubáček (2000) ISBN: 80-244-0093-6. The algorithm is a generalization of the procedure given in Köning, R., Wimmer, G. and Witkovský, V. (2014) doi:10.1088/0957-0233/25/11/115001. It was developed at Czech Metrology Institute and Masaryk Univerzity.
+\item [Citation:] Kubáček (2000) ISBN: 80-244-0093-6, Köning, R., Wimmer, G. and Witkovský, V. (2014) doi:10.1088/0957-0233/25/11/115001.
+\item [Remarks:] For now the implementation knows only linear fit. Full possibility will be implemented later. For now a data to and from OEFPIL are transferred using files. Proper library implementation will be added later.
+\item [License:] MIT License
+\item [Provides GUF:] yes
+\item [Provides MCM:] no
+\item [Input Quantities] \rule{0em}{0em}
+    \begin{tightdesc}
+    \item [Required:] 
+        \textsf{x},\enspace \textsf{y},\enspace \textsf{exponents}
+    \item [Parameters:] 
+        \textsf{exponents}
+    \item [Descriptions:] \rule{0em}{0em}
+        \begin{tightdesc}
+            \item[\textsf{exponents}] -- Exponents of polynomial used to fit, for now only [0 1] possible
+            \item[\textsf{x}] -- Independent variable
+            \item[\textsf{y}] -- Dependent variable
+        \end{tightdesc}
+    \end{tightdesc}
+\item [Output Quantities:] \rule{0em}{0em}
+    \begin{tightdesc}
+        \item[\textsf{coefs}] -- Fitted coefficients
+        \item[\textsf{exponents}] -- Exponents of polynomial used to fit, for now only [0 1] possible
+    \end{tightdesc}
+\end{tightdesc}

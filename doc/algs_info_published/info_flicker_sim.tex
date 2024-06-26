@@ -1,0 +1,28 @@
+\begin{tightdesc}
+\item [Id:] flicker\_sim
+\item [Name:] Flickermeter simulator
+\item [Description:] Calculates instantaneous flicker sensation Pinst and short-term flicker severity Pst.
+\item [Citation:] Implemented according: IEC 61000-4-15, Electromagnetic compatibility (EMC), Testing and measurement techniques, Flickermeter, Edition 2.0, 2010-08; Wilhelm Mombauer: "Messung von Spannungsschwankungen und Flickern mit dem IEC-Flickermeter", ISBN 3-8007-2525-8, VDE-Verlag; Solcept Open Source Flicker Measurement-Simulator \url{https://www.solcept.ch/en/tools/flickersim/;} NPL Reference Flickermeter Design \url{http://www.npl.co.uk/electromagnetics/electrical-measurement/products-and-services/npl-reference-flickermeter-design}
+\item [Remarks:] If sampling frequency |fs| is not supplied, wrapper will calculate |fs| from sampling time |Ts| or if not supplied, mean of differences of time series |t| is used to calculate |Ts|. Sampling frequency has to be higher than 7 kHz. If sampling f. is higher than 23 kHz, signal will be down sampled by algorithm. More than 600 s of signal is required. Requires either Signal Processing Toolbox when run in MATLAB or signal package when run in GNU Octave. Frequency of line (carrier frequency) |f\_line| can be only 50 or 60 Hz
+\item [License:] Boost Software License
+\item [Provides GUF:] no
+\item [Provides MCM:] no
+\item [Input Quantities] \rule{0em}{0em}
+    \begin{tightdesc}
+    \item [Required:] 
+        \textsf{fs} or \textsf{Ts} or \textsf{t},\enspace \textsf{y},\enspace \textsf{f\_line}
+    \item [Descriptions:] \rule{0em}{0em}
+        \begin{tightdesc}
+            \item[\textsf{Ts}] -- Sampling time
+            \item[\textsf{f\_line}] -- Line frequency
+            \item[\textsf{fs}] -- Sampling frequency
+            \item[\textsf{t}] -- Time series
+            \item[\textsf{y}] -- Sampled values
+        \end{tightdesc}
+    \end{tightdesc}
+\item [Output Quantities:] \rule{0em}{0em}
+    \begin{tightdesc}
+        \item[\textsf{Pinst}] -- Instantaneous flicker sensation
+        \item[\textsf{Pst}] -- Short-term flicker severity
+    \end{tightdesc}
+\end{tightdesc}

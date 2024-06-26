@@ -1,44 +1,17 @@
-
-% This LaTeX was auto-generated from an M-file by MATLAB.
-% To make changes, update the M-file and republish this document.
-
-%%% \documentclass{article}
-%%% \usepackage{graphicx}
-%%% \usepackage{color}
-
-%%% \sloppy
-%%% \definecolor{lightgray}{gray}{0.5}
-\setlength{\parindent}{0pt}
-
-%%% \begin{document}
-
-    
-    
-\subsection*{testQ}
-
-\begin{par}
-Example for algorithm testQ. Algorithm is usefull only for testing QWTB toolbox. It returns values from the input. This script has no real sense.
-\end{par} \vspace{1em}
-\begin{par}
-See also \lstinline{qwtb}
-\end{par} \vspace{1em}
-
-\subsubsection*{Contents}
-
-\begin{itemize}
-\setlength{\itemsep}{-1ex}
-   \item Generate sample data
-   \item Call algorithm
-   \item Different input
-\end{itemize}
+\startcontents[localtoc]
+\printcontents[localtoc]{}{0}{\subsection*{Contents}\setcounter{tocdepth}{2}}
 
 
+
+\phantomsection
+\addcontentsline{toc}{section}{Generate sample data}
 \subsubsection*{Generate sample data}
 
-\begin{par}
+
+
 Quantities are prepared.
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+\begin{lstlisting}
 DI = [];
 DI.x.v = [-5:-1:-1];
 DI.v.v = [1:10];
@@ -47,63 +20,61 @@ DI.c.v = 'variable c';
 \end{lstlisting}
 
 
+\phantomsection
+\addcontentsline{toc}{section}{Call algorithm}
 \subsubsection*{Call algorithm}
 
-\begin{par}
-Use QWTB to apply algorithm \lstinline{testQ} to data \lstinline{DI}.
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+
+Use QWTB to apply algorithm \texttt{testQ} to data \texttt{DI}.
+
+\begin{lstlisting}
 DO = qwtb('testQ', DI);
 \end{lstlisting}
-
-        \begin{lstlisting}[style=output]
+\begin{lstlisting}[language={},xleftmargin=5pt,frame=none]
 QWTB: no uncertainty calculation
-\end{lstlisting} \color{black}
-    \begin{par}
-The result is value of \lstinline{v}:
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
-DO.e.v
+
 \end{lstlisting}
 
-        \begin{lstlisting}[style=output]
 
-ans =
+The result is value of \texttt{v}:
 
-     []
+\begin{lstlisting}
+DO.e.v
+\end{lstlisting}
+\begin{lstlisting}[language={},xleftmargin=5pt,frame=none]
+ans = [](0x0)
 
-\end{lstlisting} \color{black}
-    
+\end{lstlisting}
 
+
+\phantomsection
+\addcontentsline{toc}{section}{Different input}
 \subsubsection*{Different input}
 
-\begin{par}
-Add quantity \lstinline{u}, which has precedence over \lstinline{v}:
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+
+Add quantity \texttt{u}, which has precedence over \texttt{v}:
+
+\begin{lstlisting}
 DI.u.v = [100:110];
 DO = qwtb('testQ', DI);
 \end{lstlisting}
-
-        \begin{lstlisting}[style=output]
+\begin{lstlisting}[language={},xleftmargin=5pt,frame=none]
 QWTB: no uncertainty calculation
-\end{lstlisting} \color{black}
-    \begin{par}
-The result is value of \lstinline{u}:
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
-DO.e.v
+
 \end{lstlisting}
 
-        \begin{lstlisting}[style=output]
 
-ans =
+The result is value of \texttt{u}:
 
-     []
+\begin{lstlisting}
+DO.e.v
+\end{lstlisting}
+\begin{lstlisting}[language={},xleftmargin=5pt,frame=none]
+ans = [](0x0)
 
-\end{lstlisting} \color{black}
-    
+\end{lstlisting}
 
 
-%%% \end{document}
-    
+\stopcontents[localtoc]

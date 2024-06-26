@@ -1,0 +1,91 @@
+\startcontents[localtoc]
+\printcontents[localtoc]{}{0}{\subsection*{Contents}\setcounter{tocdepth}{2}}
+
+
+
+\phantomsection
+\addcontentsline{toc}{section}{Generate sample data}
+\subsubsection*{Generate sample data}
+
+
+
+A time series representing voltage measured on a power supply line will be generated. Modulation
+amplitude \texttt{dVV} in percents, modulation frequency \texttt{CPM} in changes per minute, line frequency
+\texttt{f\_c}, and line amplitude \texttt{A\_c} in volts are selected according Table 5 of EN61000-4-15/A1, line
+4, collumn 3. Measurement time \texttt{siglen} and sampling frequency \texttt{f\_s} are selected according
+recommendations of algorithm flicker\_sim. Resulted Pst should be very near 1.
+
+\begin{lstlisting}
+dVV = 0.894; CPM = 39; A_c = 230.*sqrt(2); f_c = 50; siglen = 720; f_s = 20000;
+% Frequency of the modulation (flicker) signal in hertz:
+f_F = CPM / ( 60 * 2 );
+% Time series:
+t = linspace(0, siglen, siglen.*f_s);
+% Sampled signal. Modulation is set in such way 10 minutes before end of signal modulation is zero.
+y = A_c*sin(2*pi*f_c*t) .* ( 1 + (dVV/100)/2*sign(sin(2*pi*f_F*t - (siglen - 10).*f_F.*2.*pi)) );
+\end{lstlisting}
+
+
+\phantomsection
+\addcontentsline{toc}{section}{Set input data.}
+\subsubsection*{Set input data.}
+
+\begin{lstlisting}
+DI = [];
+DI.y.v = y;
+DI.fs.v = f_s;
+DI.f_line.v = f_c;
+\end{lstlisting}
+
+
+\phantomsection
+\addcontentsline{toc}{section}{Call algorithm}
+\subsubsection*{Call algorithm}
+
+
+
+Use QWTB to apply algorithm \texttt{flicker\_sim} to data \texttt{DI}.
+
+\begin{lstlisting}
+DO = qwtb('flicker_sim', DI);
+\end{lstlisting}
+\begin{lstlisting}[language={},xleftmargin=5pt,frame=none]
+QWTB: no uncertainty calculation
+warning: Invalid UTF-8 byte sequences have been replaced.
+warning: called from
+    alg_wrapper at line 25 column 14
+    qwtb>check_and_run_alg at line 377 column 17
+    qwtb at line 114 column 47
+    publish>eval_code_helper at line 1079 column 8
+    publish>eval_code at line 995 column 30
+    publish at line 402 column 9
+    all_algs_examples2tex at line 51 column 5
+ 
+
+\end{lstlisting}
+
+
+\phantomsection
+\addcontentsline{toc}{section}{Display results}
+\subsubsection*{Display results}
+
+
+
+Short-term flicker severity:
+
+\begin{lstlisting}
+Pst = DO.Pst
+% Maximum of instantaneous flicker sensation:
+Pinstmax = max(DO.Pinst)
+\end{lstlisting}
+\begin{lstlisting}[language={},xleftmargin=5pt,frame=none]
+error: max: wrong type argument 'scalar struct'
+	in:
+
+Pst = DO.Pst
+% Maximum of instantaneous flicker sensation:
+Pinstmax = max(DO.Pinst)
+\end{lstlisting}
+
+
+\stopcontents[localtoc]

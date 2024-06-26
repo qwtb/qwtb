@@ -1,0 +1,27 @@
+\begin{tightdesc}
+\item [Id:] FFOAV
+\item [Name:] Fast Fully Overlapped Allan Variance
+\item [Description:] Fast, parallelizeable algorithm to calculate Fully Overlapped Allan Variance for generating smooth Allan Deviation plots whose serial running time is $\Theta(N^2)$.
+\item [Citation:] S. M. Yadav, S. K. Shastri, G. B. Chakravarthi, V. Kumar, D. R. A and V. Agrawal, "A Fast, Parallel Algorithm for Fully Overlapped Allan Variance and Total Variance for Analysis and Modelling of Noise in Inertial Sensors," in IEEE Sensors Letters. doi: 10.1109/LSENS.2018.2829799. Github repository: \url{https://github.com/shrikanth95/Fast-Parallel-Fully-Overlapped-Allan-Variance-and-Total-Variance}
+\item [Remarks:] If sampling frequency |fs| is not supplied, wrapper will calculate |fs| from sampling time |Ts| or if not supplied, mean of differences of time series |t| is used to calculate |Ts|. The output is recaldulated to return deviation to correspond other algorithms.
+\item [License:] MIT License
+\item [Provides GUF:] no
+\item [Provides MCM:] no
+\item [Input Quantities] \rule{0em}{0em}
+    \begin{tightdesc}
+    \item [Required:] 
+        \textsf{fs} or \textsf{Ts} or \textsf{t},\enspace \textsf{y}
+    \item [Descriptions:] \rule{0em}{0em}
+        \begin{tightdesc}
+            \item[\textsf{Ts}] -- Sampling time
+            \item[\textsf{fs}] -- Sampling frequency
+            \item[\textsf{t}] -- Time series
+            \item[\textsf{y}] -- Sampled values
+        \end{tightdesc}
+    \end{tightdesc}
+\item [Output Quantities:] \rule{0em}{0em}
+    \begin{tightdesc}
+        \item[\textsf{oadev}] -- Overlapped Allan deviation
+        \item[\textsf{tau}] -- Observation time of resulted values
+    \end{tightdesc}
+\end{tightdesc}

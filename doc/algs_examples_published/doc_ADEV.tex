@@ -1,79 +1,56 @@
-
-% This LaTeX was auto-generated from an M-file by MATLAB.
-% To make changes, update the M-file and republish this document.
-
-%%% \documentclass{article}
-%%% \usepackage{graphicx}
-%%% \usepackage{color}
-
-%%% \sloppy
-%%% \definecolor{lightgray}{gray}{0.5}
-\setlength{\parindent}{0pt}
-
-%%% \begin{document}
-
-    
-    
-\subsection*{Allan Deviation}
-
-\begin{par}
-Example for algorithm ADEV.
-\end{par} \vspace{1em}
-\begin{par}
-ADEV is an algorithm to compute the Allan deviation for a set of time-domain frequency data.
-\end{par} \vspace{1em}
-\begin{par}
-See also W. J. Riley, "The Calculation of Time Domain Frequency Stability". Implementation: M. A. Hopcroft, \verb"mhopeng@gmail.com", Matlab Central.'
-\end{par} \vspace{1em}
-
-\subsubsection*{Contents}
-
-\begin{itemize}
-\setlength{\itemsep}{-1ex}
-   \item Generate sample data
-   \item Call algorithm
-   \item Display results
-\end{itemize}
+\startcontents[localtoc]
+\printcontents[localtoc]{}{0}{\subsection*{Contents}\setcounter{tocdepth}{2}}
 
 
+
+\phantomsection
+\addcontentsline{toc}{section}{Generate sample data}
 \subsubsection*{Generate sample data}
 
-\begin{par}
-A random numbers with normal probability distribution function will be generated into input data \lstinline{DI.y.v}. Next a drift will be added.
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+
+A random numbers with normal probability distribution function will be generated into input data \texttt{DI.y.v}. Next a drift will be added.
+
+\begin{lstlisting}
 DI = [];
 DI.y.v = 1.5 + 3.*randn(1, 1e3);
 DI.y.v = DI.y.v + [1:1:1e3]./100;
 \end{lstlisting}
-\begin{par}
+
+
 Lets suppose a sampling frequency is 1 Hz. The algorithm will generate all possible tau values automatically.
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+\begin{lstlisting}
 DI.fs.v = 1;
 \end{lstlisting}
 
 
+\phantomsection
+\addcontentsline{toc}{section}{Call algorithm}
 \subsubsection*{Call algorithm}
 
-\begin{par}
-Use QWTB to apply algorithm \lstinline{ADEV} to data \lstinline{DI}.
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+
+Use QWTB to apply algorithm \texttt{ADEV} to data \texttt{DI}.
+
+\begin{lstlisting}
 DO = qwtb('ADEV', DI);
 \end{lstlisting}
-
-        \begin{lstlisting}[style=output]
+\begin{lstlisting}[language={},xleftmargin=5pt,frame=none]
 QWTB: no uncertainty calculation
-\end{lstlisting} \color{black}
-    
 
+\end{lstlisting}
+
+
+\phantomsection
+\addcontentsline{toc}{section}{Display results}
 \subsubsection*{Display results}
 
-\begin{par}
+
+
 Log log figure is the best to see allan deviation results:
-\end{par} \vspace{1em}
-\begin{lstlisting}[style=mcode]
+
+\begin{lstlisting}
 figure; hold on
 loglog(DO.tau.v, DO.adev.v, '-b')
 loglog(DO.tau.v, DO.adev.v + DO.adev.u, '-k')
@@ -83,12 +60,9 @@ ylabel('\sigma_y(\tau)');
 title(['period = ' num2str(1/DI.fs.v)]);
 grid('on'); hold off
 \end{lstlisting}
-
 \begin{center}
-\includegraphics[width=0.7\textwidth]{algs_examples_published/ADEV_alg_example_01.pdf}
+\includegraphics[width=0.7\textwidth]{algs_examples_published/ADEV_alg_example-1.pdf}
 \end{center}
 
 
-
-%%% \end{document}
-    
+\stopcontents[localtoc]
