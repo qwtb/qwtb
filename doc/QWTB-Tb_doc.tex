@@ -62,6 +62,9 @@
 %    {\endlist}
 %    {\item}
 
+\usepackage[yyyymmdd]{datetime}         % command \today with sane format
+\renewcommand{\dateseparator}{-}        % strictly ISO date format
+
 % shorts: %<<<1 ----------------------------------------------------
 
 \def\Alg{{\sc Algorithm}\xspace}
@@ -113,7 +116,7 @@
         Toolbox description}\\
 
         \vfill
-        {\Large \color{red}{QWTB version 0.2}}
+        {\Large \color{red}{\today}}
 
         \vspace{1em}
         {\Large \url{https://qwtb.github.io/qwtb/}}
