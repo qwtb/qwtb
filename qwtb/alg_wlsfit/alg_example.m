@@ -1,11 +1,8 @@
-close all
 %% Weighted Least Square Fitting Algortihm
 % Example for algorithm wlsfit
 %
 
-%% Obtain example data
-% load ws_lsfit_0308.mat
-
+%% Set example data
 % Set independent and dependent variables for |wlsfit| algorithm, OLS method.
 % Lets operate in semi logarithm space for easy plotting.
 DIols = [];

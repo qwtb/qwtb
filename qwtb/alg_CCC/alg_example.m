@@ -1,4 +1,3 @@
-close all
 %% Calibrations Curve Computing
 % Example for algorithm CCC.
 %

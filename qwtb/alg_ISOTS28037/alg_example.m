@@ -1,7 +1,7 @@
 % Example for algorithm ISOTS28037
 
 %% Generate sample data
-% Set independent and dependent variables for |OEFPIL| algorithm.
+% Set independent and dependent variables.
 DI.x.v = [1 2 3 4 5];
 DI.x.u = [0.1 0.1 0.1 0.1 0.1];
 DI.y.v = [1.1 1.9 3.1 3.9 5.1];

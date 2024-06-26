@@ -1,5 +1,5 @@
 function alginfo = alg_info() %<<<1
-% Part of QWTB. Info script for algorithm CCC
+% Part of QWTB. Info script for algorithm ISOTS28037
 %
 % See also qwtb
 
