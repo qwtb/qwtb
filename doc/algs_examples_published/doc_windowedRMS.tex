@@ -1,0 +1,111 @@
+\startcontents[localtoc]
+\printcontents[localtoc]{}{0}{\subsection*{Contents}\setcounter{tocdepth}{2}}
+
+
+
+\phantomsection
+\addcontentsline{toc}{section}{Generate single sine wave sampled data}
+\subsubsection*{Generate single sine wave sampled data}
+
+
+
+The signal is not coherently sampled.
+
+\begin{lstlisting}
+DI = [];
+t = (0 : 1000-1) * 1/4000;
+DI.y.v = 1 * sin(2*pi * 50 * t);
+\end{lstlisting}
+
+
+\phantomsection
+\addcontentsline{toc}{section}{Calculate RMS}
+\subsubsection*{Calculate RMS}
+
+\begin{lstlisting}
+DO = qwtb('windowedRMS', DI);
+\end{lstlisting}
+\begin{lstlisting}[language={},xleftmargin=5pt,frame=none]
+QWTB: no uncertainty calculation
+
+\end{lstlisting}
+
+
+\phantomsection
+\addcontentsline{toc}{section}{Check result}
+\subsubsection*{Check result}
+
+
+
+Error of the amplitude estimate:
+
+\begin{lstlisting}
+amplitude_error = DO.A.v - 1/sqrt(2)
+\end{lstlisting}
+\begin{lstlisting}[language={},xleftmargin=5pt,frame=none]
+amplitude_error = 3.3307e-16
+
+\end{lstlisting}
+
+
+\phantomsection
+\addcontentsline{toc}{section}{Generate voltage and current sine waves}
+\subsubsection*{Generate voltage and current sine waves}
+
+
+
+If two signals are supplied representing voltage and current, power and
+apparent power will be calculated.
+
+\begin{lstlisting}
+DI = [];
+t = (0 : 1000-1) * 1/4000;
+DI2.u.v = 1   * sin(2*pi * 50 * t + 0);
+DI2.i.v = 0.5 * sin(2*pi * 50 * t + pi/4);
+\end{lstlisting}
+
+
+\phantomsection
+\addcontentsline{toc}{section}{Calculate RMS}
+\subsubsection*{Calculate RMS}
+
+\begin{lstlisting}
+DO2 = qwtb('windowedRMS', DI2);
+\end{lstlisting}
+\begin{lstlisting}[language={},xleftmargin=5pt,frame=none]
+QWTB: no uncertainty calculation
+
+\end{lstlisting}
+
+
+\phantomsection
+\addcontentsline{toc}{section}{Check result}
+\subsubsection*{Check result}
+
+
+
+Error of the voltage and current estimates:
+
+\begin{lstlisting}
+voltage_error = DO2.U.v - 1/sqrt(2)
+current_error = DO2.I.v - 0.5/sqrt(2)
+\end{lstlisting}
+\begin{lstlisting}[language={},xleftmargin=5pt,frame=none]
+voltage_error = 3.3307e-16
+current_error = 4.9960e-16
+
+\end{lstlisting}
+
+
+Error of the phase estimate:
+
+\begin{lstlisting}
+phase_error = DO2.phi_ef.v - pi/4
+\end{lstlisting}
+\begin{lstlisting}[language={},xleftmargin=5pt,frame=none]
+phase_error = 5.5511e-16
+
+\end{lstlisting}
+
+
+\stopcontents[localtoc]

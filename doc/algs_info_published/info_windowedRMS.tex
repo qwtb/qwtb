@@ -1,0 +1,34 @@
+\begin{tightdesc}
+\item [Id:] windowedRMS
+\item [Name:] Windowed RMS
+\item [Description:] Algorithm estimate RMS amplitude of a sampled waveform |y|. If inputs |u| (sampled voltage) and |i| (sampled current) are supplied instead of |y|, algorithms calculates not only RMS amplitudes, but also active power, apparent power, and phase between two waveforms. Possible values for |window| are: `hann`, `rect`, `bartlett`, `welch`, `hann`, `hamming`, `blackman`, `BH92`, `flattop`, `HFT70`, `HFT90D`, `HFT95`, `HFT116D`, `HFT144D`, `HFT169D`, `HFT196D`, `HFT223D`, `HFT248D`.
+\item [Citation:] Rado Lapuh, "Signal Parameter Estimation using windowed RMS method"
+\item [Remarks:] 
+\item [License:] no license
+\item [Provides GUF:] no
+\item [Provides MCM:] no
+\item [Input Quantities] \rule{0em}{0em}
+    \begin{tightdesc}
+    \item [Optional:] 
+        \textsf{y},\enspace \textsf{u},\enspace \textsf{i},\enspace \textsf{window}
+    \item [Parameters:] 
+        \textsf{window}
+    \item [Descriptions:] \rule{0em}{0em}
+        \begin{tightdesc}
+            \item[\textsf{i}] -- Sampled current
+            \item[\textsf{u}] -- Sampled voltage
+            \item[\textsf{window}] -- Name of window function
+            \item[\textsf{y}] -- Sampled values
+        \end{tightdesc}
+    \end{tightdesc}
+\item [Output Quantities:] \rule{0em}{0em}
+    \begin{tightdesc}
+        \item[\textsf{A}] -- RMS amplitude of a single signal
+        \item[\textsf{I}] -- RMS amplitude of a current signal
+        \item[\textsf{P}] -- Windowed active power
+        \item[\textsf{PF}] -- Power factor
+        \item[\textsf{S}] -- Windowed apparent power
+        \item[\textsf{U}] -- RMS amplitude of a voltage signal
+        \item[\textsf{phi\_ef}] -- Effective phase shift, acos(PF) [rad]
+    \end{tightdesc}
+\end{tightdesc}
