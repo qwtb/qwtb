@@ -278,7 +278,12 @@ dataout.coefs.u = dataout.coefs.u(:);
 covm = infogetmatrix(s, 'Covariance matrix associated with parameter estimates');
 % calculate correlation matrix:
 d = diag(dataout.coefs.u,0);
-dataout.coefs.c = inv(d)*covm*inv(d);
+if all(all(d == 0))
+    warning('QWTB: CCC wrapper: all uncertainties of all coefficients are zero, cannot calculate covariance matrix')
+    dataout.coefs.c = nan.*size(covm);
+else
+    dataout.coefs.c = inv(d)*covm*inv(d);
+end % if all(all(d == 0))
 % fitted values: %<<<3
 dataout.yhat.v = infogetmatrix(s, 'Fitted values y');
 dataout.yhat.v = dataout.yhat.v(:);
@@ -289,7 +294,12 @@ d = diag(covm).^0.5;
 dataout.yhat.u = d(:);
 % calculate correlation matrix:
 d = diag(d, 0);
-dataout.yhat.c = inv(d)*covm*inv(d);
+if all(all(d == 0))
+    warning('QWTB: CCC wrapper: all uncertainties of all coefficients are zero, cannot calculate covariance matrix')
+    dataout.coefs.c = nan.*size(covm);
+else
+    dataout.yhat.c = inv(d)*covm*inv(d);
+end % if all(all(d == 0))
 
 % sorted exponents on the output: %<<<3
 dataout.exponents.v = possibleexps(exponents == 1);
