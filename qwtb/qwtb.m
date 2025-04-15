@@ -1714,4 +1714,4 @@ function msg = err_msg_gen(varargin) %<<<1
     end
 end % err_msg_gen
     
-% vim settings modeline: vim: foldmarker=%<<<,%>>> fdm=marker fen ft=octave textwidth=80 tabstop=4 shiftwidth=4
+% vim settings modeline: vim: foldmarker=%<<<,%>>> fdm=marker fen ft=matlab textwidth=80 tabstop=4 shiftwidth=4
