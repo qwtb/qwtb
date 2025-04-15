@@ -9,7 +9,7 @@ alginfo.desc = 'An algorithm for estimating the frequency, amplitude, and phase 
 alginfo.citation = 'J. Schoukens, R. Pintelon, and G. Vandersteen, "A sinewave fitting procedure for characterizing data acquisition  channels in the presence of time base distortion and time jitter," IEEE Trans. Instrum. Meas., Vol. 46, No. 4, Aug. 1997, 1005-1010 and R. Lapuh, "Sampling with 3458A", Left Right d.o.o., September 2018, ISBN 978-961-94476-0-4';
 alginfo.remarks = 'If sampling time |Ts| is not supplied, wrapper will calculate |Ts| from sampling frequency |fs| or if not supplied, mean of differences of time series |t| is used to calculate |Ts|. If not supplied, Cost Function Threshold |CFT| is set to 3.5e-11 by algorithm itself. If initial estimate |fest| value is negative or ''ipdft'', initial guess is done using ipdft. If |fest| value is ''psfe'', initial guess is done using ''PSFE'' algorithm. Otherwise actual value is used. Calculation of uncertainty using GUM method works only for |CFT| equal to 3.5e-11 and |fest| equal to -1.';
 alginfo.license = 'License not specified.';
-alginfo.generator = 'GenNHarm';
+% alginfo.generator = 'GenNHarm'; TODO: field not yet supported fully in qwtb
 
 
 alginfo.inputs(1).name = 'Ts';
@@ -99,4 +99,4 @@ alginfo.outputs(7).desc = 'Amplitudes of spectrum components';
 alginfo.providesGUF = 1;
 alginfo.providesMCM = 1;
 
-% vim settings modeline: vim: foldmarker=%<<<,%>>> fdm=marker fen ft=octave textwidth=80 tabstop=4 shiftwidth=4
+% vim settings modeline: vim: foldmarker=%<<<,%>>> fdm=marker fen ft=matlab textwidth=80 tabstop=4 shiftwidth=4
