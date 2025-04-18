@@ -2238,12 +2238,15 @@ end % function generate_results_filenames
 
 function prepare_calculation_directory(calcset) %<<<1
 % prepare directory for job files and temporary calculation files
-    if ~exist(calcset.var.dir, 'dir')
-        mkdir(calcset.var.dir);
-    end % if % ~exist(calcset.var.dir)
-    if ~exist(calcset.var.dir, 'dir')
-        error(err_msg_gen(30, calcset.var.dir)); % not a folder
-    end % if % ~exist(calcset.var.dir, 'dir')
+% expects that part of the fnprefix could be a directory, e.g. 
+% fnprefix = 'some_dir/prefix'
+    fullpath = fileparts(fullfile(calcset.var.dir, calcset.var.fnprefix));
+    if ~exist(fullpath, 'dir')
+        mkdir(fullpath);
+    end % if % ~exist
+    if ~exist(fullpath, 'dir')
+        error(err_msg_gen(30, fullpath)); % not a folder
+    end % if % ~exist
 end % function prepare_calculation_directory(calcset)
 
 function job = init_filenames(job, calcset) %<<<1
